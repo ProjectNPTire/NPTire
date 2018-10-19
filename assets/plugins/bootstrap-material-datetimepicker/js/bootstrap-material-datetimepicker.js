@@ -3,7 +3,7 @@
    var pluginName = "bootstrapMaterialDatePicker";
    var pluginDataName = "plugin_" + pluginName;
 
-   moment.locale('en');
+   moment.locale('th');
 
    function Plugin(element, options)
    {
@@ -17,7 +17,7 @@
       this.element = element;
       this.$element = $(element);
 
-      this.params = {date: true, time: true, format: 'YYYY-MM-DD', minDate: null, maxDate: null, currentDate: null, lang: 'en', weekStart: 0, shortTime: false, clearButton: false, nowButton: false, cancelText: 'Cancel', okText: 'OK', clearText: 'Clear', nowText: 'Now', switchOnClick: false};
+      this.params = {date: true, time: true, format: 'YYYY-MM-DD', minDate: null, maxDate: null, currentDate: null, yearOffset:543, lang: 'th', weekStart: 0, shortTime: false, clearButton: false, nowButton: false, cancelText: 'ยกเลิก', okText: 'ตกลง', clearText: 'Clear', nowText: 'Now', switchOnClick: false};
       this.params = $.fn.extend(this.params, options);
 
       this.name = "dtp_" + this.setName();
