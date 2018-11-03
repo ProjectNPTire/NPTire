@@ -12,25 +12,20 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>ข้อมูลหน่วยสินค้า</h2>
+							<h2>ข้อมูลยี่ห้อสินค้า</h2>
 						</div>
 						<div class="body">
 							<form id="" method="POST">
 								<div class="form-group form-float">
-									<b>รหัสหน่วยสินค้า*</b>
+									<b>รหัสยี่ห้อสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">
-									<b>ชื่อหน่วยสินค้า*</b>
+									<b>ชื่อยี่ห้อสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" placeholder="ตัวอย่าง: ชื่อxจำนวน" required>
-									</div>
-								</div><div class="form-group form-float">
-									<b>จำนวนต่อหน่วย*</b>
-									<div class="form-line">
-										<input type="number" min="1" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">

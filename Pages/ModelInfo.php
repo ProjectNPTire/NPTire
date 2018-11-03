@@ -17,13 +17,13 @@
 						<div class="body">
 							<form id="" method="POST">
 								<div class="form-group form-float">
-									<b>รหัสสินค้า*</b>
+									<b>รหัสรุ่นสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">
-									<b>ชื่อสินค้า*</b>
+									<b>ชื่อรุ่นสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" placeholder="ตัวอย่าง: ชื่อxจำนวน" required>
 									</div>
@@ -36,40 +36,11 @@
 									</select>
 								</div>
 								<div class="form-group form-float">
-									<b>รุ่น</b>
-									<select class="form-control show-tick">
-										<option value="0">ใช้งาน</option>
-										<option value="1">ไม่ใช้งาน</option>
-									</select>
-								</div>
-								<div class="form-group form-float">
-									<b>ขนาดสินค้า*</b>
-									<div class="form-line">
-										<input type="text" name="txtName" class="form-control" placeholder="ตัวอย่าง: ชื่อxจำนวน" required>
-									</div>
-								</div>
-								<div class="form-group form-float">
-									<b>จุดสั่งซื้อ*</b>
-									<div class="form-line">
-										<input type="text" name="txtName" class="form-control" required>
-									</div>
-								</div>
-								<div class="form-group form-float">
 									<b>การใช้งาน</b>
 									<select class="form-control show-tick">
 										<option value="0">ใช้งาน</option>
 										<option value="1">ไม่ใช้งาน</option>
 									</select>
-								</div>
-								<div class="form-group">
-									<b>รายละเอียด</b>
-									<div class="form-line">
-										<textarea rows="1" class="form-control no-resize auto-growth" required></textarea>
-									</div>
-								</div>
-								<div class="form-group form-float">
-									<b>รูปภาพ</b>
-									<input type="file" name="fileToUpload" id="fileToUpload">
 								</div>
 								<div class="align-center">
 									<button class="btn btn-success waves-effect" type="submit">บันทึก</button>

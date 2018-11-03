@@ -75,7 +75,7 @@
                                 <a href="UserList.php">ข้อมูลพนักงาน</a>
                             </li>
                             <li>
-                                <a href="pages/ui/alerts.html">ข้อมูลคู่ค้า</a>
+                                <a href="SupplierInfo.php">ข้อมูลคู่ค้า</a>
                             </li>
                         </ul>
                     </li>
@@ -86,10 +86,19 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="pages/ui/alerts.html">ประเภทสินค้า</a>
+                                <a href="BrandInfo.php">ยี่ห้อสินค้า</a>
                             </li>
                             <li>
-                                <a href="pages/ui/alerts.html">ข้อมูลสินค้า</a>
+                                <a href="ModelInfo.php">รุ่นสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="ProductTypeInfo.php">ประเภทสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="ProductInfo.php">ข้อมูลสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="LocationInfo.php">ตำแหน่งจัดเก็บสินค้า</a>
                             </li>
                         </ul>
                     </li>
@@ -101,25 +110,39 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="pages/ui/alerts.html">สั่งซื้อสินค้า</a>
+                                <a href="OrderInfo.php">สั่งซื้อสินค้า</a>
                             </li>
                             <li>
-                                <a href="pages/ui/alerts.html">นำเข้าสินค้า</a>
+                                <a href="ImportInfo.php">นำเข้าสินค้า</a>
                             </li>
                             <li>
-                                <a href="pages/ui/alerts.html">กำหนดพื้นที่สินค้า</a>
+                                <a href="PickupInfo.php">เบิกสินค้า</a>
                             </li>
                             <li>
-                                <a href="pages/ui/alerts.html">เบิกสินค้า</a>
+                                <a href="TransferInfo.php">ย้ายสินค้า</a>
                             </li>
                         </ul>
                     </li>
                     <li class="header">รายงานและการใช้งาน</li>
                     <li>
-                        <a href="javascript:void(0);">
+                        <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons col-light-blue">donut_large</i>
                             <span>รายงาน</span>
                         </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="pages/ui/alerts.html">รายงานสั่งซื้อสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="pages/ui/alerts.html">รายงานรับเข้าสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="pages/ui/alerts.html">รายงานเบิกสินค้า</a>
+                            </li>
+                            <li>
+                                <a href="pages/ui/alerts.html">รายงานพื้นที่จัดเก็บสินค้า</a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <a href="javascript:void(0);">
@@ -146,7 +169,7 @@
         </aside>
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
-        <aside id="rightsidebar" class="right-sidebar">
+<!--         <aside id="rightsidebar" class="right-sidebar">
             <ul class="nav nav-tabs tab-nav-right" role="tablist">
                 <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
                 <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
@@ -286,6 +309,6 @@
                     </div>
                 </div>
             </div>
-        </aside>
+        </aside> -->
         <!-- #END# Right Sidebar -->
     </section>
