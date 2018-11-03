@@ -1,3 +1,47 @@
+// $(function () {
+//     $('#wizard_with_validation').validate({
+//         rules: {
+//             'checkbox': {
+//                 required: true
+//             },
+//             'gender': {
+//                 required: true
+//             }
+//         },
+//         highlight: function (input) {
+//             $(input).parents('.form-line').addClass('error');
+//         },
+//         unhighlight: function (input) {
+//             $(input).parents('.form-line').removeClass('error');
+//         },
+//         errorPlacement: function (error, element) {
+//             $(element).parents('.form-group').append(error);
+//         }
+//     });
+
+//     //Advanced Form Validation
+//     $('#wizard_with_validation').validate({
+//         rules: {
+//             'date': {
+//                 customdate: true
+//             },
+//             'creditcard': {
+//                 creditcard: true
+//             }
+//         },
+//         highlight: function (input) {
+//             $(input).parents('.form-line').addClass('error');
+//         },
+//         unhighlight: function (input) {
+//             $(input).parents('.form-line').removeClass('error');
+//         },
+//         errorPlacement: function (error, element) {
+//             $(element).parents('.form-group').append(error);
+//         }
+//     });
+// });
+
+
 // ------------------------------------------Form-Wizard----------------------------------------------------
 $(function () {
     //Horizontal form basic
@@ -78,7 +122,7 @@ $(function () {
             $(element).parents('.form-group').append(error);
         },
         rules: {
-            'confirm': {
+            'txtConfirm': {
                 equalTo: '#password'
             }
         }
@@ -111,7 +155,7 @@ $(function () {
     var $demoMaskedInput = $('.demo-masked-input');
 
     //Date
-    $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy', { placeholder: '__/__/____' });
+    $demoMaskedInput.find('.date').inputmask('dd/mm/yyyy',{ placeholder: '__/__/____' });
 
     //Time
     $demoMaskedInput.find('.time12').inputmask('hh:mm t', { placeholder: '__:__ _m', alias: 'time12', hourFormat: '12' });

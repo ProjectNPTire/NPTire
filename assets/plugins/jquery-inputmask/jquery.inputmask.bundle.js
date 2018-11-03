@@ -1577,7 +1577,7 @@
             leapday: "29/02/",
             separator: "/",
             yearrange: {
-                minyear: 1900,
+                minyear: 2000,
                 maxyear: 2099
             },
             isInYearRange: function(chrs, minyear, maxyear) {

@@ -7,7 +7,6 @@
     <?php include 'MasterPage.php';?>
     <section class="content">
         <div class="container-fluid">
-            <!-- Advanced Form Example With Validation -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
@@ -28,7 +27,7 @@
 
                                     <div class="form-group form-float">
                                         <div class="form-line">
-                                            <input type="password" class="form-control" name="txtPassword" minlength="6" required>
+                                            <input type="password" class="form-control" name="txtPassword" id="password" minlength="6" required>
                                             <label class="form-label">Password*</label>
                                         </div>
                                         <div class="help-info">ความยาวต้องไม่น้อยกว่า 6 ตัวอักษร</div>
@@ -44,34 +43,34 @@
                                 <h3>Profile Information</h3>
                                 <fieldset>
                                     <div class="form-group form-float">
-                                        <b>First Name*</b>
+                                        <b>ชื่อ*</b>
                                         <div class="form-line">
                                             <input type="text" name="txtName" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
-                                        <b>Last Name*</b>
+                                        <b>นามสกุล*</b>
                                         <div class="form-line">
                                             <input type="text" name="txtSurname" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
-                                        <b>Age*</b>
+                                        <b>อายุ*</b>
                                         <div class="form-line">
                                             <input min="18" type="number" name="txtAge" class="form-control" required>
                                         </div>
                                         <div class="help-info">The warning step will show up if age is less than 18</div>
                                     </div>
-                                    <div class="demo-masked-input">
+                                  <!--   <div class="demo-masked-input"> -->
                                         <div class="form-group form-float">
-                                            <b>Birthday*</b>
+                                            <b>วัน/เดือน/ปีเกิด*</b>
                                             <div class="form-line">
-                                                <input type="text" name="txtBirthday" class="form-control date" placeholder="Ex: 30/07/2535">
+                                                <input type="text" name="txtBirthday" class="form-control date" placeholder="Ex: 30/07/2000" required>
                                             </div>
                                         </div>
-                                    </div>
+                                    <!-- </div> -->
                                     <div class="form-group form-float">
-                                        <b>ID Card*</b>
+                                        <b>รหัสบัตรประชาชน*</b>
                                         <div class="form-line">
                                             <input type="text" name="txtIDcard" class="form-control" required>
                                         </div>
@@ -84,56 +83,53 @@
                                     </div>
                                     <div class="demo-masked-input">
                                         <div class="form-group form-float">
-                                            <b>Phone Number*</b>
+                                            <b>เบอร์โทรศัพท์มือถือ*</b>
                                             <div class="form-line">
                                                 <input type="text" name="txtTel" class="form-control mobile-phone-number" placeholder="Ex: 00-0000-0000" required>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <b>Address*</b>
+                                        <b>ที่อยู่*</b>
                                         <div class="form-line">
                                             <textarea rows="1" class="form-control no-resize auto-growth" required></textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group form-float">
-                                        <b>Province*</b>
-                                        <div class="form-line">
+                                    <div class="form-group">
+                                        <b>จังหวัด*</b>
                                             <select name="txtProvince" class="form-control show-tick" data-live-search="true">
+                                                <option value="">-- Please select --</option>
                                                 <option>Hot Dog, Fries and a Soda</option>
                                                 <option>Burger, Shake and a Smile</option>
                                                 <option>Sugar, Spice and all things nice</option>
                                             </select>
-                                        </div>
                                     </div>
-                                    <div class="form-group form-float">
-                                        <b>District*</b>
-                                        <div class="form-line">
+                                    <div class="form-group">
+                                        <b>เขต/อำเภอ*</b>
                                             <select name="txtDistrict" class="form-control show-tick" data-live-search="true">
+                                                <option value="">-- Please select --</option>
                                                 <option>Hot Dog, Fries and a Soda</option>
                                                 <option>Burger, Shake and a Smile</option>
                                                 <option>Sugar, Spice and all things nice</option>
                                             </select>
-                                        </div>
                                     </div>
-                                    <div class="form-group form-float">
-                                        <b>Subdistrict*</b>
-                                        <div class="form-line">
+                                    <div class="form-group">
+                                        <b>แขวง/ตำบล*</b>
                                             <select name="txtSubdistrict" class="form-control show-tick" data-live-search="true">
+                                                <option value="">-- Please select --</option>
                                                 <option>Hot Dog, Fries and a Soda</option>
                                                 <option>Burger, Shake and a Smile</option>
                                                 <option>Sugar, Spice and all things nice</option>
                                             </select>
-                                        </div>
                                     </div>
                                     <div class="form-group form-float">
-                                        <b>Zipcode*</b>
+                                        <b>รหัสไปรษณีย์*</b>
                                         <div class="form-line">
                                             <input type="text" name="txtZipcode" class="form-control" required>
                                         </div>
                                     </div>
                                     <div class="form-group form-float">
-                                        <b>Picture</b>
+                                        <b>รูปภาพ</b>
                                         <input type="file" name="fileToUpload" id="fileToUpload">
                                     </div>
                                 </fieldset>
