@@ -12,7 +12,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>ข้อมูลยี่ห้อสินค้า</h2>
+							<h2>ข้อมูลสินค้า</h2>
 						</div>
 						<div class="body">
 							<form id="" method="POST">
@@ -43,9 +43,16 @@
 									</select>
 								</div>
 								<div class="form-group form-float">
+									<b>หน่วย</b>
+									<select class="form-control show-tick">
+										<option value="0">ใช้งาน</option>
+										<option value="1">ไม่ใช้งาน</option>
+									</select>
+								</div>
+								<div class="form-group form-float">
 									<b>ขนาดสินค้า*</b>
 									<div class="form-line">
-										<input type="text" name="txtName" class="form-control" placeholder="ตัวอย่าง: ชื่อxจำนวน" required>
+										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">

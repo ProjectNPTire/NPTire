@@ -60,7 +60,7 @@
                 <ul class="list">
                     <li class="header">เมนูหลัก</li>
                     <li class="active">
-                        <a href="index.html">
+                        <a href="index.php">
                             <i class="material-icons">home</i>
                             <span>Home</span>
                         </a>

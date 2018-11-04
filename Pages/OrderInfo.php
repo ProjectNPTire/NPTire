@@ -52,18 +52,20 @@
 												<th>ยี่ห้อ</th>
 												<th>รุ่น</th>
 												<th>ขนาด</th>
+												<th>หน่วย</th>
 												<th>ตำแหน่ง</th>
 												<th></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td>Tiger Nixon</td>
-												<td>System Architect</td>
-												<td>Edinburgh</td>
-												<td>61</td>
-												<td>2011/04/25</td>
-												<td>$320,800</td>
+												<td>1</td>
+												<td>PD001</td>
+												<td>TOYO PROXES ST3 III</td>
+												<td>TOYO</td>
+												<td>PROXES ST3 III</td>
+												<td>15นิ้ว</td>
+												<td>ชุดx4</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ใช้งาน</option>
@@ -77,12 +79,13 @@
 												</td>
 											</tr>
 											<tr>
-												<td>Tiger Nixon</td>
-												<td>System Architect</td>
-												<td>Edinburgh</td>
-												<td>61</td>
-												<td>2011/04/25</td>
-												<td>$320,800</td>
+												<td>2</td>
+												<td>PD002</td>
+												<td>YOKOHAMA ADVAN dB Decibel V551</td>
+												<td>YOKOHAMA</td>
+												<td>ADVAN Decibel V551</td>
+												<td>15 นิ้ว</td>
+												<td>ชุดx4</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ใช้งาน</option>
@@ -96,12 +99,13 @@
 												</td>
 											</tr>
 											<tr>
-												<td>Tiger Nixon</td>
-												<td>System Architect</td>
-												<td>Edinburgh</td>
-												<td>61</td>
-												<td>2011/04/25</td>
-												<td>$320,800</td>
+												<td>3</td>
+												<td>PD003</td>
+												<td>COSMIS-XT-005R Eco (ขอบ15″)</td>
+												<td>COSMIS</td>
+												<td>XT-005R</td>
+												<td>15 นิ้ว</td>
+												<td>ชุดx4</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ใช้งาน</option>
