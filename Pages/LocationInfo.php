@@ -27,11 +27,6 @@
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
-								</div><div class="form-group form-float">
-									<b>จำนวนต่อหน่วย*</b>
-									<div class="form-line">
-										<input type="text" name="txtName" class="form-control" required>
-									</div>
 								</div>
 								<div class="form-group form-float">
 									<b>การใช้งาน</b>

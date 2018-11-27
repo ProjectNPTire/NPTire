@@ -24,11 +24,16 @@
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.html">NP TIRE (GOLDWHEELS)</a>
+                <div class="image">
+                    <span>
+                        <img src="../assets/images/Layer1.png" align="left" width="48" height="48" alt="Logo" />
+                        <a class="navbar-brand" href="index.html">NP TIRE (GOLDWHEELS)</a>
+                    </span>
+                </div>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    
+
                 </ul>
             </div>
         </div>
@@ -75,7 +80,7 @@
                                 <a href="UserList.php">ข้อมูลพนักงาน</a>
                             </li>
                             <li>
-                                <a href="SupplierInfo.php">ข้อมูลคู่ค้า</a>
+                                <a href="SupplierList.php">ข้อมูลคู่ค้า</a>
                             </li>
                         </ul>
                     </li>
@@ -86,23 +91,23 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="BrandInfo.php">ยี่ห้อสินค้า</a>
+                                <a href="BrandList.php">ยี่ห้อสินค้า</a>
+                            </li>
+                            <!-- <li>
+                                <a href="ModelList.php">รุ่นสินค้า</a>
+                            </li> -->
+                            <li>
+                                <a href="ProductTypeList.php">ประเภทสินค้า</a>
                             </li>
                             <li>
-                                <a href="ModelInfo.php">รุ่นสินค้า</a>
+                                <a href="ProductList.php">ข้อมูลสินค้า</a>
                             </li>
                             <li>
-                                <a href="ProductTypeInfo.php">ประเภทสินค้า</a>
-                            </li>
-                            <li>
-                                <a href="ProductInfo.php">ข้อมูลสินค้า</a>
-                            </li>
-                            <li>
-                                <a href="LocationInfo.php">ตำแหน่งจัดเก็บสินค้า</a>
+                                <a href="LocationList.php">ตำแหน่งจัดเก็บสินค้า</a>
                             </li>
                         </ul>
                     </li>
-                    
+
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">local_shipping</i>
@@ -110,16 +115,16 @@
                         </a>
                         <ul class="ml-menu">
                             <li>
-                                <a href="OrderInfo.php">สั่งซื้อสินค้า</a>
+                                <a href="OrderList.php">สั่งซื้อสินค้า</a>
                             </li>
                             <li>
-                                <a href="ImportInfo.php">นำเข้าสินค้า</a>
+                                <a href="ImportList.php">รับเข้าสินค้า</a>
                             </li>
                             <li>
-                                <a href="PickupInfo.php">เบิกสินค้า</a>
+                                <a href="PickupList.php">เบิกสินค้า</a>
                             </li>
                             <li>
-                                <a href="TransferInfo.php">ย้ายสินค้า</a>
+                                <a href="TransferList.php">ย้ายสินค้า</a>
                             </li>
                         </ul>
                     </li>

@@ -27,7 +27,8 @@
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" placeholder="ตัวอย่าง: ชื่อxจำนวน" required>
 									</div>
-								</div><div class="form-group form-float">
+								</div>
+								<div class="form-group form-float">
 									<b>จำนวนต่อหน่วย*</b>
 									<div class="form-line">
 										<input type="number" min="1" name="txtName" class="form-control" required>

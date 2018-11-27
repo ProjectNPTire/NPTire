@@ -12,7 +12,7 @@
 				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 					<div class="card">
 						<div class="header">
-							<h2>ข้อมูลยี่ห้อสินค้า</h2>
+							<h2>ข้อมูลรุ่นสินค้า</h2>
 						</div>
 						<div class="body">
 							<form id="" method="POST">

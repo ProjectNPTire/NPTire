@@ -8,40 +8,32 @@
 
     <section class="content">
         <div class="container-fluid">
-            <!-- Basic Examples -->
-            <div class="row clearfix">
+        	<div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>รายการพนักงาน</h2>
+                            <h2>รายการประเภทสินค้า</h2>
                         </div>
-                        <div class="body">
-                            <form action="UserInfo.php" method="POST">
+                        <form id="" method="POST">
+                            <div class="body"> <form action="UserInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
                                     <button type="button" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <table width="100%" class="table table-bordered table-striped table-hover js-basic-example dataTable">
                                         <thead>
                                             <tr>
                                                 <th>ลำดับ</th>
-                                                <th>ชื่อพนักงาน</th>
-                                                <th>เบอร์โทรศัพท์</th>
-                                                <th>E-mail</th>
+                                                <th>ประเภทสินค้า</th>
+                                                <th>รายละเอียด</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>1</td>
-                                                <td>นางสาว สมหญิง จริงใจ</td>
-                                                <td>0835642537</td>
-                                                <td>abc@mail.com</td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
+                                                <td>ยางรถยนต์</td>
+                                                <td></td>
                                                 <td>
                                                     <a class="btn bg-default btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
@@ -53,14 +45,8 @@
                                             </tr>
                                             <tr>
                                                 <td>2</td>
-                                                <td>นาย สมชาย ใจดี</td>
-                                                <td>0834638505</td>
-                                                <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
+                                                <td>ผ้าเบรค</td>
+                                                <td></td>
                                                 <td>
                                                     <a class="btn bg-default btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
@@ -72,14 +58,8 @@
                                             </tr>
                                             <tr>
                                                 <td>3</td>
-                                                <td>นางสาว สมฤดี มีฐานะ</td>
-                                                <td>0892378940</td>
-                                                <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
+                                                <td>น้ำกลั่น</td>
+                                                <td></td>
                                                 <td>
                                                     <a class="btn bg-default btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
@@ -91,14 +71,8 @@
                                             </tr>
                                             <tr>
                                                 <td>4</td>
-                                                <td>นาย สมหมาย เอี่ยมศรี</td>
-                                                <td>0935734673</td>
-                                                <td>abc@mail.com</td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
+                                                <td>Senior Javascript Developer</td>
+                                                <td>Edinburgh</td>
                                                 <td>
                                                     <a class="btn bg-default btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
@@ -110,16 +84,10 @@
                                             </tr>
                                             <tr>
                                                 <td>5</td>
-                                                <td>นาย วิทยา ฐานะดี</td>
-                                                <td>0863659720</td>
-                                                <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
+                                                <td>Accountant</td>
+                                                <td>Tokyo</td>
                                                 <td>
-                                                   <a class="btn bg-default btn-xs waves-effect">
+                                                    <a class="btn bg-default btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -130,16 +98,15 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
-            <!-- #END# Basic Examples -->
         </div>
-    </section>
-
-    <?php include 'js.php';?>
+    </div>
+</section>
+<?php include 'js.php';?>
 </body>
 
 </html>
