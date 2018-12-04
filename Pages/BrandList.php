@@ -16,9 +16,9 @@
                             <h2>รายการยี่ห้อสินค้า</h2>
                         </div>
                         <div class="body">
-                            <form action="UserInfo.php" method="POST">
+                            <form action="BrandInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
-                                    <button type="button" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
                                 </div>
                                 <div class="table-responsive">
                                     <table width="100%" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -41,7 +41,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td>
-                                                   <span  data-toggle="modal" data-target="#largeModal">
+                                                 <span  data-toggle="modal" data-target="#largeModal">
                                                     <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
                                                         <i class="material-icons">info_outline</i>
                                                     </button>
@@ -64,7 +64,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td>
-                                                   <span  data-toggle="modal" data-target="#largeModal">
+                                                 <span  data-toggle="modal" data-target="#largeModal">
                                                     <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
                                                         <i class="material-icons">info_outline</i>
                                                     </button>
@@ -87,7 +87,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td>
-                                                 <span  data-toggle="modal" data-target="#largeModal">
+                                                   <span  data-toggle="modal" data-target="#largeModal">
                                                     <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
                                                         <i class="material-icons">info_outline</i>
                                                     </button>
@@ -110,7 +110,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td>
-                                                 <span  data-toggle="modal" data-target="#largeModal">
+                                                   <span  data-toggle="modal" data-target="#largeModal">
                                                     <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
                                                         <i class="material-icons">info_outline</i>
                                                     </button>

@@ -121,9 +121,6 @@
                                 <a href="ImportList.php">รับเข้าสินค้า</a>
                             </li>
                             <li>
-                                <a href="PickupList.php">เบิกสินค้า</a>
-                            </li>
-                            <li>
                                 <a href="TransferList.php">ย้ายสินค้า</a>
                             </li>
                         </ul>

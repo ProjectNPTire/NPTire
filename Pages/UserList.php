@@ -18,7 +18,7 @@
                         <div class="body">
                             <form action="UserInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
-                                    <button type="button" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">

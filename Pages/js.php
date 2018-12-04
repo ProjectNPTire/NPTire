@@ -55,6 +55,8 @@
 <script src="../assets/js/admin.js"></script>
 <script src="../assets/js/custom.js"></script>
 <script src="../assets/js/pages/ui/tooltips-popovers.js"></script>
+<script src="../assets/js/pages/examples/sign-in.js"></script>
+
 
 <!-- Demo Js -->
 <script src="../assets/js/demo.js"></script>

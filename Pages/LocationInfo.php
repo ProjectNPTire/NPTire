@@ -28,13 +28,6 @@
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
-								<div class="form-group form-float">
-									<b>การใช้งาน</b>
-									<select class="form-control show-tick">
-										<option value="0">ใช้งาน</option>
-										<option value="1">ไม่ใช้งาน</option>
-									</select>
-								</div>
 								<div class="align-center">
 									<button class="btn btn-success waves-effect" type="submit">บันทึก</button>
 									<button class="btn btn-default waves-effect" type="button">ยกเลิก</button>
