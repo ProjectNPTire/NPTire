@@ -100,7 +100,15 @@
                                 <a href="ProductTypeList.php">ประเภทสินค้า</a>
                             </li>
                             <li>
-                                <a href="ProductList.php">ข้อมูลสินค้า</a>
+                                <a href="javascript:void(0);" class="menu-toggle">ข้อมูลสินค้า</a>
+                                <ul class="ml-menu">
+                                    <li>
+                                        <a href="ProductMainList.php">ข้อมูลยางและแม็กซ์</a>
+                                    </li>
+                                    <li>
+                                        <a href="ProductList.php">ข้อมูลสินค้าอื่น</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li>
                                 <a href="LocationList.php">ตำแหน่งจัดเก็บสินค้า</a>
@@ -127,33 +135,20 @@
                     </li>
                     <li class="header">รายงานและการใช้งาน</li>
                     <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
+                        <a href="Report.php">
                             <i class="material-icons col-light-blue">donut_large</i>
                             <span>รายงาน</span>
                         </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="pages/ui/alerts.html">รายงานสั่งซื้อสินค้า</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/alerts.html">รายงานรับเข้าสินค้า</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/alerts.html">รายงานเบิกสินค้า</a>
-                            </li>
-                            <li>
-                                <a href="pages/ui/alerts.html">รายงานพื้นที่จัดเก็บสินค้า</a>
-                            </li>
-                        </ul>
                     </li>
+
                     <li>
-                        <a href="javascript:void(0);">
+                        <a href="RoleList.php">
                             <i class="material-icons col-red">donut_large</i>
                             <span>กำหนดสิทธิ์ผู้ใช้งาน</span>
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);">
+                        <a href="LogFile.php">
                             <i class="material-icons col-amber">donut_large</i>
                             <span>ข้อมูลการใช้ระบบ</span>
                         </a>

@@ -15,75 +15,92 @@
                             <h2>รายการสินค้า</h2>
                         </div>
                         <div class="body">
-                         <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>ลำดับ</th>
-                                        <th>รหัสสินค้า</th>
-                                        <th>ชื่อสินค้า</th>
-                                        <th>ยี่ห้อ</th>
-                                        <th>รุ่น</th>
-                                        <th>ขนาด</th>
-                                        <th>หน่วยนับ</th>
-                                        <th>จำนวน</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>TOYO-PROXES ST3 III-15</td>
-                                        <td>TOYO PROXES</td>
-                                        <td>TOYO</td>
-                                        <td>PROXES ST3 III</td>
-                                        <td>15นิ้ว</td>
-                                        <td>ชุดx4</td>
-                                        <td><span class="badge bg-red">1 ชุด</span></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
-                                                <i class="material-icons">input</i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>YOKOHAMA-ADVAN dB Decibel V551-15</td>
-                                        <td>YOKOHAMA ADVAN</td>
-                                        <td>YOKOHAMA</td>
-                                        <td>ADVAN Decibel V551</td>
-                                        <td>15 นิ้ว</td>
-                                        <td>ชุดx4</td>
-                                        <td><span class="badge bg-red">1 ชุด</span></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
-                                                <i class="material-icons">input</i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>COSMIS-XT-005R Eco-15</td>
-                                        <td>COSMIS XT-005R Eco (ขอบ15″)</td>
-                                        <td>COSMIS</td>
-                                        <td>XT-005R</td>
-                                        <td>15 นิ้ว</td>
-                                        <td>ชุดx4</td>
-                                        <td><span class="badge bg-red">1 ชุด</span></td>
-                                        <td>
-                                            <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
-                                                <i class="material-icons">input</i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>  
+                            <form action="ProductInfo.php" method="POST">
+                                <div class="icon-and-text-button-demo align-right">
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ลำดับ</th>
+                                                <th>รหัสสินค้า</th>
+                                                <th>ชื่อสินค้า</th>
+                                                <th>ยี่ห้อสินค้า</th>
+                                                <th>รุ่นสินค้า</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>TOYO-PROXES ST3 III-15</td>
+                                                <td>TOYO PROXES</td>
+                                                <td>TOYO</td>
+                                                <td>PROXES ST3 III</td>
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                    <a class="btn bg-red btn-xs waves-effect">
+                                                        <i class="material-icons">delete_forever</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>YOKOHAMA-ADVAN dB Decibel V551-15</td>
+                                                <td>YOKOHAMA ADVAN</td>
+                                                <td>YOKOHAMA</td>
+                                                <td>ADVAN Decibel V551</td>
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                    <a class="btn bg-red btn-xs waves-effect">
+                                                        <i class="material-icons">delete_forever</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>COSMIS-XT-005R Eco-15</td>
+                                                <td>COSMIS XT-005R Eco (ขอบ15″)</td>
+                                                <td>COSMIS</td>
+                                                <td>XT-005R</td>
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
+                                                        <i class="material-icons">edit</i>
+                                                    </a>
+                                                    <a class="btn bg-red btn-xs waves-effect">
+                                                        <i class="material-icons">delete_forever</i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>  
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </section>
     <?php include 'js.php';?>
 </body>

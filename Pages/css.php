@@ -2,7 +2,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Welcome To | Bootstrap Based Admin Template - Material Design</title>
+    <title>Welcome To | NP TIRE GOLD WHEELS</title>
     <!-- Favicon-->
     <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
 

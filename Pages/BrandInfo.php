@@ -17,13 +17,13 @@
 						<div class="body">
 							<form id="" method="POST">
 								<div class="form-group form-float">
-									<b>รหัสยี่ห้อสินค้า*</b>
+									<b>ตัวย่อยี่ห้อสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">
-									<b>ชื่อยี่ห้อสินค้า*</b>
+									<b>ยี่ห้อสินค้า*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>

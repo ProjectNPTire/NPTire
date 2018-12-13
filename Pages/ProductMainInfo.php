@@ -30,12 +30,19 @@
 								</div>
 								<div class="form-group form-float">
 									<b>ยี่ห้อ</b>
+									<select class="form-control show-tick">
+										<option value="0">ใช้งาน</option>
+										<option value="1">ไม่ใช้งาน</option>
+									</select>
+								</div>
+								<div class="form-group form-float">
+									<b>รุ่น*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>
 								</div>
 								<div class="form-group form-float">
-									<b>รุ่น*</b>
+									<b>ขนาด*</b>
 									<div class="form-line">
 										<input type="text" name="txtName" class="form-control" required>
 									</div>

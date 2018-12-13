@@ -16,56 +16,34 @@
 						</div>
 						<div class="body">
 							<form id="" method="POST">
-								<div class="row clearfix">
-									<div class="col-sm-5">
-										<div class="form-group form-float">
-											<b>เลขที่ใยนำเข้า*</b>
-											<div class="form-line">
-												<input type="text" name="txtName" class="form-control" required>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-5">
-										<div class="form-group form-float">
-											<b>วันที่นำเข้า*</b>
-											<div class="form-line">
-												<input type="text" name="txtName" class="form-control" required>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-2">
-										<div class="icon-and-text-button-demo">
-											<button type="button" class="btn btn-primary waves-effect">
-												<span>เพิ่มเอกสาร</span>
-												<i class="material-icons">add_box</i>
-											</button>
-										</div>
-									</div>
+								<div class="icon-and-text-button-demo align-right">
+									<button type="button" class="btn btn-primary waves-effect">
+										<span>เพิ่มเอกสาร</span>
+										<i class="material-icons">add_box</i>
+									</button>
 								</div>
 								<div class="table-responsive">
 									<table class="table table-hover">
 										<thead>
 											<tr>
-												<th>ลำดับ</th>
 												<th>รหัสสินค้า</th>
 												<th>ชื่อสินค้า</th>
 												<th>ยี่ห้อสินค้า</th>
 												<th>รุ่นสินค้า</th>
 												<th>ขนาดสินค้า</th>
-												<th>หน่วยนับ</th>
+												<th>จำนวน</th>
 												<th>ตำแหน่ง</th>
 												<th></th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr>
-												<td>1</td>
-												<td>TOYO PROXES ST3 III</td>
-												<td>TOYO PROXES</td>
+												<td>TY2156516H20</td>
+												<td>TOYO H20 215/65R16</td>
 												<td>TOYO</td>
-												<td>PROXES ST3 III</td>
-												<td>15นิ้ว</td>
-												<td>ชุดx4</td>
+												<td>H20</td>
+												<td>215/65R16</td>
+												<td>21</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ห้องเก็บของ1</option>
@@ -80,13 +58,12 @@
 												</td>
 											</tr>
 											<tr>
-												<td>2</td>
-												<td>YOKOHAMA ADVAN dB Decibel V551</td>
-												<td>YOKOHAMA ADVAN</td>
+												<td>YK195515AE50</td>
+												<td>YOKOHAMA AE50 195/55R15</td>
 												<td>YOKOHAMA</td>
-												<td>ADVAN Decibel V551</td>
-												<td>15 นิ้ว</td>
-												<td>ชุดx4</td>
+												<td>AE50</td>
+												<td>195/55R15</td>
+												<td>19</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ห้องเก็บของ1</option>
@@ -101,13 +78,12 @@
 												</td>
 											</tr>
 											<tr>
-												<td>3</td>
-												<td>COSMIS-XT-005R Eco</td>
-												<td>COSMIS XT-005R Eco (ขอบ15″)</td>
-												<td>COSMIS</td>
-												<td>XT-005R</td>
-												<td>15 นิ้ว</td>
-												<td>ชุดx4</td>
+												<td>BS2057015DUELERH/T684</td>
+												<td>BRIDGESTONE DUELER H/T 684 205/70R15</td>
+												<td>BRIDGESTONE</td>
+												<td>DUELER H/T 684</td>
+												<td>205/70R15</td>
+												<td>20</td>
 												<td>
 													<select class="form-control show-tick">
 														<option value="0">ห้องเก็บของ1</option>

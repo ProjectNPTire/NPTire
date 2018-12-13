@@ -18,7 +18,7 @@
                         <div class="body">
                             <form action="UserInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
-                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -37,13 +37,13 @@
                                                 <td>นางสาว สมหญิง จริงใจ</td>
                                                 <td>0835642537</td>
                                                 <td>abc@mail.com</td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -56,13 +56,13 @@
                                                 <td>นาย สมชาย ใจดี</td>
                                                 <td>0834638505</td>
                                                 <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -75,13 +75,13 @@
                                                 <td>นางสาว สมฤดี มีฐานะ</td>
                                                 <td>0892378940</td>
                                                 <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -94,13 +94,13 @@
                                                 <td>นาย สมหมาย เอี่ยมศรี</td>
                                                 <td>0935734673</td>
                                                 <td>abc@mail.com</td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -113,13 +113,13 @@
                                                 <td>นาย วิทยา ฐานะดี</td>
                                                 <td>0863659720</td>
                                                 <td>abc@mail.com</td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
                                                 <td>
-                                                   <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">

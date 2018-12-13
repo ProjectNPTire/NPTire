@@ -133,10 +133,9 @@
                                         <th>ลำดับ</th>
                                         <th>รหัสสินค้า</th>
                                         <th>ชื่อสินค้า</th>
-                                        <th>ยี่ห้อ</th>
-                                        <th>รุ่น</th>
-                                        <th>ขนาด</th>
-                                        <th>หน่วยนับ</th>
+                                        <th>ยี่ห้อสินค้า</th>
+                                        <th>รุ่นสินค้า</th>
+                                        <th>ขนาดสินค้า</th>
                                         <th>จำนวน</th>
                                         <th></th>
                                     </tr>
@@ -144,12 +143,11 @@
                                 <tbody>
                                     <tr>
                                         <td>1</td>
-                                        <td>TOYO-PROXES ST3 III-15</td>
-                                        <td>TOYO PROXES</td>
+                                        <td>TY2156516H20</td>
+                                        <td>TOYO H20 215/65R16</td>
                                         <td>TOYO</td>
-                                        <td>PROXES ST3 III</td>
-                                        <td>15นิ้ว</td>
-                                        <td>ชุดx4</td>
+                                        <td>H20</td>
+                                        <td>215/65R16</td>
                                         <td><span class="badge bg-red">1 ชุด</span></td>
                                         <td>
                                             <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
@@ -159,12 +157,11 @@
                                     </tr>
                                     <tr>
                                         <td>2</td>
-                                        <td>YOKOHAMA-ADVAN dB Decibel V551-15</td>
-                                        <td>YOKOHAMA ADVAN</td>
+                                        <td>YK195515AE50</td>
+                                        <td>YOKOHAMA AE50 195/55R15</td>
                                         <td>YOKOHAMA</td>
-                                        <td>ADVAN Decibel V551</td>
-                                        <td>15 นิ้ว</td>
-                                        <td>ชุดx4</td>
+                                        <td>AE50</td>
+                                        <td>195/55R15</td>
                                         <td><span class="badge bg-red">1 ชุด</span></td>
                                         <td>
                                             <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
@@ -174,12 +171,11 @@
                                     </tr>
                                     <tr>
                                         <td>3</td>
-                                        <td>COSMIS-XT-005R Eco-15</td>
-                                        <td>COSMIS XT-005R Eco (ขอบ15″)</td>
-                                        <td>COSMIS</td>
-                                        <td>XT-005R</td>
-                                        <td>15 นิ้ว</td>
-                                        <td>ชุดx4</td>
+                                        <td>BS2057015DUELERH/T684</td>
+                                        <td>BRIDGESTONE DUELER H/T 684 205/70R15</td>
+                                        <td>BRIDGESTONE</td>
+                                        <td>DUELER H/T 684</td>
+                                        <td>205/70R15</td>
                                         <td><span class="badge bg-red">1 ชุด</span></td>
                                         <td>
                                             <button type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
@@ -213,7 +209,6 @@
                                     <th>ยี่ห้อ</th>
                                     <th>รุ่น</th>
                                     <th>ขนาด</th>
-                                    <th>หน่วยนับ</th>
                                     <th>จำนวน</th>
                                     <th></th>
                                 </tr>
@@ -226,7 +221,6 @@
                                     <td>TOYO</td>
                                     <td>PROXES ST3 III</td>
                                     <td>15นิ้ว</td>
-                                    <td>ชุดx4</td>
                                     <td>10</td>
                                 </tr>
                                 <tr>
@@ -236,7 +230,6 @@
                                     <td>YOKOHAMA</td>
                                     <td>ADVAN Decibel V551</td>
                                     <td>15 นิ้ว</td>
-                                    <td>ชุดx4</td>
                                     <td>5</td>
                                 </tr>
                                 <tr>
@@ -246,7 +239,6 @@
                                     <td>COSMIS</td>
                                     <td>XT-005R</td>
                                     <td>15 นิ้ว</td>
-                                    <td>ชุดx4</td>
                                     <td>2</td>
                                 </tr>
                             </tbody>

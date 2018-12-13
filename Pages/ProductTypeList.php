@@ -17,7 +17,7 @@
                         <div class="body">
                             <form action="ProductTypeInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
-                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                                 </div>
                                 <div class="table-responsive">
                                     <table width="100%" class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -35,7 +35,12 @@
                                                 <td>ยางรถยนต์</td>
                                                 <td></td>
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -48,7 +53,12 @@
                                                 <td>ผ้าเบรค</td>
                                                 <td></td>
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -61,7 +71,12 @@
                                                 <td>น้ำกลั่น</td>
                                                 <td></td>
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -74,7 +89,12 @@
                                                 <td>Senior Javascript Developer</td>
                                                 <td>Edinburgh</td>
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -87,7 +107,12 @@
                                                 <td>Accountant</td>
                                                 <td>Tokyo</td>
                                                 <td>
-                                                    <a class="btn bg-default btn-xs waves-effect">
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">

@@ -18,7 +18,7 @@
                         <div class="body">
                             <form action="SupplierInfo.php" method="POST">
                                 <div class="icon-and-text-button-demo align-right">
-                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add_box</i></button>
+                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
@@ -27,28 +27,27 @@
                                                 <th>ลำดับ</th>
                                                 <th>ชื่อคู่ค้า/บริษัท</th>
                                                 <th>เบอร์โทรศัพท์</th>
-                                                <th>ที่อยู่</th/>
-                                                    <!-- <th>สถานะ</th/> -->
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <th>1</th>
-                                                        <td>บริษัท สยามมิชลิน จำกัด</td>
-                                                        <td>02-700-3993</td>
-                                                        <td>33/4 อาคารเดอะไนน์ทาวเวอร์แกรนด์พระราม
-                                                            9 อาคารเอ ชั้น
-                                                            21 ถนนพระราม
-                                                            9 แขวงและเขตห้วยขวาง กรุงเทพฯ 10310
-                                                        </td>
-                                               <!--  <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled checked><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
-                                                <td align="center">
-                                                    <a class="btn bg-warning btn-xs waves-effect">
+                                                <th>ที่อยู่</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>1</th>
+                                                <td>บริษัท สยามมิชลิน จำกัด</td>
+                                                <td>02-700-3993</td>
+                                                <td>33/4 อาคารเดอะไนน์ทาวเวอร์แกรนด์พระราม
+                                                    9 อาคารเอ ชั้น
+                                                    21 ถนนพระราม
+                                                    9 แขวงและเขตห้วยขวาง กรุงเทพฯ 10310
+                                                </td>
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -63,13 +62,13 @@
                                                 <td>
                                                     235 / 20-25 ซอย สุขุมวิท 21 แขวง คลองเตยเหนือ เขต วัฒนา กรุงเทพมหานคร 10110
                                                 </td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
-                                                <td align="center">
-                                                    <a class="btn bg-warning btn-xs waves-effect">
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -84,13 +83,13 @@
                                                 <td>
                                                     990 ถนน พระราม 4 แขวง สีลม เขต บางรัก กรุงเทพมหานคร 10500
                                                 </td>
-                                                <!-- <td>
-                                                    <div class="switch">
-                                                        <label><input type="checkbox" disabled><span class="lever"></span></label>
-                                                    </div>
-                                                </td> -->
-                                                <td align="center">
-                                                    <a class="btn bg-warning btn-xs waves-effect">
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -107,8 +106,13 @@
                                                     ถนนบางนา-ตราด แขวงบางนา เขตบางนา
                                                     กรุงเทพมหานคร 10260
                                                 </td>
-                                                <td align="center">
-                                                    <a class="btn bg-warning btn-xs waves-effect">
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
@@ -123,8 +127,13 @@
                                                 <td>
                                                     84 หมู่ที่ 7 ซอยสินประสงค์ ถนนเพชรเกษม ตำบลอ้อมน้อย อำเภอกระทุ่มแบน จังหวัดสมุทรสาคร 74130
                                                 </td>
-                                                <td align="center">
-                                                    <a class="btn bg-warning btn-xs waves-effect">
+                                                <td>
+                                                    <span  data-toggle="modal" data-target="#largeModal">
+                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
+                                                            <i class="material-icons">info_outline</i>
+                                                        </button>
+                                                    </span>
+                                                    <a class="btn bg-orange btn-xs waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
                                                     <a class="btn bg-red btn-xs waves-effect">
