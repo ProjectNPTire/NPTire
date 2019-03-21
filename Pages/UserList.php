@@ -89,11 +89,12 @@ chk_role($page_key,'isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="30%" style="text-align:left">ชื่อพนักงาน</th>
-                                                <th width="25%"style="text-align:left">ข้อมูล</th>
-                                                <th width="20%" style="text-align:left">เบอร์โทรพนักงาน</th> 
-                                                <th width="15%"style="text-align:left">สถานะการทำงาน</th>
-                                              <!--  <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
+                                                <th width="15%" style="text-align:left">ชื่อ</th>
+                                                <th width="15%" style="text-align:left">สกุล</th>
+												<th width="15%" style="text-align:left">เบอร์มือถือ</th> 
+												 <th width="10%"style="text-align:left">สถานะ</th>
+                                                <!--  <th width="25%"style="text-align:left">ข้อมูล</th>
+                                                <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
                                                 <th width="15%"></th>
                                             </tr>
                                         </thead>
@@ -120,7 +121,7 @@ chk_role($page_key,'isSearch',1) ;
                                                    <td><?php echo $rec['mobile'];?></td>  -->
                                                    
                                                   <!-- <td><?php echo $arr_userType[$rec['userType']];?></td> -->
-                                                    <td style="text-align: center;"><?php echo /* $info. */$edit.$del;?>
+                                                    <td style="text-align: center;"><?php echo  $info.$edit.$del;?>
                                                       <input type="hidden" id="show_name_<?php echo $rec['userID'];?>" value="<?php echo $rec['firstname']." ".$rec['lastname'];?>" >
                                                       <input type="hidden" id="show_idcard_<?php echo $rec['userID'];?>" value="<?php echo $rec['idcard'];?>" >
                                                       <input type="hidden" id="show_email_<?php echo $rec['userID'];?>" value="<?php echo $rec['email'];?>" >
