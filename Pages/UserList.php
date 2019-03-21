@@ -89,10 +89,10 @@ chk_role($page_key,'isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="25%">ชื่อพนักงาน</th>
-                                                <th width="35%">ข้อมูล</th>
+                                                <th width="30%" style="text-align:left">ชื่อพนักงาน</th>
+                                                <th width="25%"style="text-align:left">ข้อมูล</th>
                                                <!-- <th width="20%">E-mail</th> -->
-                                                <th width="10%">สถานะการทำงาน</th>
+                                                <th width="15%"style="text-align:left">สถานะการทำงาน</th>
                                               <!--  <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
                                                 <th width="15%"></th>
                                             </tr>
