@@ -33,6 +33,7 @@ $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
 $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
 
+$arr_userStatus = array ("1"=>"<span style='color:green'>ปกติ</span>","2"=>"<span style='color:orange'>ระงับใช้งาน</span>","3"=>"<span style='color:red'>ลาออก</span>");
 chk_role($page_key,'isSearch',1) ;
 
 ?>
@@ -89,9 +90,10 @@ chk_role($page_key,'isSearch',1) ;
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
                                                 <th width="25%">ชื่อพนักงาน</th>
-                                                <th width="25%">เบอร์โทรศัพท์</th>
-                                                <th width="20%">E-mail</th>
-                                                <th width="10%">ประเภท</th>
+                                                <th width="35%">ข้อมูล</th>
+                                               <!-- <th width="20%">E-mail</th> -->
+                                                <th width="10%">สถานะการทำงาน</th>
+                                              <!--  <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
                                                 <th width="15%"></th>
                                             </tr>
                                         </thead>
@@ -100,6 +102,8 @@ chk_role($page_key,'isSearch',1) ;
                                             if($nums>0){ 
                                                 $i=0;
                                                while ($rec = $db->db_fetch_array($query)) {
+											   
+											  
                                                 $i++;
                                                 $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['userID'].');">'.$img_edit.'</a>';
                                                 $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['userID'].');">'.$img_del.'</a>';
@@ -108,10 +112,13 @@ chk_role($page_key,'isSearch',1) ;
                                                 <tr>
                                                     <td style="text-align: center;"><?php echo $i+$goto;?></td>
                                                     <td><?php echo $rec['firstname']." ".$rec['lastname'];?></td>
-                                                    <td><?php echo $rec['mobile'];?></td>
-                                                    <td><?php echo $rec['email'];?></td>
-                                                    <td><?php echo $arr_userType[$rec['userType']];?></td>
-                                                    <td style="text-align: center;"><?php echo $info.$edit.$del;?>
+													 <td><?php echo "เบอร์โทร  : ".$rec['mobile']."<br>"."อีเมลล์  : ".$rec['email']."<br>"."บุคคลอ้างอิง : ".$rec['firstnameref']." ".$rec['lastnameref']."<br>เบอร์โทร  : ".$rec['mobileref'];?></td>
+                                                    <td><?php echo $arr_userStatus[$rec['userStatus']];?></td>
+                                                     <!--<td><?php echo $arr_active[$rec['activeStatus']];?></td>
+                                                   <td><?php echo $rec['mobile'];?></td>  -->
+                                                   
+                                                  <!-- <td><?php echo $arr_userType[$rec['userType']];?></td> -->
+                                                    <td style="text-align: center;"><?php echo /* $info. */$edit.$del;?>
                                                       <input type="hidden" id="show_name_<?php echo $rec['userID'];?>" value="<?php echo $rec['firstname']." ".$rec['lastname'];?>" >
                                                       <input type="hidden" id="show_idcard_<?php echo $rec['userID'];?>" value="<?php echo $rec['idcard'];?>" >
                                                       <input type="hidden" id="show_email_<?php echo $rec['userID'];?>" value="<?php echo $rec['email'];?>" >
