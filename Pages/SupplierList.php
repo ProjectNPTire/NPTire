@@ -111,12 +111,12 @@ chk_role($page_key,'isSearch',1);
                                         <thead>
                                             <tr>
                                                 <th><div align="center">ลำดับ</div></th>
-                                                <th><div align="center">ชื่อคู่ค้า/บริษัท</div></th>
-                                                <th><div align="center">ที่อยู่</div></th>
-                                                <th><div align="center">เบอร์โทรศัพท์</div></th>
-                                                <th><div align="center">เบอร์มือถือ</div></th>
-                                                <th><div align="center">E-mail</div></th>
-                                                <th width="10%">จัดการ</th>
+                                                <th><div style="text-align:left">ชื่อคู่ค้า/บริษัท</div></th>
+                                                <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th>
+                                               <!-- <th><div align="center">เบอร์โทรศัพท์</div></th> 
+                                                <th><div align="center">เบอร์มือถือ</div></th> 
+                                                <th><div align="center">E-mail</div></th>-->
+                                                <th width="10%"style="text-align:left"> </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,8 +131,9 @@ chk_role($page_key,'isSearch',1);
                                                 <tr>
                                                     <td align="center"><?php echo $i;?></td>
                                                     <td><?php echo $rec['sup_name'];?></td>
-                                                    <td><?php echo $rec['sup_address'];?></td>
-                                                    <td><?php echo $rec['sup_tel'];?></td>
+                                                    <td><?php echo $rec['sup_address']."<br> เบอร์โทรศัพท์บริษัท
+ :".$rec['sup_tel']."<br> ";?></td>
+                                                    <td><?php echo "";?></td>
                                                     <td><?php echo $rec['sup_mobile'];?></td>
                                                     <td><?php echo $rec['sup_email'];?></td>
                                                     <td align="center"><?php echo $edit.$del;?></td>
