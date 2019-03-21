@@ -113,9 +113,10 @@ chk_role($page_key,'isSearch',1) ;
                                                 <tr>
                                                     <td style="text-align: center;"><?php echo $i+$goto;?></td>
                                                     <td><?php echo $rec['firstname']." ".$rec['lastname'];?></td>
-                                                    
-													 <td><?php echo /* "อีเมลล์  : ".$rec['email']."<br>". */"บุคคลอ้างอิง : ".$rec['firstnameref']." ".$rec['lastnameref']."<br>เบอร์โทร  : ".$rec['mobileref'];?></td>
-													 <td><?php echo $rec['mobile'];?></td>
+                                                    <td><?php echo $rec['lastname'];?></td>
+                                                    <td><?php echo $rec['mobile'];?></td>
+													  <!--<td><?php echo /* "อีเมลล์  : ".$rec['email']."<br>". */"บุคคลอ้างอิง : ".$rec['firstnameref']." ".$rec['lastnameref']."<br>เบอร์โทร  : ".$rec['mobileref'];?></td> -->
+													 
                                                     <td><?php echo $arr_userStatus[$rec['userStatus']];?></td>
                                                      <!--<td><?php echo $arr_active[$rec['activeStatus']];?></td>
                                                    <td><?php echo $rec['mobile'];?></td>  -->
@@ -129,6 +130,8 @@ chk_role($page_key,'isSearch',1) ;
                                                       <input type="hidden" id="show_birthday_<?php echo $rec['userID'];?>" value="<?php echo conv_date($rec['birthday'],'long');?>" >
                                                       <input type="hidden" id="show_address_<?php echo $rec['userID'];?>" value="<?php echo $rec['address'].' '.' ตำบล/แขวง '.get_subDistrictID_name($rec['subDistrictID']).' อำเภอ/เขต '.get_district_name($rec['districtID']).' จังหวัด '.get_prov_name($rec['provinceID']).' '.$rec['zipcode'];?>" >
                                                       <input type="hidden" id="show_Img_<?php echo $rec['userID'];?>" value="<?php echo $rec['img'];?>" >
+													  <input type="hidden" id="show_nameref_<?php echo $rec['userID'];?>" value="<?php echo $rec['firstnameref']."  ".$rec['lastnameref'];?>" >
+													  <input type="hidden" id="show_mobileref_<?php echo $rec['userID'];?>" value="<?php echo $rec['mobileref'];?>" >
                                                     </td>
                                                 </tr>
                                             <?php }
@@ -206,10 +209,21 @@ chk_role($page_key,'isSearch',1) ;
                       </div>
 
                   </div>
-                  <div class="row clearfix">
+                 
+				  <div class="row clearfix">
+                      <div class="col-sm-12"><h5>บุคคลอ้างอิง</h5> </div>
+				  </div>
+
+				  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>ชื่อ-สกุล บุคคลอ้างอิง</b>
+                           <div class="form-group" id="txt_nameref"></div>
+                      </div>
+				   </div>	  
+				  <div class="row clearfix">
                       <div class="col-sm-12">
                             <b>เบอร์โทรศัพท์</b>
-                           <div class="form-group" id="txt_email"></div>
+                           <div class="form-group" id="txt_mobileref"></div>
                       </div>
 
                   </div>
@@ -243,6 +257,8 @@ var img = '<img width="50%" height="50%" src="<?php echo $path_image;?>'+$('#sho
    $('#txt_address').html($('#show_address_'+id).val());
    $('#txt_mobile').html($('#show_mobile_'+id).val());
    $('#txt_email').html($('#show_email_'+id).val());
+   $('#txt_nameref').html($('#show_nameref_'+id).val());
+   $('#txt_mobileref').html($('#show_mobileref_'+id).val());
 
   $('#ModalDetail').modal('show');
 }
