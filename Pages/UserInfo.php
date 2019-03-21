@@ -59,7 +59,7 @@ $readonly = "readonly";
                                           <b>ชื่อ</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
                                             <label id="firstname-error" class="error" for="firstname">กรุณาระบุ</label>
                                         </div>
@@ -68,7 +68,7 @@ $readonly = "readonly";
                                           <b>นามสกุล</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
                                             <label id="lastname-error" class="error" for="lastname">กรุณาระบุ</label>
                                         </div>
@@ -81,7 +81,7 @@ $readonly = "readonly";
                                     <div class="form-line">
                                       <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" value="<?php echo conv_date($rec['birthday']);?>" <?php echo $proc == "edit" ? disabled : '';?>>
                                     </div>
-                                    <input type="hidden" name="hdfBirthday" id="hdfBirthday" value="<?php echo $rec['birthday'] ?>">
+                                    <input type="hidden" class="form-control datepicker" name="hdfBirthday" id="hdfBirthday" value="<?php echo $rec['birthday'] ?>">
                                     <label id="birthday-error" class="error" for="birthday">กรุณาระบุ</label>
                                   </div>
                                 </div>
@@ -99,7 +99,7 @@ $readonly = "readonly";
                                   <b>เบอร์โทรศัพท์</b>
                                   <div class="input-group">
                                     <div class="form-line">
-                                      <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this);return false;" value="<?php echo $rec['mobile'];?>">
+                                      <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this,1);return false;" value="<?php echo $rec['mobile'];?>">
                                     </div>
                                     <label id="mobile-error" class="error" for="mobile">กรุณาระบุ</label>
                                     <label id="mobile-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
@@ -270,7 +270,7 @@ $readonly = "readonly";
                               <b>ชื่อบุคคลอ้างอิง</b>
                               <div class="form-group">
                                 <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
                                 <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ</label>
                               </div>
@@ -279,7 +279,7 @@ $readonly = "readonly";
                               <b>นามสกุล</b>
                               <div class="form-group">
                                 <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
                                 <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ</label>
                               </div>
@@ -288,9 +288,10 @@ $readonly = "readonly";
                               <b>เบอร์โทรศัพท์</b>
                               <div class="input-group">
                                 <div class="form-line">
-                                  <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
                                 <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ</label>
+                                <label id="mobileref-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
                               </div>
                             </div>
                           </div>
@@ -444,7 +445,7 @@ function OnCancel()
   }else{
     $('#idcard-error').hide();
   }
-
+  
   if($('#mobile').val()==''){
     $('#mobile-error').show();
     $('#mobile').focus();
@@ -696,6 +697,7 @@ function chk_user(){
      $.post('process/get_process.php',{proc:'chk_user',username:username,userID:userID},function(data){
         if(data==1){
              $('#username2-error').show();
+             $('#username2').focus();
              $('#chkuser').val(1);
         }else{
              $('#username2-error').hide();
@@ -766,31 +768,56 @@ function checkID(id)
 function checkForm()
 { 
   var res = $('#idcard').val().replace(/-/g, "");
-  if(!checkID(res))
+  if(!checkID(res)){
     $('#idcard-error2').show();
-  else $('#idcard-error2').hide();;
+    $('#idcard').focus();
+    return false;
+  }else{
+    $('#idcard-error2').hide();
+  } 
 }
-function isPhoneNo(input){
+function isPhoneNo(input,type){
   var res = input.value.replace(/-/g, "");
   var regExp = /^0([0-9]{1})([0-9]{8})$/i;
-  if (!regExp.test(res)) 
-    $('#mobile-error2').show();
-  else $('#mobile-error2').hide();
+  if (!regExp.test(res)) {
+    if (type == 1) {
+      $('#mobile-error2').show();
+      $('#mobile').focus();
+      return false;
+    }else{
+      $('#mobileref-error2').show();
+      $('#mobileref').focus();
+      return false;
+    }
+  }else{
+    if (type == 1) {
+      $('#mobile-error2').hide();
+    }else{
+      $('#mobileref-error2').hide();
+    }
+  }
 }
 function checkEmail(input){
-  debugger
 var emailCheck=/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i;
-  if (!emailCheck.test(input.value)) 
+  if (!emailCheck.test(input.value)){
     $('#email-error2').show();
-  else $('#email-error2').hide();
+    $('#email').focus();
+    return false;
+  }else{
+    $('#email-error2').hide();
+  }
 }
 function chkMinlength(input,type){
   debugger
   if (input.value.length < 6) {
     if (type == 1) {
       $('#password1-error2').show();
+      $('#password1').focus();
+      return false;
     }else{
       $('#password2-error2').show();
+      $('#password2').focus();
+      return false;
     }
   }else{ 
     if (type == 1) {
