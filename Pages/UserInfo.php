@@ -59,7 +59,7 @@ $readonly = "readonly";
                                           <b>ชื่อ</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>">
                                             </div>
                                             <label id="firstname-error" class="error" for="firstname">กรุณาระบุ</label>
                                         </div>
@@ -68,7 +68,7 @@ $readonly = "readonly";
                                           <b>นามสกุล</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>">
                                             </div>
                                             <label id="lastname-error" class="error" for="lastname">กรุณาระบุ</label>
                                         </div>
@@ -76,12 +76,12 @@ $readonly = "readonly";
                                 </div>
                                 <div class="row clearfix">
                                   <div class="col-sm-4">
-                                   <b>วันเดือนปี เกิด</b>
+                                   <b>วัน/เดือน/ปีเกิด</b>
                                    <div class="input-group">
                                     <div class="form-line">
                                       <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" value="<?php echo conv_date($rec['birthday']);?>" <?php echo $proc == "edit" ? disabled : '';?>>
                                     </div>
-                                    <input type="hidden" class="form-control datepicker" name="hdfBirthday" id="hdfBirthday" value="<?php echo $rec['birthday'] ?>">
+                                    <input type="hidden" class="form-control" name="hdfBirthday" id="hdfBirthday" value="<?php echo conv_date($rec['birthday']); ?>">
                                     <label id="birthday-error" class="error" for="birthday">กรุณาระบุ</label>
                                   </div>
                                 </div>
@@ -121,7 +121,7 @@ $readonly = "readonly";
                                        <b>ที่อยู่</b>
                                        <div class="form-group">
                                          <div class="form-line">
-                                            <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                            <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>">
                                           </div>
                                           <label id="address-error" class="error" for="address">กรุณาระบุ</label>
                                         </div>
@@ -146,7 +146,7 @@ $readonly = "readonly";
                                         <div class="col-sm-4">
                                        <b>อำเภอ/เขต</b>
                                        <div class="form-group form-float">
-                                        <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                        <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);">
                                          <option value="">เลือก</option>
                                          <?php
                                          $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
@@ -165,14 +165,14 @@ $readonly = "readonly";
                                     <div class="col-sm-4">
                                        <b>ตำบล/แขวง</b>
                                         <div class="form-group form-float">
-                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');">
                                                      <option value="">เลือก</option>
                                             <?php
                                                 $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
                                                 $q_s = $db->query($s_s);
                                                 $n_s = $db->db_num_rows($q_s);
                                                while($r_s = $db->db_fetch_array($q_s)){?>
-                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['districtID']==$r_s['districtID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
+                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
                                               <?php }  ?>
                                             </select>
                                             <input type="hidden" name="hdfSubDistrictID" id="hdfSubDistrictID" value="<?php echo $rec['subDistrictID'] ?>">
@@ -183,7 +183,7 @@ $readonly = "readonly";
                                          <b>รหัสไปรษณีย์</b>
                                          <div class="form-group">
                                           <div class="form-line">
-                                            <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $proc == "edit" ? $readonly : '';?> readOnly>
+                                            <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>">
                                           </div>
                                         </div>
                                         <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ</label>
@@ -248,7 +248,7 @@ $readonly = "readonly";
                                                 $q_s = $db->query($s_s);
                                                 $n_s = $db->db_num_rows($q_s);
                                                while($r_s = $db->db_fetch_array($q_s)){?>
-                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['districtIDCard']==$r_s['districtID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
+                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
 
                                             <?php }  ?>
                                             </select>
@@ -413,7 +413,7 @@ function OnCancel()
 
  function chkinput(){
 
-
+  debugger
   if($('#firstname').val()==''){
     $('#firstname-error').show();
     $('#firstname').focus();
@@ -620,6 +620,15 @@ $(document).ready(function() {
           $('#username').val(userName);
           $('#userCode').val(userName);
         }
+        if($("input[name*='userStatus']:checked").val() != 1){
+            $('#activeStatus0').prop("checked", true);
+            $('#activeStatus1').attr("disabled", true);
+            $('#userPass').hide();
+        }else{
+            $('#activeStatus1').prop("checked", true);
+            $('#activeStatus1').removeAttr("disabled");
+            $('#userPass').show();
+          }
         // $('.datepickers').bootstrapMaterialDatePicker();
 });
 function get_address(){
