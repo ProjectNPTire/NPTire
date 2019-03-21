@@ -91,7 +91,7 @@ chk_role($page_key,'isSearch',1) ;
                                                 <th width="5%">ลำดับ</th>
                                                 <th width="30%" style="text-align:left">ชื่อพนักงาน</th>
                                                 <th width="25%"style="text-align:left">ข้อมูล</th>
-                                               <!-- <th width="20%">E-mail</th> -->
+                                                <th width="20%" style="text-align:left">เบอร์โทรพนักงาน</th> 
                                                 <th width="15%"style="text-align:left">สถานะการทำงาน</th>
                                               <!--  <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
                                                 <th width="15%"></th>
@@ -112,7 +112,9 @@ chk_role($page_key,'isSearch',1) ;
                                                 <tr>
                                                     <td style="text-align: center;"><?php echo $i+$goto;?></td>
                                                     <td><?php echo $rec['firstname']." ".$rec['lastname'];?></td>
-													 <td><?php echo "เบอร์โทร  : ".$rec['mobile']."<br>"."อีเมลล์  : ".$rec['email']."<br>"."บุคคลอ้างอิง : ".$rec['firstnameref']." ".$rec['lastnameref']."<br>เบอร์โทร  : ".$rec['mobileref'];?></td>
+                                                    
+													 <td><?php echo /* "อีเมลล์  : ".$rec['email']."<br>". */"บุคคลอ้างอิง : ".$rec['firstnameref']." ".$rec['lastnameref']."<br>เบอร์โทร  : ".$rec['mobileref'];?></td>
+													 <td><?php echo $rec['mobile'];?></td>
                                                     <td><?php echo $arr_userStatus[$rec['userStatus']];?></td>
                                                      <!--<td><?php echo $arr_active[$rec['activeStatus']];?></td>
                                                    <td><?php echo $rec['mobile'];?></td>  -->
