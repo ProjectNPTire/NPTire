@@ -42,9 +42,13 @@ $readonly = "readonly";
                                 <input type="hidden" id="userType" name="userType" value="<?php echo $userType;?>">
 
                             <div class="body">
+                              <div class="row clearfix">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
                                 <div class="row clearfix">
                                    <div class="col-sm-4">
-                                          <b>รหัส <span style="color:red"> *</span></b>
+                                          <b>รหัสพนักงาน</b>
                                          <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text " name="userCode" id="userCode" class="form-control" value="<?php echo $rec['userCode'];?>" <?php echo $readonly; ?> >
@@ -52,7 +56,7 @@ $readonly = "readonly";
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                          <b>ชื่อ <span style="color:red"> *</span></b>
+                                          <b>ชื่อ</b>
                                          <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
@@ -61,7 +65,7 @@ $readonly = "readonly";
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                          <b>นามสกุล <span style="color:red"> *</span></b>
+                                          <b>นามสกุล</b>
                                          <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
@@ -72,7 +76,7 @@ $readonly = "readonly";
                                 </div>
                                 <div class="row clearfix">
                                   <div class="col-sm-4">
-                                   <b>วันเดือนปี เกิด <span style="color:red"> *</span></b>
+                                   <b>วันเดือนปี เกิด</b>
                                    <div class="input-group">
                                     <div class="form-line">
                                       <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" value="<?php echo conv_date($rec['birthday']);?>" <?php echo $proc == "edit" ? disabled : '';?>>
@@ -82,7 +86,7 @@ $readonly = "readonly";
                                   </div>
                                 </div>
                                 <div class="col-md-4">
-                                  <b>หมายเลขบัตรประชาชน <span style="color:red"> *</span></b>
+                                  <b>หมายเลขบัตรประชาชน</b>
                                   <div class="input-group">
                                     <div class="form-line">
                                       <input type="text" onchange="checkForm();return false;" class="form-control idcard" placeholder="9-9999-99999-99-9"  name="idcard" id="idcard"  value="<?php echo $rec['idcard'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
@@ -92,7 +96,7 @@ $readonly = "readonly";
                                   </div>
                                 </div>
                                 <div class="col-md-4">
-                                  <b>เบอร์โทรศัพท์ <span style="color:red"> *</span></b>
+                                  <b>เบอร์โทรศัพท์</b>
                                   <div class="input-group">
                                     <div class="form-line">
                                       <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this);return false;" value="<?php echo $rec['mobile'];?>">
@@ -102,8 +106,9 @@ $readonly = "readonly";
                                   </div>
                                 </div>
                               </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-4">
+                              <h2 class="card-inside-title">ที่อยู่ตามบัตรประชาชน</h2><hr />
+                              <div class="row clearfix">
+                                    <!-- <div class="col-md-4">
                                         <b>อีเมล</b>
                                         <div class="input-group">
                                           <div class="form-line">
@@ -111,9 +116,9 @@ $readonly = "readonly";
                                           </div>
                                           <label id="email-error2" class="error" for="mobile">รูปแบบอีเมลไม่ถูกต้อง</label>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-4">
-                                       <b>ที่อยู่ตามบัตรประชาชน <span style="color:red"> *</span></b>
+                                       <b>ที่อยู่</b>
                                        <div class="form-group">
                                          <div class="form-line">
                                             <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
@@ -122,7 +127,7 @@ $readonly = "readonly";
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <b>จังหวัด <span style="color:red"> *</span></b>
+                                        <b>จังหวัด</b>
                                         <div class="form-group form-float">
                                             <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true"  onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
@@ -138,9 +143,8 @@ $readonly = "readonly";
                                             <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก</label>
                                           </div>
                                         </div>
-                                </div>
-                                <div class="row clearfix"><div class="col-sm-4">
-                                       <b>อำเภอ/เขต <span style="color:red"> *</span></b>
+                                        <div class="col-sm-4">
+                                       <b>อำเภอ/เขต</b>
                                        <div class="form-group form-float">
                                         <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                          <option value="">เลือก</option>
@@ -156,8 +160,10 @@ $readonly = "readonly";
                                       <label id="districtID-error" class="error" for="districtID">กรุณาเลือก</label>
                                     </div>
                                   </div>
+                                </div>
+                                <div class="row clearfix">
                                     <div class="col-sm-4">
-                                       <b>ตำบล/แขวง <span style="color:red"> *</span></b>
+                                       <b>ตำบล/แขวง</b>
                                         <div class="form-group form-float">
                                             <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                      <option value="">เลือก</option>
@@ -174,7 +180,7 @@ $readonly = "readonly";
                                           </div>
                                         </div>
                                         <div class="col-md-4">
-                                         <b>รหัสไปรษณีย์ <span style="color:red"> *</span></b>
+                                         <b>รหัสไปรษณีย์</b>
                                          <div class="form-group">
                                           <div class="form-line">
                                             <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $proc == "edit" ? $readonly : '';?> readOnly>
@@ -183,6 +189,7 @@ $readonly = "readonly";
                                         <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ</label>
                                       </div>
                                   </div>
+                                  <h2 class="card-inside-title">ที่อยู่ปัจจุบัน</h2><hr />
                                   <div class="row clearfix">
                                    <div class="col-md-4">
                                      <div class="form-group">
@@ -191,7 +198,7 @@ $readonly = "readonly";
                                      </div>
                                    </div>
                                    <div class="col-md-4">
-                                     <b>ที่อยู่ปัจจุบัน <span style="color:red"> *</span></b>
+                                     <b>ที่อยู่ปัจจุบัน</b>
                                      <div class="form-group">
                                        <div class="form-line">
                                         <input type="text" class="form-control " placeholder=""  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>">
@@ -200,7 +207,7 @@ $readonly = "readonly";
                                     </div>
                                   </div>
                                   <div class="col-sm-4">
-                                    <b>จังหวัด <span style="color:red"> *</span></b>
+                                    <b>จังหวัด</b>
                                     <div class="form-group form-float">
                                       <select name="provinceIDCard" id="provinceIDCard" class="form-control selectPcard" data-live-search="true"  onchange="get_area(this.value,'districtIDCard',0,1);">
                                         <option value="">เลือก</option>
@@ -217,7 +224,7 @@ $readonly = "readonly";
                                 </div>
                                 <div class="row clearfix">
                                      <div class="col-sm-4">
-                                       <b>อำเภอ/เขต <span style="color:red"> *</span></b>
+                                       <b>อำเภอ/เขต</b>
                                         <div class="form-group form-float">
                                             <select name="districtIDCard" id="districtIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictIDCard',0,2);">
                                                    <option value="">เลือก</option>
@@ -232,7 +239,7 @@ $readonly = "readonly";
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                       <b>ตำบล/แขวง <span style="color:red"> *</span></b>
+                                       <b>ตำบล/แขวง</b>
                                         <div class="form-group form-float">
                                             <select name="subDistrictIDCard" id="subDistrictIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcodeIDCard',0);">
                                                      <option value="">เลือก</option>
@@ -248,7 +255,7 @@ $readonly = "readonly";
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                     <b>รหัสไปรษณีย์ <span style="color:red"> *</span></b>
+                                     <b>รหัสไปรษณีย์</b>
                                      <div class="form-group">
                                       <div class="form-line">
                                         <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" readOnly>
@@ -257,9 +264,39 @@ $readonly = "readonly";
                                     </div>
                                   </div>                         
                                 </div>
+                                <h2 class="card-inside-title">บุคคลอ้างอิง</h2><hr />
+                          <div class="row clearfix">
+                            <div class="col-md-4">
+                              <b>ชื่อบุคคลอ้างอิง</b>
+                              <div class="form-group">
+                                <div class="form-line">
+                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                </div>
+                                <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ</label>
+                              </div>
+                            </div>
+                            <div class="col-sm-4">
+                              <b>นามสกุล</b>
+                              <div class="form-group">
+                                <div class="form-line">
+                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                </div>
+                                <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ</label>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <b>เบอร์โทรศัพท์</b>
+                              <div class="input-group">
+                                <div class="form-line">
+                                  <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                </div>
+                                <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ</label>
+                              </div>
+                            </div>
+                          </div>
                                   <div class="row clearfix">
                                     <div class="col-md-4">
-                                     <b>รูปภาพ <span style="color:red"> *</span></b>
+                                     <b>รูปภาพ</b>
                                      <div class="form-group">
                                       <div class="form-line">
                                         <input type="file" class="form-control " name="img" id="img" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['img'];?>" onchange="ValidateSingleInput(this);" >
@@ -293,7 +330,7 @@ $readonly = "readonly";
                                  <h2 class="card-inside-title">User & Password</h2><hr />
                                 <div class="row clearfix">
                                   <div class="col-md-4">
-                                    <b>Username <span style="color:red"> *</span></b>
+                                    <b>Username</b>
                                     <div class="input-group">
                                       <span class="input-group-addon">
                                         <i class="material-icons">person</i>
@@ -306,7 +343,7 @@ $readonly = "readonly";
                                     </div>
                                   </div>
                                   <div class="col-sm-4">
-                                   <b>Password <span style="color:red"> *</span></b>
+                                   <b>Password</b>
                                    <div class="input-group">
                                     <span class="input-group-addon">
                                       <i class="material-icons">vpn_key</i>
@@ -320,7 +357,7 @@ $readonly = "readonly";
                                   </div>
                                 </div>
                                 <div id="divpass2" class="col-sm-4" style="display: <?php echo ($_SESSION['userType'] == 1 ? 'none' : 'block');?>">
-                                 <b>ยืนยัน Password <span style="color:red"> *</span></b>
+                                 <b>ยืนยัน Password</b>
                                  <div class="input-group">
                                   <span class="input-group-addon">
                                     <i class="material-icons">vpn_key</i>
@@ -335,36 +372,7 @@ $readonly = "readonly";
                               </div>
                             </div>
                           </div>
-                          <h2 class="card-inside-title">บุคคลอ้างอิง</h2><hr />
-                          <div class="row clearfix">
-                            <div class="col-md-4">
-                              <b>ชื่อบุคคลอ้างอิง <span style="color:red"> *</span></b>
-                              <div class="form-group">
-                                <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
-                                </div>
-                                <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ</label>
-                              </div>
-                            </div>
-                            <div class="col-sm-4">
-                              <b>นามสกุล <span style="color:red"> *</span></b>
-                              <div class="form-group">
-                                <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^a-z]/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
-                                </div>
-                                <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ</label>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <b>เบอร์โทรศัพท์ <span style="color:red"> *</span></b>
-                              <div class="input-group">
-                                <div class="form-line">
-                                  <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
-                                </div>
-                                <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ</label>
-                              </div>
-                            </div>
-                          </div>
+                          
                                <!-- <div class="row clearfix">
                                    <div class="col-sm-6">
                                       <b>สถานะการใช้งาน</b>

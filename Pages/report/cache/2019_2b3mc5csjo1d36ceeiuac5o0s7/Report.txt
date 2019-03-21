@@ -1,0 +1,34 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+            <thead>
+                <tr>
+                    <th width="5%">ลำดับ</th>
+                    <th width="10%">เลขที่เอกสาร</th>
+                    <th width="10%">รหัสสินค้า</th>
+                    <th width="20%">ชื่อสินค้า</th>
+                    <th width="10%">ยี่ห้อ</th>
+                    <th width="10%">ขนาด</th>
+                    <th width="10%">รุ่น</th>
+                    <th width="10%">จำนวน</th>
+                </tr>
+            </thead>
+            <tbody><tr>
+                  <td align="center" >1</td>
+                  <td align="center" >PO-19030001</td>
+                  <td align="center" >TY2156516H20</td>
+                  <td align="center" >ยาง TOYO H20 215/65R16</td>
+                  <td align="center" >Toyo</td>
+                  <td align="center" >215/65R16</td>
+                  <td align="center" >H20</td>
+                  <td align="center">8 คู่</td>
+            </tr><tr>
+                  <td align="center" >2</td>
+                  <td align="center" >PO-19030001</td>
+                  <td align="center" >YK1955515AE50</td>
+                  <td align="center" >ยาง YOKOHAMA AE50 195/55R15</td>
+                  <td align="center" >Yokohama</td>
+                  <td align="center" >195/55R15</td>
+                  <td align="center" >AE50</td>
+                  <td align="center">5 คู่</td>
+            </tr>    </tbody>
+        </table>
+        
