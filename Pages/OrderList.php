@@ -1,7 +1,40 @@
 <!DOCTYPE html>
 <html>
 
-<?php include 'css.php';?>
+<?php
+$path = "../";
+include($path."include/config_header_top.php");
+include 'css.php';
+
+$page_key ='3_1';
+
+$filter = '';
+if($s_po_id){
+   $filter .= " and poID like '%".$s_po_id."%'";
+}
+if($s_sup_id){
+   $filter .= " and supID = '".$s_sup_id."'";
+}
+if($s_po_date){
+   $filter .= " and poDate = '".conv_date_db($s_po_date)."'";
+}
+if($s_po_status){
+   $filter .= " and poStatus = '".$s_po_status."'";
+}
+
+$field = "* ";
+$table = "tb_po";
+$pk_id = "poID";
+$wh = "1=1  {$filter}";
+$orderby = "order by poID DESC";
+$limit =" LIMIT ".$goto ." , ".$page_size ;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+
+$query = $db->query($sql);
+$nums = $db->db_num_rows($query);
+$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+chk_role($page_key,'isSearch',1);
+?>
 
 <body class="theme-red">
     <?php include 'MasterPage.php';?>
@@ -15,133 +48,339 @@
                         <div class="header">
                             <h2>รายการสั่งซื้อสินค้า</h2>
                         </div>
-                        <div class="body">
-                            <form action="SelectSupplierList.php" method="POST">
-                                <div class="icon-and-text-button-demo align-right">
-                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
-                                </div>
-                                <div class="table-responsive">
-                                    <table width="100%" class="table table-bordered table-striped table-hover js-basic-example dataTable">
-                                        <thead>
-                                            <tr>
-                                                <th>ลำดับ</th>
-                                                <th>เลขที่เอกสาร</th>
-                                                <th>ชื่อ/บริษัทคู่ค้า</th>
-                                                <th>วันที่</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>PO-1806001</td>
-                                                <td>บริษัท โยโกฮาม่า เอเชีย จำกัด</td>
-                                                <td>2018-06-23 11:37:07</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
+                        <div class="body table-responsive">
+                            <form id="frm-search" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                <input type="hidden" id="proc" name="proc" value="">
+                                <input type="hidden" id="form_page" name="form_page" value="OrderList.php">
+                                <input type="hidden" id="poID" name="poID" value="">
+                                <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
+                                <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>PO-1806002</td>
-                                                <td>บริษัท สยามมิชลิน จำกัด</td>
-                                                <td>2018-02-22 21:51:07</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>PO-1806003</td>
-                                                <td>บริษัท บริดจสโตนเซลส์ (ประเทศไทย) จำกัด</td>
-                                                <td>2018-02-22 19:17:25</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>PO-1806004</td>
-                                                <td>บริษัท ดันลอปไทร์ (ไทยแลนด์) จำกัด</td>
-                                                <td>2018-02-22 16:13:17</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>PO-1806005</td>
-                                                <td>บริษัท ดีสโตน จำกัด</td>
-                                                <td>2018-02-22 16:10:46</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="row clearfix">
+                                    <div class="col-sm-6">
+                                     <div class="form-group">
+                                      <b>เลขที่ใบสั่งซื้อ </b>
+                                      <div class="form-line">
+                                        <input type="text " name="s_po_id" id="s_po_id" class="form-control" placeholder="เลขที่ใบสั่งซื้อ" value="<?php echo $s_po_id;?>">
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <b>ชื่อคู่ค้า/บริษัท </b>
+                                    <div class="form-group form-float">
+                                      <select name="s_sup_id" id="s_sup_id" class="form-control show-tick" data-live-search="true">
+                                          <option value="">เลือก</option>
+                                          <?php
+                                          $sql_sup=" SELECT * from tb_supplier order by sup_name asc";
+                                          $query_sup = $db->query($sql_sup);
+                                          while($rec_sup = $db->db_fetch_array($query_sup)){?>
+                                              <option value="<?php echo $rec_sup['supID'];?>"  <?php echo ($s_sup_id==$rec_sup['supID'])?"selected":"";?>> <?php echo $rec_sup['sup_name'];?></option>
+                                          <?php }  ?>
+                                      </select>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="row clearfix">
+                        <div class="col-sm-6">
+                         <b>วันที่เอกสาร </b>
+                         <div class="input-group">
+                            <div class="form-line">
+                                <input type="text" class="form-control datepicker" name="s_po_date" id="s_po_date" placeholder="DD/MM/YYYY" value="<?php echo $s_po_date;?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <b>สถานะ </b>
+                            <div class="form-group form-float">
+                                <select name="s_po_status" id="s_po_status" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID',2);">
+                                    <option value="">เลือก</option>
+                                    <option value="1" <?php echo ($s_po_status == 1)? "selected" : ""; ?>>รอรับสินค้า</option>
+                                    <option value="2" <?php echo ($s_po_status == 2)? "selected" : ""; ?>>ค้างรับ</option>
+                                    <option value="1" <?php echo ($s_po_status == 3)? "selected" : ""; ?>>รับสินค้าครบแล้ว</option>
+                                    <option value="99" <?php echo ($s_po_status == 99)? "selected" : ""; ?>>ยกเลิก</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- #END# Basic Examples -->
-        </div>
-    </section>
 
-    <?php include 'js.php';?>
+                <div class="icon-and-text-button-demo align-center">
+                    <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                </div>
+
+                <div class="icon-and-text-button-demo align-right">
+                    <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
+                </div>
+                <div class="">
+                    <table width="100%" class="table table-bordered table-striped table-hover ">
+                        <thead>
+                            <tr>
+                                <th>ลำดับ</th>
+                                <th>เลขที่ใบสั่งซื้อ</th>
+                                <th>ชื่อ/บริษัทคู่ค้า</th>
+                                <th>วันที่</th>
+                                <th>สถานะ</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            if($nums>0){
+                                $i=0;
+                                while ($rec = $db->db_fetch_array($query)) {
+                                                //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
+                                    $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
+                                    ?>
+                                    <tr>
+                                        <td align="center"><?php echo ++$i; ?></td>
+                                        <td align="center"><?php echo $rec['poID']; ?></td>
+                                        <td><?php echo get_sup_name($rec['supID']); ?></td>
+                                        <td align="center"><?php echo conv_date($rec['poDate']); ?></td>
+                                        <td align="center"><?php echo get_poStatus($rec['poStatus']); ?></td>
+                                        <td align="center"><?php echo $info; ?></td>
+                                    </tr>
+                                <?php }
+                            }else{
+                                echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                    <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+<!-- #END# Basic Examples -->
+
+<div id="modal-load"></div>
+
+</div>
+</section>
+
+<?php include 'js.php';?>
 </body>
 
 </html>
+
+<script>
+
+    function searchData(){
+        $('#frm-search').removeAttr('target');
+        $("#frm-search").submit();
+    }
+
+    function addData(){
+        $("#proc").val("add");
+        $('#frm-search').removeAttr('target');
+        $("#frm-search").attr("action","OrderInfo.php").submit();
+    }
+
+    function cancelPO(id){
+      if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
+        $("#proc").val("cancel");
+        $("#poID").val(id);
+        $('#frm-search').removeAttr('target');
+        $("#frm-search").attr("action","process/order_process.php").submit();
+    }
+}
+
+function infoPO(id){
+    $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
+        //console.log(data);
+        var html = "";
+
+        html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
+        html += '<div class="modal-dialog modal-lg" role="document">';
+        html += '<div class="modal-content">';
+
+        html += '<div class="modal-header" style="border-bottom:1px solid #ccc!important">';
+        html += '<div class="row">';
+        html += '<div class="col-sm-6">';
+        html += '<h4 class="modal-title" id="largeModalLabel">';
+        html += 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด <br/>';
+        html += 'NP TIRE (GOLD WHEELS) CO.,LTD <br/>';
+        html += '35/23-25 ถ.มีนบุรี-ร่มเกล้า เขตมีนบุรี กรุ่งเทพฯ 10510 <br/>';
+        html += 'โทร 02-543-8957, 02-061-5957';
+        html += '</h4>';
+        html += '</div>';
+        html += '<div class="col-sm-6 text-right">';
+        html += '<h4 class="modal-title" id="largeModalLabel">';
+        html += 'ใบสั่งซื้อสินค้า';
+        html += '</h4>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+
+        html += '<div class="modal-body">';
+
+        html += '<div class="row">';
+        html += '<div class="col-sm-4">';
+        html += '<div class="form-group">';
+        html += '<b>เลขที่ใบสั่งซื้อ : '+id+'</b>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="col-sm-4">';
+        html += '<div class="form-group">';
+        html += '<b>วันที่เอกสาร : '+data["po_head"].poDate+'</b>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="col-sm-4">';
+        html += '<div class="form-group">';
+        html += '<b>ผู้ทำรายการ : '+data["po_head"].empname+'</b>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="form-group">';
+        html += '<div class="row">';
+
+        html += '<div class="col-sm-12" style="border:1px dotted #ccc!important;border-radius: 10px;">';
+        html += '<div class="col-sm-offset-1">';
+        html += '<br/">';
+
+        html += '<div class="row clearfix">';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>คู่ค้า/บริษัท : </b>'+data["po_head"].sup_name;
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>ตัวแทนขาย : </b>'+data["po_head"].namesale;
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+
+        html += '<div class="row clearfix">';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>ที่อยู่ : </b>'+data["po_head"].sup_address;
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>เบอร์โทรศัพท์ตัวแทน : </b>'+data["po_head"].mobilesale;
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+
+        html += '<div class="row clearfix">';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>เบอร์โทรศัพท์บริษัท : </b>'+data["po_head"].sup_tel;
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>สถานะ : </b>'+data["po_head"].poStatusName;
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+
+
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+        html += '</div>';
+
+        if(data["po_head"].isCancel == 1 && data["po_head"].poStatus == 1)
+        {
+            html += '<div class="text-right">';
+            html += '<a class="btn btn-danger waves-effect" onClick="cancelPO(\''+id+'\');" >ยกเลิกเอกสาร</a>';
+            html += '</div>';
+        }
+
+        html += '</div>';
+
+
+
+        html += '<div class="modal-body">';
+        html += '<table class="table table-bordered" id="tb-search">';
+        html += '<thead>';
+        html += '<tr>';
+        html += '<th>ลำดับ</th>';
+        html += '<th>รหัส</th>';
+        html += '<th>สินค้า</th>';
+        html += '<th>ราคา/ชิ้น</th>';
+        html += '<th>จำนวน</th>';
+        html += '<th>รับแล้ว</th>';
+        html += '<th>รวม</th>';
+        html += '</tr>';
+        html += '</thead>';
+        html += '<tbody>';
+
+        if(data["po_desc"]){
+            for(var i = 0; i < data["po_desc"].length; i++ ){
+               html += '<tr>';
+               html += '<td align="center">'+(i+1)+'</td>';
+               html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
+               html += '<td>'+data["po_desc"][i].productName+'</td>';
+               html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
+               html += '<td align="right">'+addCommas(data["po_desc"][i].qty)+'</td>';
+               html += '<td align="right">'+addCommas(data["po_desc"][i].received_qty)+'</td>';
+               html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
+               html += '</tr>';
+           }
+       }
+       else {
+        html += '<tr>';
+        html += '<td colspan="7" align="center">ไม่พบข้อมูล</td>';
+        html += '</tr>';
+    }
+
+    html += '</tbody>';
+
+    html += '<tfoot>';
+    html += '<tr>';
+    html += '<td colspan="6" align="center">ราคาสุทธิ(รวมvat)</td>';
+    html += '<td align="right">'+addCommas(data["po_head"].total)+'</td>';
+    html += '</tr>';
+    html += '</tfoot>';
+
+    html += '</table>';
+    html += '</div>';
+
+    html += '<div class="modal-footer">';
+    html += '<div class="col-sm-12 text-center">';
+    html += '<a class="btn btn-default waves-effect" onclick="printPO(\''+id+'\');">พิมพ์</a>';
+    html += '<a class="btn btn-default waves-effect" data-dismiss="modal" >ปิด</a>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '</div>';
+    html += '</div>';
+    html += '</div>';
+
+    $("#modal-load").html(html);
+    $("#frm-modal").modal('show');
+
+}, "json");
+}
+
+function printPO(id){
+    $('#poID').val(id);
+    $('#frm-search').attr('action','report/print_PO.php');
+    $('#frm-search').attr('target','_blank');
+    $('#frm-search').submit();
+}
+
+</script>

@@ -1,0 +1,104 @@
+<table class="table table-striped table-bordered" width="100%"  >
+          <thead> 
+              <tr>
+                <th  width="7%"  style="text-align:center;">ลำดับ</th>
+                <th  width="30%"  style="text-align:center;">รายการสินค้า</th>
+                <th  width="7%"  style="text-align:center;">ขาย</th>
+                <th  width="7%"  style="text-align:center;">เช่า</th>
+                <th  width="7%"  style="text-align:center;">สั่งตัด</th>
+                <th  width="7%"  style="text-align:center;">เช่า</th>
+                <th  width="7%"  style="text-align:center;">รวม</th>
+               
+           <thead>
+            <tbody>   <tr>
+                <td  style="text-align:center;">1</td>
+                <td  style="text-align:left;">คณะเทคโนโลยีสารสนเทศ ม.ราชมงคลกรุงเทพ </td>
+                <td  style="text-align:right;">1,000.00</td>
+                <td  style="text-align:right;">600.50</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">800.00</td>
+                <td  style="text-align:right;">2,400.50</td>
+            </tr> <tr>
+                <td  style="text-align:center;">2</td>
+                <td  style="text-align:left;">ชุดขาว (กระโปรง)</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">3</td>
+                <td  style="text-align:left;">ชุดขาว (กางเกง)</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">400.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">400.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">4</td>
+                <td  style="text-align:left;">ชุดขาว (เสื้อ)</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">750.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">750.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">5</td>
+                <td  style="text-align:left;">ชุดไทยจิตรลดา (กระโปรง)</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">6</td>
+                <td  style="text-align:left;">ชุดไทยจิตรลดา (เสื้อ)</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">7</td>
+                <td  style="text-align:left;">สูทดำ </td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+            </tr> <tr>
+                <td  style="text-align:center;">8</td>
+                <td  style="text-align:left;">อื่น ฯ</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">500.00</td>
+                <td  style="text-align:right;">0.00</td>
+                <td  style="text-align:right;">500.00</td>
+            </tr> <tr>
+                <td  style="text-align:right;" colspan="2"><b>รวม</b></td>
+                <td  style="text-align:right;">1,000.00</td>
+                <td  style="text-align:right;">1,000.50</td>
+                <td  style="text-align:right;">1,250.00</td>
+                <td  style="text-align:right;">800.00</td>
+                <td  style="text-align:right;">4,050.50</td>
+            </tr> <tr>
+                <td  style="text-align:right;" colspan="6"><b>รวมยอดขายทั้งหมด</b></td>
+                <td  style="text-align:right;">4,050.50</td>
+            </tr> <tr>
+                <td  style="text-align:right;" colspan="6"><b>หักส่วนลด</b></td>
+                <td  style="text-align:right;">300.00</td>
+            </tr> <tr>
+                <td  style="text-align:right;" colspan="6"><b>บวกค่าปรับ</b></td>
+                <td  style="text-align:right;">500.00</td>
+            </tr> <tr>
+                <td  style="text-align:right;" colspan="6"><b>รายได้สุทธิ</b></td>
+                <td  style="text-align:right;">4,250.50</td>
+            </tr> <tr>
+                <td  style="text-align:right;color:green;" colspan="6"><b>คงค้าง</b></td>
+                <td  style="text-align:right;color:green;">0.00</td>
+            </tr> <tr>
+                <td  style="text-align:right;color:red;" colspan="6"><b>คืนมัดจำ</b></td>
+                <td  style="text-align:right;color:red;">399.50</td>
+            </tr>   </tbody>
+
+          </table>

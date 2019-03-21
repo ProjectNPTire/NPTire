@@ -4566,8 +4566,12 @@ section.content {
   color: #fff; }
 
 .table thead tr th {
-  padding: 10px;
-  border-bottom: 1px solid #eee; }
+  /*padding: 10px;*/
+  background-color: #F44336;;
+  border-bottom: 1px solid #eee;
+  color: #fff;
+  text-align: center;
+}
 
 .table-bordered {
   border-top: 1px solid #eee; }
@@ -8039,4 +8043,3 @@ html.ie11 .dropdown-menu ul.menu li a {
 
 html.ie11 .bs-searchbox .form-control {
   width: 90%; }
-

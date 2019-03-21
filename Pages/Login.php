@@ -1,40 +1,58 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php
+session_start();
 
-<?php include 'css.php';?>
+$path = "../";
+$NoChk=1;
 
-<body class="login-page">
-    <div class="login-box">
-        <div class="logo">
-            <a href="javascript:void(0);"><b>NP TIRE</b></a>
-            <small>GOLD WHEEL</small>
-        </div>
-        <div class="card">
-            <div class="body">
-                <form id="sign_in" method="POST" action="index.php">
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">person</i>
-                        </span>
-                        <div class="form-line">
-                            <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon">
-                            <i class="material-icons">lock</i>
-                        </span>
-                        <div class="form-line">
-                            <input type="password" class="form-control" name="password" placeholder="Password" required>
-                        </div>
-                    </div>
-                    <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
-                </form>
-            </div>
-        </div>
-    </div>
+include($path."include/config_header_top.php");
 
-    <?php include 'js.php';?>
-</body>
+$username = $_POST["username"];
+$password = $_POST["password"];
 
-</html>
+//แสดงข้อมูลชื่อ
+
+
+////
+
+if($username != "" & $password != ""){
+
+ 	 $sqlChk		= "	SELECT *
+						FROM tb_user
+						where activeStatus =1 AND username = '".$username."' and password = '".$password."' ";
+
+	$queryChk = $db->query($sqlChk);
+	$nums = $db->db_num_rows($queryChk);
+	$arrSet = array();
+
+//	$nums ="";
+	if($nums){
+		$rec = $db->db_fetch_array($queryChk);
+
+		$_SESSION["sys_id"] = $rec["userID"];//รหัส per
+		$_SESSION["username"] = $rec["username"];//ชื่อผู้ใช้งาน
+		$_SESSION["userType"] = $rec["userType"];//
+		$_SESSION['sys_name'] = $rec["firstname"].' '.$rec["lastname"];
+		////
+
+			echo "<script>
+				self.location.href='main.php';
+			</script>";
+
+	}else{
+			//header('Content-type: text/html; charset=utf-8');
+	session_destroy();
+		echo "<script>
+			alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
+			self.location.href='index.php';
+		</script>";
+	}
+}else{
+	//header('Content-type: text/html; charset=utf-8');
+	session_destroy();
+	echo "<script>
+		alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
+		self.location.href='index.php';
+	</script>";
+}
+?>

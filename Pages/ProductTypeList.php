@@ -1,7 +1,31 @@
 <!DOCTYPE html>
 <html>
 
-<?php include 'css.php';?>
+<?php
+$path = "../";
+include($path."include/config_header_top.php");
+include 'css.php';
+$page_key ='2_1';
+
+$filter = '';
+if($s_productTypeName){
+   $filter .= " and productTypeName like '%".$s_productTypeName."%'";
+}
+
+$field = "* ";
+$table = "tb_producttype";
+$pk_id = "productTypeID";
+$wh = "1=1   {$filter}";
+$orderby = "order by productTypeID DESC";
+$limit =" LIMIT ".$goto ." , ".$page_size ;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+
+$query = $db->query($sql);
+$nums = $db->db_num_rows($query);
+$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+
+chk_role($page_key,'isSearch',1) ;
+?>
 
 <body class="theme-red">
     <?php include 'MasterPage.php';?>
@@ -15,113 +39,73 @@
                             <h2>รายการประเภทสินค้า</h2>
                         </div>
                         <div class="body">
-                            <form action="ProductTypeInfo.php" method="POST">
-                                <div class="icon-and-text-button-demo align-right">
-                                    <button type="submit" class="btn btn-primary waves-effect"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
-                                </div>
+                          <form id="frm-search" method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
+                              <input type="hidden" id="proc" name="proc" value="">
+                              <input type="hidden" id="form_page" name="form_page" value="ProductTypeList.php">
+                              <input type="hidden" id="productTypeID" name="productTypeID" value="">
+                              <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
+                              <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+
+                              <div class="row clearfix">
+                                  <div class="col-sm-10">
+                                      <div class="form-group">
+                                        <b>ประเภทสินค้า </b>
+                                          <div class="form-line">
+                                              <input type="text " name="s_productTypeName" id="s_productTypeName" class="form-control" placeholder="ประเภทสินค้า" value="<?php echo $s_productTypeName;?>">
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-2">
+                                    <div class="icon-and-text-button-demo">
+                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                                   </div>
+                                  </div>
+                              </div>
+
+                              
+
+                             <div class="icon-and-text-button-demo align-right">
+                                 <button  class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
+                             </div>
                                 <div class="table-responsive">
-                                    <table width="100%" class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                                    <table width="100%" class="table table-bordered table-striped table-hover dataTable">
                                         <thead>
                                             <tr>
-                                                <th>ลำดับ</th>
-                                                <th>ประเภทสินค้า</th>
-                                                <th>รายละเอียด</th>
-                                                <th></th>
+                                                <th  width="10%">ลำดับ</th>
+                                                <th  width="25%">ประเภทสินค้า</th>
+                                                <th  width="40%">รายละเอียด</th>
+                                                <th  width="10%">จัดการ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>ยางรถยนต์</td>
-                                                <td></td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>ผ้าเบรค</td>
-                                                <td></td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>น้ำกลั่น</td>
-                                                <td></td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Senior Javascript Developer</td>
-                                                <td>Edinburgh</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Accountant</td>
-                                                <td>Tokyo</td>
-                                                <td>
-                                                    <span  data-toggle="modal" data-target="#largeModal">
-                                                        <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                            <i class="material-icons">info_outline</i>
-                                                        </button>
-                                                    </span>
-                                                    <a class="btn bg-orange btn-xs waves-effect">
-                                                        <i class="material-icons">edit</i>
-                                                    </a>
-                                                    <a class="btn bg-red btn-xs waves-effect">
-                                                        <i class="material-icons">delete_forever</i>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                          <?php
+                                          if($nums>0){
+                                              $i=0;
+                                              while ($rec = $db->db_fetch_array($query)) {
+                                                $i++;
+                                                $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['productTypeID'].');">'.$img_edit.'</a>';
+                                                if($rec['productTypeID']!=1&&$rec['productTypeID']!=2){
+                                                  $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['productTypeID'].');">'.$img_del.'</a>';
+                                                }else{
+                                                 $del = '';
+                                               }
+                                              
+                                            //  $info = ' <a class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['userID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
+                                          ?>
+                                              <tr>
+                                                  <td style="text-align: center;"><?php echo $i+$goto;?></td>
+                                                  <td><?php echo $rec['productTypeName'];?></td>
+                                                  <td><?php echo $rec['productTypeDetail'];?></td>
+                                                  <td style="text-align: center;"><?php echo $edit.$del;?></td>
+                                              </tr>
+                                          <?php }
+                                          }else{
+                                              echo '<tr><td colspan="5">ไม่พบข้อมูล</td></tr>';
+                                          }
+                                          ?>
                                         </tbody>
                                     </table>
+                                       <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
                                 </div>
                             </form>
                         </div>
@@ -135,3 +119,31 @@
 </body>
 
 </html>
+
+
+
+
+<script>
+
+function searchData(){
+  $("#frm-search").submit();
+}
+
+function addData(){
+  $("#proc").val("add");
+  $("#frm-search").attr("action","ProductTypeInfo.php").submit();
+}
+function editData(id){
+  $("#proc").val("edit");
+  $("#productTypeID").val(id);
+  $("#frm-search").attr("action","ProductTypeInfo.php").submit();
+}
+function delData(id){
+  if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
+    $("#proc").val("delete");
+    $("#productTypeID").val(id);
+    $("#frm-search").attr("action","process/ProductType_process.php").submit();
+  }
+}
+
+</script>

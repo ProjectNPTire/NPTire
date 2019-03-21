@@ -72,3 +72,6 @@
 
 <!-- Demo Js -->
 <script src="../assets/js/demo.js"></script>
+<!-- <script src="../assets/js/bootstrap-datepicker.js"></script>
+<script src="../assets/js/bootstrap-datepicker-thai.js"></script> -->
+<script src="<?php echo $path; ?>include/function.js"></script>

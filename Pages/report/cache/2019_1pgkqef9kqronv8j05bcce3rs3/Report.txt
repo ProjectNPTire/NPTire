@@ -1,0 +1,19 @@
+<table class="table table-bordered table-striped table-hover dataTable">
+            <thead>
+                <tr>
+                    <th width="5%">ลำดับ</th>
+                    <th width="10%">เลขที่เอกสาร</th>
+                    <th width="10%">รหัสสินค้า</th>
+                    <th width="10%">ชื่อสินค้า</th>
+                    <th width="10%">ยี่ห้อ</th>
+                    <th width="10%">ขนาด</th>
+                    <th width="10%">รุ่น</th>
+                    <th width="5%">จำนวน</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+             </tbody>
+        </table>
+        
