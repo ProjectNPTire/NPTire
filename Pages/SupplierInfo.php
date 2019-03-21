@@ -175,8 +175,8 @@ chk_role($page_key,'isAdd',1);
                         <label id="mobilesale_error" class="error" for="mobilesale">กรุณาระบุ</label>
                     </div>
                 </div>
-            </div>
-            <div class="row clearfix">                                          
+            </div> 
+          <!--                                         
                 <div class="col-md-4">
                     <div class="form-group">
                         <b>อีเมล</b>
@@ -185,7 +185,8 @@ chk_role($page_key,'isAdd',1);
                         </div>
                         <label id="sup_email_error" class="error" for="sup_email">กรุณาระบุ</label>
                     </div>
-                </div>
+                </div>-->
+				<div class="row clearfix">  
                 <div class="col-md-4">
                     <div class="form-group">
                         <b>IDLine</b>
@@ -195,7 +196,7 @@ chk_role($page_key,'isAdd',1);
                         <label id="idline_error" class="error" for="idline">กรุณาระบุ</label>
                     </div>
                 </div> 
-            </div>
+            </div> 
             <div class="row clearfix">                               
              <div class="col-md-12">
                             <div class="form-group">

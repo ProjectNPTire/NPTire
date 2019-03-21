@@ -113,10 +113,10 @@ chk_role($page_key,'isSearch',1);
                                                 <th><div align="center">ลำดับ</div></th>
                                                 <th><div style="text-align:left">ชื่อคู่ค้า/บริษัท</div></th>
                                                 <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th>
-                                               <!-- <th><div align="center">เบอร์โทรศัพท์</div></th> 
-                                                <th><div align="center">เบอร์มือถือ</div></th> 
-                                                <th><div align="center">E-mail</div></th>-->
-                                                <th width="10%"style="text-align:left"> </th>
+                                                <th><div style="text-align:left">เบอร์โทรศัพท์</div></th> 
+                                                <th><div style="text-align:left">ชื่อ-สกุล พนักงานขาย </div></th> 
+                                                <th><div  style="text-align:left">เบอร์โทรศัพท์พนักงาน</div></th>
+                                                <th width="15%"style="text-align:left"> </th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -125,18 +125,29 @@ chk_role($page_key,'isSearch',1);
                                                 $i=0;
                                                 while ($rec = $db->db_fetch_array($query)) {
                                                 $i++;
-                                                $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['supID'].');">'.$img_edit.'</a>';
                                                 $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['supID'].');">'.$img_del.'</a>';
+                                                $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['supID'].');">'.$img_edit.'</a>';
+												$info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['supID'].');">'.$img_info.'</a>';
                                             ?>
                                                 <tr>
                                                     <td align="center"><?php echo $i;?></td>
                                                     <td><?php echo $rec['sup_name'];?></td>
-                                                    <td><?php echo $rec['sup_address']."<br> เบอร์โทรศัพท์บริษัท
- :".$rec['sup_tel']."<br> ";?></td>
-                                                    <td><?php echo "";?></td>
-                                                    <td><?php echo $rec['sup_mobile'];?></td>
-                                                    <td><?php echo $rec['sup_email'];?></td>
-                                                    <td align="center"><?php echo $edit.$del;?></td>
+                                                    <td><?php echo $rec['sup_address'];?></td>
+                                                    <td><?php echo $rec['sup_tel'];?></td>
+													 <td><?php echo $rec['namesale']." ".$rec['lastnamesale'];?></td>
+                                                    <td><?php echo $rec['mobilesale'];?></td>
+                                                    <!--<td><?php echo $rec['sup_email'];?></td> -->
+                                                    
+													<td style="text-align: center;"><?php echo  $info.$edit.$del;?>
+                                                      <input type="hidden" id="show_sup_name_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_name'];?>" >
+                                                      <input type="hidden" id="show_sup_tel_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_tel'];?>" >
+													  <input type="hidden" id="show_sup_address_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_address'].' '.' ตำบล/แขวง '.get_subDistrictID_name($rec['subDistrictID']).' อำเภอ/เขต '.get_district_name($rec['districtID']).' จังหวัด '.get_prov_name($rec['provinceID']).' '.$rec['zipcode'];?>" >
+                                                      <input type="hidden" id="show_namesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['namesale']." ".$rec['lastnamesale'];?>" >
+													  <input type="hidden" id="show_mobilesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['mobilesale'];?>" >
+													  <input type="hidden" id="show_idline_<?php echo $rec['supID'];?>" value="<?php echo $rec['idline'];?>" >
+													  <input type="hidden" id="show_note_<?php echo $rec['supID'];?>" value="<?php echo $rec['note'];?>" >
+													  
+                                                    </td>
                                                 </tr>
                                             <?php }
                                             }else{
@@ -161,12 +172,89 @@ chk_role($page_key,'isSearch',1);
 
 </html>
 
+ <!-- Large Size -->
+    <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="largeModalLabel">ข้อมูลคู่ค้า</h4>
+                </div>
+                <div class="modal-body">
+                  
+                  <div class="row clearfix">
+                      <div class="col-sm-12"  style="float:left">
+                            <b>ชื่อบริษัท </b>
+                           <span class="form-group" id="txt_subname"></span>
+                      </div>
+				   </div>
+                   <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>เบอร์โทรศัพท์บริษัท</b>
+                           <span class="form-group" id="txt_suptel"></span>
+                      </div>
+
+                  </div>
+                  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>ที่อยู่</b>
+                           <span class="form-group" id="txt_supaddress"></span>
+                      </div>
+
+                  </div>
+				  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>ชื่อ-สกุลพนักงานขาย  </b>
+                           <span class="form-group" id="txt_namesale"></span>
+                      </div>
+				  </div>
+				  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>เบอร์โทรศัพท์มือถือ  </b>
+                           <span class="form-group" id="txt_mobilesale"></span>
+                      </div>
+				  </div>
+				  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>IDLine  </b>
+                           <span class="form-group" id="txt_idline"></span>
+                      </div>
+				  </div>
+				  <div class="row clearfix">
+                      <div class="col-sm-12">
+                            <b>หมายเหตุ  </b>
+                           <span class="form-group" id="txt_note"></span>
+                      </div>
+				  </div>
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+                </div>
+                     <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
+                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
 <script>
 
 function searchData(){
   $("#frm-search").submit();
 }
 
+function infoData(id){  
+   $('#txt_subname').html($('#show_sup_name_'+id).val());
+   $('#txt_suptel').html($('#show_sup_tel_'+id).val());
+   $('#txt_supaddress').html($('#show_sup_address_'+id).val());
+   $('#txt_namesale').html($('#show_namesale_'+id).val());
+   $('#txt_mobilesale').html($('#show_mobilesale_'+id).val());
+   $('#txt_idline').html($('#show_idline_'+id).val());
+   $('#txt_note').html($('#show_note_'+id).val());
+  
+
+  $('#ModalDetail').modal('show');
+}
 function addData(){
   $("#proc").val("add");
   $("#frm-search").attr("action","SupplierInfo.php").submit();
