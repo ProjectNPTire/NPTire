@@ -17,6 +17,7 @@ $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 $s_location = "SELECT * from tb_location order by locationName ";
+$readonly = "readonly";
  ?>
 
 <body class="theme-red">
@@ -34,11 +35,17 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                 <input type="hidden" id="productID" name="productID" value="<?php echo $productID;?>">
                                 <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
                                 <input type="hidden" id="chk" name="chk" value="0">
-                            <div class="body">
+                                <input type="hidden" id="chk1" name="chk1" value="0">
 
+              <input type="hidden" id="chk2" name="chk2" value="0">
+                            <div class="body">
+                              <div class="row clearfix">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                          <b>รหัสสินค้า </b>
+                                          <b>รหัสสินค้า</b>
                                          <div class="input-group">
                                             <div class="form-line">
                                                 <input type="text " readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
@@ -47,21 +54,22 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                         </div>
 									                  </div>
                                     <div class="col-sm-8">
-                                         <b>ชื่อสินค้า <span style="color:red"> *</span></b>
+                                         <b>ชื่อสินค้า</b>
                                         <div class="input-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
+                                                <input type="text" onkeyup="chkName();" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
                                             </div>
-                                            <label id="productName-error" class="error" for="productName">กรุณาระบุ</label>
+                                            <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
+                      <label id="productName2-error" class="error" for="productName">มีประเภทสินค้านี้แล้ว</label>
                                         </div>
                                     </div>
                                 </div>
 								               <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>ยี่ห้อ <span style="color:red"> *</span></b>
+                                        <b>ยี่ห้อสินค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" >
+                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_brand=" SELECT * from tb_brand order by brandName asc";
@@ -73,14 +81,16 @@ $s_location = "SELECT * from tb_location order by locationName ";
 
                                             <?php }  ?>
                                             </select>
-                                          <label id="brandID-error" class="error" for="brandID">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
+                                            <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
+                                          <label id="brandID-error" class="error" for="brandID">กรุณาเลือก ยี่ห้อสินค้า</label>
                                         </div>
                                     </div>
 																		<div class="col-sm-4">
-																			<b>ประเภทสินค้า <span style="color:red"> *</span></b>
+																			<b>ประเภทสินค้า</b>
 
 																			<div class="form-group form-float">
-																				<select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_code();">
+																				<select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $proc == "edit" ? 'disabled' : '';?>>
 																					<option value="">เลือก</option>
 																					<?php
 																					$s_pdtype=" SELECT * from tb_producttype where productTypeID not in (1,2) order by productTypeName asc";
@@ -93,48 +103,52 @@ $s_location = "SELECT * from tb_location order by locationName ";
 
 																					<?php }  ?>
 																				</select>
-																				<label id="productTypeID-error" class="error" for="productTypeID">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
+																				<label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
 																			</div>
 																		</div>
-																		<div class="col-md-4">
-																			<b>รูปภาพ</b>
-																			<div class="form-group">
-																				<div class="form-line">
-																					<input type="file" class="form-control " placeholder=""  name="productImg" id="productImg"  value="<?php //echo $rec['img'];?>">
-																					<input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
-																				</div>
-																			</div>
-																		</div>
-															</div>
-
-                                <div class="row clearfix">
-																	<div class="col-sm-4">
-																		<b>จำนวนสินค้า </b>
-																	 <div class="form-group">
-																			<div class="form-line">
-																					<input type="text " readonly name="productUnit" id="productUnit" class="form-control " placeholder="จำนวนสินค้า" value="<?php echo number_format($rec['productUnit']);?>">
-																			</div>
-																	</div>
-																 </div>
                                     <div class="col-sm-4">
                                         <b>หน่วยนับ <span style="color:red"> *</span></b>
 
                                         <div class="form-group form-float">
-                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" >
+                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php   foreach ($arr_unitType as $key => $value) {?>
                                                 <option value="<?php echo $key;?>"  <?php echo ($rec['unitType']==$key)?"selected":"";?>> <?php echo $value;?></option>
 
                                             <?php }  ?>
                                             </select>
-                                          <label id="unitType-error" class="error" for="unitType">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfunitType" id="hdfunitType" value="<?php echo $rec['unitType'] ?>">
+                                          <label id="unitType-error" class="error" for="unitType">กรุณาเลือก หน่วยนับ</label>
                                         </div>
                                     </div>
+                                    
+																		
+															</div>
 
+                                <div class="row clearfix">
+																	<div class="col-md-4">
+                                     <b>รูปภาพ</b>
+                                     <div class="form-group">
+                                      <div class="form-line">
+                                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
+                                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
+                                      </div>
+                                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
+                                    </div>
+                                  </div>
+                                    <div class="col-sm-4">
+                                      <b>จำนวนสินค้า </b>
+                                     <div class="form-group">
+                                        <div class="form-line">
+                                            <input type="text " readonly name="productUnit" id="productUnit" class="form-control " placeholder="จำนวนสินค้า" value="<?php echo number_format($rec['productUnit']);?>">
+                                        </div>
+                                    </div>
+                                   </div>
                                  </div>
 
 
-                                 <div class="row clearfix">
+                                <!--  <div class="row clearfix">
              												<div class="col-sm-12">
              															<b>รายละเอียด </b>
              														 <div class="form-group">
@@ -144,7 +158,7 @@ $s_location = "SELECT * from tb_location order by locationName ";
              															</div>
              													</div>
              											</div>
-
+ -->
 
                                <div class="row clearfix">
 
@@ -246,6 +260,13 @@ function OnCancel()
 
 function chkinput(){
 
+    if($('#chk2').val()==1){
+    $('#productName2-error').show();
+    $('#productName').focus();
+    return false;
+  }else{
+    $('#productName2-error').hide();
+  }
 
     if($('#productName').val()==''){
         $('#productName-error').show();
@@ -254,6 +275,13 @@ function chkinput(){
     }else{
 		$('#productName-error').hide();
 	}
+  if($('#chk2').val()==1){
+      $('#productTypeName2-error').show();
+      $('#productTypeName').focus();
+      return false;
+    }else{
+      $('#productTypeName2-error').hide();
+    }
     if($('#brandID').val()==''){
         $('#brandID-error').show();
       $('#brandID').focus();
@@ -288,8 +316,16 @@ function chkinput(){
         return false;
     }else{
 		$('#unitType-error').hide();
+    if($('#proc').val()=='add'){
+      if($('#productImg').val()==''){
+        $('#productImg-error').show();
+        $('#productImg').focus();
+        return false;
+      }else{
+        $('#productImg-error').hide();
+      }
+    }
 	}
-    debugger
     if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
       $('#tb_data-error').show();
       return false;
@@ -308,6 +344,7 @@ $(document).ready(function() {
      //   $('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
      //   $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
         //$('.focused').removeClass('focused');
+        $('.form-line').removeClass('focused');
       $('.error').hide();
 
         // $('.datepickers').bootstrapMaterialDatePicker();
@@ -331,7 +368,7 @@ function get_code(){
         },'json');
 
         $('#productCode').val(newcode);
-
+        chk();
   //
   }
     // var html  = '';
@@ -408,4 +445,48 @@ function delData(obj){
    $('#total_unit').val(total);
    //var arr = parseInt($('#rowid').val()replace(/,/g,''));
  }
+
+ var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
+function ValidateSingleInput(oInput) {
+    if (oInput.type == "file") {
+        var sFileName = oInput.value;
+         if (sFileName.length > 0) {
+            var blnValid = false;
+            for (var j = 0; j < _validFileExtensions.length; j++) {
+                var sCurExtension = _validFileExtensions[j];
+                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                    blnValid = true;
+                    break;
+                }
+            }
+             
+            if (!blnValid) {
+              // alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+              alert("กรุณาตรวจสอบไฟล์อัพโหลด");
+              //$('#img-error').show();
+              oInput.value = "";
+              return false;
+            }
+        }
+    }
+    return true;
+}
+
+function chkName(){
+debugger
+    var productName= $('#productName').val();
+    var productID= $('#productID').val();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chk_productName',productName:productName,productID:productID},function(data){
+      if(data==1){
+        $('#productName2-error').show();
+        $('#chk1').val(1);
+      }else{
+        $('#productName2-error').hide();
+        $('#chk1').val(0);
+
+      }
+
+    },'json');
+  }
 </script>

@@ -52,7 +52,7 @@ chk_role($page_key,'isSearch',1) ;
                                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                                <div class="row clearfix">
+                             <!--    <div class="row clearfix">
                                   <div class="col-sm-10">
                                     <div class="form-group">
                                       <b>ชื่อตำแหน่งจัดเก็บสินค้า </b>
@@ -66,7 +66,7 @@ chk_role($page_key,'isSearch',1) ;
                                       <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                     </div>
                                   </div>
-                                </div>
+                                </div> -->
 
                                  
 
@@ -74,13 +74,15 @@ chk_role($page_key,'isSearch',1) ;
                                     <button type="button" style="<?php echo chk_role($page_key,'isadd');?>" class="btn btn-primary waves-effect" onClick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                                 </div>
                                 <div>
-                                  <table class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
+                                  <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
                                       <thead>
                                           <tr>
-                                              <th><div align="center">ลำดับ</div></th>
-                                              <th><div align="center">ชื่อตำแหน่งจัดเก็บ</div></th>
-                                              <th><div align="center">รายละเอียด</div></th>
-                                              <th><div align="center">จัดการ</div></th>
+                                            <th width="5%">ลำดับ</th>
+                                                <th width="20%" style="text-align:left">รหัสตำแหน่งจัดเก็บ</th>
+                                                <th width="60%" style="text-align:left">ตำแหน่งจัดเก็บ</th>
+                                          <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
+                                              <!--   <th style="text-align:left">รายละเอียด</th> -->
+                                                <th width="15%"></th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -94,8 +96,8 @@ chk_role($page_key,'isSearch',1) ;
                                           ?>
                                               <tr>
                                                   <td align="center"><?php echo $i;?></td>
+                                                  <td><?php echo $rec['locationCode'];?></td> 
                                                   <td><?php echo $rec['locationName'];?></td>
-                                                  <td><?php echo $rec['locationDetail'];?></td> 
                                                   <td align="center"><?php echo $edit.$del;?></td>
                                               </tr>
                                           <?php }
@@ -120,7 +122,11 @@ chk_role($page_key,'isSearch',1) ;
 </html>
 
 <script>
-
+    $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 function searchData(){
     //alert("1234");
     $("#frm-search").submit();

@@ -36,6 +36,7 @@ switch($proc){
 						"productImg"=>$name,
 						"productDetail"=>$productDetail,
 						"productUnit"=>str_replace(",","",$productUnit),
+						"name_nospace"=>str_replace(" ","",$productName),
 				);
 
 			 		$productID = $db->db_insert($tb1,$fields,'y');
@@ -74,12 +75,13 @@ switch($proc){
 				unset($fields);
 				$fields = array(
 					"productName"=>$productName,
-					"brandID"=>$brandID,
-					"productTypeID"=>$productTypeID,
-					"unitType"=>$unitType,
+					"brandID"=>$hdfbrandID,
+					"productTypeID"=>$hdfproductTypeID,
+					"unitType"=>$hdfunitType,
 					"productImg"=>$name,
 					"productDetail"=>$productDetail,
 					"productUnit"=>str_replace(",","",$productUnit),
+					"name_nospace"=>str_replace(" ","",$productName),
 				);
 
 				  $db->db_update($tb1,$fields, " productID = '".$productID."'");

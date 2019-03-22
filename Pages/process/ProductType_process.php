@@ -3,7 +3,6 @@ header ('Content-type: text/html; charset=utf-8');
 $path = "../../";
 include($path."include/config_header_top.php");
 
-
 $url_back = '../'.$_REQUEST['form_page'];
 $proc = $_REQUEST['proc'];
 $productTypeID = $_REQUEST['productTypeID'];
@@ -22,11 +21,13 @@ switch($proc){
 						"productTypeDetail"=>$productTypeDetail,
 						"productTypeCode"=>$productTypeCode,
 						"productTypeNameShort"=>$productTypeNameShort,
-						//"name_nospace"=>str_replace(" ","",$productTypeName)
+						"name_nospace"=>str_replace(" ","",$productTypeName),
 
 				);
-				 print_pre($fields);
+				 //print_pre($fields);
 				 $db->db_insert($tb1,$fields);
+				 $detail = 'เพิ่มข้อมูลประเภท : '.$productTypeName;
+				 save_log($detail);
 			$text=$save_proc;
 				//exit;
 		}catch(Exception $e){
@@ -48,6 +49,8 @@ switch($proc){
 
 				 $db->db_update($tb1,$fields, " productTypeID = '".$productTypeID."'");
 
+				 $detail = 'แก้ไขข้อมูลประเภท : '.$productTypeName;
+ 				save_log($detail);
 
 				$text=$edit_proc;
 		}catch(Exception $e){
@@ -57,6 +60,8 @@ switch($proc){
 
 	case "delete" :
 		try{
+			$detail = 'ลบข้อมูข้อมูลยี่ห้อ  : '.$rec['productTypeName'];
+			 save_log($detail);
 			$db->db_delete($tb1, " productTypeID = '".$productTypeID."'");
 			$text=$del_proc;
 		}catch(Exception $e){

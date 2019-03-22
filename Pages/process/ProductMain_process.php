@@ -38,8 +38,8 @@ switch($proc){
 						"productImg"=>$name,
 						"productDetail"=>$productDetail,
 						/* "activeStatus"=>$activeStatus, */
-						"productUnit"=>str_replace(",","",$productUnit)/* ,
-						"name_nospace"=>str_replace(" ","",$productName), */
+						"productUnit"=>str_replace(",","",$productUnit),
+						"name_nospace"=>str_replace(" ","",$productName),
 				);
 				
 					/* echo  "<pre>";
@@ -82,19 +82,18 @@ switch($proc){
 				}
 				unset($fields);
 				$fields = array(
-					$fields = array(
 						"productCode"=>$productCode,
 						"productName"=>$productName,
-						"brandID"=>$brandID,
+						"brandID"=>$hdfbrandID,
 						"productSize"=>$productSize,
 						"modelName"=>$modelName,
-						"productTypeID"=>$productTypeID,
-						"unitType"=>$unitType,
+						"productTypeID"=>$hdfproductTypeID,
+						"unitType"=>$hdfunitType,
 						"productImg"=>$name,
 						"productDetail"=>$productDetail,
 						/* "activeStatus"=>$activeStatus, */
-						"productUnit"=>str_replace(",","",$productUnit)/* ,
-						"name_nospace"=>str_replace(" ","",$productName), */
+						"productUnit"=>str_replace(",","",$productUnit),
+						"name_nospace"=>str_replace(" ","",$productName),
 				);
 
 				  $db->db_update($tb1,$fields, " productID = '".$productID."'");

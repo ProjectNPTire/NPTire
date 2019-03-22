@@ -41,6 +41,12 @@ if($proc=='edit'){
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
                                 <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
                                 <input type="hidden" id="locationID" name="locationID" value="<?php echo $locationID; ?>">
+							<input type="hidden" id="chk2" name="chk2" value="0">
+                                <input type="hidden" id="chk3" name="chk3" value="0">
+                                <div class="row clearfix">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
 								<!--<div class="form-group">
 									<b>รหัสตำแหน่งจัดเก็บสินค้า <span style="color:red"> *</span></b>
 									<div class="form-line">
@@ -49,17 +55,29 @@ if($proc=='edit'){
 									<label id="locationID_error" class="error" for="locationID">กรุณาระบุ</label>
 								</div>-->
 								<div class="row clearfix">
-									<div class="col-sm-12">
+									<div class="col-sm-6">
+										<b>รหัสตำแหน่งจัดเก็บ</b>
 										<div class="form-group">
-											<b>ชื่อตำแหน่งจัดเก็บสินค้า <span style="color:red"> *</span></b>
 											<div class="form-line">
-												<input type="text" id="locationName" name="locationName" class="form-control" placeholder="ชื่อตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>">
+												<input type="text" maxlength="5" onkeyup="chkShort();" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
-											<label id="locationName_error" class="error" for="locationName">กรุณาระบุ</label>
+											<div class="help-info">กรอกได้ไม่เกิน5ตัวอักษร</div>
+											<label id="locationCode-error" class="error" for="locationCode">กรุณาระบุ รหัสตำแหน่งจัดเก็บ</label>
+											<label id="locationCode2-error" class="error" for="locationCode">มีรหัสตำแหน่งจัดเก็บนี้แล้ว</label>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<div class="form-group">
+											<b>ตำแหน่งจัดเก็บสินค้า</b>
+											<div class="form-line">
+												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+											</div>
+											<label id="locationName_error" class="error" for="locationName">กรุณาระบุ ตำแหน่งจัดเก็บสินค้า</label>
+											<label id="locationName2_error" class="error" for="locationName">มีตำแหน่งจัดเก็บสินค้นี้แล้ว</label>
 										</div>
 									</div>
 								</div>
-								<div class="row clearfix">
+								<!-- <div class="row clearfix">
 									<div class="col-sm-12">
 										<b>รายละเอียด </b>
 										<div class="form-group">
@@ -68,7 +86,7 @@ if($proc=='edit'){
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="align-center">
 									<button class="btn btn-success waves-effect" type="button" onclick="chkinput();">บันทึก</button>
@@ -92,6 +110,7 @@ $(document).ready(function() {
         //$('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
         //$('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
         //$('.focused').removeClass('focused');
+        $('.form-line').removeClass('focused');
         $('.error').hide();
         // $('.datepickers').bootstrapMaterialDatePicker();
 });
@@ -105,6 +124,21 @@ function chkinput(){
         $('#locationID_error').show();
         return false;
     }*/
+    if($('#locationCode').val()==''){
+			$('#locationCode-error').show();
+
+			return false;
+		}else{
+			$('#locationCode-error').hide();
+		}
+		
+		if($('#chk3').val()==1){
+			$('#locationCode2-error').show();
+			$('#locationCode').focus();
+			return false;
+		}else{
+			$('#locationCode2-error').hide();
+		}
     if($('#locationName').val()==''){
         $('#locationName_error').show();
     $('#locationName').focus();
@@ -117,4 +151,38 @@ function chkinput(){
     }
 }
 
+function chkName(){
+
+		var locationName= $('#locationName').val();
+		var locationID= $('#locationID').val();
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'chk_LocationName',locationName:locationName,locationID:locationID},function(data){
+			if(data==1){
+				$('#locationName2-error').show();
+				$('#chk2').val(1);
+			}else{
+				$('#locationName2-error').hide();
+				$('#chk2').val(0);
+
+			}
+
+		},'json');
+	}
+	function chkShort(){
+			debugger
+		var locationCode= $('#locationCode').val();
+		var locationID= $('#locationID').val();
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'chk_locationCode',locationCode:locationCode,locationID:locationID},function(data){
+			if(data==1){
+				$('#locationCode2-error').show();
+				$('#chk3').val(1);
+			}else{
+				$('#locationCode2-error').hide();
+				$('#chk3').val(0);
+
+			}
+
+		},'json');
+	}
 </script>

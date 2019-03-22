@@ -57,9 +57,8 @@ chk_role('2_3','isSearch',1) ;
                                 <input type="hidden" id="productID" name="productID" value="">
                                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-
-
-                                <div class="row clearfix">
+                        
+                                <!-- <div class="row clearfix">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                           <b>รหัสสินค้า </b>
@@ -81,20 +80,20 @@ chk_role('2_3','isSearch',1) ;
 
                                  <div class="icon-and-text-button-demo align-center">
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                </div>
+                                </div> -->
                                 <div class="icon-and-text-button-demo align-right">
                                     <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role('2_3','isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                 </div>
                                 <div>
-                                    <table class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
+                                    <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="10%">รหัสสินค้า</th>
-                                                <th width="15%">ชื่อสินค้า</th>
-                                                <th width="10%">ยี่ห้อ</th>
-                                                <th width="5%">จำนวน</th>
-                                                <th width="10%">จัดการ</th>
+                                                <th width="10%" style="text-align:left">รหัสสินค้า</th>
+                                                <th width="30%" style="text-align:left">ชื่อสินค้า</th>
+                                                <th width="10%" style="text-align:left">ยี่ห้อ</th>
+                                                <th width="5%" style="text-align:left">จำนวน</th>
+                                                <th width="10%" style="text-align:left"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -115,12 +114,12 @@ chk_role('2_3','isSearch',1) ;
                                                  }
                                             ?>
                                                 <tr>
-                                                    <td  style="text-align: center;"><?php echo $i+$goto;?></td>
-                                                    <td style="text-align: center;"><?php echo $rec['productCode'];?></td>
+                                                    <td><?php echo $i+$goto;?></td>
+                                                    <td><?php echo $rec['productCode'];?></td>
                                                     <td><?php echo $rec['productName'];?></td>
-                                                    <td style="text-align: center;"><?php echo get_brand_name($rec['brandID']);?></td>
-                                                    <td style="text-align: center;"><?php echo number_format($rec['productUnit']).' '.$arr_unitType[$rec['unitType']];?></td>
-                                                    <td style="text-align: center;"><?php echo $info.$edit.$del;?>
+                                                    <td><?php echo get_brand_name($rec['brandID']);?></td>
+                                                    <td><?php echo number_format($rec['productUnit']).' '.$arr_unitType[$rec['unitType']];?></td>
+                                                    <td><?php echo $info.$edit.$del;?>
                                                       <input type="hidden" id="show_code_<?php echo $rec['productID'];?>" value="<?php echo $rec['productCode'];?>" >
                                                       <input type="hidden" id="show_name_<?php echo $rec['productID'];?>" value="<?php echo $rec['productName'];?>" >
                                                       <input type="hidden" id="show_brand_<?php echo $rec['productID'];?>" value="<?php echo get_brand_name($rec['brandID']);?>" >
@@ -147,7 +146,7 @@ chk_role('2_3','isSearch',1) ;
 
                                         </tbody>
                                     </table>
-                                       <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                                       <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                                 </div>
                             </form>
                         </div>
@@ -225,6 +224,11 @@ chk_role('2_3','isSearch',1) ;
             </div>
         </div>
 <script>
+    $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 
 function searchData(){
   $("#frm-search").submit();

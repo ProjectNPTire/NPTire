@@ -61,7 +61,7 @@ $readonly = "readonly";
                                             <div class="form-line">
                                                 <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>">
                                             </div>
-                                            <label id="firstname-error" class="error" for="firstname">กรุณาระบุ</label>
+                                            <label id="firstname-error" class="error" for="firstname">กรุณาระบุ ชื่อพนักงาน</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -70,7 +70,7 @@ $readonly = "readonly";
                                             <div class="form-line">
                                                 <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>">
                                             </div>
-                                            <label id="lastname-error" class="error" for="lastname">กรุณาระบุ</label>
+                                            <label id="lastname-error" class="error" for="lastname">กรุณาระบุ นามสกุลพนักงาน</label>
                                         </div>
                                     </div>
                                 </div>
@@ -82,7 +82,7 @@ $readonly = "readonly";
                                       <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" value="<?php echo conv_date($rec['birthday']);?>" <?php echo $proc == "edit" ? disabled : '';?>>
                                     </div>
                                     <input type="hidden" class="form-control" name="hdfBirthday" id="hdfBirthday" value="<?php echo conv_date($rec['birthday']); ?>">
-                                    <label id="birthday-error" class="error" for="birthday">กรุณาระบุ</label>
+                                    <label id="birthday-error" class="error" for="birthday">กรุณาระบุ วัน/เดือน/ปีเกิด</label>
                                   </div>
                                 </div>
                                 <div class="col-md-4">
@@ -91,7 +91,7 @@ $readonly = "readonly";
                                     <div class="form-line">
                                       <input type="text" onchange="checkForm();return false;" class="form-control idcard" placeholder="9-9999-99999-99-9"  name="idcard" id="idcard"  value="<?php echo $rec['idcard'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                     </div>
-                                    <label id="idcard-error" class="error" for="idcard">กรุณาระบุ</label>
+                                    <label id="idcard-error" class="error" for="idcard">กรุณาระบุ เลขบัตรประชาชน</label>
                                     <label id="idcard-error2" class="error" for="idcard">รูปแบบบัตรประชาชนไม่ถูกต้อง</label>
                                   </div>
                                 </div>
@@ -101,7 +101,7 @@ $readonly = "readonly";
                                     <div class="form-line">
                                       <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this,1);return false;" value="<?php echo $rec['mobile'];?>">
                                     </div>
-                                    <label id="mobile-error" class="error" for="mobile">กรุณาระบุ</label>
+                                    <label id="mobile-error" class="error" for="mobile">กรุณาระบุ เบอร์โทรศัพท์พนักงาน</label>
                                     <label id="mobile-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
                                   </div>
                                 </div>
@@ -123,7 +123,7 @@ $readonly = "readonly";
                                          <div class="form-line">
                                             <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>">
                                           </div>
-                                          <label id="address-error" class="error" for="address">กรุณาระบุ</label>
+                                          <label id="address-error" class="error" for="address">กรุณาระบุ ที่อยู่ตามบัตรประชาชน</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -140,7 +140,7 @@ $readonly = "readonly";
                                               <?php }  ?>
                                             </select>
                                             <input type="hidden" name="hdfProvinceID" id="hdfProvinceID" value="<?php echo $rec['provinceID'] ?>">
-                                            <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก</label>
+                                            <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก จังหวัดตามบัตรประชาชน</label>
                                           </div>
                                         </div>
                                         <div class="col-sm-4">
@@ -157,7 +157,7 @@ $readonly = "readonly";
                                         <?php }  ?>
                                       </select>
                                       <input type="hidden" name="hdfDistrictID" id="hdfDistrictID" value="<?php echo $rec['districtID'] ?>">
-                                      <label id="districtID-error" class="error" for="districtID">กรุณาเลือก</label>
+                                      <label id="districtID-error" class="error" for="districtID">กรุณาเลือก อำเภอ/เขตตามบัตรประชาชน</label>
                                     </div>
                                   </div>
                                 </div>
@@ -176,7 +176,7 @@ $readonly = "readonly";
                                               <?php }  ?>
                                             </select>
                                             <input type="hidden" name="hdfSubDistrictID" id="hdfSubDistrictID" value="<?php echo $rec['subDistrictID'] ?>">
-                                            <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก</label>
+                                            <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก ตำบล/แขวงตามบัตรประชาชน</label>
                                           </div>
                                         </div>
                                         <div class="col-md-4">
@@ -186,7 +186,7 @@ $readonly = "readonly";
                                             <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>">
                                           </div>
                                         </div>
-                                        <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ</label>
+                                        <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์ามบัตรประชาชน</label>
                                       </div>
                                   </div>
                                   <h2 class="card-inside-title">ที่อยู่ปัจจุบัน</h2><hr />
@@ -203,7 +203,7 @@ $readonly = "readonly";
                                        <div class="form-line">
                                         <input type="text" class="form-control " placeholder=""  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>">
                                       </div>
-                                      <label id="addressIDCard-error" class="error" for="addressIDCard">กรุณาระบุ</label>
+                                      <label id="addressIDCard-error" class="error" for="addressIDCard">กรุณาระบุ ที่อยู่ปัจจุบัน</label>
                                     </div>
                                   </div>
                                   <div class="col-sm-4">
@@ -219,6 +219,7 @@ $readonly = "readonly";
                                           <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceIDCard']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
                                         <?php }  ?>
                                       </select>
+                                      <label id="provinceIDCard-error" class="error" for="provinceIDCard">กรุณาเลือก จังหวัดตามที่อยู่ปัจจุบัน</label>
                                     </div>
                                   </div>
                                 </div>
@@ -236,6 +237,7 @@ $readonly = "readonly";
                                                 <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtIDCard']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
                                             <?php }  ?>
                                             </select>
+                                            <label id="districtIDCard-error" class="error" for="districtIDCard">กรุณาเลือก อำเภอ/เขตตามที่อยู่ปัจจุบัน</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
@@ -252,6 +254,7 @@ $readonly = "readonly";
 
                                             <?php }  ?>
                                             </select>
+                                            <label id="subDistrictIDCard-error" class="error" for="subDistrictIDCard">กรุณาเลือก ตำบล/แขวงตามที่อยู่ปัจจุบัน</label>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -260,7 +263,7 @@ $readonly = "readonly";
                                       <div class="form-line">
                                         <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" readOnly>
                                       </div>
-                                      <label id="zipcodeIDCard-error" class="error" for="zipcodeIDCard">กรุณาระบุ</label>
+                                      <label id="zipcodeIDCard-error" class="error" for="zipcodeIDCard">กรุณาระบุ รหัสไปรษณีย์ตามที่อยู่ปัจจุบัน</label>
                                     </div>
                                   </div>                         
                                 </div>
@@ -272,7 +275,7 @@ $readonly = "readonly";
                                 <div class="form-line">
                                   <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
-                                <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ</label>
+                                <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ ชื่อบุคคลอ้างอิง</label>
                               </div>
                             </div>
                             <div class="col-sm-4">
@@ -281,7 +284,7 @@ $readonly = "readonly";
                                 <div class="form-line">
                                   <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
-                                <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ</label>
+                                <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ นามสกุลบุคคลอ้างอิง</label>
                               </div>
                             </div>
                             <div class="col-md-4">
@@ -290,7 +293,7 @@ $readonly = "readonly";
                                 <div class="form-line">
                                   <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                 </div>
-                                <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ</label>
+                                <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ เบอร์โทรศัพท์บุคคลอ้างอิง</label>
                                 <label id="mobileref-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
                               </div>
                             </div>

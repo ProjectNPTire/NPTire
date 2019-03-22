@@ -46,7 +46,7 @@ chk_role($page_key,'isSearch',1) ;
                               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                              <div class="row clearfix">
+                              <!-- <div class="row clearfix">
                                   <div class="col-sm-10">
                                       <div class="form-group">
                                         <b>ประเภทสินค้า </b>
@@ -60,7 +60,7 @@ chk_role($page_key,'isSearch',1) ;
                                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                    </div>
                                   </div>
-                              </div>
+                              </div> -->
 
                               
 
@@ -68,13 +68,15 @@ chk_role($page_key,'isSearch',1) ;
                                  <button  class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                              </div>
                                 <div class="table-responsive">
-                                    <table width="100%" class="table table-bordered table-striped table-hover dataTable">
+                                    <table id="table1" width="100%" class="table table-bordered table-striped table-hover dataTable">
                                         <thead>
                                             <tr>
-                                                <th  width="10%">ลำดับ</th>
-                                                <th  width="25%">ประเภทสินค้า</th>
-                                                <th  width="40%">รายละเอียด</th>
-                                                <th  width="10%">จัดการ</th>
+                                                <th width="5%">ลำดับ</th>
+                                                <th width="20%" style="text-align:left">รหัสประเภทสินค้า</th>
+                                                <th width="60%" style="text-align:left">ประเภทสินค้า</th>
+                                          <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
+                                              <!--   <th style="text-align:left">รายละเอียด</th> -->
+                                                <th width="15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -94,8 +96,11 @@ chk_role($page_key,'isSearch',1) ;
                                           ?>
                                               <tr>
                                                   <td style="text-align: center;"><?php echo $i+$goto;?></td>
+                                                  <td><?php echo $rec['productTypeNameShort'];?></td>
+                                           <!--        <td><?php echo $rec['productTypeCode'];?></td> -->
                                                   <td><?php echo $rec['productTypeName'];?></td>
-                                                  <td><?php echo $rec['productTypeDetail'];?></td>
+                                                  <!-- <td><?php echo $rec['productTypeNameShort'];?></td> -->
+                                                  <!-- <td><?php echo $rec['productTypeDetail'];?></td> -->
                                                   <td style="text-align: center;"><?php echo $edit.$del;?></td>
                                               </tr>
                                           <?php }
@@ -105,7 +110,7 @@ chk_role($page_key,'isSearch',1) ;
                                           ?>
                                         </tbody>
                                     </table>
-                                       <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                                       <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                                 </div>
                             </form>
                         </div>
@@ -124,6 +129,11 @@ chk_role($page_key,'isSearch',1) ;
 
 
 <script>
+  $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 
 function searchData(){
   $("#frm-search").submit();

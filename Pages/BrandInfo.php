@@ -38,40 +38,42 @@ T
 							<input type="hidden" id="chk2" name="chk2" value="0">
 							<div class="body">
 								<div class="row clearfix">
-									<div class="col-sm-12">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
+								<div class="row clearfix">
+									<!-- <div class="col-sm-12">
 										<b>รหัสยี่ห้อสินค้า <span style="color:red"> *</span></b>
 										<div class="form-group">
 											<div class="form-line">
 												<input type="text " <?php echo $readonly ?> name="brandCode" id="brandCode" class="form-control" value="<?php echo $rec['brandCode'];?>">
 											</div>
 										</div>
-									</div>
-								</div>
-								<div class="row clearfix">
-									<div class="col-sm-12">
-										<b>ชื่อยี่ห้อสินค้า <span style="color:red"> *</span></b>
+									</div> -->
+									<div class="col-sm-6">
+										<b>รหัสยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text " onkeyup="chk1();" name="brandName" id="brandName" class="form-control" placeholder="ชื่อยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>">
+												<input type="text" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
-											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ชื่อยี่ห้อสินค้า</label>
-											<label id="brandName2-error" class="error" for="brandName">มีชื่อยี่ห้อสินค้านี้แล้ว</label>
+											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
+											<label id="brandName_short-error" class="error" for="brandName_short">กรุณาระบุ รหัสยี่ห้อสินค้า</label>
+											<label id="brandName_short2-error" class="error" for="brandName_short">มีรหัสสินค้านี้แล้ว</label>
+										</div>
+									</div>
+									<div class="col-sm-6">
+										<b>ยี่ห้อสินค้า</b>
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text " onkeyup="chk1();" name="brandName" id="brandName" class="form-control" placeholder="ยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+											</div>
+											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ยี่ห้อสินค้า</label>
+											<label id="brandName2-error" class="error" for="brandName">มียี่ห้อสินค้านี้แล้ว</label>
 										</div>
 									</div>
 								</div>
-								<div class="row clearfix">
-									<div class="col-sm-12">
-										<b>ชื่อย่อยี่ห้อสินค้า <span style="color:red"> *</span></b>
-										<div class="form-group">
-											<div class="form-line">
-												<input type="text" maxlength="2" onkeyup="chk2();" name="brandName_short" id="brandName_short" class="form-control" placeholder="ชื่อย่อยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>">
-											</div>
-											<label id="brandName_short-error" class="error" for="brandName_short">กรุณาระบุ ชื่อย่อ</label>
-											<label id="brandName_short2-error" class="error" for="brandName_short">มีชื่อย่อนี้แล้ว</label>
-										</div>
-									</div>
-								</div>
-								<div class="row clearfix">
+						
+						<!-- 		<div class="row clearfix">
 									<div class="col-sm-12">
 										<b>รายละเอียด </b>
 										<div class="form-group">
@@ -80,7 +82,7 @@ T
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="align-center">
 									<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
@@ -108,14 +110,12 @@ T
 
 	function chkinput(){
 
-
-
-		if($('#brandName').val()==''){
-			$('#brandName-error').show();
-			$('#brandName').focus();
+		if($('#chk2').val()==1){
+			$('#brandName_short2-error').show();
+			$('#brandName_short').focus();
 			return false;
 		}else{
-			$('#brandName-error').hide();
+			$('#brandName_short2-error').hide();
 		}
 
 		if($('#brandName_short').val()==''){
@@ -125,6 +125,16 @@ T
 		}else{
 			$('#brandName_short-error').hide();
 		}
+
+		if($('#brandName').val()==''){
+			$('#brandName-error').show();
+			$('#brandName').focus();
+			return false;
+		}else{
+			$('#brandName-error').hide();
+		}
+
+		
 
 		if($('#chk').val()==1){
 			return false;
@@ -136,7 +146,7 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 	}
 
 	$(document).ready(function() {
-
+		$('.form-line').removeClass('focused');
 		$('.error').hide();
 
 		if($('#proc').val()=='add'){
@@ -167,7 +177,8 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 		},'json');
 	}
 
-	function chk2(){
+	function chkShort(){
+	debugger
 		var brandName_short= $('#brandName_short').val();
 		var brandID= $('#brandID').val();
 		$.ajaxSetup({async: false});

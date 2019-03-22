@@ -56,7 +56,7 @@ chk_role($page_key,'isSearch',1);
                                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                                <div class="row clearfix">
+                               <!--  <div class="row clearfix">
                                     <div class="col-sm-6">
                                      <div class="form-group">
                                       <b>เลขที่ใบสั่งซื้อ </b>
@@ -109,13 +109,13 @@ chk_role($page_key,'isSearch',1);
 
                 <div class="icon-and-text-button-demo align-center">
                     <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                </div>
+                </div> -->
 
                 <div class="icon-and-text-button-demo align-right">
                     <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                 </div>
                 <div class="">
-                    <table width="100%" class="table table-bordered table-striped table-hover ">
+                    <table width="100%" id="table1" class="table table-bordered table-striped table-hover ">
                         <thead>
                             <tr>
                                 <th>ลำดับ</th>
@@ -149,7 +149,7 @@ chk_role($page_key,'isSearch',1);
                             ?>
                         </tbody>
                     </table>
-                    <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                    <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                 </div>
             </form>
         </div>
@@ -169,7 +169,11 @@ chk_role($page_key,'isSearch',1);
 </html>
 
 <script>
-
+  $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
     function searchData(){
         $('#frm-search').removeAttr('target');
         $("#frm-search").submit();

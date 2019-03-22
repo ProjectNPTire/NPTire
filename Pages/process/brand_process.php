@@ -19,15 +19,16 @@ switch($proc){
 				$fields = array(
 						"brandName"=>$brandName,
 						"brandName_short"=>$brandName_short,
-						"brandDetail"=>$brandDetail
+						"brandDetail"=>$brandDetail,
+						"name_nospace"=>str_replace(" ","",$brandName),
 						//"name_nospace"=>str_replace(" ","",$brandName),
 
 				);
-				print_pre($fields);
+				//print_pre($fields);
 				 $db->db_insert($tb1,$fields);
 				 $detail = 'เพิ่มข้อมูลยี่ห้อ : '.$brandName;
 				 save_log($detail);
-exit;
+//exit;
 			$text=$save_proc;
 		}catch(Exception $e){
 			$text=$e->getMessage();

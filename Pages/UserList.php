@@ -89,11 +89,11 @@ chk_role($page_key,'isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="15%" style="text-align:left">รหัสพนักงาน</th>
+                                                <th width="10%" style="text-align:left">รหัสพนักงาน</th>
                                                 <th width="15%" style="text-align:left">ชื่อ</th>
                                                 <th width="15%" style="text-align:left">สกุล</th>
-												<th width="15%" style="text-align:left">เบอร์มือถือ</th> 
-												 <th width="10%"style="text-align:left">สถานะ</th>
+                                                <th width="15%" style="text-align:left">เบอร์มือถือ</th> 
+                                                <th width="10%"style="text-align:left">สถานะ</th>
                                                 <!--  <th width="25%"style="text-align:left">ข้อมูล</th>
                                                 <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
                                                 <th width="15%"></th>

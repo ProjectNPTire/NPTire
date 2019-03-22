@@ -38,49 +38,66 @@ $readonly = "readonly";
 							<input type="hidden" id="chk3" name="chk3" value="0">
 							<div class="body">
 								<div class="row clearfix">
-									<div class="col-sm-12">
-										<b>รหัสประเภทสินค้า <span style="color:red"> *</span></b>
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
+								<div class="row clearfix">
+									<!-- <div class="col-sm-4">
+										<b>รหัสประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
 												<input type="text " <?php echo $readonly ?> name="productTypeCode" id="productTypeCode" class="form-control" value="<?php echo $rec['productTypeCode'];?>">
 											</div>
 										</div>
-									</div>
-								</div>
-								<div class="row clearfix">
-									<div class="col-sm-12">
-										<b>ชื่อประเภทสินค้า <span style="color:red"> *</span></b>
+									</div> -->
+									<div class="col-sm-6">
+										<b>รหัสประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text " onkeyup="chkName();" name="productTypeName" id="productTypeName" class="form-control" placeholder="ชื่อประเภทสินค้า" value="<?php echo $rec['productTypeName'];?>">
+												<input type="text" maxlength="2" onkeyup="chkShort();" name="productTypeNameShort" id="productTypeNameShort" class="form-control" placeholder="รหัสประเภทสินค้า" value="<?php echo $rec['productTypeNameShort'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
-											<label id="productTypeName-error" class="error" for="productTypeName">กรุณาระบุ ประเภทสินค้า</label>
-											<label id="productTypeName2-error" class="error" for="productTypeName">มีชื่อประเภทสินค้านี้แล้ว</label>
+											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
+											<label id="productTypeNameShort-error" class="error" for="productTypeNameShort">กรุณาระบุ รหัสประเภทสินค้า</label>
+											<label id="productTypeNameShort2-error" class="error" for="productTypeNameShort">มีรหัสประเภทสินค้านี้แล้ว</label>
 										</div>
 									</div>
-								</div>
-								<div class="row clearfix">
-									<div class="col-sm-12">
-										<b>ชื่อย่อประเภทสินค้า <span style="color:red"> *</span></b>
+									<div class="col-sm-6">
+										<b>ประเภทสินค้า</b>
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text " onkeyup="chkName();" name="productTypeName" id="productTypeName" class="form-control" placeholder="ประเภทสินค้า" value="<?php echo $rec['productTypeName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>	>
+											</div>
+											<label id="productTypeName-error" class="error" for="productTypeName">กรุณาระบุ ประเภทสินค้า</label>
+											<label id="productTypeName2-error" class="error" for="productTypeName">มีประเภทสินค้านี้แล้ว</label>
+										</div>
+									</div>
+									<!-- <div class="col-sm-4">
+										<b>อักษรประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
 												<input type="text" maxlength="2" onkeyup="chkShort();" name="productTypeNameShort" id="productTypeNameShort" class="form-control" placeholder="ชื่อย่อประเภทสินค้า" value="<?php echo $rec['productTypeNameShort'];?>">
 											</div>
-											<label id="productTypeNameShort-error" class="error" for="productTypeNameShort">กรุณาระบุ ประเภทสินค้า</label>
-											<label id="productTypeNameShort2-error" class="error" for="productTypeNameShort">มีชื่อย่อประเภทสินค้านี้แล้ว</label>
+											<label id="productTypeNameShort-error" class="error" for="productTypeNameShort">กรุณาระบุ อักษรประเภทสินค้า</label>
+											<label id="productTypeNameShort2-error" class="error" for="productTypeNameShort">มีอักษรประเภทสินค้านี้แล้ว</label>
 										</div>
-									</div>
+									</div> -->
+								</div>
+						<!-- 		<div class="row clearfix">
+									
 								</div>
 								<div class="row clearfix">
+									
+								</div> -->
+								<!-- <div class="row clearfix">
 									<div class="col-sm-12">
-										<b>รายละเอียด </b>
 										<div class="form-group">
+											<b>รายละเอียด</b>
 											<div class="form-line">
-												<textarea  class="form-control" placeholder="รายละเอียด" id="productTypeDetail" name="productTypeDetail"> <?php echo $rec['productTypeDetail'];?> </textarea>
+												<textarea rows="1" id="note" name="note" class="form-control no-resize auto-growth"><?php echo $rec['note'];?></textarea>
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="align-center">
 									<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
@@ -107,16 +124,38 @@ $readonly = "readonly";
 	}
 
 	function chkinput(){
-		debugger
 
+		if($('#productTypeCode').val()==''){
+			$('#productTypeCode-error').show();
 
-			if($('#productTypeCode').val()==''){
-				$('#productTypeCode-error').show();
-	
-				return false;
-			}else{
-				$('#productTypeCode-error').hide();
-			}
+			return false;
+		}else{
+			$('#productTypeCode-error').hide();
+		}
+
+		if($('#chk3').val()==1){
+			$('#productTypeNameShort2-error').show();
+			$('#productTypeNameShort').focus();
+			return false;
+		}else{
+			$('#productTypeNameShort2-error').hide();
+		}
+
+		if($('#productTypeNameShort').val()==''){
+			$('#productTypeNameShort-error').show();
+			$('#productTypeNameShort').focus();
+			return false;
+		}else{
+			$('#productTypeNameShort-error').hide();
+		}
+
+		if($('#chk2').val()==1){
+			$('#productTypeName2-error').show();
+			$('#productTypeName').focus();
+			return false;
+		}else{
+			$('#productTypeName2-error').hide();
+		}
 
 		if($('#productTypeName').val()==''){
 			$('#productTypeName-error').show();
@@ -141,12 +180,7 @@ $readonly = "readonly";
 			return false;
 		}
 
-		if($('#chk1').val()==1){
-			$('#productTypeNameShort2-error').show();
-			return false;
-		}else{
-			$('#productTypeNameShort2-error').hide();
-		}
+		
 		
 		if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
 			$("#frm-input").submit();
@@ -154,7 +188,7 @@ $readonly = "readonly";
 	}
 
 	$(document).ready(function() {
-
+		$('.form-line').removeClass('focused');
 		$('.error').hide();
 
 		if($('#proc').val()=='add'){
@@ -186,7 +220,6 @@ $readonly = "readonly";
 		},'json');
 	}
 	function chkName(){
-
 		var productTypeName= $('#productTypeName').val();
 		var productTypeID= $('#productTypeID').val();
 		$.ajaxSetup({async: false});

@@ -2,11 +2,10 @@
 header ('Content-type: text/html; charset=utf-8');
 $path = "../../";
 include($path."include/config_header_top.php");
-
 //$path_pic = $path."file_img/";
-
 $url_back = '../'.$_REQUEST['form_page'];
 $proc = $_REQUEST['proc'];
+$locationID = $_REQUEST['locationID'];
 //$userID = $_REQUEST['userID'];
 //$img = $_FILES['img'];
 
@@ -18,8 +17,9 @@ switch($proc){
 				unset($fields);
 				$fields = array(
 						//"locationID"=>$locationID,
+						"locationCode"=>$locationCode,
 						"locationName"=>$locationName,
-						"locationDetail"=>$locationDetail,
+						"name_nospace"=>str_replace(" ","",$locationName),
 				);
 				//print_pre($fields);
 				 $db->db_insert($tb1,$fields);
@@ -35,8 +35,9 @@ switch($proc){
 				unset($fields);
 				$fields = array(
 					//"locationID"=>$locationID,
+					"locationCode"=>$locationCode,
 					"locationName"=>$locationName,
-					"locationDetail"=>$locationDetail,
+					"name_nospace"=>str_replace(" ","",$locationName),
 				);
 
 				 $db->db_update($tb1,$fields, " locationID = '".$locationID."'");
@@ -61,8 +62,8 @@ switch($proc){
 	break;
 }
 
+if($proc!='chk_dup1' && $proc!='chk_dup2'){
 ?>
-
 <form name="form_back" method="post" action="<?php echo $url_back;?>">
 	<input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>" />
 	<input type="hidden" id="act" name="act" value="<?php echo $act;?>" />
@@ -71,3 +72,6 @@ switch($proc){
 	alert('<?php echo $text;?>');
 	form_back.submit();
 </script>
+<?php
+}
+?>

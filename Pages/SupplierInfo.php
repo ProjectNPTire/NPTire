@@ -41,8 +41,12 @@ chk_role($page_key,'isAdd',1);
                                 <input type="hidden" id="supID" name="supID" value="<?php echo $supID; ?>">
                                 <input type="hidden" id="chksup" name="chksup" value="0">
                                 <div class="row clearfix">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
+                                <div class="row clearfix">
                                     <div class="col-sm-4">
-                                          <b>รหัส <span style="color:red"> *</span></b>
+                                          <b>รหัสคู่ค้า/บริษัท</b>
                                          <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text " name="supCode" id="supCode" class="form-control" value="<?php echo $rec['supCode'];?>" readOnly>
@@ -51,11 +55,11 @@ chk_role($page_key,'isAdd',1);
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <b>ชื่อบริษัท <span style="color:red"> *</span></b>
+                                            <b>ชื่อคู่ค้า/บริษัท</b>
                                             <div class="form-line">
                                                 <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชื่อคู่ค้า/บริษัท" value="<?php echo $rec['sup_name'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?> onkeyup="chk_sup();">
                                             </div>
-                                            <label id="sup_name_error" class="error" for="sup_name">กรุณาระบุ</label>
+                                            <label id="sup_name_error" class="error" for="sup_name">กรุณาระบุ ชื่อคู่ค้า/บริษัท</label>
                                             <label id="sup_name2_error" class="error" for="sup_name">มีชื่อบริษัทนี้แล้ว</label>
                                         </div>
                                     </div>
@@ -65,24 +69,26 @@ chk_role($page_key,'isAdd',1);
                                             <div class="form-line">
                                                 <input type="text" id="sup_tel" name="sup_tel" class="form-control tel" placeholder="Ex: 02-000-0000" value="<?php echo $rec['sup_tel'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?>>
                                             </div>
+                                            <label id="sup_tel_error" class="error" for="sup_name">กรุณาระบุ เบอร์โทรศัพท์บริษัท</label>
                                         </div>
                                     </div>
                                 </div>
+                                 <h2 class="card-inside-title">ที่อยู่</h2><hr />
                                 <div class="row clearfix">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <b>ที่อยู่ <span style="color:red"> *</span></b>
+                                            <b>ที่อยู่</b>
                                             <div class="form-line">
                                                 <input type="text" class="form-control " placeholder=""  name="sup_address" id="sup_address"  value="<?php echo $rec['sup_address'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?>>
                                             </div>
-                                            <label id="sup_address_error" class="error" for="sup_address">กรุณาระบุ</label>
+                                            <label id="sup_address_error" class="error" for="sup_address">กรุณาระบุ ที่อยู่</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <b>จังหวัด <span style="color:red"> *</span></b>
+                                            <b>จังหวัด</b>
                                             <div class="form-group form-float">
-                                                <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID',1);">
+                                                <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                     <option value="">เลือก</option>
                                                     <?php
                                                     $s_p=" SELECT * from setup_prov order by province_name_th asc";
@@ -93,15 +99,16 @@ chk_role($page_key,'isAdd',1);
 
                                                     <?php }  ?>
                                                 </select>
-                                                <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก</label>
+                                                <input type="hidden" name="hdfProvinceID" id="hdfProvinceID" value="<?php echo $rec['provinceID'] ?>">
+                                                <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก จังหวัด</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                         <div class="form-group">
-                                            <b>เขต/อำเภอ <span style="color:red"> *</span></b>
+                                            <b>เขต/อำเภอ</b>
                                             <div class="form-group form-float">
-                                                <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID',2);">
+                                                <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                    <option value="">เลือก</option>
                                                    <?php
                                                    $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
@@ -111,7 +118,8 @@ chk_role($page_key,'isAdd',1);
                                                     <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtID']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
                                                 <?php }  ?>
                                             </select>
-                                            <label id="districtID-error" class="error" for="districtID">กรุณาเลือก</label>
+                                            <input type="hidden" name="hdfDistrictID" id="hdfDistrictID" value="<?php echo $rec['districtID'] ?>">
+                                            <label id="districtID-error" class="error" for="districtID">กรุณาเลือก เขต/อำเภอ</label>
                                         </div>
                                     </div>
                                 </div>
@@ -119,60 +127,62 @@ chk_role($page_key,'isAdd',1);
                             <div class="row clearfix">
                                 <div class="col-sm-4">                                   
                                     <div class="form-group">
-                                        <b>แขวง/ตำบล <span style="color:red"> *</span></b>
+                                        <b>แขวง/ตำบล</b>
                                         <div class="form-group form-float">
-                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value);"
-                                            >
+                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');"
+                                            <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                             <option value="">เลือก</option>
                                             <?php
                                             $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
                                             $q_s = $db->query($s_s);
                                             $n_s = $db->db_num_rows($q_s);
                                             while($r_s = $db->db_fetch_array($q_s)){?>
-                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['districtID']==$r_s['districtID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
+                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
 
                                             <?php }  ?>
                                         </select>
-                                        <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก</label>
+                                        <input type="hidden" name="hdfSubDistrictID" id="hdfSubDistrictID" value="<?php echo $rec['subDistrictID'] ?>">
+                                        <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก แขวง/ตำบล</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <b>รหัสไปรษณีย์ <span style="color:red"> *</span></b>
+                                    <b>รหัสไปรษณีย์</b>
                                     <div class="form-line">
-                                       <input type="text" class="form-control" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?>>
+                                       <input type="text" class="form-control" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                    </div>
-                                   <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ</label>
+                                   <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
                                </div>
                            </div>
                        </div>
+                       <h2 class="card-inside-title">พนักงานขาย</h2><hr />
                        <div class="row clearfix">
                         <div class="col-sm-4">
-                          <b>ชื่อพนักงานขาย <span style="color:red"> *</span></b>
+                          <b>ชื่อพนักงานขาย</b>
                           <div class="form-group">
                             <div class="form-line">
-                                <input type="text " name="namesale" id="namesale" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['namesale'];?>">
+                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="namesale" id="namesale" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['namesale'];?>">
                             </div>
-                            <label id="namesale_error" class="error" for="namesale">กรุณาระบุ</label>
+                            <label id="namesale_error" class="error" for="namesale">กรุณาระบุ ชื่อพนักงานขาย</label>
                         </div>
                     </div>
                     <div class="col-sm-4">
-                      <b>นามสกุล <span style="color:red"> *</span></b>
+                      <b>นามสกุล</b>
                       <div class="form-group">
                         <div class="form-line">
-                            <input type="text" name="lastnamesale" id="lastnamesale" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnamesale'];?>">
+                            <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnamesale" id="lastnamesale" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnamesale'];?>">
                         </div>
-                        <label id="lastnamesale_error" class="error" for="lastnamesale">กรุณาระบุ</label>
+                        <label id="lastnamesale_error" class="error" for="lastnamesale">กรุณาระบุ นามสกุลพนักงานขาย</label>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
-                        <b>เบอร์โทรศัพท์มือถือ <span style="color:red"> *</span></b>
+                        <b>เบอร์โทรศัพท์มือถือ</b>
                         <div class="form-line">
                             <input type="text" id="mobilesale" name="mobilesale" class="form-control mobile" placeholder="Ex: 080-000-0000" value="<?php echo $rec['mobilesale'];?>">
                         </div>
-                        <label id="mobilesale_error" class="error" for="mobilesale">กรุณาระบุ</label>
+                        <label id="mobilesale_error" class="error" for="mobilesale">กรุณาระบุ เบอร์โทรศัพท์มือถือพนักงานขาย</label>
                     </div>
                 </div>
             </div> 
@@ -189,15 +199,15 @@ chk_role($page_key,'isAdd',1);
 				<div class="row clearfix">  
                 <div class="col-md-4">
                     <div class="form-group">
-                        <b>IDLine</b>
+                        <b>ID Line</b>
                         <div class="form-line">
                             <input type="text" id="idline" name="idline" class="form-control" placeholder="" value="<?php echo $rec['idline'];?>">
                         </div>
-                        <label id="idline_error" class="error" for="idline">กรุณาระบุ</label>
+                        <label id="idline_error" class="error" for="idline">กรุณาระบุ ID Line</label>
                     </div>
                 </div> 
             </div> 
-            <div class="row clearfix">                               
+          <!--   <div class="row clearfix">                               
              <div class="col-md-12">
                             <div class="form-group">
                                 <b>หมายเหตุ</b>
@@ -206,7 +216,7 @@ chk_role($page_key,'isAdd',1);
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                             <div class="align-center">
                                 <button class="btn btn-success waves-effect" type="button" onclick="chkinput();">บันทึก</button>
                                 <button class="btn btn-default waves-effect" type="button" onclick="OnCancel();">ยกเลิก</button>
@@ -230,6 +240,7 @@ $(document).ready(function() {
         //$('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
         $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
         $('.tel').inputmask('99-999-9999', { placeholder: '__-___-____' });
+        $('.form-line').removeClass('focused');
         //$('.focused').removeClass('focused');
         $('.error').hide();
 
@@ -251,22 +262,33 @@ function OnCancel(){
 
 function chkinput(){
 
-    if($('#chksup').val()==1){
-        $('#sup_name2_error').show();
-        return false;
-    }else{
-        $('#sup_name2_error').hide();
-    }
-
     if($('#sup_name').val()==''){
         $('#sup_name_error').show();
+        $('#sup_name').focus();
         return false;
     }else{
         $('#sup_name_error').hide();
     }
 
+    if($('#chksup').val()==1){
+        $('#sup_name2_error').show();
+        $('#sup_name').focus();
+        return false;
+    }else{
+        $('#sup_name2_error').hide();
+    }
+
+    if($('#sup_tel').val()==''){
+        $('#sup_tel_error').show();
+        $('#sup_tel').focus();
+        return false;
+    }else{
+        $('#sup_tel_error').hide();
+    }
+
     if($('#sup_address').val()==''){
         $('#sup_address_error').show();
+        $('#sup_address').focus();
         return false;
     }else{
         $('#sup_address_error').hide();
@@ -274,6 +296,7 @@ function chkinput(){
 
     if($('#provinceID').val()==0){
         $('#provinceID-error').show();
+        $('#provinceID').focus();
         return false;
     }else{
         $('#provinceID-error').hide();
@@ -281,6 +304,7 @@ function chkinput(){
 
     if($('#districtID').val()==0){
         $('#districtID-error').show();
+        $('#districtID').focus();
         return false;
     }else{
         $('#districtID-error').hide();
@@ -288,12 +312,14 @@ function chkinput(){
 
     if($('#subDistrictID').val()==0){
         $('#subDistrictID-error').show();
+        $('#subDistrictID').focus();
         return false;
     }else{
         $('#subDistrictID-error').hide();
     }
     if($('#zipcode').val()==''){
         $('#zipcode_error').show();
+        $('#zipcode').focus();
         return false;
     }else{
         $('#zipcode-error').hide();
@@ -301,6 +327,7 @@ function chkinput(){
 
     if($('#namesale').val()==''){
         $('#namesale_error').show();
+        $('#namesale').focus();
         return false;
     }else{
         $('#namesale_error').hide();
@@ -308,6 +335,7 @@ function chkinput(){
 
     if($('#lastnamesale').val()==''){
         $('#lastnamesale_error').show();
+        $('#lastnamesale').focus();
         return false;
     }else{
         $('#lastnamesale_error').hide();
@@ -315,9 +343,18 @@ function chkinput(){
 
     if($('#mobilesale').val()==''){
         $('#mobilesale_error').show();
+        $('#mobilesale').focus();
         return false;
     }else{
         $('#mobilesale_error').hide();
+    }
+
+    if($('#idline').val()==''){
+        $('#idline_error').show();
+        $('#idline').focus();
+        return false;
+    }else{
+        $('#idline_error').hide();
     }
 
     if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
@@ -325,21 +362,23 @@ function chkinput(){
     }
 }
 
-function get_area(parent_id,id,type){
+function get_area(parent_id,id,hdf_id,type){
     var html  = '<option value="">เลือก</option>';
     $.ajaxSetup({async: false});
-     $.post('process/get_process.php',{proc:'get_area',parent_id:parent_id,type:type},function(data){
+    $.post('process/get_process.php',{proc:'get_area',parent_id:parent_id,type:type},function(data){
 
-              $.each(data,function(index,value){
-                  html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
-              });
+      $.each(data,function(index,value){
+          html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+      });
+      if(+hdf_id != 0){
+        $('#'+hdf_id).val(parent_id);
+    }
+    $('#'+id).html(html);
+    $('#'+id).selectpicker('refresh');
 
-        $('#'+id).html(html);
-        $('#'+id).selectpicker('refresh');
-
-    },'json');
+},'json');
 }
-function get_zipcode(parent_id){
+function get_zipcode(parent_id,id,hdf_id){
     var html  = '';
     $.ajaxSetup({async: false});
      $.post('process/get_process.php',{proc:'get_zipcode',parent_id:parent_id},function(data){
@@ -347,8 +386,10 @@ function get_zipcode(parent_id){
               $.each(data,function(index,value){
                   html += value['zipcode'];
               });
-
-        $('#zipcode').val(html);
+              if(+hdf_id != 0){
+                  $('#'+hdf_id).val(parent_id);
+              } 
+              $('#'+id).val(html);
 
     },'json');
 }

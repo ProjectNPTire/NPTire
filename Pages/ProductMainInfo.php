@@ -17,6 +17,7 @@ $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 $s_location = "SELECT * from tb_location order by locationName ";
+$readonly = "readonly";
  ?>
 
 <body class="theme-red">
@@ -36,34 +37,37 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                 <input type="hidden" id="chk" name="chk" value="0">
                                 <input type="hidden" id="chk1" name="chk1" value="0">
                             <div class="body">
-
+                              <div class="row clearfix">
+                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                </div>
+                              </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                          <b>รหัสสินค้า </b>
+                                          <b>รหัสสินค้า</b>
                                          <div class="input-group">
                                             <div class="form-line">
-                                                <input type="text " readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
+                                                <input type="text "maxlength="20" readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
                                             </div>
-                                            <label id="productCode-error" class="error" for="productName">มีรหัสสินค้านี้แล้ว</label>
+                                            <label id="productCode-error" class="error" for="productCode">มีรหัสสินค้านี้แล้ว</label>
                                         </div>
 									                  </div>
                                     <div class="col-sm-8">
-                                         <b>ชื่อสินค้า <span style="color:red"> *</span></b>
+                                         <b>ชื่อสินค้า</b>
                                         <div class="input-group">
                                             <div class="form-line">
-                                                <input type="text" onkeyup="chk1();" class="form-control" placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
+                                                <input type="text" onkeyup="chkName();" class="form-control" placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
                                             </div>
-                                            <label id="productName-error" class="error" for="productName">กรุณาระบุ</label>
+                                            <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
                                             <label id="productName2-error" class="error" for="productName">มีชื่อสินค้านี้แล้ว</label>
                                         </div>
                                     </div>
                                 </div>
 								               <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>ยี่ห้อ <span style="color:red"> *</span></b>
+                                        <b>ยี่ห้อสินค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  onchange="get_code();">
+                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_brand=" SELECT * from tb_brand order by brandName asc";
@@ -75,26 +79,29 @@ $s_location = "SELECT * from tb_location order by locationName ";
 
                                             <?php }  ?>
                                             </select>
-                                          <label id="brandID-error" class="error" for="brandID">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
+                                          <label id="brandID-error" class="error" for="brandID">กรุณาเลือก ยี่ห้อสินค้า</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                         <b>ขนาด <span style="color:red"> *</span></b>
+                                         <b>ขนาดสินค้า</b>
                                         <div class="input-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>">
+                                                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
-                                            <label id="productSize-error" class="error" for="productSize">กรุณาระบุ</label>
+                                            <div class="help-info">กรอกได้ไม่เกิน12ตัวอักษร</div>
+                                            <label id="productSize-error" class="error" for="productSize">กรุณาระบุ ขนาดสินค้า</label>
                                         </div>
 
                                     </div>
                                     <div class="col-sm-4">
-                                         <b>รุ่น <span style="color:red"> *</span></b>
+                                         <b>รุ่นสินค้า</b>
                                         <div class="input-group">
                                             <div class="form-line">
-                                                <input type="text" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>">
+                                                <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
-                                            <label id="modelName-error" class="error" for="modelName">กรุณาระบุ</label>
+                                            <div class="help-info">กรอกได้ไม่เกิน6ตัวอักษร</div>
+                                            <label id="modelName-error" class="error" for="modelName">กรุณาระบุ รุ่นสินค้า</label>
                                         </div>
 
                                     </div>
@@ -102,10 +109,10 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                 </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>ประเภทสินค้า <span style="color:red"> *</span></b>
+                                        <b>ประเภทสินค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" >
+                                            <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_pdtype=" SELECT * from tb_producttype where productTypeID in (1,2) order by productTypeName asc";
@@ -118,24 +125,26 @@ $s_location = "SELECT * from tb_location order by locationName ";
 
                                             <?php }  ?>
                                             </select>
-                                          <label id="productTypeID-error" class="error" for="productTypeID">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
+                                          <label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
                                         </div>
 										</div> 
                                     <div class="col-sm-4">
-                                        <b>หน่วยนับ <span style="color:red"> *</span></b>
+                                        <b>หน่วยนับ</b>
 
                                         <div class="form-group form-float">
-                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" >
+                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php   foreach ($arr_unitType2 as $key => $value) {?>
                                                 <option value="<?php echo $key;?>"  <?php echo ($rec['unitType']==$key)?"selected":"";?>> <?php echo $value;?></option>
 
                                             <?php }  ?>
                                             </select>
-                                          <label id="unitType-error" class="error" for="unitType">กรุณาระบุ</label>
+                                            <input type="hidden" name="hdfunitType" id="hdfunitType" value="<?php echo $rec['unitType'] ?>">
+                                          <label id="unitType-error" class="error" for="unitType">กรุณาระบุ หน่วยนับ</label>
                                         </div>
                                     </div>
-                                     <div class="col-md-4">
+                                     <!-- <div class="col-md-4">
                                          <b>รูปภาพ</b>
                                        <div class="form-group">
                                         <div class="form-line">
@@ -143,11 +152,21 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                             <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
                                         </div>
                                         </div>
+                                    </div> -->
+                                    <div class="col-md-4">
+                                     <b>รูปภาพ</b>
+                                     <div class="form-group">
+                                      <div class="form-line">
+                                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
+                                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
+                                      </div>
+                                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
                                     </div>
+                                  </div>
                                  </div>
 
 
-                                 <div class="row clearfix">
+                               <!--   <div class="row clearfix">
              												<div class="col-sm-12">
              															<b>รายละเอียด </b>
              														 <div class="form-group">
@@ -156,7 +175,7 @@ $s_location = "SELECT * from tb_location order by locationName ";
              																</div>
              															</div>
              													</div>
-             											</div>
+             											</div> -->
 
 
                                <div class="row clearfix">
@@ -266,7 +285,23 @@ function OnCancel()
  }
 
 function chkinput(){
+debugger
 
+  if($('#chk').val()==1){
+      $('#productCode-error').show();
+      $('#productCode').focus();
+      return false;
+    }else{
+      $('#productCode-error').hide();
+    }
+
+  if($('#chk1').val()==1){
+    $('#productName2-error').show();
+    $('#productName').focus();
+    return false;
+  }else{
+    $('#productName2-error').hide();
+  }
 
     if($('#productName').val()==''){
         $('#productName-error').show();
@@ -275,7 +310,7 @@ function chkinput(){
     }else{
 		$('#productName-error').hide();
 	}
-    if($('#brandID').val()==''){
+    if($('#brandID').val()==0){
         $('#brandID-error').show();
 		$('#brandID').focus();
         return false;
@@ -296,28 +331,37 @@ function chkinput(){
     }else{
 		$('#modelName-error').hide();
 		}
-    if($('#productTypeID').val()==''){
+    if($('#productTypeID').val()==0){
         $('#productTypeID-error').show();
 		$('#productTypeID').focus();
         return false;
     }else{
 		$('#productTypeID-error').hide();
 	}
-    if($('#unitType').val()==''){
+    if($('#unitType').val()==0){
         $('#unitType-error').show();
 		$('#unitType').focus();
         return false;
     }else{
 		$('#unitType-error').hide();
 	}
+  if($('#proc').val()=='add'){
+    if($('#productImg').val()==''){
+      $('#productImg-error').show();
+      $('#productImg').focus();
+      return false;
+    }else{
+      $('#productImg-error').hide();
+    }
+  }
     if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
       $('#tb_data-error').show();
       return false;
     }
 
-    if($('#chk').val()==1){
-        return false;
-    }
+    // if($('#chk').val()==1){
+    //     return false;
+    // }
 
 
     if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
@@ -329,6 +373,7 @@ $(document).ready(function() {
      //   $('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
      //   $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
         //$('.focused').removeClass('focused');
+        $('.form-line').removeClass('focused');
       $('.error').hide();
 
         // $('.datepickers').bootstrapMaterialDatePicker();
@@ -383,8 +428,7 @@ function chk(){
       },'json');
 }
 
-function chk1(){
-debugger
+function chkName(){
     var productName= $('#productName').val();
     var productID= $('#productID').val();
     $.ajaxSetup({async: false});
@@ -450,4 +494,29 @@ function delData(obj){
    $('#total_unit').val(total);
    //var arr = parseInt($('#rowid').val()replace(/,/g,''));
  }
+ var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
+function ValidateSingleInput(oInput) {
+    if (oInput.type == "file") {
+        var sFileName = oInput.value;
+         if (sFileName.length > 0) {
+            var blnValid = false;
+            for (var j = 0; j < _validFileExtensions.length; j++) {
+                var sCurExtension = _validFileExtensions[j];
+                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+                    blnValid = true;
+                    break;
+                }
+            }
+             
+            if (!blnValid) {
+              // alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
+              alert("กรุณาตรวจสอบไฟล์อัพโหลด");
+              //$('#img-error').show();
+              oInput.value = "";
+              return false;
+            }
+        }
+    }
+    return true;
+}
 </script>

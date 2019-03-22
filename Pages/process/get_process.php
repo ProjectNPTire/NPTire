@@ -146,6 +146,7 @@ switch($PROC){
 	echo json_encode($OBJ);
 	exit();
 	break;
+
 	case "chk_productTypeName" :
 	$productTypeID = $_POST['productTypeID'];
 	$productTypeName = $_POST['productTypeName'];
@@ -153,6 +154,38 @@ switch($PROC){
 
 
 	$sql=" SELECT productTypeName from tb_producttype where name_nospace ='".$name_nospace."'  and productTypeID !='".$productTypeID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+
+	case "chk_LocationName" :
+	$locationID = $_POST['locationID'];
+	$locationName = $_POST['locationName'];
+	$name_nospace = str_replace(" ","",$locationName);
+
+
+	$sql=" SELECT locationName from locationName where name_nospace ='".$name_nospace."'  and locationID !='".$locationID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+
+
+
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_locationCode" :
+	$locationCode = $_POST['locationCode'];
+	$locationID = $_POST['locationID'];
+
+	$sql=" SELECT locationCode from tb_location where locationCode ='".$locationCode."'  and locationID !='".$productTypeID."' ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -228,8 +261,9 @@ switch($PROC){
 	break;
 	case "chk_productCode" :
 	$productCode = $_POST['productCode'];
+	$name_nospace = str_replace(" ","",$productCode);
 
-	$sql=" SELECT * from tb_product where productCode ='".$productCode."' ";
+	$sql=" SELECT productCode from tb_product where productCode ='".$name_nospace."' ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -260,13 +294,13 @@ switch($PROC){
 
 	case "get_productcoder_other" :
 	$productTypeID = $_POST['productTypeID'];
-	$sql=" SELECT productTypeCode from tb_producttype where productTypeID ='".$productTypeID."'  ";
+	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeID ='".$productTypeID."'  ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
 
 
-	$sql_sub =" SELECT productCode from tb_product where productCode like '".$rec['productTypeCode']."-%' order by productID desc";
+	$sql_sub =" SELECT productCode from tb_product where productCode like '".$rec['productTypeCode']."%' order by productID desc";
 	$query_sub =$db->query($sql_sub);
 	$nums_sub = $db->db_num_rows($query_sub);
 	$rec_sub = $db->db_fetch_array($query_sub);
@@ -274,9 +308,9 @@ switch($PROC){
 	if($rec_sub['productCode']){
 		$arr = explode('-',$rec_sub['productCode']);
 		$int = $arr[1]+1;
-		$newcode =  $rec['productTypeCode'].'-'.sprintf("%'.03d",$int);
+		$newcode =  $rec['productTypeNameShort'].'-'.sprintf("%'.03d",$int);
 	}else{
-		$newcode = $rec['productTypeCode'].'-001';
+		$newcode = $rec['productTypeNameShort'].'-001';
 	}
 	$OBJ['name']=	$newcode;
 

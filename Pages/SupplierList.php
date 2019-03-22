@@ -61,7 +61,7 @@ chk_role($page_key,'isSearch',1);
                                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                                <div class="row clearfix">
+                                <!-- <div class="row clearfix">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                           <b>ชื่อคู่ค้า/บริษัท </b>
@@ -101,22 +101,23 @@ chk_role($page_key,'isSearch',1);
 
                                  <div class="icon-and-text-button-demo align-center">
                                     <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                </div>
+                                </div> -->
 
                                 <div class="icon-and-text-button-demo align-right">
                                     <button type="button" class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                 </div>
                                 <div>
-                                    <table class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
+                                    <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
                                         <thead>
                                             <tr>
-                                                <th><div align="center">ลำดับ</div></th>
-                                                <th><div style="text-align:left">ชื่อคู่ค้า/บริษัท</div></th>
-                                                <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th>
-                                                <th><div style="text-align:left">เบอร์โทรศัพท์</div></th> 
-                                                <th><div style="text-align:left">ชื่อ-สกุล พนักงานขาย </div></th> 
-                                                <th><div  style="text-align:left">เบอร์โทรศัพท์พนักงาน</div></th>
-                                                <th width="15%"style="text-align:left"> </th>
+                                                <th width="5%">ลำดับ</th>
+                                                <th width="10%" style="text-align:left">รหัสคู่ค้า</th>
+                                                <th width="20%" style="text-align:left">ชื่อคู่ค้า/บริษัท</th>
+                                           <!--      <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th> -->
+                                                <th width="10%" style="text-align:left">เบอร์โทรศัพท์</th> 
+                                                <th width="15%" style="text-align:left">ชื่อ-สกุล พนักงานขาย</th> 
+                                                <th width="10%" style="text-align:left">เบอร์โทรศัพท์พนักงาน</th>
+                                                <th width="15%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -131,8 +132,9 @@ chk_role($page_key,'isSearch',1);
                                             ?>
                                                 <tr>
                                                     <td align="center"><?php echo $i;?></td>
+                                                    <td><?php echo $rec['supCode'];?></td>
                                                     <td><?php echo $rec['sup_name'];?></td>
-                                                    <td><?php echo $rec['sup_address'];?></td>
+                                           <!--          <td><?php echo $rec['sup_address'];?></td> -->
                                                     <td><?php echo $rec['sup_tel'];?></td>
 													 <td><?php echo $rec['namesale']." ".$rec['lastnamesale'];?></td>
                                                     <td><?php echo $rec['mobilesale'];?></td>
@@ -156,7 +158,7 @@ chk_role($page_key,'isSearch',1);
                                             ?>
                                         </tbody>
                                     </table>
-                                       <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                                       <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                                 </div>
                             </form>
                         </div>
@@ -238,7 +240,11 @@ chk_role($page_key,'isSearch',1);
             </div>
         </div>
 <script>
-
+$(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 function searchData(){
   $("#frm-search").submit();
 }
