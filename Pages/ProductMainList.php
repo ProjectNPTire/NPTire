@@ -96,6 +96,7 @@ chk_role('2_3','isSearch',1) ;
                                                 <th width="10%" style="text-align:left">ขนาด</th>
                                                 <th width="10%" style="text-align:left" >รุ่น</th>
                                                 <th width="5%" style="text-align:left">จำนวน</th>
+                                                <th width="5%" style="text-align:left">หน่วย</th>
                                                 <th width="10%"></th>
                                             </tr>
                                         </thead>
@@ -123,7 +124,8 @@ chk_role('2_3','isSearch',1) ;
                                                     <td><?php echo get_brand_name($rec['brandID']);?></td>
                                                     <td><?php echo $rec['productSize'];?></td>
                                                     <td><?php echo $rec['modelName'];?></td>
-                                                    <td><?php echo number_format($rec['productUnit']).' '.$arr_unitType2[$rec['unitType']];?></td>
+                                                    <td><?php echo number_format($rec['productUnit']);?></td>
+                                                    <td><?php echo $arr_unitType2[$rec['unitType']];?></td>
                                                     <td><?php echo $info.$edit.$del;?>
                                                       <input type="hidden" id="show_code_<?php echo $rec['productID'];?>" value="<?php echo $rec['productCode'];?>" >
                                                       <input type="hidden" id="show_name_<?php echo $rec['productID'];?>" value="<?php echo $rec['productName'];?>" >

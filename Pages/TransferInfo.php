@@ -73,13 +73,13 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                     <thead>
                                         <tr>
 
-                                            <th width="20%">รหัสสินค้า</th>
-                                            <th width="20%">ชื่อสินค้า</th>
-                                            <th width="20%">ยี่ห้อ</th>
-                                            <th width="20%">สถานที่จัดเก็บ</th>
-                                            <th width="10%">จำนวน</th>
-                                            <th width="5%">หน่วยนับ</th>
-                                            <th width="5%">จัดการ</th>
+                                            <th style="text-align:left">รหัสสินค้า</th>
+                                            <th style="text-align:left">ชื่อสินค้า</th>
+                                            <th style="text-align:left">ยี่ห้อสินค้า</th>
+                                            <th style="text-align:left">สถานที่จัดเก็บ</th>
+                                            <th style="text-align:right;">จำนวน</th>
+                                            <th style="text-align:left">หน่วยนับ</th>
+                                            <th width="5%"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -278,15 +278,15 @@ function onsubmitModal(){
               html +=  arr_brand[i].value;
             html += '</td>';
             html += '<td>';
-              html +=  arr_l_name[i].value;
+            html +=  arr_l_name[i].value;
             html += '</td>';
             html += '<td>';
-                html += '<div class="form-line">';
-                html += '   <input type="text"  style="text-align: right;" class="form-control numb"   name="billDescUnit[]" id="billDescUnit_'+rowid+'" onBlur="NumberFormat(this);get_unit('+rowid+');" value="'+arr_unit[i].value+'" >';
-                html += '</div>';
+            html += '<div class="form-line">';
+            html += '   <input type="text"  style="text-align: right;" class="form-control numb"   name="billDescUnit[]" id="billDescUnit_'+rowid+'" onBlur="NumberFormat(this);get_unit('+rowid+');" value="'+arr_unit[i].value+'" >';
+            html += '</div>';
             html += '</td>';
             html += '<td>';
-               html +=  arr_unittype[i].value;
+            html +=  arr_unittype[i].value;
             html += '</td>';
             html += '<td style="text-align: center;">';
             html += '<a class=\"btn bg-red btn-xs waves-effect\"  href=\"javascript:void(0);\" onClick=\"delData(this);\"><?php echo $img_del;?> </a>';

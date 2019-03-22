@@ -65,7 +65,7 @@ chk_role($page_key,'isSearch',1) ;
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
 
-                                <div class="row clearfix">
+                                <!-- <div class="row clearfix">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                           <b>เลขที่ใบเบิก </b>
@@ -98,20 +98,20 @@ chk_role($page_key,'isSearch',1) ;
 
                                  <div class="icon-and-text-button-demo align-center">
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                </div>
+                                </div> -->
                                 <div class="icon-and-text-button-demo align-right">
                                     <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                 </div>
                                 <div>
-                                    <table class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
+                                    <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
                                         <thead>
                                             <tr>
-                                                <th width="5%">ลำดับ</th>
-                                                <th width="10%">เลขที่</th>
-                                                <th width="10%">วันที่</th>
-                                                <th width="20%">ผู้เบิก</th>
-                                                <th width="10%">สถานะ</th>
-                                                <th width="10%">จัดการ</th>
+                                                <th>ลำดับ</th>
+                                                <th style="text-align:left">เลขที่ใบเบิกสินค้า</th>
+                                                <th style="text-align:left">วันที่ทำรายการ</th>
+                                                <th style="text-align:left">ผู้เบิก</th>
+                                                <th style="text-align:left">สถานะ</th>
+                                                <th style="text-align:left"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -128,12 +128,12 @@ chk_role($page_key,'isSearch',1) ;
                                                  
                                             ?>
                                                 <tr>
-                                                    <td  style="text-align: center;"><?php echo $i+$goto;?></td>
-                                                    <td style="text-align: center;"><?php echo $rec['billNo'];?></td>
-                                                    <td style="text-align: center;"><?php echo conv_date($rec['billDate']);?></td>
-                                                    <td style="text-align: center;"><?php echo $rec['billBy'];?></td>
-                                                    <td style="text-align: center;"><?php echo $arr_bill_status[$rec['billStstus']];?></td>
-                                                    <td style="text-align: center;"><?php echo $info.$del;?>
+                                                    <td style="text-align: center;"><?php echo $i+$goto;?></td>
+                                                    <td><?php echo $rec['billNo'];?></td>
+                                                    <td><?php echo conv_date($rec['billDate']);?></td>
+                                                    <td><?php echo $rec['billBy'];?></td>
+                                                    <td><?php echo $arr_bill_status[$rec['billStstus']];?></td>
+                                                    <td><?php echo $info.$del;?>
                                                       <input type="hidden" id="show_no_<?php echo $rec['billID'];?>" value="<?php echo $rec['billNo'];?>" >
                                                       <input type="hidden" id="show_name_<?php echo $rec['billID'];?>" value="<?php echo $rec['billBy'];?>" >
                                                       <input type="hidden" id="show_date_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['billDate']);?>" >
@@ -158,7 +158,7 @@ chk_role($page_key,'isSearch',1) ;
 
                                         </tbody>
                                     </table>
-                                       <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                                       <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                                 </div>
                             </form>
                         </div>
@@ -202,16 +202,17 @@ chk_role($page_key,'isSearch',1) ;
                   </div>
                     <table class="table table-bordered table-striped table-hover  dataTable " > <!--js-basic-example-->
                             <thead>
-                                <tr>
-
-                                    <th width="5%">ลำดับ</th>
-                                    <th width="15%">รหัสสินค้า</th>
-                                    <th width="20%">ชื่อสินค้า</th>
-                                    <th width="20%">ยี่ห้อ</th>
-                                    <th width="20%">สถานที่จัดเก็บ</th>
-                                    <th width="10%">จำนวน</th>
-                                    <th width="5%">หน่วยนับ</th>
-                                </tr>
+                              <tr>
+                                <th>ลำดับ</th>
+                                <th style="text-align:left">รหัสสินค้า</th>
+                                <th style="text-align:left">ชื่อสินค้า</th>
+                                <th style="text-align:left">ยี่ห้อ</th>
+                                <th style="text-align:left">สถานที่จัดเก็บ</th>
+                                <th style="text-align:left">ชื่อสินค้า</th>
+                                <th style="text-align:left">จำนวน</th>
+                                <th style="text-align:left">หน่วยนับ</th>
+                                <th></th>
+                              </tr>
                             </thead>
                             <tbody id="ModalDATA">
                             </tbody>
@@ -248,7 +249,11 @@ chk_role($page_key,'isSearch',1) ;
             </div>
         </div>
 <script>
-
+  $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 function searchData(){
   $("#frm-search").submit();
 }

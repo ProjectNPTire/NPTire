@@ -119,11 +119,11 @@ chk_role($page_key,'isSearch',1);
                         <thead>
                             <tr>
                                 <th>ลำดับ</th>
-                                <th>เลขที่ใบสั่งซื้อ</th>
-                                <th>ชื่อ/บริษัทคู่ค้า</th>
-                                <th>วันที่</th>
-                                <th>สถานะ</th>
-                                <th>จัดการ</th>
+                                <th style="text-align:left">เลขที่ใบสั่งซื้อ</th>
+                                <th style="text-align:left">ชื่อ/บริษัทคู่ค้า</th>
+                                <th style="text-align:left">วันที่ทำรายการ</th>
+                                <th style="text-align:left">สถานะ</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -136,11 +136,11 @@ chk_role($page_key,'isSearch',1);
                                     ?>
                                     <tr>
                                         <td align="center"><?php echo ++$i; ?></td>
-                                        <td align="center"><?php echo $rec['poID']; ?></td>
+                                        <td><?php echo $rec['poID']; ?></td>
                                         <td><?php echo get_sup_name($rec['supID']); ?></td>
-                                        <td align="center"><?php echo conv_date($rec['poDate']); ?></td>
-                                        <td align="center"><?php echo get_poStatus($rec['poStatus']); ?></td>
-                                        <td align="center"><?php echo $info; ?></td>
+                                        <td><?php echo conv_date($rec['poDate']); ?></td>
+                                        <td><?php echo get_poStatus($rec['poStatus']); ?></td>
+                                        <td><?php echo $info; ?></td>
                                     </tr>
                                 <?php }
                             }else{

@@ -57,7 +57,7 @@ chk_role($page_key,'isSearch',1);
                                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                                <div class="row clearfix">
+                                <!-- <div class="row clearfix">
                                     <div class="col-sm-6">
                                          <div class="form-group">
                                           <b>เลขที่ใบรับสินค้า </b>
@@ -74,7 +74,7 @@ chk_role($page_key,'isSearch',1);
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-sm-6">
+                                    <div class="col-sm-6">
                                         <div class="form-group">
                                             <b>ชื่อคู่ค้า/บริษัท </b>
                                             <div class="form-group form-float">
@@ -89,7 +89,7 @@ chk_role($page_key,'isSearch',1);
                                               </select>
                                             </div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-6">
@@ -116,21 +116,21 @@ chk_role($page_key,'isSearch',1);
 
                                 <div class="icon-and-text-button-demo align-center">
                                     <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                </div>
+                                </div> -->
 
                                 <div class="icon-and-text-button-demo align-right">
                                     <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                                 </div>
                                 <div class="">
-                                    <table width="100%" class="table table-bordered table-striped table-hover ">
+                                    <table id="table1" width="100%" class="table table-bordered table-striped table-hover ">
                                         <thead>
                                             <tr>
                                                 <th>ลำดับ</th>
-                                                <th>เลขที่ใบรับสินค้า</th>
-                                                <th>เลขที่ใบสั่งซื้อ</th>
-                                                <th>วันที่</th>
-                                                <th>สถานะ</th>
-                                                <th>จัดการ</th>
+                                                <th style="text-align:left">เลขที่ใบรับสินค้า</th>
+                                                <th style="text-align:left">เลขที่ใบสั่งซื้อ</th>
+                                                <th style="text-align:left">วันที่ทำรายการ</th>
+                                                <th style="text-align:left">สถานะ</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -143,10 +143,10 @@ chk_role($page_key,'isSearch',1);
                                             ?>
                                             <tr>
                                                 <td align="center"><?php echo ++$i; ?></td>
-                                                <td align="center"><?php echo $rec['receiveID']; ?></td>
-                                                <td align="center"><?php echo $rec['poID']; ?></td>
-                                                <td align="center"><?php echo conv_date($rec['receiveDate']); ?></td>
-                                                <td align="center"><?php echo get_receiveStatus($rec['receiveStatus']); ?></td>
+                                                <td><?php echo $rec['receiveID']; ?></td>
+                                                <td><?php echo $rec['poID']; ?></td>
+                                                <td><?php echo conv_date($rec['receiveDate']); ?></td>
+                                                <td><?php echo get_receiveStatus($rec['receiveStatus']); ?></td>
                                                 <td align="center"><?php echo $info; ?></td>
                                             </tr>
                                             <?php }
@@ -156,7 +156,7 @@ chk_role($page_key,'isSearch',1);
                                             ?>
                                         </tbody>
                                     </table>
-                                    <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?>
+                                    <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
                                 </div>
                             </form>
                         </div>
@@ -176,7 +176,11 @@ chk_role($page_key,'isSearch',1);
 </html>
 
 <script>
-
+  $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+   })
+ });
 function searchData(){
     $('#frm-search').removeAttr('target');
     $("#frm-search").submit();

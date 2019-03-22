@@ -95,15 +95,15 @@ chk_role($page_key,'isAdd',1);
 									<table id="tb-data" class="table table-hover table-bordered">
 										<thead>
 											<tr>
-												<th>รหัสสินค้า</th>
-												<th>ชื่อสินค้า</th>
-												<th>ยี่ห้อสินค้า</th>
-												<th>รุ่นสินค้า</th>
-												<th>ขนาดสินค้า</th>
-												<th>ราคา/หน่วย</th>
-												<th>จำนวน</th>
-												<th width="10%">รวม</th>
-												<th>จัดการ</th>
+												<th style="text-align:left">รหัสสินค้า</th>
+												<th style="text-align:left">ชื่อสินค้า</th>
+												<th style="text-align:left">ยี่ห้อสินค้า</th>
+												<th style="text-align:left">รุ่นสินค้า</th>
+												<th style="text-align:left">ขนาดสินค้า</th>
+												<th width="10%" style="text-align:right;">ราคา/หน่วย</th>
+												<th width="10%" style="text-align:right">จำนวน</th>
+												<th width="10%" style="text-align:right">รวม</th>
+												<th></th>
 											</tr>
 										</thead>
 										<tbody>
@@ -211,7 +211,8 @@ chk_role($page_key,'isAdd',1);
 			html += '<th>ยี่ห้อ</th>';
 			html += '<th>รุ่น</th>';
 			html += '<th>ขนาด</th>';
-			html += '<th>จัดการ</th>';
+			html += '<th>จำนวน</th>';
+			html += '<th></th>';
 			html += '</tr>';
 			html += '</thead>';
 			html += '<tbody>';
@@ -221,9 +222,10 @@ chk_role($page_key,'isAdd',1);
 					html += '<tr>';
 					html += '<td align="center">'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
-					html += '<td>'+data[i].brandID+'</td>';
+					html += '<td>'+data[i].brandName+'</td>';
 					html += '<td>'+data[i].modelName+'</td>';
 					html += '<td>'+data[i].productSize+'</td>';
+					html += '<td>'+data[i].productUnit+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
 					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';
@@ -269,7 +271,8 @@ chk_role($page_key,'isAdd',1);
 			html += '<th>ยี่ห้อ</th>';
 			html += '<th>รุ่น</th>';
 			html += '<th>ขนาด</th>';
-			html += '<th>จัดการ</th>';
+			html += '<th>จำนวน</th>';
+			html += '<th></th>';
 			html += '</tr>';
 			html += '</thead>';
 			html += '<tbody>';
@@ -279,9 +282,10 @@ chk_role($page_key,'isAdd',1);
 					html += '<tr>';
 					html += '<td align="center">'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
-					html += '<td>'+data[i].brandID+'</td>';
+					html += '<td>'+data[i].brandName+'</td>';
 					html += '<td>'+data[i].modelName+'</td>';
 					html += '<td>'+data[i].productSize+'</td>';
+					html += '<td>'+data[i].productUnit+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
 					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';

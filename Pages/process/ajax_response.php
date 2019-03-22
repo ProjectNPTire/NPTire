@@ -58,6 +58,7 @@ function getProduct($code, $name){
             "unitType" => $rec["unitType"],
             "productUnit" => $rec["productUnit"],
             "productCode" => $rec["productCode"],
+            "brandName" => $rec["brandName"],
         );
     }
 
