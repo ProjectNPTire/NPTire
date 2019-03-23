@@ -89,15 +89,15 @@ chk_role('2_3','isSearch',1) ;
                                     <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
                                         <thead>
                                             <tr>
-                                                <th width="5%">ลำดับ</th>
-                                                <th width="10%" style="text-align:center;">รหัสสินค้า</th>
-                                                <th width="15%" style="text-align:center;">ชื่อสินค้า</th>
-                                                <th width="10%" style="text-align:center;">ยี่ห้อ</th>
-                                                <th width="10%" style="text-align:center;">ขนาด</th>
-                                                <th width="10%" style="text-align:center;" >รุ่น</th>
-                                                <th width="5%" style="text-align:center;">จำนวน</th>
-                                                <th width="5%" style="text-align:center;">หน่วย</th>
-                                                <th width="10%"></th>
+                                                <th style="text-align:center;">ลำดับ</th>
+                                                <th width="1%" style="text-align:center;">รหัสสินค้า</th>
+                                                <th width="20%"style="text-align:center;">ชื่อสินค้า</th>
+                                                <th style="text-align:center;">ยี่ห้อ</th>
+                                                <th style="text-align:center;">ขนาด</th>
+                                                <th style="text-align:center;" >รุ่น</th>
+                                                <th style="text-align:center;">จำนวน</th>
+                                                <th style="text-align:center;">หน่วย</th>
+                                                <th width="70%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
