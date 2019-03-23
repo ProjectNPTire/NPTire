@@ -190,7 +190,7 @@ $readonly = "readonly";
 
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า</b>
+                                        <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
 
                                         <div class="form-group form-float">
                                             <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
@@ -207,9 +207,9 @@ $readonly = "readonly";
                                             </select>
                                             <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
                                             <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บรืษัทคู่ค้า</label>
+                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
                                         </div>
-                    </div> 
+                                    </div>
                                    <!--
                                    <div class="col-sm-4">
                                       <b>สถานะการใช้งาน</b>
@@ -376,6 +376,13 @@ debugger
     }else{
       $('#productImg-error').hide();
     }
+     if($('#supID').val()==''){
+        $('#supID-error').show();
+      $('#supID').focus();
+        return false;
+    }else{
+    $('#supID-error').hide();
+  }
   }
     if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
       $('#tb_data-error').show();
