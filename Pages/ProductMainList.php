@@ -90,13 +90,13 @@ chk_role('2_3','isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="10%" style="text-align:left">รหัสสินค้า</th>
-                                                <th width="15%" style="text-align:left">ชื่อสินค้า</th>
-                                                <th width="10%" style="text-align:left">ยี่ห้อ</th>
-                                                <th width="10%" style="text-align:left">ขนาด</th>
-                                                <th width="10%" style="text-align:left" >รุ่น</th>
-                                                <th width="5%" style="text-align:left">จำนวน</th>
-                                                <th width="5%" style="text-align:left">หน่วย</th>
+                                                <th width="10%" style="text-align:center;">รหัสสินค้า</th>
+                                                <th width="15%" style="text-align:center;">ชื่อสินค้า</th>
+                                                <th width="10%" style="text-align:center;">ยี่ห้อ</th>
+                                                <th width="10%" style="text-align:center;">ขนาด</th>
+                                                <th width="10%" style="text-align:center;" >รุ่น</th>
+                                                <th width="5%" style="text-align:center;">จำนวน</th>
+                                                <th width="5%" style="text-align:center;">หน่วย</th>
                                                 <th width="10%"></th>
                                             </tr>
                                         </thead>

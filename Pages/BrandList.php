@@ -72,8 +72,8 @@ chk_role($page_key,'isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="20%" style="text-align:left">รหัสยี่ห้อสินค้า</th>
-                                                <th width="60%" style="text-align:left">ยี่ห้อสินค้า</th>
+                                                <th width="20%" style="text-align:center;">รหัสยี่ห้อสินค้า</th>
+                                                <th width="60%" style="text-align:center;">ยี่ห้อสินค้า</th>
                                           <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
                                               <!--   <th style="text-align:left">รายละเอียด</th> -->
                                                 <th width="15%"></th>

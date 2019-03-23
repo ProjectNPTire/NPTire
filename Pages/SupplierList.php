@@ -111,12 +111,12 @@ chk_role($page_key,'isSearch',1);
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="10%" style="text-align:left">รหัสคู่ค้า</th>
-                                                <th width="20%" style="text-align:left">ชื่อคู่ค้า/บริษัท</th>
+                                                <th width="10%" style="text-align:center;">รหัสคู่ค้า</th>
+                                                <th width="20%" style="text-align:center;">ชื่อคู่ค้า/บริษัท</th>
                                            <!--      <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th> -->
-                                                <th width="10%" style="text-align:left">เบอร์โทรศัพท์</th> 
-                                                <th width="15%" style="text-align:left">ชื่อ-สกุล พนักงานขาย</th> 
-                                                <th width="10%" style="text-align:left">เบอร์โทรศัพท์พนักงาน</th>
+                                                <th width="10%" style="text-align:center;">เบอร์โทรศัพท์</th> 
+                                                <th width="15%" style="text-align:center;">ชื่อ-สกุล พนักงานขาย</th> 
+                                                <th width="10%" style="text-align:center;">เบอร์โทรศัพท์พนักงาน</th>
                                                 <th width="15%"></th>
                                             </tr>
                                         </thead>

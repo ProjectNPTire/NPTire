@@ -107,11 +107,11 @@ chk_role($page_key,'isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th>ลำดับ</th>
-                                                <th style="text-align:left">เลขที่ใบเบิกสินค้า</th>
-                                                <th style="text-align:left">วันที่ทำรายการ</th>
-                                                <th style="text-align:left">ผู้เบิก</th>
-                                                <th style="text-align:left">สถานะ</th>
-                                                <th style="text-align:left"></th>
+                                                <th style="text-align:center;">เลขที่ใบเบิกสินค้า</th>
+                                                <th style="text-align:center;">วันที่ทำรายการ</th>
+                                                <th style="text-align:center;">ผู้เบิก</th>
+                                                <th style="text-align:center;">สถานะ</th>
+                                                <th style="text-align:center;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

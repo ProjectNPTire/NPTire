@@ -119,10 +119,10 @@ chk_role($page_key,'isSearch',1);
                         <thead>
                             <tr>
                                 <th>ลำดับ</th>
-                                <th style="text-align:left">เลขที่ใบสั่งซื้อ</th>
-                                <th style="text-align:left">ชื่อ/บริษัทคู่ค้า</th>
-                                <th style="text-align:left">วันที่ทำรายการ</th>
-                                <th style="text-align:left">สถานะ</th>
+                                <th style="text-align:center;">เลขที่ใบสั่งซื้อ</th>
+                                <th style="text-align:center;">ชื่อ/บริษัทคู่ค้า</th>
+                                <th style="text-align:center;">วันที่ทำรายการ</th>
+                                <th style="text-align:center;">สถานะ</th>
                                 <th></th>
                             </tr>
                         </thead>

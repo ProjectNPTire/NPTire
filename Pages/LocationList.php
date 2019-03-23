@@ -78,8 +78,8 @@ chk_role($page_key,'isSearch',1) ;
                                       <thead>
                                           <tr>
                                             <th width="5%">ลำดับ</th>
-                                                <th width="20%" style="text-align:left">รหัสตำแหน่งจัดเก็บ</th>
-                                                <th width="60%" style="text-align:left">ตำแหน่งจัดเก็บ</th>
+                                                <th width="20%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
+                                                <th width="60%" style="text-align:center;">ตำแหน่งจัดเก็บ</th>
                                           <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
                                               <!--   <th style="text-align:left">รายละเอียด</th> -->
                                                 <th width="15%"></th>
