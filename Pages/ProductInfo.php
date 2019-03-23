@@ -148,7 +148,7 @@ $readonly = "readonly";
                                  
                     <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
+                                        <b>บริษัทคู่ค้า</b>
 
                                         <div class="form-group form-float">
                                             <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
@@ -165,7 +165,7 @@ $readonly = "readonly";
                                             </select>
                                             <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
                                             <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก ยี่ห้อสินค้า</label>
+                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
                                         </div>
                                     </div>
 

@@ -190,11 +190,12 @@ $readonly = "readonly";
 
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
+                                        <b>บริษัทคู่ค้า</b>
 
                                         <div class="form-group form-float">
                                             <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
+
                                             <?php
                                                 $s_sup=" SELECT * from tb_supplier order by sup_name asc";
                                                 $q_sup = $db->query($s_sup);
@@ -203,11 +204,13 @@ $readonly = "readonly";
                                             ?>
                                                 <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
 
+
                                             <?php }  ?>
                                             </select>
                                             <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
+                                           
                                           <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
+
                                         </div>
                                     </div>
                                    <!--
