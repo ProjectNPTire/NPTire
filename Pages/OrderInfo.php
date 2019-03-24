@@ -95,14 +95,14 @@ chk_role($page_key,'isAdd',1);
 									<table id="tb-data" class="table table-hover table-bordered">
 										<thead>
 											<tr>
-												<th style="text-align:left">รหัสสินค้า</th>
-												<th style="text-align:left">ชื่อสินค้า</th>
-												<th style="text-align:left">ยี่ห้อสินค้า</th>
-												<th style="text-align:left">รุ่นสินค้า</th>
-												<th style="text-align:left">ขนาดสินค้า</th>
-												<th width="10%" style="text-align:right;">ราคา/หน่วย</th>
-												<th width="10%" style="text-align:right">จำนวน</th>
-												<th width="10%" style="text-align:right">รวม</th>
+												<th style="text-align:center;">รหัสสินค้า</th>
+												<th style="text-align:center;">ชื่อสินค้า</th>
+												<th style="text-align:center;">ยี่ห้อสินค้า</th>
+												<th style="text-align:center;">รุ่นสินค้า</th>
+												<th style="text-align:center;">ขนาดสินค้า</th>
+												<th width="10%" style="text-align:center;">ราคา/หน่วย</th>
+												<th width="10%" style="text-align:center;">จำนวน</th>
+												<th width="10%" style="text-align:center;">รวม</th>
 												<th></th>
 											</tr>
 										</thead>

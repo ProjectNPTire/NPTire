@@ -73,12 +73,12 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                     <thead>
                                         <tr>
 
-                                            <th style="text-align:left">รหัสสินค้า</th>
-                                            <th style="text-align:left">ชื่อสินค้า</th>
-                                            <th style="text-align:left">ยี่ห้อสินค้า</th>
-                                            <th style="text-align:left">สถานที่จัดเก็บ</th>
-                                            <th style="text-align:right;">จำนวน</th>
-                                            <th style="text-align:left">หน่วยนับ</th>
+                                            <th style="text-align:center;">รหัสสินค้า</th>
+                                            <th style="text-align:center;">ชื่อสินค้า</th>
+                                            <th style="text-align:center;">ยี่ห้อสินค้า</th>
+                                            <th style="text-align:center;">สถานที่จัดเก็บ</th>
+                                            <th style="text-align:center;">จำนวน</th>
+                                            <th style="text-align:center;">หน่วยนับ</th>
                                             <th width="5%"></th>
                                         </tr>
                                     </thead>
