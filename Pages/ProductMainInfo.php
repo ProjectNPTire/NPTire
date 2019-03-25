@@ -75,7 +75,7 @@ $readonly = "readonly";
                                                 $n_brand = $db->db_num_rows($q_brand);
                                                while($r_brand = $db->db_fetch_array($q_brand)){
                                             ?>
-                                                <option value="<?php echo $r_brand['brandID'];?>"  <?php echo ($rec['brandID']==$r_brand['brandID'])?"selected":"";?>> <?php echo $r_brand['brandName'];?></option>
+                                                <option value="<?php echo $r_brand['brandID'];?>"  <?php echo ($rec['brandID']== $r_brand['brandID'])?"selected":"";?>> <?php echo $r_brand['brandName'];?></option>
 
                                             <?php }  ?>
                                             </select>
@@ -188,14 +188,14 @@ $readonly = "readonly";
                                     </div>
                                    </div>
 
-                                <div class="row clearfix">
+                               <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า</b>
+                                        <b>ข้อมูลคู่ค้า/บริษัทคู่ค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true"  
+                                            <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
-
                                             <?php
                                                 $s_sup=" SELECT * from tb_supplier order by sup_name asc";
                                                 $q_sup = $db->query($s_sup);
@@ -204,13 +204,10 @@ $readonly = "readonly";
                                             ?>
                                                 <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
 
-
                                             <?php }  ?>
                                             </select>
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                           
-                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
-
+                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['sup_name'] ?>">
+                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก ข้อมูลคู่ค้า/บริษัทคู่ค้า</label>
                                         </div>
                                     </div>
                                    <!--
@@ -379,7 +376,7 @@ debugger
     }else{
       $('#productImg-error').hide();
     }
-     if($('#supID').val()==''){
+     if($('#supID').val()==0){
         $('#supID-error').show();
       $('#supID').focus();
         return false;

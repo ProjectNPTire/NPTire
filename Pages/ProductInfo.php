@@ -108,7 +108,7 @@ $readonly = "readonly";
 																			</div>
 																		</div>
                                     <div class="col-sm-4">
-                                        <b>หน่วยนับ <span style="color:red"> *</span></b>
+                                        <b>หน่วยนับ</b>
 
                                         <div class="form-group form-float">
                                             <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
@@ -148,10 +148,11 @@ $readonly = "readonly";
                                  
                     <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า</b>
+                                        <b>ข้อมูลคู่ค้า/บริษัทคู่ค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true"  
+                                            <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_sup=" SELECT * from tb_supplier order by sup_name asc";
@@ -163,9 +164,8 @@ $readonly = "readonly";
 
                                             <?php }  ?>
                                             </select>
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
+                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['sup_name'] ?>">
+                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก ข้อมูลคู่ค้า/บริษัทคู่ค้า</label>
                                         </div>
                                     </div>
 

@@ -31,6 +31,7 @@ switch($proc){
 						"productCode"=>$productCode,
 						"productName"=>$productName,
 						"brandID"=>$brandID,
+						"supID"=>$supID,
 						"productTypeID"=>$productTypeID,
 						"unitType"=>$unitType,
 						"productImg"=>$name,
@@ -76,6 +77,7 @@ switch($proc){
 				$fields = array(
 					"productName"=>$productName,
 					"brandID"=>$hdfbrandID,
+					"supID"=>$hdfsupID,
 					"productTypeID"=>$hdfproductTypeID,
 					"unitType"=>$hdfunitType,
 					"productImg"=>$name,
