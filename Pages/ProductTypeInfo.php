@@ -54,7 +54,7 @@ $readonly = "readonly";
 										<b>รหัสประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" maxlength="2" onkeyup="chkShort();" name="productTypeNameShort" id="productTypeNameShort" class="form-control" placeholder="รหัสประเภทสินค้า" value="<?php echo $rec['productTypeNameShort'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkShort();" name="productTypeNameShort" id="productTypeNameShort" class="form-control" placeholder="รหัสประเภทสินค้า" value="<?php echo $rec['productTypeNameShort'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
 											<label id="productTypeNameShort-error" class="error" for="productTypeNameShort">กรุณาระบุ รหัสประเภทสินค้า</label>

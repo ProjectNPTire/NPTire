@@ -91,15 +91,15 @@ chk_role($page_key,'isAdd',1);
 										<i class="material-icons">add_box</i>
 									</button>
 								</div>
-								<div class="input-group">
+								<div class="form-group">
 									<table id="tb-data" class="table table-hover table-bordered">
 										<thead>
 											<tr>
-												<th style="text-align:left">รหัสสินค้า</th>
-												<th style="text-align:left">ชื่อสินค้า</th>
-												<th style="text-align:left">ยี่ห้อสินค้า</th>
-												<th style="text-align:left">รุ่นสินค้า</th>
-												<th style="text-align:left">ขนาดสินค้า</th>
+												<th style="text-align:center">รหัสสินค้า</th>
+												<th style="text-align:center">ชื่อสินค้า</th>
+												<th style="text-align:center">ยี่ห้อสินค้า</th>
+												<th style="text-align:center">รุ่นสินค้า</th>
+												<th style="text-align:center">ขนาดสินค้า</th>
 												<th width="10%" style="text-align:right;">ราคา/หน่วย</th>
 												<th width="10%" style="text-align:right">จำนวน</th>
 												<th width="10%" style="text-align:right">รวม</th>
@@ -110,6 +110,8 @@ chk_role($page_key,'isAdd',1);
 											<td colspan="9" align="center">ยังไม่มีรายการสินค้า</td>
 										</tr>
 									</tbody>
+									<tfoot>
+									</tfoot>
 								</table>
 								<label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าต้องมากกว่า0</label>
 							</div>
@@ -364,7 +366,8 @@ chk_role($page_key,'isAdd',1);
 		$("#tb-data tbody").append(html);
 
 		$(".numb").inputFilter(function(value) {
-			return /^\d*$/.test(value); });
+			return /^\d*$/.test(value);
+		});
 		calTotal();
 	}
 

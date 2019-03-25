@@ -59,7 +59,7 @@ if($proc=='edit'){
 										<b>รหัสตำแหน่งจัดเก็บ</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" maxlength="5" onkeyup="chkShort();" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="5" onkeyup="chkShort();" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้ไม่เกิน5ตัวอักษร</div>
 											<label id="locationCode-error" class="error" for="locationCode">กรุณาระบุ รหัสตำแหน่งจัดเก็บ</label>

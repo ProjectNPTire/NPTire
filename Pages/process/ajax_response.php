@@ -159,7 +159,7 @@ function getPOInfo($id){
             "price"=>$rec_pd['price'],
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],
-            "received_qty"=>$rec_cnt_received['received_qty'],
+            "received_qty"=>$rec_cnt_received['received_qty'] != '' ? $rec_cnt_received['received_qty'] : '0',
         );
     }
 

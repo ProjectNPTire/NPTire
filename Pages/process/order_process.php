@@ -18,7 +18,7 @@ switch($proc){
             $sql_po_no = "SELECT COUNT(*) AS poID FROM tb_po WHERE poID like '".$po_ym."%' ";
             $query_po_no = $db->query($sql_po_no);
             $rec_po_no = $db->db_fetch_array($query_po_no);
-            $run_no = sprintf("%04d", ($rec_po_no['poID']+1));
+            $run_no = sprintf("%03d", ($rec_po_no['poID']+1));
 
             $poID = $po_ym.$run_no;
 

@@ -48,7 +48,7 @@ $readonly = "readonly";
                     <b>รหัสสินค้า</b>
                     <div class="input-group">
                       <div class="form-line">
-                        <input type="text " readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
+                        <input type="text" readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
                       </div>
                       <label id="productCode-error" class="error" for="productName">มีรหัสสินค้านี้แล้ว</label>
                     </div>

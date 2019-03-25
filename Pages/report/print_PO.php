@@ -96,7 +96,7 @@ $HTML .= '<table width="85%" border="0">';
 $HTML .= '<tbody>';
 $HTML .= '<tr>';
 // $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%"><b>บริษัทคู่ค้า :  </b>'.$sup_name.'</td>';
+$HTML .= '<td width="90%"><b>บริษัทคู่ค้า : </b>'.$sup_name.'</td>';
 // $HTML .= '<td width="5%"></td>';
 $HTML .= '</tr>';
 $HTML .= '</tbody>';

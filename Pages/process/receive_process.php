@@ -147,6 +147,8 @@ switch($proc){
 
 			$db->db_update($tb1,$fields, " receiveID = '".$_POST['receiveID']."'");
 
+
+
             $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$_POST["receiveID"]."' ";
 			$query_receive_desc = $db->query($sql_receive_desc);
 

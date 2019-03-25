@@ -11271,7 +11271,7 @@ _Api.extend = function ( scope, obj, ext )
 				 *      } );
 				 *    } );
 				 */
-				 "sFirst": "หน้าแรก",
+				 "sFirst": "&laquo",
 
 
 				/**
@@ -11294,7 +11294,7 @@ _Api.extend = function ( scope, obj, ext )
 				 *      } );
 				 *    } );
 				 */
-				 "sLast": "หน้าสุดท้าย",
+				 "sLast": "&raquo",
 
 
 				/**
@@ -11317,7 +11317,7 @@ _Api.extend = function ( scope, obj, ext )
 				 *      } );
 				 *    } );
 				 */
-				 "sNext": ">>",
+				 "sNext": "&#8250",
 
 
 				/**
@@ -11340,7 +11340,7 @@ _Api.extend = function ( scope, obj, ext )
 				 *      } );
 				 *    } );
 				 */
-				 "sPrevious": "<<"
+				 "sPrevious": "&#8249;"
 				},
 
 			/**

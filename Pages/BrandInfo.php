@@ -54,7 +54,7 @@ T
 										<b>รหัสยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
 											<label id="brandName_short-error" class="error" for="brandName_short">กรุณาระบุ รหัสยี่ห้อสินค้า</label>
