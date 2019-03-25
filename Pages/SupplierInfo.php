@@ -46,7 +46,7 @@ chk_role($page_key,'isAdd',1);
                               </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
-                                          <b>รหัสคู่ค้า/บริษัท</b>
+                                          <b>รหัสบริษัทคู่ค้า</b>
                                          <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text " name="supCode" id="supCode" class="form-control" value="<?php echo $rec['supCode'];?>" readOnly>
@@ -57,7 +57,7 @@ chk_role($page_key,'isAdd',1);
                                         <div class="form-group">
                                             <b>ชื่อคู่ค้า/บริษัท</b>
                                             <div class="form-line">
-                                                <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชื่อคู่ค้า/บริษัท" value="<?php echo $rec['sup_name'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?> onkeyup="chk_sup();">
+                                                <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชือบริษัทคู่ค้า" value="<?php echo $rec['sup_name'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?> onkeyup="chk_sup();">
                                             </div>
                                             <label id="sup_name_error" class="error" for="sup_name">กรุณาระบุ ชื่อคู่ค้า/บริษัท</label>
                                             <label id="sup_name2_error" class="error" for="sup_name">มีชื่อบริษัทนี้แล้ว</label>
@@ -67,7 +67,7 @@ chk_role($page_key,'isAdd',1);
                                         <div class="form-group">
                                             <b>เบอร์โทรศัพท์บริษัท</b>
                                             <div class="form-line">
-                                                <input type="text" id="sup_tel" name="sup_tel" class="form-control tel" placeholder="Ex: 02-000-0000" value="<?php echo $rec['sup_tel'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?>>
+                                                <input type="text" id="sup_tel" name="sup_tel" class="form-control tel" placeholder="Ex: 02-000-0000" value="<?php echo $rec['sup_tel'];?>"  <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <label id="sup_tel_error" class="error" for="sup_name">กรุณาระบุ เบอร์โทรศัพท์บริษัท</label>
                                         </div>
@@ -79,7 +79,7 @@ chk_role($page_key,'isAdd',1);
                                         <div class="form-group">
                                             <b>ที่อยู่</b>
                                             <div class="form-line">
-                                                <input type="text" class="form-control " placeholder=""  name="sup_address" id="sup_address"  value="<?php echo $rec['sup_address'];?>" <?php echo $txt == "แก้ไข" ? 'readonly' : '';?>>
+                                                <input type="text" class="form-control " placeholder=""  name="sup_address" id="sup_address"  value="<?php echo $rec['sup_address'];?>"  <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <label id="sup_address_error" class="error" for="sup_address">กรุณาระบุ ที่อยู่</label>
                                         </div>
@@ -88,7 +88,7 @@ chk_role($page_key,'isAdd',1);
                                         <div class="form-group">
                                             <b>จังหวัด</b>
                                             <div class="form-group form-float">
-                                                <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                                <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                     <option value="">เลือก</option>
                                                     <?php
                                                     $s_p=" SELECT * from setup_prov order by province_name_th asc";
@@ -108,7 +108,7 @@ chk_role($page_key,'isAdd',1);
                                         <div class="form-group">
                                             <b>เขต/อำเภอ</b>
                                             <div class="form-group form-float">
-                                                <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                                <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                    <option value="">เลือก</option>
                                                    <?php
                                                    $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
@@ -130,7 +130,7 @@ chk_role($page_key,'isAdd',1);
                                         <b>แขวง/ตำบล</b>
                                         <div class="form-group form-float">
                                             <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');"
-                                            <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                             <option value="">เลือก</option>
                                             <?php
                                             $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
@@ -150,7 +150,7 @@ chk_role($page_key,'isAdd',1);
                                 <div class="form-group">
                                     <b>รหัสไปรษณีย์</b>
                                     <div class="form-line">
-                                       <input type="text" class="form-control" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                       <input type="text" class="form-control" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                    </div>
                                    <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
                                </div>
@@ -162,7 +162,7 @@ chk_role($page_key,'isAdd',1);
                           <b>ชื่อพนักงานขาย</b>
                           <div class="form-group">
                             <div class="form-line">
-                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="namesale" id="namesale" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['namesale'];?>">
+                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="namesale" id="namesale" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['namesale'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                             </div>
                             <label id="namesale_error" class="error" for="namesale">กรุณาระบุ ชื่อพนักงานขาย</label>
                         </div>
@@ -171,7 +171,7 @@ chk_role($page_key,'isAdd',1);
                       <b>นามสกุล</b>
                       <div class="form-group">
                         <div class="form-line">
-                            <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnamesale" id="lastnamesale" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnamesale'];?>">
+                            <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnamesale" id="lastnamesale" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnamesale'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                         </div>
                         <label id="lastnamesale_error" class="error" for="lastnamesale">กรุณาระบุ นามสกุลพนักงานขาย</label>
                     </div>
@@ -180,7 +180,7 @@ chk_role($page_key,'isAdd',1);
                     <div class="form-group">
                         <b>เบอร์โทรศัพท์มือถือ</b>
                         <div class="form-line">
-                            <input type="text" id="mobilesale" name="mobilesale" class="form-control mobile" placeholder="Ex: 080-000-0000" value="<?php echo $rec['mobilesale'];?>">
+                            <input type="text" id="mobilesale" name="mobilesale" class="form-control mobile" placeholder="Ex: 080-000-0000" value="<?php echo $rec['mobilesale'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                         </div>
                         <label id="mobilesale_error" class="error" for="mobilesale">กรุณาระบุ เบอร์โทรศัพท์มือถือพนักงานขาย</label>
                     </div>
@@ -201,7 +201,7 @@ chk_role($page_key,'isAdd',1);
                     <div class="form-group">
                         <b>ID Line</b>
                         <div class="form-line">
-                            <input type="text" id="idline" name="idline" class="form-control" placeholder="" value="<?php echo $rec['idline'];?>">
+                            <input type="text" id="idline" name="idline" class="form-control" placeholder="" value="<?php echo $rec['idline'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                         </div>
                         <label id="idline_error" class="error" for="idline">กรุณาระบุ ID Line</label>
                     </div>

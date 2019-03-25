@@ -67,7 +67,7 @@ $readonly = "readonly";
                                         <b>ยี่ห้อสินค้า</b>
 
                                         <div class="form-group form-float">
-                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_brand=" SELECT * from tb_brand order by brandName asc";
@@ -87,7 +87,7 @@ $readonly = "readonly";
                                          <b>ขนาดสินค้า</b>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <div class="help-info">กรอกได้ไม่เกิน12ตัวอักษร</div>
                                             <label id="productSize-error" class="error" for="productSize">กรุณาระบุ ขนาดสินค้า</label>
@@ -98,7 +98,7 @@ $readonly = "readonly";
                                          <b>รุ่นสินค้า</b>
                                         <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                                <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <div class="help-info">กรอกได้ไม่เกิน6ตัวอักษร</div>
                                             <label id="modelName-error" class="error" for="modelName">กรุณาระบุ รุ่นสินค้า</label>
@@ -112,7 +112,7 @@ $readonly = "readonly";
                                         <b>ประเภทสินค้า</b>
 
                                         <div class="form-group">
-                                            <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_pdtype=" SELECT * from tb_producttype where productTypeID in (1,2) order by productTypeName asc";
@@ -133,7 +133,7 @@ $readonly = "readonly";
                                         <b>หน่วยนับ</b>
 
                                         <div class="form-group form-float">
-                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php   foreach ($arr_unitType2 as $key => $value) {?>
                                                 <option value="<?php echo $key;?>"  <?php echo ($rec['unitType']==$key)?"selected":"";?>> <?php echo $value;?></option>
@@ -194,7 +194,7 @@ $readonly = "readonly";
                                         <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
 
                                         <div class="form-group form-float">
-                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_sup=" SELECT * from tb_supplier order by sup_name asc";

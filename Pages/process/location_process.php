@@ -34,13 +34,18 @@ switch($proc){
 		try{
 				unset($fields);
 				$fields = array(
-					//"locationID"=>$locationID,
+					"locationID"=>$locationID,
 					"locationCode"=>$locationCode,
 					"locationName"=>$locationName,
 					"name_nospace"=>str_replace(" ","",$locationName),
 				);
 
 				 $db->db_update($tb1,$fields, " locationID = '".$locationID."'");
+				 echo "<pre>";
+				 
+				 print_r($db);
+				 echo "</pre>";
+//exit;
 				 $detail = "แก้ไขข้อมูลตำแหน่งสินค้า locationName : ".$locationName;
 				 save_log($detail);
 

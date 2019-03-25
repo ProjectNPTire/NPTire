@@ -65,7 +65,7 @@ $readonly = "readonly";
 										<b>ประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text " onkeyup="chkName();" name="productTypeName" id="productTypeName" class="form-control" placeholder="ประเภทสินค้า" value="<?php echo $rec['productTypeName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>	>
+												<input type="text " onkeyup="chkName();" name="productTypeName" id="productTypeName" class="form-control" placeholder="ประเภทสินค้า" value="<?php echo $rec['productTypeName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<label id="productTypeName-error" class="error" for="productTypeName">กรุณาระบุ ประเภทสินค้า</label>
 											<label id="productTypeName2-error" class="error" for="productTypeName">มีประเภทสินค้านี้แล้ว</label>

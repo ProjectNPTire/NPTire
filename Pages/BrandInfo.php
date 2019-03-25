@@ -65,7 +65,7 @@ T
 										<b>ยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text " onkeyup="chk1();" name="brandName" id="brandName" class="form-control" placeholder="ยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text " onkeyup="chk1();" name="brandName" id="brandName" class="form-control" placeholder="ยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ยี่ห้อสินค้า</label>
 											<label id="brandName2-error" class="error" for="brandName">มียี่ห้อสินค้านี้แล้ว</label>

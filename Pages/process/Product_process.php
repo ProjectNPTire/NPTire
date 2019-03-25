@@ -31,10 +31,14 @@ switch($proc){
 						"productCode"=>$productCode,
 						"productName"=>$productName,
 						"brandID"=>$brandID,
+						"productSize"=>$productSize,
+						"modelName"=>$modelName,
 						"productTypeID"=>$productTypeID,
 						"unitType"=>$unitType,
 						"productImg"=>$name,
+						"supID"=>$supID,
 						"productDetail"=>$productDetail,
+						/* "activeStatus"=>$activeStatus, */
 						"productUnit"=>str_replace(",","",$productUnit),
 						"name_nospace"=>str_replace(" ","",$productName),
 				);
@@ -74,14 +78,19 @@ switch($proc){
 				}
 				unset($fields);
 				$fields = array(
-					"productName"=>$productName,
-					"brandID"=>$hdfbrandID,
-					"productTypeID"=>$hdfproductTypeID,
-					"unitType"=>$hdfunitType,
-					"productImg"=>$name,
-					"productDetail"=>$productDetail,
-					"productUnit"=>str_replace(",","",$productUnit),
-					"name_nospace"=>str_replace(" ","",$productName),
+					"productCode"=>$productCode,
+						"productName"=>$productName,
+						"brandID"=>$brandID,
+						"productSize"=>$productSize,
+						"modelName"=>$modelName,
+						"productTypeID"=>$productTypeID,
+						"unitType"=>$unitType,
+						"productImg"=>$name,
+						"supID"=>$supID,
+						"productDetail"=>$productDetail,
+						/* "activeStatus"=>$activeStatus, */
+						"productUnit"=>str_replace(",","",$productUnit),
+						"name_nospace"=>str_replace(" ","",$productName),
 				);
 
 				  $db->db_update($tb1,$fields, " productID = '".$productID."'");

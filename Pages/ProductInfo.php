@@ -57,7 +57,7 @@ $readonly = "readonly";
                    <b>ชื่อสินค้า</b>
                    <div class="input-group">
                     <div class="form-line">
-                      <input type="text" onkeyup="chkName();" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
+                      <input type="text" onkeyup="chkName();" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>"<?php echo $_SESSION["userType"] == "2" ?"readonly":""?>>
                     </div>
                     <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
                     <label id="productName2-error" class="error" for="productName">มีประเภทสินค้านี้แล้ว</label>
@@ -69,7 +69,7 @@ $readonly = "readonly";
                  <b>ประเภทสินค้า</b>
 
                  <div class="form-group form-float">
-                  <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                  <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
                    <option value="">เลือก</option>
                    <?php
                    $s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
@@ -90,7 +90,7 @@ $readonly = "readonly";
               <b>ยี่ห้อสินค้า</b>
 
               <div class="form-group form-float">
-                <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
                   <option value="">เลือก</option>
                   <?php
                   $s_brand=" SELECT * from tb_brand order by brandName asc";
@@ -111,7 +111,7 @@ $readonly = "readonly";
              <b>ขนาดสินค้า</b>
              <div class="form-group">
               <div class="form-line">
-                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
               </div>
               <div class="help-info">กรอกได้ไม่เกิน12ตัวอักษร</div>
               <label id="productSize-error" class="error" for="productSize">กรุณาระบุ ขนาดสินค้า</label>
@@ -125,7 +125,7 @@ $readonly = "readonly";
            <b>รุ่นสินค้า</b>
            <div class="form-group">
             <div class="form-line">
-              <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+              <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php  echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
             </div>
             <div class="help-info">กรอกได้ไม่เกิน6ตัวอักษร</div>
             <label id="modelName-error" class="error" for="modelName">กรุณาระบุ รุ่นสินค้า</label>
@@ -136,7 +136,7 @@ $readonly = "readonly";
           <b>หน่วยนับ</b>
 
           <div class="form-group form-float">
-            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
               <option value="">เลือก</option>
               <?php   foreach ($arr_unitType as $key => $value) {?>
                 <option value="<?php echo $key;?>"  <?php echo ($rec['unitType']==$key)?"selected":"";?>> <?php echo $value;?></option>
@@ -151,7 +151,7 @@ $readonly = "readonly";
         <b>บริษัทคู่ค้า</b>
 
         <div class="form-group form-float">
-          <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+          <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
             <option value="">เลือก</option>
             <?php
             $s_sup=" SELECT * from tb_supplier order by sup_name asc";
@@ -191,15 +191,17 @@ $readonly = "readonly";
       </div>
     </div>
 
- 
+ <div class="icon-and-text-button-demo align-right">
+                                    <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
+                                </div>
       <div class="input-group">
-        <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data">
+        <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
           <thead>
             <tr>
 
               <th width="70%">สถานที่จัดเก็บสินค้า</th>
               <th width="20%">จำนวน</th>
-              <!-- <th width="10%">จัดการ</th> -->
+              <th width="10%">จัดการ</th> 	
             </tr>
           </thead>
           <tbody>
@@ -228,13 +230,14 @@ $readonly = "readonly";
                     <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_sub['ps_unit'];?>" >
                   </div>
                 </td>
+				
                                         <!--   <td style="text-align: center;">
                                             <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delData(this);"><?php echo $img_del;?></a>
                                           </td> -->
                                         </tr>
                                       <?php   }
                                     }else{
-                                      echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                                      echo '<tr><td id="nodata" align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
                                     }
 
                                     ?>
@@ -411,8 +414,10 @@ $readonly = "readonly";
  },'json');
   }
   function addRow(){
+  $('#nodata').remove();
     var html = '';
     var rowid = parseInt($('#rowid').val())+1;
+  
     html += '<tr>';
     html += '<td>';
     html += '<select name="locationID[]" id="locationID_'+rowid+'" class="form-control show-tick" data-live-search="true" >';

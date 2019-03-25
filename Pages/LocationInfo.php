@@ -70,7 +70,7 @@ if($proc=='edit'){
 										<div class="form-group">
 											<b>ตำแหน่งจัดเก็บสินค้า</b>
 											<div class="form-line">
-												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<label id="locationName_error" class="error" for="locationName">กรุณาระบุ ตำแหน่งจัดเก็บสินค้า</label>
 											<label id="locationName2_error" class="error" for="locationName">มีตำแหน่งจัดเก็บสินค้นี้แล้ว</label>

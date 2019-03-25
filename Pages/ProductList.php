@@ -89,12 +89,12 @@ chk_role('2_3','isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="10%" style="text-align:center;">รหัสสินค้า</th>
+                                                <th width="5%" style="text-align:center;">รหัสสินค้า</th>
                                                 <th width="30%" style="text-align:center;">ชื่อสินค้า</th>
                                                 <th width="10%" style="text-align:center;">ยี่ห้อ</th>
                                                 <th width="5%" style="text-align:center;">จำนวน</th>
                                                 <th width="5%" style="text-align:center;">หน่วย</th>
-                                                <th width="10%" style="text-align:center;"></th>
+                                                <th width="15%" style="text-align:center;"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -121,7 +121,7 @@ chk_role('2_3','isSearch',1) ;
                                                     <td><?php echo get_brand_name($rec['brandID']);?></td>
                                                     <td><?php echo number_format($rec['productUnit']);?></td>
                                                     <td><?php echo $arr_unitType[$rec['unitType']];?></td>
-                                                    <td><?php echo $info.$edit.$del;?>
+                                                    <td style="text-align:center;"><?php echo $info.$edit.$del;?>
                                                       <input type="hidden" id="show_code_<?php echo $rec['productID'];?>" value="<?php echo $rec['productCode'];?>" >
                                                       <input type="hidden" id="show_name_<?php echo $rec['productID'];?>" value="<?php echo $rec['productName'];?>" >
                                                       <input type="hidden" id="show_brand_<?php echo $rec['productID'];?>" value="<?php echo get_brand_name($rec['brandID']);?>" >
