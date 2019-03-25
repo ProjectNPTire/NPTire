@@ -28,7 +28,7 @@ $readonly = "readonly";
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
             <div class="header">
-              <h2><?php echo $txt;?>ข้อมูลสินค้าอื่นๆ</h2>
+              <h2><?php echo $txt;?>ข้อมูลสินค้า</h2>
             </div>
             <form id="frm-input" method="post" enctype="multipart/form-data" action="process/Product_process.php" >
               <input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>">
@@ -36,8 +36,8 @@ $readonly = "readonly";
               <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
               <input type="hidden" id="chk" name="chk" value="0">
               <input type="hidden" id="chk1" name="chk1" value="0">
-
               <input type="hidden" id="chk2" name="chk2" value="0">
+              <input type="hidden" id="chk3" name="chk3" value="0">
               <div class="body">
                 <div class="row clearfix">
                   <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -67,9 +67,8 @@ $readonly = "readonly";
               <div class="row clearfix">
                 <div class="col-sm-4">
                  <b>ประเภทสินค้า</b>
-
                  <div class="form-group form-float">
-                  <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+                  <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true"  onchange="get_brand();get_code(1);" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
                    <option value="">เลือก</option>
                    <?php
                    $s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
@@ -90,19 +89,17 @@ $readonly = "readonly";
               <b>ยี่ห้อสินค้า</b>
 
               <div class="form-group form-float">
-                <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+                <select name="brandID" onchange="get_code(2);" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
                   <option value="">เลือก</option>
                   <?php
-                  $s_brand=" SELECT * from tb_brand order by brandName asc";
+                  $s_brand=" SELECT * from tb_brand where productTypeID  ='".$rec['productTypeID']."' order by brandName asc";
                   $q_brand = $db->query($s_brand);
                   $n_brand = $db->db_num_rows($q_brand);
                   while($r_brand = $db->db_fetch_array($q_brand)){
                     ?>
                     <option value="<?php echo $r_brand['brandID'];?>"  <?php echo ($rec['brandID']==$r_brand['brandID'])?"selected":"";?>> <?php echo $r_brand['brandName'];?></option>
-
                   <?php }  ?>
                 </select>
-                <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
                 <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
                 <label id="brandID-error" class="error" for="brandID">กรุณาเลือก ยี่ห้อสินค้า</label>
               </div>
@@ -111,7 +108,7 @@ $readonly = "readonly";
              <b>ขนาดสินค้า</b>
              <div class="form-group">
               <div class="form-line">
-                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code(2);"  onblur="get_code(2);"  value="<?php echo $rec['productSize'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
               </div>
               <div class="help-info">กรอกได้ไม่เกิน12ตัวอักษร</div>
               <label id="productSize-error" class="error" for="productSize">กรุณาระบุ ขนาดสินค้า</label>
@@ -125,7 +122,7 @@ $readonly = "readonly";
            <b>รุ่นสินค้า</b>
            <div class="form-group">
             <div class="form-line">
-              <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php  echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+              <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code(2);"  onblur="get_code(2);"  value="<?php echo $rec['modelName'];?>" <?php  echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
             </div>
             <div class="help-info">กรอกได้ไม่เกิน6ตัวอักษร</div>
             <label id="modelName-error" class="error" for="modelName">กรุณาระบุ รุ่นสินค้า</label>
@@ -147,26 +144,26 @@ $readonly = "readonly";
             <label id="unitType-error" class="error" for="unitType">กรุณาเลือก หน่วยนับ</label>
           </div>
         </div>
-             <div class="col-sm-4">
-        <b>บริษัทคู่ค้า</b>
+        <div class="col-sm-4">
+          <b>บริษัทคู่ค้า</b>
 
-        <div class="form-group form-float">
-          <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-            <option value="">เลือก</option>
-            <?php
-            $s_sup=" SELECT * from tb_supplier order by sup_name asc";
-            $q_sup = $db->query($s_sup);
-            $n_sup = $db->db_num_rows($q_sup);
-            while($r_sup = $db->db_fetch_array($q_sup)){
-              ?>
-              <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
+          <div class="form-group form-float">
+            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+              <option value="">เลือก</option>
+              <?php
+              $s_sup=" SELECT * from tb_supplier order by sup_name asc";
+              $q_sup = $db->query($s_sup);
+              $n_sup = $db->db_num_rows($q_sup);
+              while($r_sup = $db->db_fetch_array($q_sup)){
+                ?>
+                <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
 
-            <?php }  ?>
-          </select>
-          <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
+              <?php }  ?>
+            </select>
+            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
+            <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
+          </div>
         </div>
-      </div>
       </div>
 
       <div class="row clearfix">
@@ -190,47 +187,55 @@ $readonly = "readonly";
         </div>
       </div>
     </div>
+    <?php
+    $i=0; $total=0;
+    $sql_sub  = " SELECT * FROM tb_productstore    where productID ='".$productID."' ";
 
- <div class="icon-and-text-button-demo align-right">
-                                    <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
-                                </div>
-      <div class="input-group">
-        <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
-          <thead>
+    $query_sub = $db->query($sql_sub);
+    $nums_sub = $db->db_num_rows($query_sub);
+    if($nums_sub>0){
+      ?>
+      <div class="icon-and-text-button-demo align-right">
+        <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
+      </div>
+    <?php } ?>
+    <div class="form-group">
+      <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
+        <thead>
+          <tr>
+
+            <th width="70%">สถานที่จัดเก็บสินค้า</th>
+            <th width="20%">จำนวน</th>
+            <th width="10%">จัดการ</th> 	
+          </tr>
+        </thead>
+        <tbody>
+          <?php 
+          if($nums_sub>0){
+           while ($rec_sub = $db->db_fetch_array($query_sub)) {
+            $i++;
+            ?>
             <tr>
+              <td>
+                <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                  <option value="">เลือก</option>
+                  <?php
+                  $q_location = $db->query($s_location);
+                  while ($r_location = $db->db_fetch_array($q_location)) {?>
+                    <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_sub['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                  <?php } ?>
+                </select>
+                <label id="locationID<?php echo $i;?>-error" class="error" for="locationID_<?php echo $i;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
+              </td>
+              <td>
+                <div class="form-line">
+                  <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_sub['ps_unit'];?>" >
+                </div>
+              </td>
+              <td style="text-align: center;">
+                <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delData(this);"><?php echo $img_del;?> </a>
+              </td>
 
-              <th width="70%">สถานที่จัดเก็บสินค้า</th>
-              <th width="20%">จำนวน</th>
-              <th width="10%">จัดการ</th> 	
-            </tr>
-          </thead>
-          <tbody>
-            <?php $i=0; $total=0;
-            $sql_sub  = " SELECT * FROM tb_productstore    where productID ='".$productID."' ";
-
-            $query_sub = $db->query($sql_sub);
-            $nums_sub = $db->db_num_rows($query_sub);
-            if($nums_sub>0){
-             while ($rec_sub = $db->db_fetch_array($query_sub)) {
-              $i++;
-              ?>
-              <tr>
-                <td>
-                  <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" >
-                    <option value="">เลือก</option>
-                    <?php
-                    $q_location = $db->query($s_location);
-                    while ($r_location = $db->db_fetch_array($q_location)) {?>
-                      <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_sub['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
-                    <?php } ?>
-                  </select>
-                </td>
-                <td>
-                  <div class="form-line">
-                    <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_sub['ps_unit'];?>" >
-                  </div>
-                </td>
-				
                                         <!--   <td style="text-align: center;">
                                             <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delData(this);"><?php echo $img_del;?></a>
                                           </td> -->
@@ -351,7 +356,9 @@ $readonly = "readonly";
                     if($('#chk').val()==1){
                       return false;
                     }
-
+                    if($('#chk3').val()==1){
+                      return false;
+                    }
 
                     if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
                       $("#frm-input").submit();
@@ -374,31 +381,58 @@ $readonly = "readonly";
       get_total();
     });
 
-                  function get_code(){
+  function get_code(type){
 
-                    if($('#proc').val()=='add'){
-                      var productTypeID = $('#productTypeID').val();
+    if($('#proc').val()=='add'){
+      debugger
+      if (type == 1) {
+        if (productTypeID != 1) {
+          var newcode ='';
+          $.ajaxSetup({async: false});
+          $.post('process/get_process.php',{proc:'get_productcoder_other',productTypeID:productTypeID},function(data){
+           newcode =  data['name'];
+           $('#productCode').val(newcode);
+         },'json');
 
-                      var newcode ='';
-                      $.ajaxSetup({async: false});
-                      $.post('process/get_process.php',{proc:'get_productcoder_other',productTypeID:productTypeID},function(data){
-                       newcode =  data['name'];
-                     },'json');
+        }else{
+          $('#productCode').val('');
+        }
+      }else{
+        var brand = $('#brandID').val();
+        var str_size = $('#productSize').val();
+        var re_size =str_size.replace(/\D+/g, '');
+        var modelName = $('#modelName').val().replace(/ /g,'');
+        var short='';
+        var newcode ='';
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'get_productcode',brand:brand},function(data){
+         short =  data['name'];
+       },'json');
+        newcode = short+re_size+modelName;
+        $('#productCode').val(newcode);
+      }
 
-                      $('#productCode').val(newcode);
-                      chk();
-  //
-}
-    // var html  = '';
-    //  $.post('process/get_process.php',{proc:'get_zipcode',parent_id:parent_id},function(data){
-    //
-    //           $.each(data,function(index,value){
-    //               html += value['zipcode'];
-    //           });
-    //
-    //     $('#zipcode').val(html);
-    //
-    // },'json');
+    chk();
+
+  }
+
+  function get_brand(){
+    var html  = '<option value="">เลือก</option>';
+    var productTypeID = $('#productTypeID').val();
+    $.ajaxSetup({async: false});  
+    $.post('process/get_process.php',{proc:'get_brand',productTypeID:productTypeID},function(data){
+
+      $.each(data,function(index,value){
+        html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+      });
+    //this.value,'brandID','hdfproductTypeID'
+    $('#hdfproductTypeID').val(productTypeID);
+    $('#brandID').html(html);
+    $('#brandID').selectpicker('refresh');
+
+  },'json');
+  }
+
   }
   function chk(){
     var productCode = $('#productCode').val();
@@ -414,13 +448,13 @@ $readonly = "readonly";
  },'json');
   }
   function addRow(){
-  $('#nodata').remove();
+    $('#nodata').remove();
     var html = '';
     var rowid = parseInt($('#rowid').val())+1;
-  
+
     html += '<tr>';
     html += '<td>';
-    html += '<select name="locationID[]" id="locationID_'+rowid+'" class="form-control show-tick" data-live-search="true" >';
+    html += '<select name="locationID[]" id="locationID_'+rowid+'" onchange="chk_location(this.value);" class="form-control show-tick" data-live-search="true" >';
     html += '<option value="">เลือก</option>';
     <?php
     $q_location = $db->query($s_location);
@@ -428,6 +462,7 @@ $readonly = "readonly";
       html +='<option value="<?php echo $r_location['locationID'];?>"><?php echo $r_location['locationName'];?></option>';
     <?php } ?>
     html +='</select>';
+    html +='<label id="locationID'+rowid+'-error" class="error" for="locationID_'+rowid+'">ตำแหน่งนี้ถูกใช้แล้ว</label>';               
     html +='</td>';
     html += '<td>';
     html += '    <div class="form-line">';
@@ -443,31 +478,56 @@ $readonly = "readonly";
     $('#locationID_'+rowid).selectpicker('refresh');
     $(".numb").inputFilter(function(value) {
       return /^\d*$/.test(value); });
+
+    $('#locationID'+rowid+'-error').hide();
    //  $(".numb").keyup(function() {//Can Be {0-9,.}
   	// 		chkFormatNam($(this).val(), $(this).attr('id'));
   	// });
   }
   function delData(obj){
-    if(confirm("ยืนยันการลบข้อมูล ?")){
-     $(obj).parent().parent().remove();
-     get_total();
-   }
- }
- function  get_total(){
-  debugger
-  var arr = $('input[id^=ps_unit_]');
-  var total = 0;
-  for (var i = 0; i < arr.length; i++) {
-   var num = parseInt($(arr[i]).val().trim().replace(/,/g,''));
+    if(confirm("ยืนยันการลบข้อมูล ?")){ 
+      $('#nodata').add();
+      $(obj).parent().parent().remove();
+      get_total();
+    }
+  }
 
-   total = total+num;
- }
- $('#total_unit').val(total);
+  function  get_total(){
+    var arr = $('input[id^=ps_unit_]');
+    var total = 0;
+    for (var i = 0; i < arr.length; i++) {
+     var num = parseInt($(arr[i]).val().trim().replace(/,/g,''));
+
+     total = total+num;
+   }
+   $('#total_unit').val(total);
    //var arr = parseInt($('#rowid').val()replace(/,/g,''));
  }
 
- var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
- function ValidateSingleInput(oInput) {
+ function  chk_location(){
+  debugger
+  var arr = $('[id^=locationID_]');
+  var total = 0;
+  for (var i = 0; i < arr.length; i++) {
+   var num = $(arr[i]).val().trim();
+   if (i != 0) {
+    var a = i-1;
+    var x = i + 1;
+    if(num == $(arr[a]).val().trim())
+    {
+      $('#locationID'+[x]+'-error').show();
+      $('#chk3').val(1);
+      return false;    
+    }else{
+      $('#locationID'+[x]+'-error').hide();
+      $('#chk3').val(0);
+    }
+  }
+}
+}
+
+var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
+function ValidateSingleInput(oInput) {
   if (oInput.type == "file") {
     var sFileName = oInput.value;
     if (sFileName.length > 0) {

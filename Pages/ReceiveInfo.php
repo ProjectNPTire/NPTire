@@ -34,6 +34,7 @@ $page_key ='3_2';
                                                 <input type="text" id="poID" name="poID" class="form-control" placeholder="EX: PO-19010001" onkeypress="chkEnter(event)">
                                             </div>
 											<label id="poID_error" class="error" for="poID">ไม่พบข้อมูลใบสั่งซื้อ</label>
+											<label id="poID2_error" class="error" for="poID">ใบสั่งซื้อนี้ถูกยกเลิก</label>
                                         </div>
                                     </div>
 									<div class="col-sm-1">
@@ -88,23 +89,29 @@ $page_key ='3_2';
 			//PO-19010001
 
 			if(data["po_head"].poID != null){
-
-				var html = "";
+				if(data["po_head"].poStatus == 99){
+					var html = "";
+					$("#receive-load").html(html);
+					$("#btn-submit").hide();
+					$('#poID_error').hide();
+					$('#poID2_error').show();
+				}else{
+					var html = "";
 
 					html += '<div class="form-group">';
-		            html += '<table id="tb-data" class="table table-bordered">';
+					html += '<table id="tb-data" class="table table-bordered">';
 					html += '<thead>';
 					html += '<tr>';
-		            html += '<th>ลำดับ</th>';
+					html += '<th>ลำดับ</th>';
 					html += '<th style="text-align:left">รหัสสินค้า</th>';
 					html += '<th style="text-align:left">ชื่อสินค้า</th>';
-		            html += '<th style="text-align:right">ราคา/ชิ้น</th>';
-		            html += '<th style="text-align:right">จำนวน</th>';
+					html += '<th style="text-align:right">ราคา/ชิ้น</th>';
+					html += '<th style="text-align:right">จำนวน</th>';
 					html += '<th style="text-align:right">รวม</th>';
 					html += '<th style="text-align:right">รับแล้ว</th>';
 					html += '<th style="text-align:right">ค้างรับ</th>';
 					html += '<th width="10%" style="text-align:right">รับเข้า</th>';
-		            html += '<th style="text-align:left">ตำแหน่งเก็บ</th>';
+					html += '<th style="text-align:left">ตำแหน่งเก็บ</th>';
 					html += '</tr>';
 					html += '</thead>';
 					html += '<tbody>';
@@ -115,7 +122,7 @@ $page_key ='3_2';
 							var received_qty = (data["po_desc"][i].received_qty) ? data["po_desc"][i].received_qty : 0 ;
 
 							html += '<tr>';
-		                    html += '<td align="center">'+(i+1)+'</td>';
+							html += '<td align="center">'+(i+1)+'</td>';
 							html += '<td>'+data["po_desc"][i].productCode+'</td>';
 							html += '<td>'+data["po_desc"][i].productName+'</td>';
 							html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
@@ -148,20 +155,22 @@ $page_key ='3_2';
 					html += '<label id="tb_data-error" class="error" for="tb_data">จำนวนรับเข้ามากกว่าจำนวนที่ค้างรับ</label>';
 					html += '</div>';
 
-		        $("#receive-load").html(html);
-				$("#btn-submit").show();
+					$("#receive-load").html(html);
+					$("#btn-submit").show();
 
-				$('.error').hide();
-				$('select').selectpicker({
-					"liveSearch": true,
-					"showTick" : true
-				});
+					$('.error').hide();
+					$('select').selectpicker({
+						"liveSearch": true,
+						"showTick" : true
+					});
+				}
 			}
 			else {
 				var html = "";
 				$("#receive-load").html(html);
 				$("#btn-submit").hide();
-				$('.error').show();
+				$('#poID_error').show();
+				$('#poID2_error').hide();
 			}
 			$(".numb").inputFilter(function(value) {
 			return /^\d*$/.test(value); });

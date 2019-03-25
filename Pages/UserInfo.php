@@ -130,7 +130,7 @@ $readonly = "readonly";
                                     <div class="col-sm-4">
                                         <b>จังหวัด</b>
                                         <div class="form-group form-float">
-                                            <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true"  onchange="get_area(this.value,'districtID','hdfProvinceID',1);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+                                            <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_p=" SELECT * from setup_prov order by province_name_th asc";
@@ -420,7 +420,6 @@ function OnCancel()
 
  function chkinput(){
 
-  debugger
   if($('#firstname').val()==''){
     $('#firstname-error').show();
     $('#firstname').focus();

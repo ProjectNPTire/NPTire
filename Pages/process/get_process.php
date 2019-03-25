@@ -7,6 +7,21 @@ include($path."include/config_header_top.php");
 $PROC = $_POST['proc'];
 
 switch($PROC){
+
+	case "get_brand" :
+	$productTypeID = $_POST['productTypeID'];
+	$sql ="  SELECT brandID as DATA_VALUE ,brandName as DATA_NAME from tb_brand where  productTypeID ='".$productTypeID."' order by brandName asc ";
+	$query=$db->query($sql);
+	$OBJ=array();
+	while ($rec = $db->db_fetch_array($query)){
+		$row['DATA_VALUE'] =$rec['DATA_VALUE'];
+		$row['DATA_NAME'] =$rec['DATA_NAME'];
+		array_push($OBJ,$row);
+	}
+	echo json_encode($OBJ);
+	exit();
+	break;
+
 	case "get_area" :
 	$parent_id = $_POST['parent_id'];
 	$type = $_POST['type'];
@@ -54,20 +69,17 @@ switch($PROC){
 	$run = sprintf("%03d", ($rec['userID']+1));
 
 	$newUserID['name'] = "emp".$run;
-
 	echo json_encode($newUserID);
 	exit();
 	break;
 
 	case "get_supCode" :
-
 	$sql = "SELECT MAX(supID) AS supID FROM tb_supplier";
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	$run = sprintf("%03d", ($rec['supID']+1));
 
 	$newUserID['name'] = "sup".$run;
-
 	echo json_encode($newUserID);
 	exit();
 	break;
@@ -80,7 +92,6 @@ switch($PROC){
 	$run = sprintf("%03d", ($rec['productTypeID']+1));
 
 	$newUserID['name'] = "pdt".$run;
-
 	echo json_encode($newUserID);
 	exit();
 	break;
@@ -93,7 +104,6 @@ switch($PROC){
 	$run = sprintf("%03d", ($rec['brandID']+1));
 
 	$newUserID['name'] = "bnd".$run;
-
 	echo json_encode($newUserID);
 	exit();
 	break;
@@ -107,9 +117,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -124,9 +131,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -140,9 +144,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -156,7 +157,6 @@ switch($PROC){
 	$sql=" SELECT productTypeName from tb_producttype where name_nospace ='".$name_nospace."'  and productTypeID !='".$productTypeID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
-
 	$OBJ=$nums;
 	echo json_encode($OBJ);
 	exit();
@@ -174,9 +174,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -190,9 +187,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -201,14 +195,11 @@ switch($PROC){
 	$productTypeNameShort = $_POST['productTypeNameShort'];
 	$productTypeID = $_POST['productTypeID'];
 
-	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeNameShort ='".$productTypeNameShort."'  and productTypeID !='".$productTypeID."' and productTypeID not in (1,2)";
+	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeNameShort ='".$productTypeNameShort."'  and productTypeID !='".$productTypeID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -223,9 +214,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -239,9 +227,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -253,12 +238,10 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
 	$OBJ['name']=$rec['brandName_short'];
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
+
 	case "chk_productCode" :
 	$productCode = $_POST['productCode'];
 	$name_nospace = str_replace(" ","",$productCode);
@@ -268,9 +251,6 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -285,9 +265,19 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 
 	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
 
+	case "chkDelData_ProductType" :
+	$productTypeID = $_POST['productTypeID'];
 
+	$sql=" SELECT * from tb_producttype join tb_product on tb_producttype.productTypeID = tb_product.productTypeID
+	 where tb_producttype.productTypeID ='".$productTypeID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
 
+	$OBJ=$nums;
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -300,7 +290,7 @@ switch($PROC){
 	$rec = $db->db_fetch_array($query);
 
 
-	$sql_sub =" SELECT productCode from tb_product where productCode like '".$rec['productTypeCode']."%' order by productID desc";
+	$sql_sub =" SELECT productCode from tb_product where productCode like '".$rec['productTypeCode']."%' and productTypeID != 1 order by productID desc LIMIT 1";
 	$query_sub =$db->query($sql_sub);
 	$nums_sub = $db->db_num_rows($query_sub);
 	$rec_sub = $db->db_fetch_array($query_sub);
@@ -372,6 +362,7 @@ switch($PROC){
 	echo json_encode($OBJ);
 	exit();
 	break;
+
 	case "get_product_bill" :
 	$OBJ  = array();
 	$id = $_POST['id'];

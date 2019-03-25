@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2019 at 10:28 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 5.6.40
+-- Generation Time: Mar 25, 2019 at 08:52 PM
+-- Server version: 10.1.9-MariaDB
+-- PHP Version: 5.6.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -16137,13 +16135,6 @@ CREATE TABLE `tb_bill` (
   `cancelUserID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tb_bill`
---
-
-INSERT INTO `tb_bill` (`billID`, `billDate`, `billBy`, `billNo`, `userID`, `cancelBy`, `cancelDate`, `billStstus`, `cancelUserID`) VALUES
-(8, '2019-03-11', 'Admin ทดสอบ', 'BO-201903001', 1, NULL, NULL, 1, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -16158,13 +16149,6 @@ CREATE TABLE `tb_bill_desc` (
   `billDescUnit` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `tb_bill_desc`
---
-
-INSERT INTO `tb_bill_desc` (`billDescID`, `billID`, `productID`, `locationID`, `billDescUnit`) VALUES
-(9, 8, 9, 3, 2);
-
 -- --------------------------------------------------------
 
 --
@@ -16175,23 +16159,32 @@ CREATE TABLE `tb_brand` (
   `brandID` int(11) NOT NULL,
   `brandCode` varchar(20) NOT NULL,
   `brandDetail` text NOT NULL,
-  `brandName` varchar(20) NOT NULL,
+  `brandName` varchar(50) NOT NULL,
   `brandName_short` varchar(10) DEFAULT NULL,
-  `name_nospace` varchar(20) NOT NULL
+  `name_nospace` varchar(50) NOT NULL,
+  `productTypeID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tb_brand`
 --
 
-INSERT INTO `tb_brand` (`brandID`, `brandCode`, `brandDetail`, `brandName`, `brandName_short`, `name_nospace`) VALUES
-(1, '', ' ทดสอบ 2', 'Yokohama', 'YK', 'Yokohama'),
-(2, '', '  ', 'Bridgestone', 'BS', 'Bridgestone'),
-(3, '', '  ', 'Michelin', 'ML', 'Michelin'),
-(4, '', '  ', 'Kumho', 'KH', 'Kumho'),
-(5, '', '  ', 'Toyo', 'TY', 'Toyo'),
-(6, '', '  ', 'Dunlop', 'DL', 'Dunlop'),
-(7, '', '    ผ้าเบรค  ', 'TRW', 'TR', 'TRW');
+INSERT INTO `tb_brand` (`brandID`, `brandCode`, `brandDetail`, `brandName`, `brandName_short`, `name_nospace`, `productTypeID`) VALUES
+(1, '', 'ยาง', 'Yokohama', 'YK', 'Yokohama', 1),
+(2, '', 'ยาง\r\n', 'Bridgestone', 'BS', 'Bridgestone', 1),
+(3, '', 'ยาง  ', 'Michelin', 'ML', 'Michelin', 1),
+(4, '', 'ยาง', 'Kumho', 'KH', 'Kumho', 1),
+(5, '', 'ยาง', 'Toyo', 'TY', 'Toyo', 1),
+(6, '', '   ยาง', 'Dunlop', 'DL', 'Dunlop', 1),
+(7, '', '    ผ้าเบรค  ', 'TRW', 'TR', 'TRW', 3),
+(8, '', ' น้ำมันเครื่อง  ', 'Castrol', 'CT', 'Castrol', 5),
+(9, '', ' ยาง ', 'BfGoodrich', 'BF', 'BfGoodrich', 1),
+(10, '', '   ผ้าเบรค ', 'Bendix', 'BD', 'Bendix', 3),
+(11, '', 'ยาง', 'Maxxis', 'MX', 'Maxxis', 1),
+(12, '', ' ล้อ ', 'Cosmis', 'CM', 'Cosmis', 2),
+(13, '', 'ล้อ', 'Force', 'FW', 'Force', 2),
+(14, '', ' ล้อ ', 'Valenza', 'VZ', 'Valenza', 2),
+(15, '', '', 'Naya', 'NY', 'Naya', 1);
 
 -- --------------------------------------------------------
 
@@ -17250,16 +17243,18 @@ CREATE TABLE `tb_doc` (
 
 CREATE TABLE `tb_location` (
   `locationID` int(11) NOT NULL,
-  `locationName` varchar(20) NOT NULL
+  `locationName` varchar(50) NOT NULL,
+  `name_nospace` varchar(50) NOT NULL,
+  `locationCode` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tb_location`
 --
 
-INSERT INTO `tb_location` (`locationID`, `locationName`) VALUES
-(2, 'แสดงสินค้าชั้น1 ตู้A'),
-(3, 'แสดงสินค้าชั้น1 ตู้ ');
+INSERT INTO `tb_location` (`locationID`, `locationName`, `name_nospace`, `locationCode`) VALUES
+(2, 'แสดงสินค้าชั้น1 ตู้A', 'แสดงสินค้าชั้น1ตู้A', 'FL.1CA'),
+(3, 'แสดงสินค้าชั้น1 ตู้ ', 'แสดงสินค้าชั้น1ตู้', 'FL.1C');
 
 -- --------------------------------------------------------
 
@@ -17440,7 +17435,116 @@ INSERT INTO `tb_logfiles` (`logID`, `userID`, `detail`, `log_dt`) VALUES
 (167, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-14 02:35:16'),
 (168, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-14 02:59:01'),
 (169, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-14 04:26:27'),
-(170, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-14 04:27:04');
+(170, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-14 04:27:04'),
+(171, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-16 04:47:33'),
+(172, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-21 14:01:58'),
+(173, 1, 'เพิ่มข้อมูลพนักงาน Username : emp006', '2019-03-21 14:18:59'),
+(174, 1, 'เพิ่มข้อมูลพนักงาน Username : emp007', '2019-03-21 19:57:20'),
+(175, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทบริษัท เอฟ เอ็ม พี ดิสทริบ', '2019-03-21 20:37:09'),
+(176, 1, 'ลบข้อมูลพนักงาน Username : emp007', '2019-03-21 20:43:43'),
+(177, 1, 'เพิ่มข้อมูลพนักงาน Username : emp007', '2019-03-21 21:00:38'),
+(178, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท เอฟ เอ็ม พี ดิสทริ', '2019-03-21 22:17:55'),
+(179, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทบริษัท บีพี - คาสตรอล (ประ', '2019-03-21 22:25:17'),
+(180, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทบริษัท ปตท. จำกัด (มหาชน)', '2019-03-21 22:40:45'),
+(181, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท ปตท. จำกัด (มหาชน)', '2019-03-21 22:45:26'),
+(182, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท บีพี - คาสตรอล (ปร', '2019-03-21 22:47:45'),
+(183, 1, 'เพิ่มข้อมูลยี่ห้อ : Castrol', '2019-03-21 23:10:40'),
+(184, 1, 'แก้ไขข้อมูลยี่ห้อ : Castrol', '2019-03-21 23:11:18'),
+(185, 1, 'เพิ่มข้อมูลยี่ห้อ : Bendix', '2019-03-21 23:13:21'),
+(186, 1, 'เพิ่มข้อมูลยี่ห้อ : Bendix', '2019-03-21 23:14:41'),
+(187, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทบริษัท คอนติเนนทอล ไทร์ส (', '2019-03-22 00:07:22'),
+(188, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท เอฟ เอ็ม พี ดิสทริ', '2019-03-22 00:08:12'),
+(189, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท ปตท. จำกัด (มหาชน)', '2019-03-22 00:08:50'),
+(190, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท บริษัท บีพี - คาสตรอล (ปร', '2019-03-22 00:10:08'),
+(191, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทบริษัท บริดจสโตนเซลส์ (ประ', '2019-03-22 00:35:42'),
+(192, 1, 'เพิ่มข้อมูลคู่ค้า/บริษัทT.Siam Commercial Co.,Ltd.', '2019-03-22 00:55:14'),
+(193, 1, 'แก้ไขข้อมูลคู่ค้า/บริษัท T.Siam Commercial Co.,Ltd', '2019-03-22 01:01:56'),
+(194, 1, 'เพิ่มข้อมูลยี่ห้อ : ปตท.', '2019-03-22 01:27:20'),
+(195, 1, 'แก้ไขข้อมูลยี่ห้อ : BfGoodrich', '2019-03-22 01:35:52'),
+(196, 1, 'แก้ไขข้อมูลยี่ห้อ : Castrol', '2019-03-22 01:36:24'),
+(197, 1, 'แก้ไขข้อมูลยี่ห้อ : BfGoodrich', '2019-03-22 01:36:36'),
+(198, 1, 'แก้ไขข้อมูลยี่ห้อ : Bendix', '2019-03-22 01:36:49'),
+(199, 1, 'แก้ไขข้อมูลยี่ห้อ : ปตท.', '2019-03-22 01:37:00'),
+(200, 1, 'แก้ไขข้อมูลยี่ห้อ : Dunlop', '2019-03-22 02:07:46'),
+(201, 1, 'แก้ไขข้อมูลยี่ห้อ : Yokohama', '2019-03-22 02:07:57'),
+(202, 1, 'แก้ไขข้อมูลยี่ห้อ : Bridgestone', '2019-03-22 02:08:18'),
+(203, 1, 'แก้ไขข้อมูลยี่ห้อ : Toyo', '2019-03-22 02:08:47'),
+(204, 1, 'แก้ไขข้อมูลยี่ห้อ : Kumho', '2019-03-22 02:09:07'),
+(205, 1, 'แก้ไขข้อมูลยี่ห้อ : Michelin', '2019-03-22 02:09:25'),
+(206, 1, 'แก้ไขข้อมูลยี่ห้อ : Maxxis', '2019-03-22 02:11:35'),
+(207, 1, 'เพิ่มข้อมูลสินค้า  : edgepickup5w30', '2019-03-22 02:22:34'),
+(208, 1, 'แก้ไขข้อมูลสินค้า : น้ำมันเครื่อง edge pickup 5w30', '2019-03-22 02:25:41'),
+(209, 1, 'แก้ไขข้อมูลสินค้า : น้ำมันเครื่อง edge pickup 5w30', '2019-03-22 02:27:56'),
+(210, 1, 'เพิ่มข้อมูลสินค้า  : น้ำมันเครื่อง edge 5w30 c3 (4', '2019-03-22 02:29:13'),
+(211, 1, 'เพิ่มข้อมูลสินค้า  : ผ้าเบรค bendix DB1 ล้อหน้า', '2019-03-22 02:37:23'),
+(212, 1, 'เพิ่มข้อมูลสินค้า  : ผ้าเบรค bendix DB2G ล้อหลัง', '2019-03-22 02:38:07'),
+(213, 1, 'เพิ่มข้อมูลยี่ห้อ : Cosmis', '2019-03-22 02:43:44'),
+(214, 1, 'แก้ไขข้อมูลยี่ห้อ : Cosmis', '2019-03-22 02:44:05'),
+(215, 1, 'แก้ไขข้อมูลยี่ห้อ : Cosmis', '2019-03-22 02:45:31'),
+(216, 1, 'เพิ่มข้อมูลยี่ห้อ : Force', '2019-03-22 02:46:05'),
+(217, 1, 'เพิ่มข้อมูลยี่ห้อ : Force', '2019-03-22 02:46:09'),
+(218, 1, 'แก้ไขข้อมูลยี่ห้อ : Valenza', '2019-03-22 02:47:20'),
+(219, 1, 'เพิ่มข้อมูลยี่ห้อ : Naya', '2019-03-22 02:47:53'),
+(220, 1, 'เพิ่มข้อมูลการสั่งซื้อสินค้า :PO-19030002', '2019-03-22 13:36:23'),
+(221, 1, 'เพิ่มข้อมูลการสั่งซื้อสินค้า :PO-1903003', '2019-03-22 13:40:08'),
+(222, 1, 'เพิ่มข้อมูลการสั่งซื้อสินค้า :PO-1903001', '2019-03-22 13:44:23'),
+(223, 1, 'อัพเดตสิทธิ์การใช้งาน', '2019-03-22 14:00:58'),
+(224, 1, 'เพิ่มข้อมูลประเภท : test', '2019-03-22 14:14:03'),
+(225, 1, 'เพิ่มข้อมูลการสั่งซื้อสินค้า :PO-1903002', '2019-03-22 14:28:48'),
+(226, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 02:51:36'),
+(227, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 02:52:16'),
+(228, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 02:56:17'),
+(229, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:05:48'),
+(230, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:07:42'),
+(231, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:08:05'),
+(232, 1, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:08:24'),
+(233, 5, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:09:24'),
+(234, 5, 'แก้ไขข้อมูลพนักงาน Username : emp005', '2019-03-24 03:09:42'),
+(235, 1, 'อัพเดตสิทธิ์การใช้งาน', '2019-03-24 03:10:04'),
+(236, 1, 'ยกเลิกเอกสาร PO-1903002', '2019-03-25 21:52:48'),
+(237, 1, 'อัพเดตสิทธิ์การใช้งาน', '2019-03-25 23:00:11'),
+(238, 1, 'เพิ่มข้อมูลสินค้า  : ddd', '2019-03-25 23:21:50'),
+(239, 1, 'ลบข้อมูข้อมูลยี่ห้อ  : ', '2019-03-25 23:22:02'),
+(240, 1, 'เพิ่มข้อมูลประเภท : test', '2019-03-25 23:25:04'),
+(241, 1, 'ลบข้อมูข้อมูลยี่ห้อ  : ', '2019-03-25 23:25:49'),
+(242, 1, 'เพิ่มข้อมูลประเภท : test', '2019-03-25 23:26:10'),
+(243, 1, 'แก้ไขข้อมูลสินค้า : ยาง TOYO H20 215/65R16', '2019-03-25 23:37:35'),
+(244, 1, 'แก้ไขข้อมูลสินค้า : ยาง TOYO H20 215/65R16', '2019-03-26 00:57:35'),
+(245, 1, 'แก้ไขข้อมูลสินค้า : ยาง TOYO H20 215/65R16', '2019-03-26 00:57:59'),
+(246, 1, 'ลบข้อมูข้อมูลยี่ห้อ  : ', '2019-03-26 01:04:42'),
+(247, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:04:51'),
+(248, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:05:22'),
+(249, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:07:57'),
+(250, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:08:07'),
+(251, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:08:20'),
+(252, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:08:48'),
+(253, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:09:10'),
+(254, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:09:28'),
+(255, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:10:17'),
+(256, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:10:31'),
+(257, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:10:58'),
+(258, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:11:04'),
+(259, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:11:16'),
+(260, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:11:25'),
+(261, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:18:31'),
+(262, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:18:38'),
+(263, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:19:51'),
+(264, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:19:58'),
+(265, 1, 'แก้ไขข้อมูลยี่ห้อ : Naya', '2019-03-26 01:20:05'),
+(266, 1, 'แก้ไขข้อมูลสินค้า : ยาง YOKOHAMA AE50 195/55R15', '2019-03-26 02:16:25'),
+(267, 1, 'แก้ไขข้อมูลสินค้า : ยาง Bridgestone H/T 684 205/70', '2019-03-26 02:16:40'),
+(268, 1, 'แก้ไขข้อมูลสินค้า : Continental MC5', '2019-03-26 02:17:42'),
+(269, 1, 'แก้ไขข้อมูลสินค้า : Deestone KACHA – R101', '2019-03-26 02:18:09'),
+(270, 1, 'แก้ไขข้อมูลสินค้า : COSMIS-XT-005R ECO', '2019-03-26 02:18:24'),
+(271, 1, 'แก้ไขข้อมูลสินค้า : Valenza mura', '2019-03-26 02:18:41'),
+(272, 1, 'แก้ไขข้อมูลสินค้า : ผ้าเบรค bendix DB1 ล้อหน้า', '2019-03-26 02:19:02'),
+(273, 1, 'แก้ไขข้อมูลสินค้า : ผ้าเบรค TRW', '2019-03-26 02:19:20'),
+(274, 1, 'แก้ไขข้อมูลสินค้า : ผ้าเบรค TRW', '2019-03-26 02:19:39'),
+(275, 1, 'แก้ไขข้อมูลสินค้า : ผ้าเบรค bendix DB1 ล้อหน้า', '2019-03-26 02:19:56'),
+(276, 1, 'แก้ไขข้อมูลสินค้า : ผ้าเบรค bendix DB2G ล้อหลัง', '2019-03-26 02:20:12'),
+(277, 1, 'แก้ไขข้อมูลสินค้า : น้ำมันเครื่อง edge pickup 5w30', '2019-03-26 02:20:27'),
+(278, 1, 'แก้ไขข้อมูลสินค้า : น้ำมันเครื่อง edge 5w30 c3 (4L', '2019-03-26 02:20:39'),
+(279, 1, 'แก้ไขข้อมูลสินค้า  : ddd', '2019-03-26 02:20:46');
 
 -- --------------------------------------------------------
 
@@ -17462,7 +17566,8 @@ CREATE TABLE `tb_po` (
 --
 
 INSERT INTO `tb_po` (`poID`, `supID`, `total`, `poDate`, `create_by`, `poStatus`) VALUES
-('PO-19030001', 1, 0, '2019-03-11', '1', 3);
+('PO-1903001', 7, 0, '2019-03-22', '1', 1),
+('PO-1903002', 4, 0, '2019-03-22', '1', 99);
 
 -- --------------------------------------------------------
 
@@ -17484,8 +17589,11 @@ CREATE TABLE `tb_po_desc` (
 --
 
 INSERT INTO `tb_po_desc` (`podID`, `poID`, `productID`, `price`, `qty`, `amount`) VALUES
-(26, 'PO-19030001', 9, 300, 8, 2400),
-(27, 'PO-19030001', 11, 400, 5, 2000);
+(32, 'PO-1903001', 9, 350, 8, 2800),
+(33, 'PO-1903001', 11, 550, 4, 2200),
+(34, 'PO-1903002', 14, 350, 5, 1750),
+(35, 'PO-1903002', 13, 1500, 10, 10),
+(36, 'PO-1903002', 15, 500, 8, 4000);
 
 -- --------------------------------------------------------
 
@@ -17505,18 +17613,27 @@ CREATE TABLE `tb_product` (
   `unitType` int(1) DEFAULT NULL,
   `productUnit` int(10) DEFAULT NULL,
   `productTypeID` int(10) DEFAULT NULL,
-  `name_nospace` varchar(50) NOT NULL
+  `name_nospace` varchar(50) NOT NULL,
+  `supID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tb_product`
 --
 
-INSERT INTO `tb_product` (`productID`, `productName`, `brandID`, `modelName`, `productSize`, `productDetail`, `productImg`, `productCode`, `unitType`, `productUnit`, `productTypeID`, `name_nospace`) VALUES
-(9, 'ยาง TOYO H20 215/65R16', 5, 'H20', '215/65R16', '        ', '20190120155449.jpg', 'TY2156516H20', 1, 6, 1, 'ยางTOYOH20215/65R16'),
-(11, 'ยาง YOKOHAMA AE50 195/55R15', 1, 'AE50', '195/55R15', '  ', '20190120155831.jpg', 'YK1955515AE50', 1, 5, 1, 'ยางYOKOHAMAAE50195/55R15'),
-(12, 'ยาง Bridgestone H/T 684 205/70R15', 2, 'DUELER H/T 684', '205/70R15', ' ทดสอบ', '20190120160837.jpg', 'BS2057015DUELERH/T684', 1, 0, 1, 'ยางBridgestoneH/T684205/70R15'),
-(13, 'ผ้าเบรค TRW', 7, NULL, NULL, '     เหมาะกับรถ เครื่องไม่เกิน 1500     ', '20190126125210.jpg', 'BP-001', 2, 0, 3, 'ผ้าเบรคTRW');
+INSERT INTO `tb_product` (`productID`, `productName`, `brandID`, `modelName`, `productSize`, `productDetail`, `productImg`, `productCode`, `unitType`, `productUnit`, `productTypeID`, `name_nospace`, `supID`) VALUES
+(9, 'ยาง TOYO H20 215/65R16', 5, 'H20', '215/65R16', '', '20190120155449.jpg', 'TY2156516H20', 1, 6, 1, 'ยางTOYOH20215/65R16', 1),
+(11, 'ยาง YOKOHAMA AE50 195/55R15', 1, 'AE50', '195/55R15', '', '20190120155831.jpg', 'YK1955515AE50', 1, 0, 1, 'ยางYOKOHAMAAE50195/55R15', 1),
+(12, 'ยาง Bridgestone H/T 684 205/70R15', 2, 'DUELER H/T 684', '205/70R15', '', '20190120160837.jpg', 'BS2057015DUELERH/T684', 1, 0, 1, 'ยางBridgestoneH/T684205/70R15', 7),
+(13, 'ผ้าเบรค TRW', 7, '-', '-', '', '20190126125210.jpg', 'BP-001', 4, 0, 3, 'ผ้าเบรคTRW', 5),
+(14, 'น้ำมันเครื่อง edge pickup 5w30 (4L)', 8, '-', '-', '', '20190322123611.jpg', 'OL-002', 3, 0, 5, 'น้ำมันเครื่องedgepickup5w30(4L)', 2),
+(15, 'น้ำมันเครื่อง edge 5w30 c3 (4L)', 8, '-', '-', '', '20190322123557.jpg', 'OL-003', 3, 0, 5, 'น้ำมันเครื่องedge5w30c3(4L)', 5),
+(16, 'ผ้าเบรค bendix DB1 ล้อหน้า', 10, '-', '-', '', '20190322123542.jpg', 'BP-004', 4, 0, 3, 'ผ้าเบรคbendixDB1ล้อหน้า', 5),
+(17, 'ผ้าเบรค bendix DB2G ล้อหลัง', 10, '-', '-', '', '20190322123530.jpg', 'BP-005', 4, 0, 3, 'ผ้าเบรคbendixDB2Gล้อหลัง', 5),
+(18, 'COSMIS-XT-005R ECO', 12, 'XT005R', '15', '', '20190322123112.jpg', 'CM15XT005R', 2, 0, 2, 'COSMIS-XT-005RECO', 6),
+(19, 'Valenza mura', 14, 'Mura', '15', '', '20190322123816.jpg', 'VZ15Mura', 2, 0, 2, 'Valenzamura', 8),
+(20, 'Continental MC5', 4, 'MC588V', '195/50R16', '', '20190322124310.jpg', 'CN1955016MC588V', 1, 0, 1, 'ContinentalMC5', 6),
+(21, 'Deestone KACHA – R101', 9, 'R101', '185R14C', '', '20190322124901.jpg', 'DT18514R101', 1, 0, 1, 'DeestoneKACHA–R101', 5);
 
 -- --------------------------------------------------------
 
@@ -17536,9 +17653,7 @@ CREATE TABLE `tb_productstore` (
 --
 
 INSERT INTO `tb_productstore` (`ps_id`, `productID`, `locationID`, `ps_unit`) VALUES
-(38, 9, 2, 4),
-(39, 11, 2, 5),
-(40, 9, 3, 2);
+(44, 9, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -17549,10 +17664,10 @@ INSERT INTO `tb_productstore` (`ps_id`, `productID`, `locationID`, `ps_unit`) VA
 CREATE TABLE `tb_producttype` (
   `productTypeID` int(11) NOT NULL,
   `productTypeCode` varchar(20) NOT NULL,
-  `productTypeName` varchar(20) NOT NULL,
+  `productTypeName` varchar(50) NOT NULL,
   `productTypeDetail` text,
   `productTypeNameShort` varchar(10) DEFAULT NULL,
-  `name_nospace` varchar(20) NOT NULL
+  `name_nospace` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -17560,10 +17675,10 @@ CREATE TABLE `tb_producttype` (
 --
 
 INSERT INTO `tb_producttype` (`productTypeID`, `productTypeCode`, `productTypeName`, `productTypeDetail`, `productTypeNameShort`, `name_nospace`) VALUES
-(1, 'pdt001', 'ยางรถยนต์', '    ', '', 'ยางรถยนต์'),
+(1, 'pdt001', 'ยางรถยนต์', '    ', 'TR', 'ยางรถยนต์'),
 (2, 'pdt002', 'แม็กซ์', '    ', 'QW', 'แม็กซ์'),
 (3, 'pdt003', 'ผ้าเบรค', '      ', 'BP', 'ผ้าเบรค'),
-(4, 'pdt004', 'น้ำกลั่น', '      ', 'DW', 'น้ำกลั่น');
+(5, 'pdt005', 'น้ำมันเครื่อง', '    ', 'OL', 'น้ำมันเครื่อง');
 
 -- --------------------------------------------------------
 
@@ -17591,14 +17706,6 @@ CREATE TABLE `tb_receive` (
   `receiveStatus` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Dumping data for table `tb_receive`
---
-
-INSERT INTO `tb_receive` (`receiveID`, `poID`, `receiveDate`, `create_by`, `receiveStatus`) VALUES
-('RE-19030001', 'PO-19030001', '2019-03-11', '1', 1),
-('RE-19030002', 'PO-19030001', '2019-03-11', '1', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -17614,16 +17721,6 @@ CREATE TABLE `tb_receive_desc` (
   `qty` int(11) DEFAULT NULL,
   `cancelFlag` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Dumping data for table `tb_receive_desc`
---
-
-INSERT INTO `tb_receive_desc` (`redID`, `receiveID`, `poID`, `locationID`, `productID`, `qty`, `cancelFlag`) VALUES
-(28, 'RE-19030001', 'PO-19030001', 2, 9, 4, 0),
-(29, 'RE-19030001', 'PO-19030001', 2, 11, 5, 0),
-(30, 'RE-19030002', 'PO-19030001', 3, 9, 4, 0),
-(31, 'RE-19030002', 'PO-19030001', 2, 11, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -17646,11 +17743,11 @@ CREATE TABLE `tb_role` (
 
 INSERT INTO `tb_role` (`roleID`, `isAdd`, `isEdit`, `isDel`, `isSearch`, `menuKey`) VALUES
 (1, 0, 1, 0, 1, '1_1'),
-(2, 0, 0, 0, 0, '1_2'),
-(3, 0, 0, 0, 0, '2_1'),
-(4, 0, 0, 0, 0, '2_2'),
-(5, 0, 0, 0, 0, '2_3'),
-(6, 0, 0, 0, 0, '2_4'),
+(2, 1, 1, 0, 1, '1_2'),
+(3, 1, 1, 0, 1, '2_1'),
+(4, 1, 1, 0, 1, '2_2'),
+(5, 1, 1, 0, 1, '2_3'),
+(6, 1, 1, 0, 1, '2_4'),
 (7, 1, 1, 1, 1, '3_1'),
 (8, 1, 1, 1, 1, '3_2'),
 (9, 1, 1, 1, 1, '3_3');
@@ -17687,7 +17784,13 @@ CREATE TABLE `tb_supplier` (
 
 INSERT INTO `tb_supplier` (`supID`, `supCode`, `sup_name`, `sup_email`, `sup_mobile`, `sup_address`, `provinceID`, `districtID`, `subDistrictID`, `note`, `zipcode`, `sup_tel`, `namesale`, `lastnamesale`, `mobilesale`, `idline`, `name_nospace`) VALUES
 (1, 'sup001', 'บริษัท โยโกฮาม่า จำกัด', 'Aditep@hotmail.com', '', '12001/125  ถนนเทพารักษ์', 1, 36, 203, 'ทดสอบ', '10210', '02-214-5112', 'อดิเทพ', 'น้อยแสง', '083-232-4334', 'Aditep', 'บริษัทโยโกฮาม่าจำกัด'),
-(2, 'sup002', 'บริษัท มิชลิน จำกัด', '', '', '232/2', 1, 33, 196, '', '10110', '', 'สมชาย', 'ใจดี', '084-305-6544', '', 'บริษัทมิชลินจำกัด');
+(2, 'sup002', 'บริษัท มิชลิน จำกัด', '', '', '232/2', 1, 33, 196, '', '10110', '', 'สมชาย', 'ใจดี', '084-305-6544', '', 'บริษัทมิชลินจำกัด'),
+(3, 'sup003', 'บริษัท เอฟ เอ็ม พี ดิสทริบิวชั่น จำกัด', 'psaowalux@bendix.co.th', '', '719 เคพีเอ็นทาวเวอร์ชั้น 20', 1, 17, 116, 'ผ้าเบรค', '10310', '02-717-0919', 'อาจารย์กลม', '-', '084-448-6884', '-', 'บริษัทเอฟเอ็มพีดิสทริบิวชั่นจำกัด'),
+(4, 'sup004', 'บริษัท บีพี - คาสตรอล (ประเทศไทย) จำกัด', 'csu_th@se1.bp.com', '', '3 อาคารรัจนาการ, ชั้น23', 1, 28, 176, 'น้ำมันเครื่อง', '10120', '02-684-3555', 'สมชาย', 'นามถาวร', '062-684-3555', '-', 'บริษัทบีพี-คาสตรอล(ประเทศไทย)จำกัด'),
+(5, 'sup005', 'บริษัท ปตท. จำกัด (มหาชน)', 'pttlubricants@pttor.com', '', '2 หมู่ 15', 1, 33, 193, 'น้ำกลั่น', '10110', '02-537-2000', 'ธนากร', 'จันทร์เรือง', '062-239-7877', '-', 'บริษัทปตท.จำกัด(มหาชน)'),
+(6, 'sup006', 'บริษัท คอนติเนนทอล ไทร์ส (ประเทศไทย) จำกัด', 'ctt_th@continental.co.th', '', 'อาคารโอลิมเปียไทย ชั้น 4 เลขที่ 444', 1, 17, 118, 'ยาง', '10310', '02-512-0844', 'ชาญชัย', 'แก่นคำ', '097-523-6411', '', 'บริษัทคอนติเนนทอลไทร์ส(ประเทศไทย)จำกัด'),
+(7, 'sup007', 'บริษัท บริดจสโตนเซลส์ (ประเทศไทย) จำกัด', 'ctm_st@bridgestone.co.th', '', '14/3', 1, 4, 29, 'ยาง', '10500', '02-636-1555', 'รัตนชาติ', 'บุญศร', '096-412-5123', '-', 'บริษัทบริดจสโตนเซลส์(ประเทศไทย)จำกัด'),
+(8, 'sup008', 'T.Siam Commercial Co.,Ltd.', 'tsiam@loxinfo.co.th', '', '88/8 หมู่ที่ 5 ถนนเศรษฐกิจ 1', 59, 815, 7364, 'ยาง', '74110', '02-024-8091', 'คุณากร', 'ย้อมศรี', '095-426-9795', '-', 'T.SiamCommercialCo.,Ltd.');
 
 -- --------------------------------------------------------
 
@@ -17731,7 +17834,9 @@ CREATE TABLE `tb_user` (
 
 INSERT INTO `tb_user` (`userID`, `userCode`, `firstname`, `lastname`, `birthday`, `idcard`, `email`, `mobile`, `address`, `provinceID`, `districtID`, `subDistrictID`, `img`, `username`, `password`, `userType`, `activeStatus`, `zipcode`, `userStatus`, `addressIDCard`, `provinceIDCard`, `districtIDCard`, `subDistrictIDCard`, `zipcodeIDCard`, `firstnameref`, `lastnameref`, `mobileref`) VALUES
 (1, 'admin1', 'Admin', 'ทดสอบ', '1997-05-31', '1-3505-00056-45-1', '1234@gmail.com', '098-067-0254', '122', 1, 43, 8871, '20190116141059.png', 'admin', '0000', 1, 1, 10230, 1, '', 0, 0, 0, 0, '', '', ''),
-(5, 'emp005', 'ปัทมาภรณ์', 'เลิศบันลือศักดิ์', '2019-01-03', '1-2323-44422-24-2', 'foam@gmail.com', '083-434-3434', '1234', 1, 43, 8871, '20190310004557.png', 'emp005', '123456', 2, 1, 62170, 1, '65', 13, 167, 1348, 22160, 'ddd', 'sss', '083-432-1323');
+(5, 'emp005', 'ปัทมาภรณ์', 'เลิศบันลือศักดิ์', '1998-07-15', '1-2323-44422-24-2', '', '083-434-3434', '491', 1, 15, 107, '20190310004557.png', 'emp005', '123456', 2, 1, 10600, 1, '491', 1, 15, 107, 10600, 'ddd', 'sss', '083-432-1323'),
+(6, 'emp006', 'กิตติพงศ์', 'เปรมสุกาญจน์', NULL, '4-4836-26641-75-8', '', '085-035-6052', '21', 49, 718, 6390, '20190321141859.png', 'emp006', '123456', 2, 1, 62210, 1, '21', 49, 718, 6390, 62210, 'มานพ', 'อินศรี', '082-323-2321'),
+(8, 'emp007', 'ดิชพล', 'คงสวัสดิ์', NULL, '1-1023-55511-10-9', '', '093-901-1389', '859', 2, 55, 278, '20190321210038.jpg', 'emp007', '123456', 2, 1, 10130, 1, '859', 2, 55, 278, 10130, 'บุญเท่ง', 'เถิดเทิง', '093-901-1389');
 
 --
 -- Indexes for dumped tables
@@ -17877,93 +17982,77 @@ ALTER TABLE `tb_user`
 -- AUTO_INCREMENT for table `tb_bill`
 --
 ALTER TABLE `tb_bill`
-  MODIFY `billID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
+  MODIFY `billID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tb_bill_desc`
 --
 ALTER TABLE `tb_bill_desc`
-  MODIFY `billDescID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
+  MODIFY `billDescID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tb_brand`
 --
 ALTER TABLE `tb_brand`
-  MODIFY `brandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
-
+  MODIFY `brandID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 --
 -- AUTO_INCREMENT for table `tb_doc`
 --
 ALTER TABLE `tb_doc`
   MODIFY `docID` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `tb_location`
 --
 ALTER TABLE `tb_location`
   MODIFY `locationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
 --
 -- AUTO_INCREMENT for table `tb_logfiles`
 --
 ALTER TABLE `tb_logfiles`
-  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=171;
-
+  MODIFY `logID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=280;
 --
 -- AUTO_INCREMENT for table `tb_po_desc`
 --
 ALTER TABLE `tb_po_desc`
-  MODIFY `podID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
-
+  MODIFY `podID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 --
 -- AUTO_INCREMENT for table `tb_product`
 --
 ALTER TABLE `tb_product`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT for table `tb_productstore`
 --
 ALTER TABLE `tb_productstore`
-  MODIFY `ps_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
-
+  MODIFY `ps_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `tb_producttype`
 --
 ALTER TABLE `tb_producttype`
-  MODIFY `productTypeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
+  MODIFY `productTypeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tb_pro_loc`
 --
 ALTER TABLE `tb_pro_loc`
   MODIFY `runningID` int(11) NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT for table `tb_receive_desc`
 --
 ALTER TABLE `tb_receive_desc`
-  MODIFY `redID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
-
+  MODIFY `redID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tb_role`
 --
 ALTER TABLE `tb_role`
   MODIFY `roleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
 --
 -- AUTO_INCREMENT for table `tb_supplier`
 --
 ALTER TABLE `tb_supplier`
-  MODIFY `supID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
+  MODIFY `supID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `tb_user`
 --
 ALTER TABLE `tb_user`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-COMMIT;
-
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

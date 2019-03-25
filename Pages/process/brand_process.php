@@ -21,14 +21,16 @@ switch($proc){
 						"brandName_short"=>$brandName_short,
 						"brandDetail"=>$brandDetail,
 						"name_nospace"=>str_replace(" ","",$brandName),
+						"productTypeID"=>$productTypeID,
 						//"name_nospace"=>str_replace(" ","",$brandName),
 
 				);
-				//print_pre($fields);
+				print_pre($fields);
+				
 				 $db->db_insert($tb1,$fields);
 				 $detail = 'เพิ่มข้อมูลยี่ห้อ : '.$brandName;
 				 save_log($detail);
-//exit;
+exit;
 			$text=$save_proc;
 		}catch(Exception $e){
 			$text=$e->getMessage();
@@ -43,6 +45,7 @@ switch($proc){
 					"brandName_short"=>$brandName_short,
 					"brandDetail"=>$brandDetail,
 					"name_nospace"=>str_replace(" ","",$brandName),
+					"productTypeID"=>$hdfproductTypeID,
 				);
 
 				 $db->db_update($tb1,$fields, " brandID = '".$brandID."'");

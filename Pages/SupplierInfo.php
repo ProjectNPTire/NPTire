@@ -55,7 +55,7 @@ chk_role($page_key,'isAdd',1);
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <b>ชื่อคู่ค้า/บริษัท</b>
+                                            <b>บริษัทคู่ค้า</b>
                                             <div class="form-line">
                                                 <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชือบริษัทคู่ค้า" value="<?php echo $rec['sup_name'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?> onkeyup="chk_sup();">
                                             </div>

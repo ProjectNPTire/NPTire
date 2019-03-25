@@ -83,7 +83,7 @@ switch($proc){
 						"brandID"=>$brandID,
 						"productSize"=>$productSize,
 						"modelName"=>$modelName,
-						"productTypeID"=>$productTypeID,
+						"productTypeID"=>$hdfproductTypeID,
 						"unitType"=>$unitType,
 						"productImg"=>$name,
 						"supID"=>$supID,

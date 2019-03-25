@@ -86,7 +86,7 @@ chk_role($page_key,'isSearch',1) ;
                                               while ($rec = $db->db_fetch_array($query)) {
                                                 $i++;
                                                 $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['productTypeID'].');">'.$img_edit.'</a>';
-                                                if($rec['productTypeID']!=1&&$rec['productTypeID']!=2){
+                                                if($rec['productTypeID']!=1){
                                                   $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['productTypeID'].');">'.$img_del.'</a>';
                                                 }else{
                                                  $del = '';
@@ -148,11 +148,23 @@ function editData(id){
   $("#productTypeID").val(id);
   $("#frm-search").attr("action","ProductTypeInfo.php").submit();
 }
+
 function delData(id){
+  debugger
+  var productTypeID = id;
   if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
-    $("#proc").val("delete");
-    $("#productTypeID").val(id);
-    $("#frm-search").attr("action","process/ProductType_process.php").submit();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
+      if(data > 1){
+        alert('ไม่สามารถลบข้อมูลได้');
+        return false;
+      }else{
+        $("#proc").val("delete");
+        $("#productTypeID").val(productTypeID);
+        $("#frm-search").attr("action","process/ProductType_process.php").submit();      
+      }
+    },'json');
+
   }
 }
 

@@ -31,7 +31,7 @@ chk_role($page_key,'isAdd',1);
 								<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
-											<b>ชื่อคู่ค้า/บริษัท <span style="color:red"> *</span></b>
+											<b>บริษัทคู่ค้า <span style="color:red"> *</span></b>
 											<div class="form-group form-float">
 												<select name="supID" id="supID" class="form-control show-tick" data-live-search="true" onchange="getSupInfo(this.value);">
 													<option value="">เลือก</option>
@@ -45,7 +45,7 @@ chk_role($page_key,'isAdd',1);
 													<?php }  ?>
 												</select>
 											</div>
-											<label id="supID_error" class="error" for="supID_error">กรุณาระบุ</label>
+											<label id="supID_error" class="error" for="supID_error">กรุณาเลือก บริษัทคู่ค้า</label>
 										</div>
 									</div>
 									<div class="col-sm-8">
@@ -154,9 +154,17 @@ chk_role($page_key,'isAdd',1);
 	}
 
 	function openModal(){
+		if($('#supID').val() == ''){
+			$('#supID_error').show();
+			return false;
+		}else{
+			$('#supID_error').hide();
+		}
 		var code = '';
 		var name = '';
-		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name  }, function( data ) {
+		var supID = $('#supID').val();
+		debugger
+		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name,supID: supID  }, function( data ) {
 			var html = "";
 
 			html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';

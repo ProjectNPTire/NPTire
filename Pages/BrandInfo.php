@@ -50,7 +50,7 @@ T
 											</div>
 										</div>
 									</div> -->
-									<div class="col-sm-6">
+									<div class="col-sm-4">
 										<b>รหัสยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
@@ -61,7 +61,7 @@ T
 											<label id="brandName_short2-error" class="error" for="brandName_short">มีรหัสสินค้านี้แล้ว</label>
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-4">
 										<b>ยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
@@ -69,6 +69,26 @@ T
 											</div>
 											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ยี่ห้อสินค้า</label>
 											<label id="brandName2-error" class="error" for="brandName">มียี่ห้อสินค้านี้แล้ว</label>
+										</div>
+									</div>
+									<div class="col-sm-4">
+										<b>ประเภทสินค้า</b>
+										<div class="form-group form-float">
+											<select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+												<option value="">เลือก</option>
+												<?php
+												$s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
+												$q_pdtype = $db->query($s_pdtype);
+												$n_pdtype = $db->db_num_rows($q_pdtype);
+												while($r_pdtype = $db->db_fetch_array($q_pdtype)){
+
+													?>
+													<option value="<?php echo $r_pdtype['productTypeID'];?>"  <?php echo ($rec['productTypeID']==$r_pdtype['productTypeID'])?"selected":"";?>> <?php echo $r_pdtype['productTypeName'];?></option>
+
+												<?php }  ?>
+											</select>
+											<input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
+											<label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
 										</div>
 									</div>
 								</div>
@@ -133,8 +153,14 @@ T
 		}else{
 			$('#brandName-error').hide();
 		}
-
 		
+		if($('#productTypeID').val()==''){
+			$('#productTypeID-error').show();
+			$('#productTypeID').focus();
+			return false;
+		}else{
+			$('#productTypeID-error').hide();
+		}
 
 		if($('#chk').val()==1){
 			return false;
@@ -178,7 +204,6 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 	}
 
 	function chkShort(){
-	debugger
 		var brandName_short= $('#brandName_short').val();
 		var brandID= $('#brandID').val();
 		$.ajaxSetup({async: false});

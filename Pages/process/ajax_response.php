@@ -6,7 +6,7 @@ include($path."include/config_header_top.php");
 switch ($_POST["func"]) {
     case 'getProduct':
 
-        getProduct($_POST["code"],$_POST["name"]);
+        getProduct($_POST["code"],$_POST["name"],$_POST["supID"]);
 
         break;
 
@@ -33,7 +33,7 @@ switch ($_POST["func"]) {
         break;
 }
 
-function getProduct($code, $name){
+function getProduct($code, $name, $supID){
 
     global $db;
 
@@ -43,8 +43,8 @@ function getProduct($code, $name){
     if($name)
         $filter .= " AND productName like '%".$name."%' ";
 
-    if(!$code && !$name) $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID";
-    else $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID WHERE 1=1 ".$filter;
+    if(!$code && !$name) $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID WHERE supID = '".$supID."' ";
+    else $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID WHERE supID = '".$supID."' ".$filter;
 	$query = $db->query($sql);
 	while($rec = $db->db_fetch_array($query)){
         $arr[] = array(
