@@ -6,7 +6,7 @@ include($path."include/MPDF53/mpdf.php");
 
 $HEADER = '';
 $HEAD = "";
-$SESSION_ID = session_id();
+echo $SESSION_ID = session_id();
 $YEAR_CACHE = date('Y');
 
 $img_logo = "../../assets/images/Layer1.png";
@@ -38,7 +38,6 @@ $CSS = "<style type='text/css'>
 			border:solid 1px #000000;*/
 
 global $db;
-
 $sql_po = "SELECT * FROM tb_po WHERE poID = '".$poID."' ";
 $query_po = $db->query($sql_po);
 $rec_po = $db->db_fetch_array($query_po);
@@ -85,7 +84,7 @@ $HTML .= '</td>';
 $HTML .= '<td width="30%" align="right" style="vertical-align:top">';
 $HTML .= '<h1>ใบสั่งซื้อสินค้า</h1>';
 $HTML .= '<h4>เลขที่ใบสั่งซื้อ : '.$poID.'</h4>';
-$HTML .= '<h4>วันที่เอกสาร : '.conv_date($poDate).'</h4>';
+$HTML .= '<h4>วันที่สั่งซื้อ : '.conv_date($poDate).'</h4>';
 $HTML .= '</td>';
 $HTML .= '</tr>';
 $HTML .= '</tbody>';
@@ -97,7 +96,7 @@ $HTML .= '<table width="85%" border="0">';
 $HTML .= '<tbody>';
 $HTML .= '<tr>';
 // $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%">'.$sup_name.'</td>';
+$HTML .= '<td width="90%"><b>บริษัทคู่ค้า :  </b>'.$sup_name.'</td>';
 // $HTML .= '<td width="5%"></td>';
 $HTML .= '</tr>';
 $HTML .= '</tbody>';
@@ -200,8 +199,8 @@ $HTML .= '<td width="50%" align="center">ลงชื่อ ....................
 $HTML .= '<td width="50%" align="center">ลงชื่อ ................................</td>';
 $HTML .= '</tr>';
 $HTML .= '<tr>';
-$HTML .= '<td width="50%" align="center">(............................................)</td>';
-$HTML .= '<td width="50%" align="center">(............................................)</td>';
+$HTML .= '<td width="50%" align="center">(          '.$_SESSION[sys_name].'          )</td>';
+$HTML .= '<td width="50%" align="center">(          นางเพ็ญศรี   วันที่เอกสาร          )</td>';
 $HTML .= '</tr>';
 $HTML .= '<tr>';
 $HTML .= '<td width="50%" align="center">____/____/____</td>';

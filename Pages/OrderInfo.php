@@ -218,7 +218,13 @@ chk_role($page_key,'isAdd',1);
 			html += '<tbody>';
 
 			if(data){
+			
+				/* if(data){
+					
+					
+					} */
 				for(var i = 0; i < data.length; i++ ){
+				
 					html += '<tr>';
 					html += '<td align="center">'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
@@ -227,7 +233,7 @@ chk_role($page_key,'isAdd',1);
 					html += '<td>'+data[i].productSize+'</td>';
 					html += '<td>'+data[i].productUnit+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
-					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
+					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';
 				}
 			}
@@ -287,7 +293,7 @@ chk_role($page_key,'isAdd',1);
 					html += '<td>'+data[i].productSize+'</td>';
 					html += '<td>'+data[i].productUnit+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
-					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
+					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';
 				}
 			}
@@ -307,7 +313,7 @@ chk_role($page_key,'isAdd',1);
 
 	}
 
-	function addProduct(productID, productCode, productName, brandID, modelName, productSize){
+	function addProduct(productID, productCode, productName, brandName, modelName, productSize){
 
 		var html = "";
 
@@ -327,7 +333,7 @@ chk_role($page_key,'isAdd',1);
 		html += '<tr>';
 		html += '<td align="center">'+productCode+'<input type="hidden" name="productID['+productID+']" value="'+productID+'"></td>';
 		html += '<td>'+productName+'</td>';
-		html += '<td>'+brandID+'</td>';
+		html += '<td>'+brandName+'</td>';
 		html += '<td>'+modelName+'</td>';
 		html += '<td>'+productSize+'</td>';
 		html += '<td><div class="form-line"><input type="text" value="1" name="price['+productID+']" class="form-control text-right numb" onblur="NumberFormat(this);calUnitPrice(this);" required></div></td>';
