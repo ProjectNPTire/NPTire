@@ -24,7 +24,12 @@ if($s_lastname){
 $field = "* ";
 $table = "tb_user";
 $pk_id = "userID";
-$wh = "1=1  and userType =2 {$filter}";
+
+if($_SESSION["userType"] == 1){
+ $wh = "1=1  and userType = 2 {$filter} ";
+}else{
+  $wh = "1=1  and userType = 2 and  userID = '".$_SESSION["sys_id"]."' {$filter} ";
+}
 $orderby = "order by userID DESC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
 $sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
@@ -96,7 +101,7 @@ chk_role($page_key,'isSearch',1) ;
                                                 <th width="10%"style="text-align:center;">สถานะ</th>
                                                 <!--  <th width="25%"style="text-align:left">ข้อมูล</th>
                                                 <th width="15%">สถานะการเข้าใช้งานระบบ</th> -->
-                                                <th width="15%"></th>
+                                                <th width="10%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>

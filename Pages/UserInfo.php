@@ -22,6 +22,7 @@ if($proc=='edit'){
     $userType =2;
 }
 $readonly = "readonly";
+
  ?>
 
 <body class="theme-red">
@@ -59,7 +60,7 @@ $readonly = "readonly";
                                           <b>ชื่อ</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>">
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <label id="firstname-error" class="error" for="firstname">กรุณาระบุ ชื่อพนักงาน</label>
                                         </div>
@@ -68,7 +69,7 @@ $readonly = "readonly";
                                           <b>นามสกุล</b>
                                          <div class="form-group">
                                             <div class="form-line">
-                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>">
+                                                <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastname" id="lastname" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                             </div>
                                             <label id="lastname-error" class="error" for="lastname">กรุณาระบุ นามสกุลพนักงาน</label>
                                         </div>
@@ -79,7 +80,7 @@ $readonly = "readonly";
                                    <b>วัน/เดือน/ปีเกิด</b>
                                    <div class="input-group">
                                     <div class="form-line">
-                                      <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" value="<?php echo conv_date($rec['birthday']);?>" <?php echo $proc == "edit" ? disabled : '';?>>
+                                      <input type="text" class="form-control datepicker" name="birthday" id="birthday" placeholder="DD/MM/YYYY" onchange="get_birthday(this.value,'hdfBirthday');" value="<?php echo conv_date($rec['birthday']);?>"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                     </div>
                                     <input type="hidden" class="form-control" name="hdfBirthday" id="hdfBirthday" value="<?php echo conv_date($rec['birthday']); ?>">
                                     <label id="birthday-error" class="error" for="birthday">กรุณาระบุ วัน/เดือน/ปีเกิด</label>
@@ -89,7 +90,7 @@ $readonly = "readonly";
                                   <b>หมายเลขบัตรประชาชน</b>
                                   <div class="input-group">
                                     <div class="form-line">
-                                      <input type="text" onchange="checkForm();return false;" class="form-control idcard" placeholder="9-9999-99999-99-9"  name="idcard" id="idcard"  value="<?php echo $rec['idcard'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                      <input type="text" onchange="checkForm();return false;" class="form-control idcard" placeholder="9-9999-99999-99-9"  name="idcard" id="idcard"  value="<?php echo $rec['idcard'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                     </div>
                                     <label id="idcard-error" class="error" for="idcard">กรุณาระบุ เลขบัตรประชาชน</label>
                                     <label id="idcard-error2" class="error" for="idcard">รูปแบบบัตรประชาชนไม่ถูกต้อง</label>
@@ -99,7 +100,7 @@ $readonly = "readonly";
                                   <b>เบอร์โทรศัพท์</b>
                                   <div class="input-group">
                                     <div class="form-line">
-                                      <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this,1);return false;" value="<?php echo $rec['mobile'];?>">
+                                      <input type="text" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobile" id="mobile" onchange="isPhoneNo(this,1);return false;" value="<?php echo $rec['mobile'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                     </div>
                                     <label id="mobile-error" class="error" for="mobile">กรุณาระบุ เบอร์โทรศัพท์พนักงาน</label>
                                     <label id="mobile-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
@@ -121,7 +122,7 @@ $readonly = "readonly";
                                        <b>ที่อยู่</b>
                                        <div class="form-group">
                                          <div class="form-line">
-                                            <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>">
+                                            <input type="text" class="form-control " placeholder=""  name="address" id="address"  value="<?php echo $rec['address'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                           </div>
                                           <label id="address-error" class="error" for="address">กรุณาระบุ ที่อยู่ตามบัตรประชาชน</label>
                                         </div>
@@ -129,7 +130,7 @@ $readonly = "readonly";
                                     <div class="col-sm-4">
                                         <b>จังหวัด</b>
                                         <div class="form-group form-float">
-                                            <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true"  onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $proc == "edit" ? 'disabled' : '';?>>
+                                            <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true"  onchange="get_area(this.value,'districtID','hdfProvinceID',1);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
                                                 $s_p=" SELECT * from setup_prov order by province_name_th asc";
@@ -146,7 +147,7 @@ $readonly = "readonly";
                                         <div class="col-sm-4">
                                        <b>อำเภอ/เขต</b>
                                        <div class="form-group form-float">
-                                        <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);">
+                                        <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                          <option value="">เลือก</option>
                                          <?php
                                          $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
@@ -165,7 +166,7 @@ $readonly = "readonly";
                                     <div class="col-sm-4">
                                        <b>ตำบล/แขวง</b>
                                         <div class="form-group form-float">
-                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');">
+                                            <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                      <option value="">เลือก</option>
                                             <?php
                                                 $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
@@ -183,7 +184,7 @@ $readonly = "readonly";
                                          <b>รหัสไปรษณีย์</b>
                                          <div class="form-group">
                                           <div class="form-line">
-                                            <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>">
+                                            <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                           </div>
                                         </div>
                                         <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์ามบัตรประชาชน</label>
@@ -201,7 +202,7 @@ $readonly = "readonly";
                                      <b>ที่อยู่ปัจจุบัน</b>
                                      <div class="form-group">
                                        <div class="form-line">
-                                        <input type="text" class="form-control " placeholder=""  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>">
+                                        <input type="text" class="form-control " placeholder=""  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                       </div>
                                       <label id="addressIDCard-error" class="error" for="addressIDCard">กรุณาระบุ ที่อยู่ปัจจุบัน</label>
                                     </div>
@@ -209,7 +210,7 @@ $readonly = "readonly";
                                   <div class="col-sm-4">
                                     <b>จังหวัด</b>
                                     <div class="form-group form-float">
-                                      <select name="provinceIDCard" id="provinceIDCard" class="form-control selectPcard" data-live-search="true"  onchange="get_area(this.value,'districtIDCard',0,1);">
+                                      <select name="provinceIDCard" id="provinceIDCard" class="form-control selectPcard" data-live-search="true"  onchange="get_area(this.value,'districtIDCard','hdfProvinceIDCard',1);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                         <option value="">เลือก</option>
                                         <?php
                                         $s_p=" SELECT * from setup_prov order by province_name_th asc";
@@ -219,6 +220,7 @@ $readonly = "readonly";
                                           <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceIDCard']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
                                         <?php }  ?>
                                       </select>
+                                      <input type="hidden" name="hdfProvinceIDCard" id="hdfProvinceIDCard" value="<?php echo $rec['provinceIDCard'] ?>">
                                       <label id="provinceIDCard-error" class="error" for="provinceIDCard">กรุณาเลือก จังหวัดตามที่อยู่ปัจจุบัน</label>
                                     </div>
                                   </div>
@@ -227,7 +229,7 @@ $readonly = "readonly";
                                      <div class="col-sm-4">
                                        <b>อำเภอ/เขต</b>
                                         <div class="form-group form-float">
-                                            <select name="districtIDCard" id="districtIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictIDCard',0,2);">
+                                            <select name="districtIDCard" id="districtIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictIDCard','hdfDistrictIDCard',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                    <option value="">เลือก</option>
                                             <?php
                                                 $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceIDCard']."' order by district_name_th asc";
@@ -235,25 +237,26 @@ $readonly = "readonly";
                                                 $n_d = $db->db_num_rows($q_d);
                                                while($r_d = $db->db_fetch_array($q_d)){?>
                                                 <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtIDCard']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
-                                            <?php }  ?>
+                                              <?php }  ?>
                                             </select>
+                                            <input type="hidden" name="hdfDistrictIDCard" id="hdfDistrictIDCard" value="<?php echo $rec['districtIDCard'] ?>">
                                             <label id="districtIDCard-error" class="error" for="districtIDCard">กรุณาเลือก อำเภอ/เขตตามที่อยู่ปัจจุบัน</label>
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
                                        <b>ตำบล/แขวง</b>
                                         <div class="form-group form-float">
-                                            <select name="subDistrictIDCard" id="subDistrictIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcodeIDCard',0);">
+                                            <select name="subDistrictIDCard" id="subDistrictIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcodeIDCard','hdfSubDistrictIDCard');"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                                                      <option value="">เลือก</option>
                                             <?php
                                                 $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtIDCard']."' order by subDistrict_name_th asc";
                                                 $q_s = $db->query($s_s);
                                                 $n_s = $db->db_num_rows($q_s);
                                                while($r_s = $db->db_fetch_array($q_s)){?>
-                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
-
+                                                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictIDCard']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
                                             <?php }  ?>
                                             </select>
+                                            <input type="hidden" name="hdfSubDistrictIDCard" id="hdfSubDistrictIDCard" value="<?php echo $rec['subDistrictIDCard'] ?>">
                                             <label id="subDistrictIDCard-error" class="error" for="subDistrictIDCard">กรุณาเลือก ตำบล/แขวงตามที่อยู่ปัจจุบัน</label>
                                         </div>
                                     </div>
@@ -261,7 +264,7 @@ $readonly = "readonly";
                                      <b>รหัสไปรษณีย์</b>
                                      <div class="form-group">
                                       <div class="form-line">
-                                        <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" readOnly>
+                                        <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                       </div>
                                       <label id="zipcodeIDCard-error" class="error" for="zipcodeIDCard">กรุณาระบุ รหัสไปรษณีย์ตามที่อยู่ปัจจุบัน</label>
                                     </div>
@@ -273,7 +276,7 @@ $readonly = "readonly";
                               <b>ชื่อบุคคลอ้างอิง</b>
                               <div class="form-group">
                                 <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                 </div>
                                 <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ ชื่อบุคคลอ้างอิง</label>
                               </div>
@@ -282,7 +285,7 @@ $readonly = "readonly";
                               <b>นามสกุล</b>
                               <div class="form-group">
                                 <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                 </div>
                                 <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ นามสกุลบุคคลอ้างอิง</label>
                               </div>
@@ -291,7 +294,7 @@ $readonly = "readonly";
                               <b>เบอร์โทรศัพท์</b>
                               <div class="input-group">
                                 <div class="form-line">
-                                  <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+                                  <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                                 </div>
                                 <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ เบอร์โทรศัพท์บุคคลอ้างอิง</label>
                                 <label id="mobileref-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
@@ -306,6 +309,7 @@ $readonly = "readonly";
                                         <input type="file" class="form-control " name="img" id="img" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['img'];?>" onchange="ValidateSingleInput(this);" >
                                         <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['img'];?>" >
                                       </div>
+                                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
                                       <label id="img-error" class="error" for="img">กรุณาเลือกรูปภาพ</label>
                                     </div>
                                   </div>
@@ -353,9 +357,9 @@ $readonly = "readonly";
                                       <i class="material-icons">vpn_key</i>
                                     </span>
                                     <div class="form-line " >
-                                      <input type="password" onchange="chkMinlength(this,1);return false;" maxlength="6" name="password1" id="password1" class="form-control" placeholder="Password" value="<?php echo $rec['password'];?>">
+                                      <input type="password" onchange="chkMinlength(this,1);return false;" onkeypress="NumberFormat(this);" maxlength="6" name="password1" id="password1" class="form-control" placeholder="Password" value="<?php echo $rec['password'];?>">
                                     </div>
-                                    <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษร</div>
+                                    <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษรและเป็นตัวเลขเท่านั้น</div>
                                     <label id="password1-error2" class="error" for="password1">กรุณาระบุให้ครบ6ตัวอักษร</label>
                                     <label id="password1-error" class="error" for="password1" style="display: <?php echo ($_SESSION['userType'] == 1 ? 'none' : 'block');?>">ยืนยัน password ให้ตรงกัน</label>
                                   </div>
@@ -369,7 +373,7 @@ $readonly = "readonly";
                                   <div class="form-line " >
                                     <input type="password" onchange="chkMinlength(this,2);return false;" maxlength="6" name="password2" id="password2" class="form-control" placeholder="ยืนยัน Password" value="<?php echo $rec['password'];?>">
                                   </div>
-                                  <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษร</div>
+                                  <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษรและเป็นตัวเลขเท่านั้น</div>
                                   <label id="password2-error2" class="error" for="password2">กรุณาระบุให้ครบ6ตัวอักษร</label>
                                   <label id="password2-error" class="error" for="password2">ยืนยัน password ให้ตรงกัน</label>
                                 </div>
@@ -637,6 +641,7 @@ $(document).ready(function() {
 function get_address(){
   // console.log('getaddress');
   if($('#adsIDCard').is(':checked')) {
+    debugger
     let province_id = $('#hdfProvinceID').val();
     let district_id = $('#hdfDistrictID').val();
     let subdistrict_id = $('#hdfSubDistrictID').val();
@@ -645,12 +650,13 @@ function get_address(){
     $('#districtIDCard').selectpicker('refresh');
     $('#subDistrictIDCard').selectpicker('refresh');
     
-    get_area(province_id,'districtIDCard','0',1);
-    get_area(district_id,'subDistrictIDCard','0',2);
+    get_area(province_id,'districtIDCard','hdfProvinceIDCard',1);
+    get_area(district_id,'subDistrictIDCard','hdfDistrictIDCard',2);
 
     $("#provinceIDCard").selectpicker('val', province_id);
     $("#districtIDCard").selectpicker('val', district_id);
     $("#subDistrictIDCard").selectpicker('val', subdistrict_id);
+    $("#hdfSubDistrictIDCard").val($('#subDistrictIDCard').val());
     $('#addressIDCard').val($('#address').val());
     $('#zipcodeIDCard').val($('#zipcode').val());
 
@@ -659,7 +665,6 @@ function get_address(){
     $('#districtIDCard').selectpicker('deselectAll');
     $('#subDistrictIDCard').selectpicker('deselectAll');
     $('#addressIDCard').val("");
-    $('#provinceIDCard').val(0);
     $('#zipcodeIDCard').val("");
   }
 }
@@ -675,15 +680,14 @@ function get_area(parent_id,id,hdf_id,type){
                   html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
               });
 
-      if(+hdf_id != 0){
         $('#'+hdf_id).val(parent_id);
-      }        
         $('#'+id).html(html);
         $('#'+id).selectpicker('refresh');
 
     },'json');
 }
 function get_zipcode(parent_id,id,hdf_id){
+  debugger
   // console.log(parent_id,hdf_id);
     var html  = '';
     $.ajaxSetup({async: false});
@@ -692,14 +696,17 @@ function get_zipcode(parent_id,id,hdf_id){
       $.each(data,function(index,value){
         html += value['zipcode'];
       });
-    if(+hdf_id != 0){
       $('#'+hdf_id).val(parent_id);
-    } 
       // $('#'+hdf_id).val(parent_id);
       $('#'+id).val(html);
 
     },'json');
 }
+
+function get_birthday(parent_id,hdf_id){
+  $('#'+hdf_id).val(parent_id);
+}
+
 function chk_user(){
 
     var html  = 1;
@@ -820,7 +827,6 @@ var emailCheck=/^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@
   }
 }
 function chkMinlength(input,type){
-  debugger
   if (input.value.length < 6) {
     if (type == 1) {
       $('#password1-error2').show();

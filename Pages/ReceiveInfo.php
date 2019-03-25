@@ -91,7 +91,7 @@ $page_key ='3_2';
 
 				var html = "";
 
-					html += '<div class="input-group">';
+					html += '<div class="form-group">';
 		            html += '<table id="tb-data" class="table table-bordered">';
 					html += '<thead>';
 					html += '<tr>';

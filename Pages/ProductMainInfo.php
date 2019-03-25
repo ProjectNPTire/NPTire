@@ -85,7 +85,7 @@ $readonly = "readonly";
                                     </div>
                                     <div class="col-sm-4">
                                          <b>ขนาดสินค้า</b>
-                                        <div class="input-group">
+                                        <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
@@ -96,7 +96,7 @@ $readonly = "readonly";
                                     </div>
                                     <div class="col-sm-4">
                                          <b>รุ่นสินค้า</b>
-                                        <div class="input-group">
+                                        <div class="form-group">
                                             <div class="form-line">
                                                 <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
                                             </div>
@@ -111,7 +111,7 @@ $readonly = "readonly";
                                     <div class="col-sm-4">
                                         <b>ประเภทสินค้า</b>
 
-                                        <div class="form-group form-float">
+                                        <div class="form-group">
                                             <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
                                                 <option value="">เลือก</option>
                                             <?php
@@ -160,6 +160,7 @@ $readonly = "readonly";
                                         <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
                                         <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
                                       </div>
+                                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
                                       <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
                                     </div>
                                   </div>
@@ -274,8 +275,6 @@ $readonly = "readonly";
 
 
                                     </tbody>
-                                    <tfoot>
-                                    </tfoot>
                               </table>
                                 <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
                               </div>

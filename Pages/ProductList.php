@@ -25,8 +25,8 @@ if($s_productName){
 $field = "* ";
 $table = "tb_product";
 $pk_id = "productID";
-$wh = "1=1 and productTypeID not in (1,2) {$filter}";
-$orderby = "order by productID DESC";
+$wh = "1=1 {$Dfilter}";
+$orderby = "order by productTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
 $sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
 

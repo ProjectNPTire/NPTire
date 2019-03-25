@@ -134,6 +134,7 @@ $readonly = "readonly";
                                         <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
                                         <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
                                       </div>
+                                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
                                       <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
                                     </div>
                                   </div>
@@ -148,7 +149,7 @@ $readonly = "readonly";
                                  
                     <div class="row clearfix">
                                     <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
+                                        <b>บริษัทคู่ค้า</b>
 
                                         <div class="form-group form-float">
                                             <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $proc == "edit" ? 'disabled' : '';?>>
@@ -180,24 +181,6 @@ $readonly = "readonly";
              													</div>
              											</div>
  -->
-
-                               <div class="row clearfix">
-
-                                   <!--
-                                   <div class="col-sm-4">
-                                      <b>สถานะการใช้งาน</b>
-                                       <div class="form-group">
-                                            <input type="radio" value="1" name="activeStatus" id="activeStatus1" class="with-gap" <?php echo ($rec['activeStatus']==1)?"checked":"";?>>
-                                            <label for="activeStatus1">ใช้งาน</label>
-                                            <input type="radio" value="0" name="activeStatus" id="activeStatus0" class="with-gap"  <?php echo ($rec['activeStatus']==0)?"checked":"";?>>
-                                            <label for="activeStatus0" class="m-l-20">ไม่ใช้งาน</label>
-                                        </div>
-
-                                    </div>-->
-                                </div>
-                               <!--  <div class="icon-and-text-button-demo align-right">
-                                    <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
-                                </div> -->
                                 <div class="input-group">
                                 <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data"> <!--js-basic-example-->
                                     <thead>

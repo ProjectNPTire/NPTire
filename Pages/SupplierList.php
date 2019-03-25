@@ -117,7 +117,7 @@ chk_role($page_key,'isSearch',1);
                                                 <th width="10%" style="text-align:center;">เบอร์โทรศัพท์</th> 
                                                 <th width="15%" style="text-align:center;">ชื่อ-สกุล พนักงานขาย</th> 
                                                 <th width="10%" style="text-align:center;">เบอร์โทรศัพท์พนักงาน</th>
-                                                <th width="15%"></th>
+                                                <th width="10%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
