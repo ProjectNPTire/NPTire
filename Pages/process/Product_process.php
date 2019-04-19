@@ -30,10 +30,10 @@ switch($proc){
 				$fields = array(
 						"productCode"=>$productCode,
 						"productName"=>$productName,
-						"brandID"=>$brandID,
+						"brandID"=>$hdfbrandID,
 						"productSize"=>$productSize,
 						"modelName"=>$modelName,
-						"productTypeID"=>$productTypeID,
+						"productTypeID"=>$hdfproductTypeID,
 						"unitType"=>$unitType,
 						"productImg"=>$name,
 						"supID"=>$supID,
@@ -41,6 +41,7 @@ switch($proc){
 						/* "activeStatus"=>$activeStatus, */
 						"productUnit"=>str_replace(",","",$productUnit),
 						"name_nospace"=>str_replace(" ","",$productName),
+						"orderPoint"=>$orderPoint,
 				);
 
 			 		$productID = $db->db_insert($tb1,$fields,'y');
@@ -80,7 +81,7 @@ switch($proc){
 				$fields = array(
 					"productCode"=>$productCode,
 						"productName"=>$productName,
-						"brandID"=>$brandID,
+						"brandID"=>$hdfbrandID,
 						"productSize"=>$productSize,
 						"modelName"=>$modelName,
 						"productTypeID"=>$hdfproductTypeID,
@@ -91,6 +92,7 @@ switch($proc){
 						/* "activeStatus"=>$activeStatus, */
 						"productUnit"=>str_replace(",","",$productUnit),
 						"name_nospace"=>str_replace(" ","",$productName),
+						"orderPoint"=>$orderPoint,
 				);
 
 				  $db->db_update($tb1,$fields, " productID = '".$productID."'");

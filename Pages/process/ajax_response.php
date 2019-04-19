@@ -6,31 +6,31 @@ include($path."include/config_header_top.php");
 switch ($_POST["func"]) {
     case 'getProduct':
 
-        getProduct($_POST["code"],$_POST["name"],$_POST["supID"]);
+    getProduct($_POST["code"],$_POST["name"],$_POST["supID"]);
 
-        break;
+    break;
 
     case 'getSupInfo':
 
-        getSupInfo($_POST["id"]);
+    getSupInfo($_POST["id"]);
 
-        break;
+    break;
 
     case 'getPOInfo':
 
-        getPOInfo($_POST["id"]);
+    getPOInfo($_POST["id"]);
 
-        break;
+    break;
 
     case 'getReceiveInfo':
 
-        getReceiveInfo($_POST["id"]);
+    getReceiveInfo($_POST["id"]);
 
-        break;
+    break;
 
     default:
         // code...
-        break;
+    break;
 }
 
 function getProduct($code, $name, $supID){
@@ -45,8 +45,9 @@ function getProduct($code, $name, $supID){
 
     if(!$code && !$name) $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID WHERE supID = '".$supID."' ";
     else $sql = "SELECT * FROM tb_product join tb_brand on tb_brand.brandID = tb_product.brandID WHERE supID = '".$supID."' ".$filter;
-	$query = $db->query($sql);
-	while($rec = $db->db_fetch_array($query)){
+    //alert($sql);
+    $query = $db->query($sql);
+    while($rec = $db->db_fetch_array($query)){
         $arr[] = array(
             "productID" => $rec["productID"],
             "productName" => $rec["productName"],
@@ -59,6 +60,7 @@ function getProduct($code, $name, $supID){
             "productUnit" => $rec["productUnit"],
             "productCode" => $rec["productCode"],
             "brandName" => $rec["brandName"],
+            "orderPoint" => $rec["orderPoint"],
         );
     }
 
@@ -73,6 +75,7 @@ function getSupInfo($id){
     $query = $db->query($sql);
     $rec = $db->db_fetch_array($query);
 
+    $sup_name = $rec['sup_name'];
     $sup_address = $rec['sup_address'];
     $province_name_th = get_prov_name($rec['provinceID']);
     $district_name_th = get_district_name($rec['districtID']);
@@ -83,6 +86,7 @@ function getSupInfo($id){
         "province_name_th" => $province_name_th,
         "district_name_th" => $district_name_th,
         "subDistrict_name_th" => $subDistrict_name_th,
+        "sup_name" => $sup_name,
     );
 
     echo json_encode($arr);
@@ -120,7 +124,7 @@ function getPOInfo($id){
 
     $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
 
-    if($create_by == $_SESSION["sys_id"]) $isCancel = 1;
+    if($_SESSION["userType"] == "1") $isCancel = 1;
     else $isCancel = 0;
 
     $arr_head = array(
@@ -154,6 +158,12 @@ function getPOInfo($id){
             "productID"=>$rec_pd['productID'],
             "productCode"=>$rec_product['productCode'],
             "productName"=>$rec_product['productName'],
+            "productTypeID"=>$rec_product['productTypeID'],
+            "brandID"=>$rec_product['brandID'],
+            "productTypeName"=>get_productType_name($rec_product['productTypeID']),
+            "brandName"=>get_brand_name($rec_product['brandID']),
+            "modelName" => $rec_product["modelName"] != '' ? $rec_product["modelName"] : '-',
+            "productSize" => $rec_product["productSize"] != '' ? $rec_product["productSize"] : '-',
             // "productUnit"=>$rec_product['productUnit'],
             // "productSize"=>$rec_product['productSize'],
             "price"=>$rec_pd['price'],
@@ -163,12 +173,14 @@ function getPOInfo($id){
         );
     }
 
-    $sql_location = "SELECT * FROM tb_location";
+    $sql_location = "SELECT * FROM tb_location WHERE brandID = '".$rec_product["brandID"]."' ";
     $query_location = $db->query($sql_location);
     while($rec_location = $db->db_fetch_array($query_location)){
         $arr_location[] = array(
             "locationID"=>$rec_location['locationID'],
             "locationName"=>$rec_location['locationName'],
+            "locationQty"=>$rec_location['width']*$rec_location['high'],
+
         );
     }
 
@@ -232,6 +244,8 @@ function getReceiveInfo($id){
             "productID"=>$rec_pd['productID'],
             "productCode"=>$rec_product['productCode'],
             "productName"=>$rec_product['productName'],
+            "productTypeName"=>get_productType_name($rec_product['productTypeID']),
+            "brandName"=>get_brand_name($rec_product['brandID']),
             "price"=>$rec_pd['price'],
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],

@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_4';
+$page_key ='3_3';
 /*$sql     = " SELECT *
             FROM tb_location
             ";*/
@@ -22,9 +22,13 @@ $field = "* ";
 $table = "tb_location";
 $pk_id = "locationID";
 $wh = "1=1  {$filter}";
-$orderby = "order by locationID DESC";
+$orderby = "order by ".$table.".productTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+$sql = "select ".$field." from ".$table." 
+where ".$wh ." ".$orderby; //.$limit;
+// join tb_producttype on tb_producttype.productTypeID = ".$table.".productTypeID
+// join tb_brand on tb_brand.brandID = ".$table.".brandID
+
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -76,14 +80,20 @@ chk_role($page_key,'isSearch',1) ;
                                 <div>
                                   <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
                                       <thead>
-                                          <tr>
-                                            <th width="5%">ลำดับ</th>
-                                                <th width="20%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
-                                                <th width="60%" style="text-align:center;">ตำแหน่งจัดเก็บ</th>
+                                        <tr>
+                                          <th width="5%">ลำดับ</th>
+                                          <th width="15%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
+                                          <th width="20%" style="text-align:center;">ตำแหน่งจัดเก็บ</th>
+                                          <th width="10%" style="text-align:center;">ประเภทสินค้า</th>
+                                          <th width="10%" style="text-align:center;">ยี่ห้อสินค้า</th>
+                                          <th width="5%" style="text-align:center;">ฐาน</th>
+                                          <th width="5%" style="text-align:center;">สูง</th>
+                                          <th width="10%" style="text-align:center;">จำนวนจัดเก็บ</th>
+                                          <!-- <th width="5%" style="text-align:center;">ว่าง</th> -->
                                           <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
-                                              <!--   <th style="text-align:left">รายละเอียด</th> -->
-                                                <th width="15%"></th>
-                                          </tr>
+                                          <!--   <th style="text-align:left">รายละเอียด</th> -->
+                                          <th width="8%"></th>
+                                        </tr>
                                       </thead>
                                       <tbody>
                                           <?php
@@ -93,11 +103,19 @@ chk_role($page_key,'isSearch',1) ;
                                               $i++;
                                               $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['locationID'].');">'.$img_edit.'</a>';
                                               $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['locationID'].');">'.$img_del.'</a>';
+                                              $productTypeName = get_productType_name($rec['productTypeID']) != null ? get_productType_name($rec['productTypeID']) : '-';
+                                              $brandName = get_brand_name($rec['brandID']) != null ? get_brand_name($rec['brandID']) : '-';
                                           ?>
                                               <tr>
                                                   <td align="center"><?php echo $i;?></td>
                                                   <td><?php echo $rec['locationCode'];?></td> 
                                                   <td><?php echo $rec['locationName'];?></td>
+                                                  <td><?php echo $productTypeName;?></td>
+                                                  <td><?php echo $brandName;?></td>
+                                                  <td><?php echo $rec['width'];?></td>
+                                                  <td><?php echo $rec['high'];?></td>
+                                                  <td><?php echo $rec['width']*$rec['high'];?></td>
+                                                  <!-- <td><?php echo $rec['width']*$rec['high'];?></td> -->
                                                   <td align="center"><?php echo $edit.$del;?></td>
                                               </tr>
                                           <?php }
@@ -142,10 +160,21 @@ function editData(id){
   $("#frm-search").attr("action","LocationInfo.php").submit();
 }
 function delData(id){
+  var locationID = id;
   if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
-    $("#proc").val("delete");
-    $("#locationID").val(id);
-    $("#frm-search").attr("action","process/location_process.php").submit();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chkDelData_Location',locationID:locationID},function(data){
+      //alert(data);
+      if(data > 0){
+        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากตำแหน่งนี้มีสินค้าอยู่');
+        return false;
+      }else{
+        $("#proc").val("delete");
+        $("#locationID").val(id);
+        $("#frm-search").attr("action","process/location_process.php").submit();
+      }
+    },'json');
+
   }
 }
 

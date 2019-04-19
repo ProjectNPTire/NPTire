@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='1_2';
+$page_key ='2_1';
 /*$sql     = " SELECT *
             FROM tb_supplier";*/
 
@@ -115,7 +115,7 @@ chk_role($page_key,'isSearch',1);
                                                 <th width="20%" style="text-align:center;">ชื่อคู่ค้า/บริษัท</th>
                                            <!--      <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th> -->
                                                 <th width="10%" style="text-align:center;">เบอร์โทรศัพท์</th> 
-                                                <th width="15%" style="text-align:center;">ชื่อ-สกุล พนักงานขาย</th> 
+                                                <th width="15%" style="text-align:center;">ชื่อ-สกุล พนักงานที่ติดต่อ</th> 
                                                 <th width="10%" style="text-align:center;">เบอร์โทรศัพท์พนักงาน</th>
                                                 <th width="10%"></th>
                                             </tr>

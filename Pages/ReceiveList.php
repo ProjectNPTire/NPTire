@@ -6,21 +6,21 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 
-$page_key ='3_2';
+$page_key ='5_1';
 
 $filter = '';
 
 if($s_receive_id){
-   $filter .= " and receiveID like '%".$s_receive_id."%'";
+ $filter .= " and receiveID like '%".$s_receive_id."%'";
 }
 if($s_po_id){
-   $filter .= " and poID like '%".$s_po_id."%'";
+ $filter .= " and poID like '%".$s_po_id."%'";
 }
 if($s_receive_date){
-   $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
+ $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
 }
 if($s_receive_status){
-   $filter .= " and receiveStatus = '".$s_receive_status."'";
+ $filter .= " and receiveStatus = '".$s_receive_status."'";
 }
 
 $field = "* ";
@@ -139,17 +139,17 @@ chk_role($page_key,'isSearch',1);
                                                 $i=0;
                                                 while ($rec = $db->db_fetch_array($query)) {
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                                                $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoReceive(\''.$rec["receiveID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
-                                            ?>
-                                            <tr>
-                                                <td align="center"><?php echo ++$i; ?></td>
-                                                <td><?php echo $rec['receiveID']; ?></td>
-                                                <td><?php echo $rec['poID']; ?></td>
-                                                <td><?php echo conv_date($rec['receiveDate']); ?></td>
-                                                <td><?php echo get_receiveStatus($rec['receiveStatus']); ?></td>
-                                                <td align="center"><?php echo $info; ?></td>
-                                            </tr>
-                                            <?php }
+                                                    $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoReceive(\''.$rec["receiveID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
+                                                    ?>
+                                                    <tr>
+                                                        <td align="center"><?php echo ++$i; ?></td>
+                                                        <td><?php echo $rec['receiveID']; ?></td>
+                                                        <td><?php echo $rec['poID']; ?></td>
+                                                        <td><?php echo conv_date($rec['receiveDate']); ?></td>
+                                                        <td><?php echo get_receiveStatus($rec['receiveStatus']); ?></td>
+                                                        <td align="center"><?php echo $info; ?></td>
+                                                    </tr>
+                                                <?php }
                                             }else{
                                                 echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
                                             }
@@ -177,11 +177,11 @@ chk_role($page_key,'isSearch',1);
 
 <script>
   $(document).ready(function() {
-   $("#table1").DataTable({
-     "ordering": false,
+     $("#table1").DataTable({
+       "ordering": false,
    })
  });
-function searchData(){
+  function searchData(){
     $('#frm-search').removeAttr('target');
     $("#frm-search").submit();
 }
@@ -206,107 +206,128 @@ function infoReceive(id){
         //console.log(data);
         var html = "";
 
-            html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
-            html += '<div class="modal-dialog modal-lg" role="document">';
-            html += '<div class="modal-content">';
+        html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
+        html += '<div class="modal-dialog modal-lg" role="document">';
+        html += '<div class="modal-content">';
 
-            html += '<div class="modal-header">';
-            html += '<div class="row">';
-            html += '<div class="col-sm-6">';
-            html += '<h4 class="modal-title" id="largeModalLabel">'+id+'</h4>';
-            html += '</div>';
-            html += '<div class="col-sm-6 text-right">';
-            html += '<h4 class="modal-title" id="largeModalLabel">'+data["receive_head"].receiveDate+'</h4>';
-            html += '</div>';
-            html += '</div>';
+        html += '<div class="modal-header">';
+        html += '<div class="row">';
 
-            html += '<br><br>';
+        html += '<div class="col-sm-12 text-right">';
+        html += '<h1 class="modal-title" id="largeModalLabel">';
+        html += 'ใบรับสินค้า<br/>';
+        html += 'เลขที่ใบรับสินค้า : '+id+'<br/>';
+        html += 'เลขที่ใบสั่งซื้อ : '+data["receive_head"].poID+'<br/>';
+        html += 'วันที่รับสินค้า : '+data["receive_head"].receiveDate;
 
-            html += '<div class="row">';
-            html += '<div class="col-sm-5 col-sm-offset-1">';
-            html += '<div class="form-group">';
-            html += '<b>เลขที่ใบสั่งซื้อ : </b>'+data["receive_head"].poID;
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
+        html += '</h1>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '<div class="modal-body">';
 
-            html += '<div class="row">';
-            html += '<div class="col-sm-5 col-sm-offset-1">';
-            html += '<div class="form-group">';
-            html += '<b>คู่ค้า/บริษัท : </b>'+data["receive_head"].sup_name;
-            html += '</div>';
-            html += '</div>';
-            html += '<div class="col-sm-5 col-sm-offset-1">';
-            html += '<div class="form-group">';
-            html += '<b>เบอร์โทรศัพท์ : </b>'+data["receive_head"].sup_tel;
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
 
-            html += '<div class="row">';
-            html += '<div class="col-sm-11 col-sm-offset-1">';
-            html += '<div class="form-group">';
-            html += '<b>ที่อยู่ : </b>'+data["receive_head"].sup_address;
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
+        html += '<div class="form-group">';
+        html += '<div class="row">';
 
-            html += '<div class="row">';
-            html += '<div class="col-sm-5 col-sm-offset-1">';
-            html += '<div class="form-group">';
-            html += '<b>สถานะ : </b>'+data["receive_head"].receiveStatusName;
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
+        html += '<div class="col-sm-12" style="border:1px dotted #ccc!important;border-radius: 10px;">';
+        html += '<div class="col-sm-offset-1">';
+        html += '<br/">';
 
-            if(data["receive_head"].isCancel == 1 && data["receive_head"].receiveStatus == 1)
-            {
-                html += '<div class="row">';
-                html += '<div class="col-sm-12 text-right">';
-                html += '<a class="btn btn-danger waves-effect" onClick="cancelPO(\''+id+'\');" >ยกเลิกเอกสาร</a>';
-                html += '</div>';
-                html += '</div>';
-            }
+        html += '<div class="row clearfix">';
 
-            html += '</div>';
+        // html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += '<b>บริษัทคู่ค้า : </b>'+data["receive_head"].sup_name;
+        html += '</div>';
+        // html += '</div>';
 
-            html += '<div class="modal-body">';
-            html += '<table class="table table-bordered" id="tb-search">';
-			html += '<thead>';
-			html += '<tr>';
+
+        // html += '</div>';
+
+        // html += '<div class="row clearfix">';
+
+        // html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += 'ที่อยู่ : '+data["receive_head"].sup_address;
+        // html += '</div>';
+        html += '</div>';
+
+
+        // html += '</div>';
+
+        // html += '<div class="row clearfix">';
+
+        // html += '<div class="col-sm-6">';
+        html += '<div class="form-group">';
+        html += 'เบอร์โทรศัพท์บริษัท : '+data["receive_head"].sup_tel;
+        // html += '</div>';
+        html += '</div>';
+
+        // html += '<div class="col-sm-6">';
+        // html += '<div class="form-group">';
+        // html += '<b>สถานะ : </b>'+data["po_head"].poStatusName;
+        // html += '</div>';
+        // html += '</div>';
+
+        html += '</div>';
+
+
+        html += '</div>';
+        html += '</div>';
+
+        html += '</div>';
+        html += '</div>';
+
+            // if(data["receive_head"].isCancel == 1 && data["receive_head"].receiveStatus == 1)
+            // {
+            //     html += '<div class="row">';
+            //     html += '<div class="col-sm-12 text-right">';
+            //     html += '<a class="btn btn-danger waves-effect" onClick="cancelPO(\''+id+'\');" >ยกเลิกเอกสาร</a>';
+            //     html += '</div>';
+            //     html += '</div>';
+            // }
+
+            // html += '</div>';
+
+            // html += '<div class="modal-body">';
+            html += '<table class="table table-bordered" id="tb-search" style="font-size:14px">';
+            html += '<thead>';
+            html += '<tr>';
             html += '<th>ลำดับ</th>';
-			html += '<th>รหัส</th>';
-			html += '<th>สินค้า</th>';
-            // html += '<th>ราคา/ชิ้น</th>';
+            html += '<th>รหัสสินค้า</th>';
+            html += '<th>ชื่อสินค้า</th>';
+            html += '<th>ประเภท</th>';
+            html += '<th>ยี่ห้อ</th>';
             html += '<th>จำนวน</th>';
             // html += '<th>รวม</th>';
             html += '<th>รับเข้า</th>';
             html += '<th>ตำแหน่งเก็บ</th>';
-			html += '</tr>';
-			html += '</thead>';
-			html += '<tbody>';
+            html += '</tr>';
+            html += '</thead>';
+            html += '<tbody>';
 
-			if(data["receive_desc"]){
-				for(var i = 0; i < data["receive_desc"].length; i++ ){
-					html += '<tr>';
-                    html += '<td align="center">'+(i+1)+'</td>';
-					html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
-					html += '<td>'+data["receive_desc"][i].productName+'</td>';
-					// html += '<td align="right">'+addCommas(data["receive_desc"][i].price)+'</td>';
+            if(data["receive_desc"]){
+                for(var i = 0; i < data["receive_desc"].length; i++ ){
+                   html += '<tr>';
+                   html += '<td align="center">'+(i+1)+'</td>';
+                   html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
+                   html += '<td>'+data["receive_desc"][i].productName+'</td>';
+                   html += '<td>'+data["receive_desc"][i].productTypeName+'</td>';
+                   html += '<td>'+data["receive_desc"][i].brandName+'</td>';
 					html += '<td align="right">'+addCommas(data["receive_desc"][i].qty)+'</td>';
-            		// html += '<td align="right">'+addCommas(data["receive_desc"][i].amount)+'</td>';
             		html += '<td align="right">'+addCommas(data["receive_desc"][i].receive_qty)+'</td>';
-					html += '<td>'+data["receive_desc"][i].location+'</td>';
-					html += '</tr>';
-				}
-			}
-			else {
-				html += '<tr>';
-				html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
-				html += '</tr>';
-			}
+                   html += '<td>'+data["receive_desc"][i].location+'</td>';
+                   html += '</tr>';
+               }
+           }
+           else {
+            html += '<tr>';
+            html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
+            html += '</tr>';
+        }
 
-			html += '</tbody>';
+        html += '</tbody>';
 
             // html += '<tfoot>';
             // html += '<tr>';
@@ -315,7 +336,7 @@ function infoReceive(id){
             // html += '</tr>';
             // html += '</tfoot>';
 
-			html += '</table>';
+            html += '</table>';
             html += '</div>';
 
             html += '<div class="modal-footer">';
@@ -329,10 +350,10 @@ function infoReceive(id){
             html += '</div>';
             html += '</div>';
 
-        $("#modal-load").html(html);
-        $("#frm-modal").modal('show');
+            $("#modal-load").html(html);
+            $("#frm-modal").modal('show');
 
-    }, "json");
+        }, "json");
 }
 
 function printReceive(id){

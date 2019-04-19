@@ -23,57 +23,119 @@ while ($rec_roles = $db->db_fetch_array($query_roles)) {
   $arr_key[substr($rec_roles['menuKey'], 0, 1)] += $rec_roles['isSearch'];
 }
 
+// $arrMenu = array(
+//   'desc' => array(
+//     '0' => 'หน้าหลัก',
+//     '1' => 'ข้อมูลพนักงาน',
+//     '2' => 'ข้อมูลคู่ค้า',
+//     '3' => 'ประเภทสินค้า',
+//     '4' => 'ยี่ห้อสินค้า',
+//     '5' => array(
+//       '0' => 'ข้อมูลสินค้า',
+//       '5_1' => 'ข้อมูลยางและแม็กซ์',
+//       '5_2' => 'ข้อมูลสินค้าอื่น',
+//     ),
+
+//     '6' => 'ตำแหน่งจัดเก็บสินค้า',
+//     '7' => 'สั่งซื้อสินค้า',
+//     '8' => 'รับเข้าสินค้า',
+//     '9' => 'เบิกสินค้า',
+//   ),
+//   'url'=> array(
+//     '0' => 'main.php',
+//     '1' => 'UserList.php',
+//     '2' => 'SupplierList.php',
+//     '3' => 'ProductTypeList.php',
+//     '4' => 'BrandList.php',
+//     '5' => array(
+//       '0' => '#',
+//       '5_1' => 'ProductMainList.php',
+//       '5_2' => 'ProductList.php',
+//     ),
+//     '6' => 'LocationList.php',
+//     '7' => 'OrderList.php',
+//     '8' => 'ReceiveList.php',
+//     '9' => 'TransferList.php',
+//   ),
+//   'icon'=> array(
+//     '0' => '<i class="material-icons">home</i>',
+//     '1' => '<i class="material-icons">group</i>',
+//     '2' => '<i class="material-icons">group</i>',
+//     '3' => '<i class="material-icons">format_list_bulleted</i>',
+//     '4' => '<i class="material-icons">more_vert</i>',
+//     '5' => '<i class="material-icons">apps</i>',
+//     '6' => '<i class="material-icons">place</i>',
+//     '7' => '<i class="material-icons">shopping_basket</i>',
+//     '8' => '<i class="material-icons">file_download</i>',
+//     '9' => '<i class="material-icons">file_upload</i>',
+//   )
 $arrMenu = array(
-  'desc' => array(
-    '0' => 'หน้าหลัก',
-    '1_1' => 'ข้อมูลพนักงาน',
-    '2_1' => 'ข้อมูลคู่ค้า',
+    'desc' => array(
+        '0' => 'หน้าหลัก',
+        '1' => array(
+          '0' => 'บุคคล',
+          '1_1' => 'ข้อมูลพนักงาน',
+          '1_2' => 'ข้อมูลคู่ค้า',
+        ),
+        '2' => array(
+          '0' => 'สินค้า',
+          '2_1' => 'ประเภทสินค้า',
+          '2_2' => 'ยี่ห้อสินค้า',
+          '2_3' => array(
+                0 => 'ข้อมูลสินค้า',
+                '2_3_1' => 'ข้อมูลยางและแม็กซ์',
+                '2_3_2' => 'ข้อมูลสินค้าอื่น',
+          ),
+          '2_4' => 'ตำแหน่งจัดเก็บสินค้า',
+        ),
+        '3' => array(
+          '0' => 'การเคลื่อนไหวสินค้า',
+          '3_1' => 'สั่งซื้อสินค้า',
+          '3_2' => 'รับเข้าสินค้า',
+          '3_3' => 'เบิกสินค้า',
+        ),
+      ),
 
-    '3' => array(
-      '0' => 'สินค้า',
-      '3_1' => 'ประเภทสินค้า',
-      '3_2' => 'ยี่ห้อสินค้า',
-      '3_3' => 'ตำแหน่งจัดเก็บสินค้า',
-      '3_4' => 'ข้อมูลสินค้า',
+
+
+    'url'=> array(
+      '0' => 'main.php',
+      '1' => array(
+        '0' => '#',
+        '1_1' => 'UserList.php',
+        '1_2' => 'SupplierList.php',
+      ),
+      '2' => array(
+        '0' => '#',
+        '2_1' => 'ProductTypeList.php',
+        '2_2' => 'BrandList.php',
+        '2_3' => array(
+          '0' => '#',
+          '2_3_1' => 'ProductMainList.php',
+          '2_3_2' => 'ProductList.php',
+        ),
+        '2_4' => 'LocationList.php',
+      ),
+      '3' => array(
+        '0' => '#',
+        '3_1' => 'OrderList.php',
+        '3_2' => 'ReceiveList.php',
+        '3_3' => 'TransferList.php',
+      ),
     ),
-    '4_1' => 'สั่งซื้อสินค้า',
-    '5_1' => 'รับเข้าสินค้า',
-    '6_1' => 'เบิกสินค้า',
-  ),
-
-
-
-  'url'=> array(
-    '0' => 'main.php',
-    '1_1' => 'UserList.php',
-    '2_1' => 'SupplierList.php',
-    '3' => array(
-      '0' => '#',
-      '3_1' => 'ProductTypeList.php',
-      '3_2' => 'BrandList.php',
-      '3_3' => 'LocationList.php',
-      '3_4' => 'ProductList.php',
-    ),
-    '4_1' => 'OrderList.php',
-    '5_1' => 'ReceiveList.php',
-    '6_1' => 'TransferList.php',
-  ),
-  'icon'=> array(
-    '0' => '<i class="material-icons">home</i>',
-    '1_1' => '<i class="material-icons">group</i>',
-    '2_1' => '<i class="material-icons">group</i>',
-    '3' => '<i class="material-icons">apps</i>',
-    '4_1' => '<i class="material-icons">shopping_basket</i>',
-    '5_1' => '<i class="material-icons">file_download</i>',
-    '6_1' => '<i class="material-icons">file_upload</i>',
+    'icon'=> array(
+      '0' => '<i class="material-icons">home</i>',
+      '1' => '<i class="material-icons">group</i>',
+      '2' => '<i class="material-icons">apps</i>',
+      '3' => '<i class="material-icons">local_shipping</i>',
       // '3' => '<i class="icon-cut "></i>',
       // '4' => '<i class="icon-cog"></i>',
       // '5' => '<i class=" icon-shopping-cart"></i>',
       // '6' => '<i class="icon-calendar"></i>',
       // '7' => '<i class="icon-undo"></i>',
       // '8' => '<i class="icon-magic "></i>',
-  )
-); 
+    )
+);
 
 
 ?>
@@ -145,32 +207,31 @@ $arrMenu = array(
     <!-- #User Info -->
     <!-- Menu -->
     <div class="menu">
+<?php print_r($arr_key) ?>
       <ul class="list">
         <li class="header">เมนูหลัก</li>
-                    <?php //print_pre($arrMenu['desc']);
+                    <?php //print_pre($arrMenu);
                     foreach ($arrMenu['desc'] as $key => $value) {
-                      if($arrMenu['desc'][$key] == 'หน้าหลัก'){
-                          //print_r($arrMenu['desc'][$key]);
+                      if(count($arrMenu['desc'][$key]) > 1){
                         $active = '';
-                        if($key==$page_key){
+                        // if($key==$page_key){
+                        //   $active = 'class="active"';
+                        // }
+                        if($key != 2){
                           $active = 'class="active"';
                         }
                         ?>
                         <li <?php echo $active;?>>
-                          <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
-                        </li>
-                      <?php } ?>
-                      <?php if(count($arrMenu['desc'][$key]) > 1){
-                        $active = '';
-                        if($key==$page_key){
-                          $active = 'class="active"';
-                        }
-                        ?>
-                        <li <?php echo $active;?>>
-                         <?php if($_SESSION["userType"] == 1 || ($_SESSION["userType"] == 2 && $arr_key[$key] > 0)){ // check number of submenu by permission  ?>
-                           <a href="javascript:void(0);" class="menu-toggle"> <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key][0].'</span>'; ?> </a>
-                         <?php } ?>
-                         <ul class="ml-menu">
+                         <?php if($_SESSION["userType"] == 1 || ($_SESSION["userType"] == 2 && $arr_key[$key] > 0)){ // check number of submenu by permission  
+                          ?>
+
+                         <?php $style_none = ($key != 2)? "style='display:none';" : ""; ?>
+                           <a href="javascript:void(0);" class="<?php echo $menu_toggle = ($key == 2)? "menu-toggle" : "" ?>" <?php echo $style_none?>> <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key][0].'</span>'; ?> </a>
+                         
+                         <?php 
+                          } 
+                         ?>
+                         <ul class="ml-menu" >
                            <?php   foreach($arrMenu['desc'][$key] as $keySub => $valSub){
                              if($keySub>0){
                               $active_sub = '';
@@ -188,7 +249,6 @@ $arrMenu = array(
 
                                   if($_SESSION["userType"] == 1 || ($_SESSION["userType"] == 2 && $arr_key[$keySub]['isSearch'] == 1 )){ // open menu by permission
                                     if(count($arrMenu['desc'][$key][$keySub]) > 1){ ?>
-
                                       <li <?php echo  $active_sub ;?>>
                                         <a href="javascript:void(0);" class="menu-toggle <?php echo  $active_toggled;?>"><?php echo $valSub[0];?></a>
                                         <ul class="ml-menu">
@@ -231,14 +291,7 @@ $arrMenu = array(
                       }
                       ?>
                       <li <?php echo $active;?>>
-                        <?php //print_r($arr_key[$key]);echo $_SESSION["userType"]; print_r($arr_key[$key]['isSearch']
-                     // ); 
-                        if($arr_key[$key] != null){
-                          if($_SESSION["userType"] == 1 || ($_SESSION["userType"] == 2 && $arr_key[$key]['isSearch'] == 1)){
-                            ?>
-                            <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
-                          <?php }
-                        } ?>
+                        <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
                       </li>
 
                     <?php }

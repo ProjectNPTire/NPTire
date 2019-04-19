@@ -6,7 +6,7 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 $path_image = $path."file_productImg/";
-$page_key ='2_3_2';
+$page_key ='3_4';
 /*$sql     = " SELECT *
             FROM tb_user
             ";
@@ -89,9 +89,12 @@ chk_role('2_3','isSearch',1) ;
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
-                                                <th width="5%" style="text-align:center;">รหัสสินค้า</th>
-                                                <th width="30%" style="text-align:center;">ชื่อสินค้า</th>
+                                                <th width="10%" style="text-align:center;">รหัสสินค้า</th>
+                                                <th width="20%" style="text-align:center;">ชื่อสินค้า</th>
+                                                <th width="10%" style="text-align:center;">ประเภทสินค้า</th>
                                                 <th width="10%" style="text-align:center;">ยี่ห้อ</th>
+                                                <th width="10%" style="text-align:center;">รุ่น</th>
+                                                <th width="10%" style="text-align:center;">ขนาด</th>
                                                 <th width="5%" style="text-align:center;">จำนวน</th>
                                                 <th width="5%" style="text-align:center;">หน่วย</th>
                                                 <th width="15%" style="text-align:center;"></th>
@@ -118,7 +121,10 @@ chk_role('2_3','isSearch',1) ;
                                                     <td><?php echo $i+$goto;?></td>
                                                     <td><?php echo $rec['productCode'];?></td>
                                                     <td><?php echo $rec['productName'];?></td>
+                                                    <td><?php echo get_productType_name($rec['productTypeID']);?></td>
                                                     <td><?php echo get_brand_name($rec['brandID']);?></td>
+                                                    <td><?php echo $rec['modelName'];?></td>
+                                                    <td><?php echo $rec['productSize'];?></td>
                                                     <td><?php echo number_format($rec['productUnit']);?></td>
                                                     <td><?php echo $arr_unitType[$rec['unitType']];?></td>
                                                     <td style="text-align:center;"><?php echo $info.$edit.$del;?>
@@ -267,10 +273,20 @@ function editData(id){
   $("#frm-search").attr("action","ProductInfo.php").submit();
 }
 function delData(id){
+  var productID = id;
   if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
-    $("#proc").val("delete");
-    $("#productID").val(id);
-    $("#frm-search").attr("action","process/Product_process.php").submit();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chkDelData_Product',productID:productID},function(data){
+      //alert(data);
+      if(data > 0){
+        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีสินค้านี้อยู่ในคลัง');
+        return false;
+      }else{
+        $("#proc").val("delete");
+        $("#productID").val(id);
+        $("#frm-search").attr("action","process/Product_process.php").submit();
+      }
+    },'json');
   }
 }
 

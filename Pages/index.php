@@ -38,3 +38,28 @@
 </body>
 
 </html>
+<!-- <script>
+    $(document).ready(function() {
+        // $('.form-line').removeClass('focused');
+        $('.error').hide();
+    });
+    function chkinput(){
+
+      if($('#username').val()==''){
+          $('#username-error').show();
+          $('#username').focus();
+          return false;
+      }else{
+          $('#username-error').hide();
+      }
+      
+      if($('#password').val()==''){
+          $('#password-error').show();
+          $('#password').focus();
+          return false;
+      }else{
+          $('#password-error').hide();
+      }
+}
+
+</script> -->

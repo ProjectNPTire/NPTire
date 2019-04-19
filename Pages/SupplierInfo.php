@@ -6,7 +6,7 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 
-$page_key = "1_2";
+$page_key = "2_1";
 
 $form_page = $form_page;
 
@@ -41,9 +41,9 @@ chk_role($page_key,'isAdd',1);
                                 <input type="hidden" id="supID" name="supID" value="<?php echo $supID; ?>">
                                 <input type="hidden" id="chksup" name="chksup" value="0">
                                 <div class="row clearfix">
-                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                    <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                                    </div>
                                 </div>
-                              </div>
                                 <div class="row clearfix">
                                     <div class="col-sm-4">
                                           <b>รหัสบริษัทคู่ค้า</b>
@@ -156,10 +156,10 @@ chk_role($page_key,'isAdd',1);
                                </div>
                            </div>
                        </div>
-                       <h2 class="card-inside-title">พนักงานขาย</h2><hr />
+                       <h2 class="card-inside-title">พนักงานที่ติดต่อ</h2><hr />
                        <div class="row clearfix">
                         <div class="col-sm-4">
-                          <b>ชื่อพนักงานขาย</b>
+                          <b>ชื่อพนักงานที่ติดต่อ</b>
                           <div class="form-group">
                             <div class="form-line">
                                 <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="namesale" id="namesale" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['namesale'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>

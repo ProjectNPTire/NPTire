@@ -145,10 +145,11 @@ $HTML .= '<table width="90%" border="1">';
 
 $HTML .= '<thead>';
 $HTML .= '<tr>';
-$HTML .= '<th width="10%">ลำดับ</th>';
+$HTML .= '<th width="5%">ลำดับ</th>';
 $HTML .= '<th width="15%">รหัส</th>';
 $HTML .= '<th width="35%">สินค้า</th>';
-// $HTML .= '<th width="10%">ยี่ห้อ</th>';
+$HTML .= '<th width="10%">ประเภทสินค้า</th>';
+$HTML .= '<th width="10%">ยี่ห้อสินค้า</th>';
 // $HTML .= '<th width="10%">รุ่น</th>';
 // $HTML .= '<th width="5%">ราคา/ชิ้น</th>';
 $HTML .= '<th width="5%">จำนวน</th>';
@@ -160,6 +161,7 @@ $HTML .= '</thead>';
 $HTML .= '<tbody>';
 
 $i = 0;
+$qty1 = 0;
 while($rec_pd = $db->db_fetch_array($query_pd))
 {
 
@@ -174,18 +176,21 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 	$productID = $rec_pd['productID'];
 	$productCode = $rec_product['productCode'];
 	$productName = $rec_product['productName'];
-	// $brandName = get_brand_name($rec_product['brandID']);
+	$productTypeName = get_productType_name($rec_product['productTypeID']);
+	$brandName = get_brand_name($rec_product['brandID']);
 	// $productSize = $rec_product['productSize'];
 	// $price = $rec_pd['price'];
 	$qty = $rec_pd['qty'];
 	$receive_qty = $rec_receive_desc['qty'];
+	$qty1 += $qty;
 	// $amount = $rec_pd['amount'];
 
 	$HTML .= '<tr>';
 	$HTML .= '<td align="center">'.(++$i).'</td>';
 	$HTML .= '<td>'.$productCode.'</td>';
 	$HTML .= '<td>'.$productName.'</td>';
-	// $HTML .= '<td>'.$brandName.'</td>';
+	$HTML .= '<td>'.$productTypeName.'</td>';
+	$HTML .= '<td>'.$brandName.'</td>';
 	// $HTML .= '<td>'.$productSize.'</td>';
 	// $HTML .= '<td align="right">'.number_format($price).'</td>';
 	$HTML .= '<td align="right">'.number_format($qty).'</td>';
@@ -196,6 +201,13 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 
 
 $HTML .= '</tbody>';
+
+$HTML .= '<tfoot>';
+$HTML .= '<tr>';
+$HTML .= '<td colspan="7" align="center">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
+// $HTML .= '<td align="right">'.number_format($total).'</td>';
+$HTML .= '</tr>';
+$HTML .= '</tfoot>';
 
 // $HTML .= '<tfoot>';
 // $HTML .= '<tr>';
@@ -216,7 +228,7 @@ $HTML .= '<td width="50%" align="center">ลงชื่อ ....................
 $HTML .= '</tr>';
 $HTML .= '<tr>';
 $HTML .= '<td width="50%" align="center">(          '.$_SESSION[sys_name].'          )</td>';
-$HTML .= '<td width="50%" align="center">(          นางเพ็ญศรี   วันที่เอกสาร          )</td>';
+$HTML .= '<td width="50%" align="center">(          อโนทัย   ลักษมีอธิคม          )</td>';
 $HTML .= '</tr>';
 $HTML .= '<tr>';
 $HTML .= '<td width="50%" align="center">____/____/____</td>';

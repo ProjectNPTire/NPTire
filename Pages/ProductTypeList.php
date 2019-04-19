@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_1';
+$page_key ='3_1';
 
 $filter = '';
 if($s_productTypeName){
@@ -16,7 +16,7 @@ $field = "* ";
 $table = "tb_producttype";
 $pk_id = "productTypeID";
 $wh = "1=1   {$filter}";
-$orderby = "order by productTypeID DESC";
+$orderby = "order by productTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
 $sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
 
@@ -150,13 +150,13 @@ function editData(id){
 }
 
 function delData(id){
-  debugger
   var productTypeID = id;
   if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
     $.ajaxSetup({async: false});
     $.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
-      if(data > 1){
-        alert('ไม่สามารถลบข้อมูลได้');
+      //alert(data);
+      if(data > 0){
+        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีการใช้ข้อมูลนี้อยู่');
         return false;
       }else{
         $("#proc").val("delete");

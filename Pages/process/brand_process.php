@@ -21,7 +21,7 @@ switch($proc){
 						"brandName_short"=>$brandName_short,
 						"brandDetail"=>$brandDetail,
 						"name_nospace"=>str_replace(" ","",$brandName),
-						"productTypeID"=>$productTypeID,
+						"productTypeID"=>$hdfproductTypeID,
 						//"name_nospace"=>str_replace(" ","",$brandName),
 
 				);

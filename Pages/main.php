@@ -164,29 +164,30 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php
-                                         $sql2 ="SELECT * from tb_product where productUnit < 10";
-                                        $query2 = $db->query($sql2);
-                                        $nums2 = $db->db_num_rows($query2);
-                                        if($nums2>0){
-                                        $i2=0;
-                                       while ($rec2 = $db->db_fetch_array($query2)) { $i2++;
-                                    ?>
-                                        <tr>
-                                            <td style="text-align: center;"><?php echo $i2;?></td>
-                                            <td style="text-align: center;"><?php echo $rec2['productCode'];?></td>
-                                            <td style="text-align: center;"><?php echo $rec2['productName'];?></td>
-                                            <td style="text-align: center;"><?php echo get_brand_name($rec2['brandID']);?></td>
-                                            <td style="text-align: center;"><?php echo $rec2['modelName'];?></td>
-                                            <td style="text-align: center;"><?php echo $rec2['productSize'];?></td>
-                                            <td style="text-align: center;"><span class="badge bg-red"><?php echo number_format($rec2['productUnit']).' '.$arr_unitType[$rec2['unitType']];?></span></td>
-                                            <td style="text-align: center;">
-                                               <a  href="OrderList.php" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
-                                                    <i class="material-icons">input</i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                     <?php }
+                                  <?php
+                                  $sql2 ="SELECT * from tb_product where productUnit < orderPoint";
+                                  $query2 = $db->query($sql2);
+                                  $nums2 = $db->db_num_rows($query2);
+                                  if($nums2>0){
+                                    echo "<script>alert('มีสินค้าที่ต้องสั่งซื้อ".$nums2."รายการ')</script>";
+                                    $i2=0;
+                                    while ($rec2 = $db->db_fetch_array($query2)) { $i2++;
+                                      ?>
+                                      <tr>
+                                        <td style="text-align: center;"><?php echo $i2;?></td>
+                                        <td style="text-align: center;"><?php echo $rec2['productCode'];?></td>
+                                        <td style="text-align: center;"><?php echo $rec2['productName'];?></td>
+                                        <td style="text-align: center;"><?php echo get_brand_name($rec2['brandID']);?></td>
+                                        <td style="text-align: center;"><?php echo $rec2['modelName'];?></td>
+                                        <td style="text-align: center;"><?php echo $rec2['productSize'];?></td>
+                                        <td style="text-align: center;"><span class="badge bg-red"><?php echo number_format($rec2['productUnit']).' '.$arr_unitType[$rec2['unitType']];?></span></td>
+                                        <td style="text-align: center;">
+                                         <a  href="OrderList.php" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
+                                          <i class="material-icons">input</i>
+                                        </a>
+                                      </td>
+                                    </tr>
+                                  <?php }
                                         }else{
                                             echo '<tr><td colspan="8">ไม่พบข้อมูล</td></tr>';
                                         }

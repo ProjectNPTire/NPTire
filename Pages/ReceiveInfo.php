@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_2';
+$page_key ='5_1';
 
 ?>
 
@@ -23,28 +23,30 @@ $page_key ='3_2';
 						<div class="body table-responsive">
 							<form id="frm-input" method="POST" action="process/receive_process.php">
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
-                                <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
-                                <!-- <input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>"> -->
+								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
+								<!-- <input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>"> -->
 
 								<div class="row table-responsive">
-                                    <div class="col-sm-6 col-sm-offset-2">
-                                        <div class="form-group">
-                                            <b>เรียกจากใบสั่งซื้อ</b>
-                                            <div class="form-line">
-                                                <input type="text" id="poID" name="poID" class="form-control" placeholder="EX: PO-19010001" onkeypress="chkEnter(event)">
-                                            </div>
+									<div class="col-sm-6 col-sm-offset-2">
+										<div class="form-group">
+											<b>เรียกจากใบสั่งซื้อ</b>
+											<div class="form-line">
+												<input type="text" id="poID" name="poID" class="form-control" placeholder="EX: PO-19010001" oninput="this.value=this.value.replace(/\s/g, '');" onkeypress="chkEnter(event)">
+											</div>
 											<label id="poID_error" class="error" for="poID">ไม่พบข้อมูลใบสั่งซื้อ</label>
 											<label id="poID2_error" class="error" for="poID">ใบสั่งซื้อนี้ถูกยกเลิก</label>
-                                        </div>
-                                    </div>
+											<label id="poID3_error" class="error" for="poID">ใบสั่งซื้อนี้รับสินค้าครบแล้ว	
+											</label>
+										</div>
+									</div>
 									<div class="col-sm-1">
-                                        <div class="form-group">
+										<div class="form-group">
 											<button type="button" class="btn btn-primary" onclick="getPOInfo();">
 												<span>ค้นหา <?php echo $img_view;?></span>
 											</button>
-                                        </div>
-                                    </div>
-                                </div>
+										</div>
+									</div>
+								</div>
 
 								<div id="receive-load"></div>
 
@@ -67,9 +69,9 @@ $page_key ='3_2';
 <script>
 
 	$(document).ready(function() {
-	    $('.error').hide();
+		$('.error').hide();
 
-	    $(".numb").inputFilter(function(value) {
+		$(".numb").inputFilter(function(value) {
 			return /^\d*$/.test(value); });
 	});
 
@@ -83,7 +85,7 @@ $page_key ='3_2';
 
 	function getPOInfo(){
 		var id = $("#poID").val();
-	    $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
+		$.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
 
 	        //console.log(data);
 			//PO-19010001
@@ -94,7 +96,15 @@ $page_key ='3_2';
 					$("#receive-load").html(html);
 					$("#btn-submit").hide();
 					$('#poID_error').hide();
+					$('#poID3_error').hide();
 					$('#poID2_error').show();
+				}else if(data["po_head"].poStatus == 3){
+					var html = "";
+					$("#receive-load").html(html);
+					$("#btn-submit").hide();
+					$('#poID_error').hide();
+					$('#poID2_error').hide();
+					$('#poID3_error').show();
 				}else{
 					var html = "";
 
@@ -102,12 +112,14 @@ $page_key ='3_2';
 					html += '<table id="tb-data" class="table table-bordered">';
 					html += '<thead>';
 					html += '<tr>';
-					html += '<th>ลำดับ</th>';
+					// html += '<th>ลำดับ</th>';
 					html += '<th style="text-align:center">รหัสสินค้า</th>';
 					html += '<th style="text-align:center">ชื่อสินค้า</th>';
-					html += '<th style="text-align:right">ราคา/ชิ้น</th>';
+					html += '<th style="text-align:center">ประเภทสินค้า</th>';
+					html += '<th style="text-align:center">ยี่ห้อสินค้า</th>';
+					// html += '<th style="text-align:right">ราคา/ชิ้น</th>';
 					html += '<th style="text-align:right">จำนวน</th>';
-					html += '<th style="text-align:right">รวม</th>';
+					// html += '<th style="text-align:right">รวม</th>';
 					html += '<th style="text-align:right">รับแล้ว</th>';
 					html += '<th style="text-align:right">ค้างรับ</th>';
 					html += '<th width="10%" style="text-align:right">รับเข้า</th>';
@@ -120,26 +132,51 @@ $page_key ='3_2';
 						for(var i = 0; i < data["po_desc"].length; i++ ){
 
 							var received_qty = (data["po_desc"][i].received_qty) ? data["po_desc"][i].received_qty : 0 ;
+							var pending = data["po_desc"][i].qty - data["po_desc"][i].received_qty;
+							var receive = pending;
+
+							if (data["location"]) {
+								var locationQty = data["location"][i].locationQty;
+							}else{
+								if(confirm('ไม่มีตำแหน่งที่จัดเก็บได้ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].brandName)){
+									window.location.href = "LocationInfo.php?productTypeID="+data["po_desc"][i].productTypeID+"&brandID="+data["po_desc"][i].brandID;
+								}else{
+									window.location.href = "ReceiveList.php";
+								}								
+								return;
+							}
+
+							if (locationQty < pending) {
+								if(confirm('พื้นที่ตำแหน่งเก็บไม่เพียงพอ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].brandName)){ 
+									window.location.href = "LocationInfo.php?productTypeID="+data["po_desc"][i].productTypeID+"&brandID="+data["po_desc"][i].brandID;
+								}else{ 
+									window.location.href = "ReceiveList.php";
+								}
+								return;
+							}
 
 							html += '<tr>';
-							html += '<td align="center">'+(i+1)+'</td>';
+							// html += '<td align="center">'+(i+1)+'</td>';
 							html += '<td>'+data["po_desc"][i].productCode+'</td>';
 							html += '<td>'+data["po_desc"][i].productName+'</td>';
-							html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
+							html += '<td>'+data["po_desc"][i].productTypeName+'</td>';
+							html += '<td>'+data["po_desc"][i].brandName+'</td>';
+							// html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
 							html += '<td align="right">'+addCommas(data["po_desc"][i].qty)+'</td>';
-							html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
+							// html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
 							html += '<td align="right">'+addCommas(received_qty)+'</td>';
-							html += '<td align="right">'+addCommas(data["po_desc"][i].qty - data["po_desc"][i].received_qty)+'</td>';
-							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(data["po_desc"][i].qty - data["po_desc"][i].received_qty).length+'" value="'+addCommas(data["po_desc"][i].qty - data["po_desc"][i].received_qty)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="NumberFormat(this);checkReceiveQTY(this);" required></div></td>';
+							html += '<td align="right">'+addCommas(pending)+'</td>';
+							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(pending).length+'" value="'+addCommas(receive)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="NumberFormat(this);checkReceiveQTY(this);" required></div></td>';
+							
 							html += '<td align="right">';
 							html += '<select name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
-
 							for (var j = 0; j < data["location"].length; j++) {
 								html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
 							}
 							html += '</select>';
 							html += '</td>';
 							html += '</tr>';
+
 
 						}
 					}
@@ -173,13 +210,13 @@ $page_key ='3_2';
 				$('#poID2_error').hide();
 			}
 			$(".numb").inputFilter(function(value) {
-			return /^\d*$/.test(value); });
+				return /^\d*$/.test(value); });
 
-	    }, "json");
-	}
+		}, "json");
+}
 
-	function checkReceiveQTY(obj)
-	{
+function checkReceiveQTY(obj)
+{
 		//PO-19010001
 		var remain_receive = parseInt(($(obj).parent().parent().parent().find('td:eq(7)').text()).replace(/,/g,""));
 		// alert(remain_receive);
@@ -188,7 +225,7 @@ $page_key ='3_2';
 			// alert("ไม่สามารถรับสินค้าเกินจำนวนที่ค้างรับได้");
 			$(obj).val(remain_receive);
 			$('#tb_data-error').show();
-				return false;
+			return false;
 		}
 	}
 
@@ -201,12 +238,12 @@ $page_key ='3_2';
 
 		// $("#frm-input").attr("action", "process/receive_process.php");
 		if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
-		    $("#frm-input").submit();
-	    }
+			$("#frm-input").submit();
+		}
 	}
 
 	function OnCancel(){
-	    $(location).attr('href',"<?php echo  $form_page?>");
+		$(location).attr('href',"<?php echo  $form_page?>");
 	}
 
 </script>

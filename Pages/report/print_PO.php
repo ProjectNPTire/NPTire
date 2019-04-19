@@ -4,6 +4,8 @@ $path = "../../";
 include($path."include/config_header_top.php");
 include($path."include/MPDF53/mpdf.php");
 
+//include 'css.php';
+
 $HEADER = '';
 $HEAD = "";
 echo $SESSION_ID = session_id();
@@ -15,27 +17,25 @@ $path_cache = 'cache/'.$YEAR_CACHE.'_'.$SESSION_ID.'/';
 $pdf = new mPDF('th', 'A4', '0', 'THSaraban',7,7,15,7,'4','4');
 $pdf->AddPage();
 $CSS = "<style type='text/css'>
-				body{
-					font-size:9pt;
-				}
-				table {
-					border-collapse:collapse;
-					margin-left: auto;
-   					margin-right: auto;
-				}
-				th {
-					padding-left:3px;
-					padding-bottom:2px;
-					padding-top:2px;
-				}
-				td {
-					padding-left:3px;
-					padding-bottom:2px;
-					padding-top:2px;
-				}
-			</style> ";
-			/*border:solid 1px #000000;
-			border:solid 1px #000000;*/
+body{
+	font-size:9pt;
+}
+table {
+	border-collapse:collapse;
+	margin-left: auto;
+	margin-right: auto;
+}
+th {
+	padding-left:3px;
+	padding-bottom:2px;
+	padding-top:2px;
+}
+td {
+	padding-left:3px;
+	padding-bottom:2px;
+	padding-top:2px;
+}
+</style> ";
 
 global $db;
 $sql_po = "SELECT * FROM tb_po WHERE poID = '".$poID."' ";
@@ -46,6 +46,10 @@ $sql_sup = "SELECT * FROM tb_supplier WHERE supID = '".$rec_po["supID"]."' ";
 $query_sup = $db->query($sql_sup);
 $rec_sup = $db->db_fetch_array($query_sup);
 
+$sql_user = "SELECT * FROM  tb_user WHERE userID = '".$rec_po["create_by"]."' ";
+$query_user = $db->query($sql_user);
+$rec_user = $db->db_fetch_array($query_user);
+
 $sql_pd = "SELECT * FROM tb_po_desc WHERE poID = '".$poID."' ";
 $query_pd = $db->query($sql_pd);
 
@@ -55,8 +59,9 @@ $sup_address = $rec_sup["sup_address"]." ".get_subDistrictID_name($rec_sup["subD
 $sup_tel = $rec_sup["sup_tel"];
 $total = $rec_po["total"];
 $poDate = $rec_po["poDate"];
-$create_by = $rec_po["create_by"];
+$create_by = $rec_user["firstname"]." ".$rec_user["lastname"];
 $poStatus = $rec_po["poStatus"];
+
 
 $HTML = '';
 
@@ -150,6 +155,7 @@ $HTML .= '</thead>';
 $HTML .= '<tbody>';
 
 $i = 0;
+$qty1 = 0;
 while($rec_pd = $db->db_fetch_array($query_pd))
 {
 
@@ -165,6 +171,7 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 	$price = $rec_pd['price'];
 	$qty = $rec_pd['qty'];
 	$amount = $rec_pd['amount'];
+	$qty1 += $qty;
 
 	$HTML .= '<tr>';
 	$HTML .= '<td align="center">'.(++$i).'</td>';
@@ -181,10 +188,22 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 
 $HTML .= '</tbody>';
 
+
 $HTML .= '<tfoot>';
 $HTML .= '<tr>';
-$HTML .= '<td colspan="5" align="center">รวมสุทธิ(รวมvat)</td>';
-$HTML .= '<td align="right">'.number_format($total).'</td>';
+$HTML .= '<td colspan="2">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
+$HTML .= '<td colspan="4">';
+$HTML .= '<div class="row">';
+$HTML .= 'รวมสุทธิ(รวมvat)';
+$HTML .= '<div class="col-sm-8 text-center">'.convert_bahttext($total).'</div>';
+$HTML .= '<div class="col-sm-2 text-right">'.number_format($total).'</div>';
+$HTML .= '</div>';
+$HTML .= '</td>';
+// $HTML .= '<td align="right">''</td>';
+// $HTML .= '</tr>';
+// $HTML .= '<tr>';
+// $HTML .= '<td colspan="6" align="center"></td>';
+// // $HTML .= '<td align="right">'.number_format($total).'</td>';
 $HTML .= '</tr>';
 $HTML .= '</tfoot>';
 
@@ -199,8 +218,8 @@ $HTML .= '<td width="50%" align="center">ลงชื่อ ....................
 $HTML .= '<td width="50%" align="center">ลงชื่อ ................................</td>';
 $HTML .= '</tr>';
 $HTML .= '<tr>';
-$HTML .= '<td width="50%" align="center">(          '.$_SESSION[sys_name].'          )</td>';
-$HTML .= '<td width="50%" align="center">(          นางเพ็ญศรี   วันที่เอกสาร          )</td>';
+$HTML .= '<td width="50%" align="center">(          '.$create_by.'          )</td>';
+$HTML .= '<td width="50%" align="center">(          อโนทัย   ลักษมีอธิคม          )</td>';
 $HTML .= '</tr>';
 $HTML .= '<tr>';
 $HTML .= '<td width="50%" align="center">____/____/____</td>';

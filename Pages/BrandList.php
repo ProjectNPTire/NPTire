@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_2';
+$page_key ='3_2';
 
 $filter = '';
 if($s_brandName){
@@ -16,9 +16,12 @@ $field = "* ";
 $table = "tb_brand";
 $pk_id = "brandID";
 $wh = "1=1  {$filter}";
-$orderby = "order by brandID DESC";
+$orderby = "order by ".$table.".productTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+$sql = "select ".$field." from ".$table."
+where ".$wh ." ".$orderby; //.$limit;
+//join tb_producttype on tb_producttype.productTypeID = ".$table.".productTypeID
+
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -73,7 +76,8 @@ chk_role($page_key,'isSearch',1) ;
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
                                                 <th width="20%" style="text-align:center;">รหัสยี่ห้อสินค้า</th>
-                                                <th width="60%" style="text-align:center;">ยี่ห้อสินค้า</th>
+                                                <th width="40%" style="text-align:center;">ยี่ห้อสินค้า</th>
+                                                <th width="20%" style="text-align:center;">ประเภทสินค้า</th>
                                           <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
                                               <!--   <th style="text-align:left">รายละเอียด</th> -->
                                                 <th width="15%"></th>
@@ -93,6 +97,7 @@ chk_role($page_key,'isSearch',1) ;
                                                   <td style="text-align: center;"><?php echo $i+$goto;?></td>
                                                   <td><?php echo $rec['brandName_short'];?></td>
                                                   <td><?php echo $rec['brandName'];?></td>
+                                                  <td><?php echo get_productType_name($rec['productTypeID']);?></td>
                                         <!--           <td><?php echo $rec['brandDetail'];?></td> -->
                                                   <td style="text-align: center;"><?php echo $edit.$del;?></td>
                                               </tr>
@@ -142,10 +147,21 @@ function editData(id){
   $("#frm-search").attr("action","BrandInfo.php").submit();
 }
 function delData(id){
+  var brandID = id;
   if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
-    $("#proc").val("delete");
-    $("#brandID").val(id);
-    $("#frm-search").attr("action","process/brand_process.php").submit();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chkDelData_Brand',brandID:brandID},function(data){
+      //alert(data);
+      if(data > 0){
+        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีการใช้ข้อมูลนี้อยู่');
+        return false;
+      }else{
+        $("#proc").val("delete");
+        $("#brandID").val(id);
+        $("#frm-search").attr("action","process/brand_process.php").submit();
+      }
+  },'json');
+
   }
 }
 

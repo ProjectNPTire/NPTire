@@ -271,41 +271,41 @@ $readonly = "readonly";
                                   </div>                         
                                 </div>
                                 <h2 class="card-inside-title">บุคคลอ้างอิง</h2><hr />
-                          <div class="row clearfix">
-                            <div class="col-md-4">
-                              <b>ชื่อบุคคลอ้างอิง</b>
-                              <div class="form-group">
-                                <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                                </div>
-                                <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ ชื่อบุคคลอ้างอิง</label>
-                              </div>
-                            </div>
-                            <div class="col-sm-4">
-                              <b>นามสกุล</b>
-                              <div class="form-group">
-                                <div class="form-line">
-                                  <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                                </div>
-                                <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ นามสกุลบุคคลอ้างอิง</label>
-                              </div>
-                            </div>
-                            <div class="col-md-4">
-                              <b>เบอร์โทรศัพท์</b>
-                              <div class="input-group">
-                                <div class="form-line">
-                                  <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                                </div>
-                                <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ เบอร์โทรศัพท์บุคคลอ้างอิง</label>
-                                <label id="mobileref-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
-                              </div>
-                            </div>
-                          </div>
-                                  <div class="row clearfix">
-                                    <div class="col-md-4">
-                                     <b>รูปภาพ</b>
-                                     <div class="form-group">
+                                <div class="row clearfix">
+                                  <div class="col-md-4">
+                                    <b>ชื่อบุคคลอ้างอิง</b>
+                                    <div class="form-group">
                                       <div class="form-line">
+                                        <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstnameref" id="firstnameref" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                                      </div>
+                                      <label id="firstnameref-error" class="error" for="firstnameref">กรุณาระบุ ชื่อบุคคลอ้างอิง</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-4">
+                                    <b>นามสกุล</b>
+                                    <div class="form-group">
+                                      <div class="form-line">
+                                        <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="lastnameref" id="lastnameref" class="form-control" placeholder="นามสกุล" value="<?php echo $rec['lastnameref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                                      </div>
+                                      <label id="lastnameref-error" class="error" for="lastnameref">กรุณาระบุ นามสกุลบุคคลอ้างอิง</label>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                    <b>เบอร์โทรศัพท์</b>
+                                    <div class="input-group">
+                                      <div class="form-line">
+                                        <input type="text" onchange="isPhoneNo(this,2);return false;" class="form-control mobile" placeholder="Ex: 080-000-0000"  name="mobileref" id="mobileref"  value="<?php echo $rec['mobileref'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                                      </div>
+                                      <label id="mobileref-error" class="error" for="lastnameref">กรุณาระบุ เบอร์โทรศัพท์บุคคลอ้างอิง</label>
+                                      <label id="mobileref-error2" class="error" for="mobile">รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง</label>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row clearfix">
+                                  <div class="col-md-4">
+                                   <b>รูปภาพ</b>
+                                   <div class="form-group">
+                                    <div class="form-line">
                                         <input type="file" class="form-control " name="img" id="img" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['img'];?>" onchange="ValidateSingleInput(this);" >
                                         <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['img'];?>" >
                                       </div>
@@ -357,9 +357,9 @@ $readonly = "readonly";
                                       <i class="material-icons">vpn_key</i>
                                     </span>
                                     <div class="form-line " >
-                                      <input type="password" onchange="chkMinlength(this,1);return false;" onkeypress="NumberFormat(this);" maxlength="6" name="password1" id="password1" class="form-control" placeholder="Password" value="<?php echo $rec['password'];?>">
+                                      <input type="password" onchange="chkMinlength(this,1);return false;" maxlength="6" name="password1" id="password1" class="form-control numb" placeholder="Password" value="<?php echo $rec['password'];?>">
                                     </div>
-                                    <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษรและเป็นตัวเลขเท่านั้น</div>
+                                    <div class="help-info" <?php echo $_SESSION["userType"] == "1" ? 'hidden' : '';?>>กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษรและเป็นตัวเลขเท่านั้น</div>
                                     <label id="password1-error2" class="error" for="password1">กรุณาระบุให้ครบ6ตัวอักษร</label>
                                     <label id="password1-error" class="error" for="password1" style="display: <?php echo ($_SESSION['userType'] == 1 ? 'none' : 'block');?>">ยืนยัน password ให้ตรงกัน</label>
                                   </div>
@@ -371,7 +371,7 @@ $readonly = "readonly";
                                     <i class="material-icons">vpn_key</i>
                                   </span>
                                   <div class="form-line " >
-                                    <input type="password" onchange="chkMinlength(this,2);return false;" maxlength="6" name="password2" id="password2" class="form-control" placeholder="ยืนยัน Password" value="<?php echo $rec['password'];?>">
+                                    <input type="password" onchange="chkMinlength(this,2);return false;" maxlength="6" name="password2" id="password2" class="form-control numb" placeholder="ยืนยัน Password" value="<?php echo $rec['password'];?>">
                                   </div>
                                   <div class="help-info">กรอกได้ไม่เกินและไม่ต่ำกว่า6ตัวอักษรและเป็นตัวเลขเท่านั้น</div>
                                   <label id="password2-error2" class="error" for="password2">กรุณาระบุให้ครบ6ตัวอักษร</label>
@@ -611,6 +611,9 @@ $(document).ready(function() {
         $('.form-line').removeClass('focused');
         //$('.focused').removeClass('focused');
         $('.error').hide();
+        $(".numb").inputFilter(function(value) {
+          return /^\d*$/.test(value);
+        });
         // $('#activeStatus0').prop("checked", false);
 
         if($('#proc').val()=='add'){

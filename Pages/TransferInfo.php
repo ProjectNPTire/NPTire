@@ -4,7 +4,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_3';
+$page_key ='6_1';
 $form_page = $form_page;
 
 $sql     = " SELECT *
@@ -16,10 +16,10 @@ $nums = $db->db_num_rows($query);
 $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
-if($proc=='add'){
-	$rec['billDate'] = date('Y-m-d');
-  $rec['billBy'] = $_SESSION['sys_name'];
-}
+// if($proc=='add'){
+// 	$rec['billDate'] = date('Y-m-d');
+//   $rec['billBy'] = $_SESSION['sys_name'];
+// }
 $s_location = "SELECT * from tb_location order by locationName ";
 ?>
 
@@ -83,7 +83,8 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                       <th width="5%" style="text-align:center">ลำดับ</th>
                                       <th style="text-align:center">รหัสสินค้า</th>
                                       <th style="text-align:center">ชื่อสินค้า</th>
-                                      <th style="text-align:center">ยี่ห้อสินค้า</th>
+                                      <th style="text-align:center">ประเภท</th>
+                                      <th style="text-align:center">ยี่ห้อ</th>
                                       <th style="text-align:center">สถานที่จัดเก็บ</th>
                                       <th width="10%" style="text-align:right;">จำนวน</th>
                                       <th width="8%" style="text-align:center">หน่วยนับ</th>
@@ -128,20 +129,23 @@ $s_location = "SELECT * from tb_location order by locationName ";
                           <div class="row">
                             <div class="col-sm-4 col-sm-offset-1">
                               <div class="form-group">
-                               <b>รหัสสินค้า</b>
-                               <div class="input-group">
-                                 <div class="form-line">
-                                   <input type="text "  name="s_productCode" id="s_productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $s_productCode;?>">
-                                 </div>
-                               </div>
-                             </div>
-                           </div>
-                           <div class="col-sm-4">
+                               <!-- <b>รหัสสินค้า</b> -->
+                               <div class="form-group form-float">
+                                 <select class="form-control show-tick" name="s_searchType" id="s_searchType">
+                                  <option value="0">ค้นหาข้อมูลทั้งหมด</option>
+                                  <option value="1">รหัส/ชื่อตำแหน่งเก็บ</option>
+                                  <option value="2">รหัส/ชื่อสินค้า</option>
+                                  <!--  <option value="3">ชื่อสินค้า</option>-->
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
                             <div class="form-group">
-                             <b>ชื่อสินค้า</b>
-                             <div class="input-group">
+                              <!--  <b>ชื่อสินค้า</b> -->
+                              <div class="input-group">
                                <div class="form-line">
-                                 <input type="text "  name="s_productName" id="s_productName" class="form-control" placeholder="ชื่อสินค้า" value="<?php echo $s_productName;?>">
+                                 <input type="text " name="s_productName" id="s_productName" class="form-control" placeholder="รหัส/ชื่อ" value="<?php echo $s_productName;?>">
                                </div>
                              </div>
                            </div>
@@ -188,36 +192,48 @@ $s_location = "SELECT * from tb_location order by locationName ";
             }
             function get_search() {
              $('#ModalDATA').html('');
-             var code = $('#s_productCode').val();
+             var type = $('#s_searchType').val();
              var name  = 	$('#s_productName').val();
              var html ='';
+             debugger
              $.ajaxSetup({async: false});
-             $.post('process/get_process.php',{proc:'get_product',code:code,name:name},function(data){
-              $.each(data,function(index,value){
-               html += '<tr>';
-               html += '<td align="center">';
-               html += '<input type="checkbox" id="F_productID_'+index+'"  value="'+value['productID']+'"  class="filled-in" >';
-               html += '<label for="F_productID_'+index+'"></label>';
-               html += '<input type="hidden" id="F_productCode_'+index+'" value="'+value['productCode']+'">';
-               html += '<input type="hidden" id="F_productName_'+index+'" value="'+value['productName']+'">';
-               html += '<input type="hidden" id="F_locationName_'+index+'" value="'+value['locationName']+'">';
-               html += '<input type="hidden" id="F_locationID_'+index+'" value="'+value['locationID']+'">';
-               html += '<input type="hidden" id="F_ps_unit_'+index+'" value="'+value['ps_unit']+'">';
-               html += '<input type="hidden" id="F_brandID_'+index+'" value="'+value['brandID']+'">';
-               html += '<input type="hidden" id="F_brand_'+index+'" value="'+value['brand']+'">';
-               html += '<input type="hidden" id="F_unitType_'+index+'" value="'+value['unitType']+'">';
-               html += '</td>';
-               html += '<td>'+value['locationName']+'</td>';
-               html += '<td>';
-               html += '<b>รหัส</b> : '+value['productCode'];
-               html += '<br><b>ชื่อ</b> : '+value['productName'];
-               html += '<br><b>ยี่ห้อ</b> : '+value['brand'];
-               html += '<br><b>รายละเอียด</b> : '+value['detail'];
+             $.post('process/get_process.php',{proc:'get_product',type:type,name:name},function(data){
+              //alert(data);
+              if(data != ''){
+                //alert('true');
+                $.each(data,function(index,value){
+                 html += '<tr>';
+                 html += '<td align="center">';
+                 html += '<input type="checkbox" id="F_productID_'+index+'"  value="'+value['productID']+'"  class="filled-in" >';
+                 html += '<label for="F_productID_'+index+'"></label>';
+                 html += '<input type="hidden" id="F_productCode_'+index+'" value="'+value['productCode']+'">';
+                 html += '<input type="hidden" id="F_productName_'+index+'" value="'+value['productName']+'">';
+                 html += '<input type="hidden" id="F_locationName_'+index+'" value="'+value['locationName']+'">';
+                 html += '<input type="hidden" id="F_locationID_'+index+'" value="'+value['locationID']+'">';
+                 html += '<input type="hidden" id="F_ps_unit_'+index+'" value="'+value['ps_unit']+'">';
+                 html += '<input type="hidden" id="F_brandID_'+index+'" value="'+value['brandID']+'">';
+                 html += '<input type="hidden" id="F_brand_'+index+'" value="'+value['brand']+'">';
+                 html += '<input type="hidden" id="F_unitType_'+index+'" value="'+value['unitType']+'">';
+                 html += '<input type="hidden" id="F_type_'+index+'" value="'+value['productTypeName']+'">';
+                 html += '</td>';
+                 html += '<td>'+value['locationName']+'</td>';
+                 html += '<td>';
+                 html += '<b>รหัส</b> : '+value['productCode'];
+                 html += '<br><b>ชื่อ</b> : '+value['productName'];
+                 html += '<br><b>ประเภท</b> : '+value['productTypeName'];
+                 html += '<br><b>ยี่ห้อ</b> : '+value['brand'];
+                 html += '<br><b>รายละเอียด</b> : '+value['detail'];
 
-               html += '</td>';
-               html += '<td align="center">'+value['ps_unit']+' '+value['unitType']+'</td>';
-               html += '</tr>';
-             });
+                 html += '</td>';
+                 html += '<td align="center">'+value['ps_unit']+' '+value['unitType']+'</td>';
+                 html += '</tr>';
+               });
+              }else{
+                //alert('false');
+                html += '<tr>';
+                html += '<td colspan="4" align="center">ไม่พบข้อมูล</td>';
+                html += '</tr>';
+              }
             },'json');
              $('#ModalDATA').html(html);
            }
@@ -264,6 +280,7 @@ $s_location = "SELECT * from tb_location order by locationName ";
             var arr_unittype = $('input[id^=F_unitType_]');
             var arr_brand = $('input[id^=F_brand_]');
             var arr_unit = $('input[id^=F_ps_unit_]');
+            var arr_type = $('input[id^=F_type_]');
             if(arr_p_id.length>0){
               for (var i = 0; i < arr_p_id.length; i++) {
 
@@ -282,6 +299,9 @@ $s_location = "SELECT * from tb_location order by locationName ";
                 html += '</td>';
                 html += '<td>';
                 html +=  arr_p_name[i].value;
+                html += '</td>';
+                html += '<td>';
+                html +=  arr_type[i].value;
                 html += '</td>';
                 html += '<td>';
                 html +=  arr_brand[i].value;
@@ -338,18 +358,18 @@ function  get_unit(id){
   
 }
 
-(function($) {
-  $.fn.inputFilter = function(inputFilter) {
-    return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
-      if (inputFilter(this.value)) {
-        this.oldValue = this.value;
-        this.oldSelectionStart = this.selectionStart;
-        this.oldSelectionEnd = this.selectionEnd;
-      } else if (this.hasOwnProperty("oldValue")) {
-        this.value = this.oldValue;
-        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-      }
-    });
-  };
-}(jQuery));
+// (function($) {
+//   $.fn.inputFilter = function(inputFilter) {
+//     return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+//       if (inputFilter(this.value)) {
+//         this.oldValue = this.value;
+//         this.oldSelectionStart = this.selectionStart;
+//         this.oldSelectionEnd = this.selectionEnd;
+//       } else if (this.hasOwnProperty("oldValue")) {
+//         this.value = this.oldValue;
+//         this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+//       }
+//     });
+//   };
+// }(jQuery));
 </script>

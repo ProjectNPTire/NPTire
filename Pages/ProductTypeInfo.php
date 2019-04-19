@@ -4,7 +4,7 @@
 <?php $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_1';
+$page_key ='3_1';
 $sql     = " SELECT *
 FROM tb_producttype
 where productTypeID ='".$productTypeID."' ";
@@ -208,6 +208,7 @@ $readonly = "readonly";
 		var productTypeID= $('#productTypeID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chk_productTypeCode',productTypeCode:productTypeCode,productTypeID:productTypeID},function(data){
+			$('.error').hide();
 			if(data==1){
 				$('#productTypeCode2-error').show();
 				$('#chk').val(1);
@@ -224,6 +225,7 @@ $readonly = "readonly";
 		var productTypeID= $('#productTypeID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chk_productTypeName',productTypeName:productTypeName,productTypeID:productTypeID},function(data){
+			$('.error').hide();
 			if(data==1){
 				$('#productTypeName2-error').show();
 				$('#chk2').val(1);
@@ -242,6 +244,7 @@ $readonly = "readonly";
 		var productTypeID= $('#productTypeID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chk_productTypeNameShort',productTypeNameShort:productTypeNameShort,productTypeID:productTypeID},function(data){
+			$('.error').hide();
 			if(data==1){
 				$('#productTypeNameShort2-error').show();
 				$('#chk3').val(1);

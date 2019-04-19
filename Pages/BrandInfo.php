@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html>
 
 <?php $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_2';
+$page_key ='3_2';
 $sql     = " SELECT *
 FROM tb_brand
 where brandID ='".$brandID."' ";
@@ -54,7 +54,7 @@ T
 										<b>รหัสยี่ห้อสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $proc == "edit" ? $readonly : '';?>>
+												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
 											<label id="brandName_short-error" class="error" for="brandName_short">กรุณาระบุ รหัสยี่ห้อสินค้า</label>
@@ -74,7 +74,7 @@ T
 									<div class="col-sm-4">
 										<b>ประเภทสินค้า</b>
 										<div class="form-group form-float">
-											<select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+											<select onchange="get_hdf(this.value,'hdfproductTypeID');" name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
 												<option value="">เลือก</option>
 												<?php
 												$s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
@@ -191,6 +191,7 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 		var brandID= $('#brandID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chk_brandName',brandName:brandName,brandID:brandID},function(data){
+			$('.error').hide();
 			if(data==1){
 				$('#brandName2-error').show();
 				$('#chk').val(1);
@@ -208,6 +209,7 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 		var brandID= $('#brandID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chk_brandName_short',brandName_short:brandName_short,brandID:brandID},function(data){
+			$('.error').hide();
 			if(data==1){
 				$('#brandName_short2-error').show();
 				$('#chk2').val(1);
@@ -218,6 +220,10 @@ if(confirm("กรุณายืนยันการบันทึกอี�
 			}
 
 		},'json');
+	}
+
+	function get_hdf(parent_id,hdf_id){
+		$('#'+hdf_id).val(parent_id);
 	}
 
 //username2

@@ -6,7 +6,7 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 
-$page_key ='3_1';
+$page_key ='4_1';
 
 $filter = '';
 if($s_po_id){
@@ -132,28 +132,32 @@ chk_role($page_key,'isSearch',1);
                                 $i=0;
                                 while ($rec = $db->db_fetch_array($query)) {
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                                    $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
-                                    ?>
-                                    <tr>
-                                        <td align="center"><?php echo ++$i; ?></td>
-                                        <td><?php echo $rec['poID']; ?></td>
-                                        <td><?php echo get_sup_name($rec['supID']); ?></td>
-                                        <td><?php echo conv_date($rec['poDate']); ?></td>
-                                        <td><?php echo get_poStatus($rec['poStatus']); ?></td>
-                                        <td><?php echo $info; ?></td>
-                                    </tr>
-                                <?php }
-                            }else{
-                                echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                    <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
-                </div>
-            </form>
-        </div>
+                                    $del = '';
+                                    if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
+                                      $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO('.$rec['poID'].');"  title="ยกเลิก" >'.$img_cancel.'</a>';
+                                  }
+                                  $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
+                                  ?>
+                                  <tr>
+                                      <td align="center"><?php echo ++$i; ?></td>
+                                      <td><?php echo $rec['poID']; ?></td>
+                                      <td><?php echo get_sup_name($rec['supID']); ?></td>
+                                      <td><?php echo conv_date($rec['poDate']); ?></td>
+                                      <td><?php echo get_poStatus($rec['poStatus']); ?></td>
+                                      <td><?php echo $info.$del; ?></td>
+                                  </tr>
+                              <?php }
+                          }else{
+                            echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                        }
+                        ?>
+                    </tbody>
+                </table>
+                <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
+            </div>
+        </form>
     </div>
+</div>
 </div>
 </div>
 <!-- #END# Basic Examples -->
@@ -169,11 +173,11 @@ chk_role($page_key,'isSearch',1);
 </html>
 
 <script>
-  $(document).ready(function() {
-   $("#table1").DataTable({
-     "ordering": false,
-   })
- });
+    $(document).ready(function() {
+       $("#table1").DataTable({
+         "ordering": false,
+     })
+   });
     function searchData(){
         $('#frm-search').removeAttr('target');
         $("#frm-search").submit();
@@ -203,20 +207,23 @@ function infoPO(id){
         html += '<div class="modal-dialog modal-lg" role="document">';
         html += '<div class="modal-content">';
 
-        html += '<div class="modal-header" style="border-bottom:1px solid #ccc!important">';
+        html += '<div class="modal-header">';
         html += '<div class="row">';
-        html += '<div class="col-sm-6">';
-        html += '<h4 class="modal-title" id="largeModalLabel">';
-        html += 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด <br/>';
-        html += 'NP TIRE (GOLD WHEELS) CO.,LTD <br/>';
-        html += '35/23-25 ถ.มีนบุรี-ร่มเกล้า เขตมีนบุรี กรุ่งเทพฯ 10510 <br/>';
-        html += 'โทร 02-543-8957, 02-061-5957';
-        html += '</h4>';
-        html += '</div>';
-        html += '<div class="col-sm-6 text-right">';
-        html += '<h4 class="modal-title" id="largeModalLabel">';
-        html += 'ใบสั่งซื้อสินค้า';
-        html += '</h4>';
+        // html += '<div class="col-sm-6">';
+        // html += '<h1 class="modal-title" id="largeModalLabel">';
+        // html += 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด <br/>';
+        // html += 'NP TIRE (GOLD WHEELS) CO.,LTD <br/>';
+        // html += '35/23-25 ถ.มีนบุรี-ร่มเกล้า เขตมีนบุรี กรุ่งเทพฯ 10510 <br/>';
+        // html += 'โทร 02-543-8957, 02-061-5957';
+        // html += '</h1>';
+        // html += '</div>';
+        html += '<div class="col-sm-12 text-right">';
+        html += '<h1 class="modal-title" id="largeModalLabel">';
+        html += 'ใบสั่งซื้อสินค้า<br/>';
+        html += 'เลขที่ใบสั่งซื้อ : '+id+'<br/>';
+        html += 'วันที่สั่งซื้อ : '+data["po_head"].poDate;
+
+        html += '</h1>';
         html += '</div>';
         html += '</div>';
         html += '</div>';
@@ -224,25 +231,25 @@ function infoPO(id){
 
         html += '<div class="modal-body">';
 
-        html += '<div class="row">';
-        html += '<div class="col-sm-4">';
-        html += '<div class="form-group">';
-        html += '<b>เลขที่ใบสั่งซื้อ : '+id+'</b>';
-        html += '</div>';
-        html += '</div>';
+        // html += '<div class="row">';
+        // html += '<div class="col-sm-4">';
+        // html += '<div class="form-group">';
+        // html += '<b>เลขที่ใบสั่งซื้อ : '+id+'</b>';
+        // html += '</div>';
+        // html += '</div>';
 
-        html += '<div class="col-sm-4">';
-        html += '<div class="form-group">';
-        html += '<b>วันที่เอกสาร : '+data["po_head"].poDate+'</b>';
-        html += '</div>';
-        html += '</div>';
+        // html += '<div class="col-sm-4">';
+        // html += '<div class="form-group">';
+        // html += '<b>วันที่เอกสาร : '+data["po_head"].poDate+'</b>';
+        // html += '</div>';
+        // html += '</div>';
 
-        html += '<div class="col-sm-4">';
-        html += '<div class="form-group">';
-        html += '<b>ผู้ทำรายการ : '+data["po_head"].empname+'</b>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
+        // html += '<div class="col-sm-4">';
+        // html += '<div class="form-group">';
+        // html += '<b>ผู้ทำรายการ : '+data["po_head"].empname+'</b>';
+        // html += '</div>';
+        // html += '</div>';
+        // html += '</div>';
 
         html += '<div class="form-group">';
         html += '<div class="row">';
@@ -291,11 +298,11 @@ function infoPO(id){
         html += '</div>';
         html += '</div>';
 
-        html += '<div class="col-sm-6">';
-        html += '<div class="form-group">';
-        html += '<b>สถานะ : </b>'+data["po_head"].poStatusName;
-        html += '</div>';
-        html += '</div>';
+        // html += '<div class="col-sm-6">';
+        // html += '<div class="form-group">';
+        // html += '<b>สถานะ : </b>'+data["po_head"].poStatusName;
+        // html += '</div>';
+        // html += '</div>';
 
         html += '</div>';
 
@@ -306,25 +313,28 @@ function infoPO(id){
         html += '</div>';
         html += '</div>';
 
-        if(data["po_head"].isCancel == 1 && data["po_head"].poStatus == 1)
-        {
-            html += '<div class="text-right">';
-            html += '<a class="btn btn-danger waves-effect" onClick="cancelPO(\''+id+'\');" >ยกเลิกเอกสาร</a>';
-            html += '</div>';
-        }
+        // if(data["po_head"].isCancel == 1 && (data["po_head"].poStatus == 1 || data["po_head"].poStatus == 2))
+        // {
+        //     html += '<div class="text-right">';
+        //     html += '<a class="btn btn-danger waves-effect" onClick="cancelPO(\''+id+'\');" >ยกเลิกเอกสาร</a>';
+        //     html += '</div>';
+        // }
 
         html += '</div>';
 
 
 
         html += '<div class="modal-body">';
-        html += '<table class="table table-bordered" id="tb-search">';
+        html += '<table class="table table-bordered" id="tb-search" style="font-size:14px">';
         html += '<thead>';
         html += '<tr>';
         html += '<th>ลำดับ</th>';
-        html += '<th>รหัส</th>';
-        html += '<th>สินค้า</th>';
-        html += '<th>ราคา/ชิ้น</th>';
+        html += '<th>รหัสสินค้า</th>';
+        html += '<th>ชื่อสินค้า</th>';
+        html += '<th>ยี่ห้อ</th>';
+        html += '<th>รุ่น</th>';
+        html += '<th>ขนาด</th>';
+        html += '<th>ราคา/หน่วย</th>';
         html += '<th>จำนวน</th>';
         html += '<th>รับแล้ว</th>';
         html += '<th>รวม</th>';
@@ -338,16 +348,19 @@ function infoPO(id){
                html += '<td align="center">'+(i+1)+'</td>';
                html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
                html += '<td>'+data["po_desc"][i].productName+'</td>';
+               html += '<td>'+data["po_desc"][i].brandName+'</td>';
+               html += '<td>'+data["po_desc"][i].modelName+'</td>';
+               html += '<td>'+data["po_desc"][i].productSize+'</td>';
                html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
-               html += '<td align="right">'+addCommas(data["po_desc"][i].qty)+'</td>';
-               html += '<td align="right">'+addCommas(data["po_desc"][i].received_qty)+'</td>';
+               html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
+               html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
                html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
                html += '</tr>';
            }
        }
        else {
         html += '<tr>';
-        html += '<td colspan="7" align="center">ไม่พบข้อมูล</td>';
+        html += '<td colspan="9" align="center">ไม่พบข้อมูล</td>';
         html += '</tr>';
     }
 
@@ -355,7 +368,7 @@ function infoPO(id){
 
     html += '<tfoot>';
     html += '<tr>';
-    html += '<td colspan="6" align="center">ราคาสุทธิ(รวมvat)</td>';
+    html += '<td colspan="9" align="center">ราคาสุทธิ(รวมvat)</td>';
     html += '<td align="right">'+addCommas(data["po_head"].total)+'</td>';
     html += '</tr>';
     html += '</tfoot>';

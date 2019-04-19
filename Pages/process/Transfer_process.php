@@ -30,8 +30,8 @@ switch($proc){
 				$fields = array(
 						"billNo"=>$new_no,
 						"billBy"=>$billBy,
-						"billDate"=>conv_date_db($billDate),
-						"userID"=>$_SESSION['sys_id'],
+						"billDate"=>date("Y-m-d"),
+						"create_by"=>$_SESSION['sys_id'],
 						"billStstus"=>1,
 						
 				);
@@ -62,6 +62,7 @@ switch($proc){
 								 $rec_sub = $db->db_fetch_array($query_sub);
 								 $total_sub = $rec_sub['ps_unit'] - (str_replace(',','',$billDescUnit[$key]));
 								 $db->db_update('tb_productstore',array('ps_unit'=>$total_sub),"ps_id = '".$rec_sub['ps_id']."'");
+
 
 
 

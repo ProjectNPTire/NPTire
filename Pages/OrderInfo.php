@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_1';
+$page_key ='4_1';
 
 $proc = ($proc=='')?"add":$proc;
 chk_role($page_key,'isAdd',1);
@@ -44,7 +44,8 @@ chk_role($page_key,'isAdd',1);
 
 													<?php }  ?>
 												</select>
-											</div>
+											</div>											
+											<input type="hidden" name="hdfsupName" id="hdfsupName" value="">
 											<label id="supID_error" class="error" for="supID_error">กรุณาเลือก บริษัทคู่ค้า</label>
 										</div>
 									</div>
@@ -97,9 +98,9 @@ chk_role($page_key,'isAdd',1);
 											<tr>
 												<th style="text-align:center">รหัสสินค้า</th>
 												<th style="text-align:center">ชื่อสินค้า</th>
-												<th style="text-align:center">ยี่ห้อสินค้า</th>
-												<th style="text-align:center">รุ่นสินค้า</th>
-												<th style="text-align:center">ขนาดสินค้า</th>
+												<th style="text-align:center">ยี่ห้อ</th>
+												<th style="text-align:center">รุ่น</th>
+												<th style="text-align:center">ขนาด</th>
 												<th width="10%" style="text-align:right;">ราคา/หน่วย</th>
 												<th width="10%" style="text-align:right">จำนวน</th>
 												<th width="10%" style="text-align:right">รวม</th>
@@ -107,30 +108,31 @@ chk_role($page_key,'isAdd',1);
 											</tr>
 										</thead>
 										<tbody>
-											<td colspan="9" align="center">ยังไม่มีรายการสินค้า</td>
-										</tr>
-									</tbody>
-									<tfoot>
-									</tfoot>
-								</table>
-								<label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าต้องมากกว่า0</label>
-							</div>
-							<br>
-							<div id="btn-submit" class="align-center" hidden>
-								<button class="btn btn-success waves-effect" type="button" onclick="confirmSubmit()">บันทึก</button>
-								<button class="btn btn-default waves-effect" type="button" onclick="OnCancel();">ยกเลิก</button>
-							</div>
-						</form>
+											<tr>
+												<td colspan="9" align="center">ยังไม่มีรายการสินค้า</td>
+											</tr>
+										</tbody>
+										<tfoot>
+										</tfoot>
+									</table>
+									<label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าต้องมากกว่า0</label>
+								</div>
+								<br>
+								<div id="btn-submit" class="align-center" hidden>
+									<button class="btn btn-success waves-effect" type="button" onclick="confirmSubmit()">บันทึก</button>
+									<button class="btn btn-default waves-effect" type="button" onclick="OnCancel();">ยกเลิก</button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div id="modal-load"></div>
+
 		</div>
-
-		<div id="modal-load"></div>
-
-	</div>
-</section>
-<?php include 'js.php';?>
+	</section>
+	<?php include 'js.php';?>
 </body>
 
 </html>
@@ -145,12 +147,18 @@ chk_role($page_key,'isAdd',1);
 	});
 
 	function getSupInfo(id){
+
+		$("#tb-data tbody tr").html("<td colspan='9' align='center'>ยังไม่มีรายการสินค้า</td>");
+		$("#tb-data tfoot").html("");
+		$("#btn-submit").hide();
 		$.post( "process/ajax_response.php", { func: "getSupInfo", id: id }, function( data ) {
 
 			$("#sup_address").val((data).sup_address);
 			$("#province_name_th").val((data).province_name_th);
 			$("#district_name_th").val((data).district_name_th);
 			$("#subDistrict_name_th").val((data).subDistrict_name_th);
+			$("#hdfsupName").val((data).sup_name);
+
 
 		}, "json");
 	}
@@ -165,7 +173,7 @@ chk_role($page_key,'isAdd',1);
 		var code = '';
 		var name = '';
 		var supID = $('#supID').val();
-		debugger
+		var sup_name = $('#hdfsupName').val();
 		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name,supID: supID  }, function( data ) {
 			var html = "";
 
@@ -174,15 +182,20 @@ chk_role($page_key,'isAdd',1);
 			html += '<div class="modal-content">';
 
 			html += '<div class="modal-header">';
+			html += '<div class="col-sm-2">';
 			html += '<h4 class="modal-title" id="largeModalLabel">ค้นหาสินค้า</h4>';
-			html += '<form>';
+			html += '</div>';
+			html += '<div class="col-sm-10 align-right">';
+			html += '<b>บริษัทคู่ค้า: '+sup_name+'</b>';
+			html += '</div>';
+			html += '</div>'; //header
 
-			html += '<br><br><br>';
+			html += '<div class="modal-body">';
+
 			html += '<div class="row">';
-
 			html += '<div class="col-sm-4 col-sm-offset-1">';
 			html += '<div class="form-group">';
-			html += '<b>รหัสสินค้า</b>';
+			// html += '<b>รหัสสินค้า</b>';
 			html += '<div class="form-line">';
 			html += '<input type="text" placeholder="รหัสสินค้า" id="s_productCode" name="s_productCode" class="form-control">';
 			html += '</div>';
@@ -191,7 +204,7 @@ chk_role($page_key,'isAdd',1);
 
 			html += '<div class="col-sm-4">';
 			html += '<div class="form-group">';
-			html += '<b>ชื่อสินค้า</b>';
+			// html += '<b>ชื่อสินค้า</b>';
 			html += '<div class="form-line">';
 			html += '<input type="text" placeholder="ชื่อสินค้า" id="s_productName" name="s_productName" class="form-control">';
 			html += '</div>';
@@ -205,14 +218,9 @@ chk_role($page_key,'isAdd',1);
 			html += '</div>';
 			html += '</div>';
 			html += '</div>';
+			html += '</div>'; //row
 
-			html += '</div>';
-
-			html += '</form>';
-			html += '</div>';
-
-			html += '<div class="modal-body">';
-			html += '<div class="table-responsive">';
+			// html += '<div class="table-responsive">';
 			html += '<table class="table table-bordered" id="tb-search">';
 			html += '<thead>';
 			html += '<tr>';
@@ -222,26 +230,28 @@ chk_role($page_key,'isAdd',1);
 			html += '<th>รุ่น</th>';
 			html += '<th>ขนาด</th>';
 			html += '<th>จำนวน</th>';
+			html += '<th>จุดสั่งซื้อ</th>';
 			html += '<th></th>';
 			html += '</tr>';
 			html += '</thead>';
 			html += '<tbody>';
 
 			if(data){
-			
+
 				/* if(data){
 					
 					
-					} */
+				} */
 				for(var i = 0; i < data.length; i++ ){
-				
+
 					html += '<tr>';
-					html += '<td align="center">'+data[i].productCode+'</td>';
+					html += '<td>'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
 					html += '<td>'+data[i].brandName+'</td>';
 					html += '<td>'+data[i].modelName+'</td>';
 					html += '<td>'+data[i].productSize+'</td>';
 					html += '<td>'+data[i].productUnit+'</td>';
+					html += '<td>'+data[i].orderPoint+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
 					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';
@@ -249,14 +259,19 @@ chk_role($page_key,'isAdd',1);
 			}
 			else {
 				html += '<tr>';
-				html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
+				html += '<td colspan="8" align="center">ไม่พบข้อมูล</td>';
 				html += '</tr>';
 			}
 
 			html += '</tbody>';
 			html += '</table>';
-			html += '</div>';
-			html += '</div>';
+			// html += '</div>'; //responsive
+
+			html += '</div>'; // body
+
+			// html += '<div class="modal-footer">';
+			// html += '<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>';
+			// html += '</div>';
 
 			html += '</div>';
 			html += '</div>';
@@ -274,7 +289,8 @@ chk_role($page_key,'isAdd',1);
 
 		var code = $("#s_productCode").val();
 		var name = $("#s_productName").val();
-		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name  }, function( data ) {
+		var supID = $('#supID').val();
+		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name,supID: supID  }, function( data ) {
 
 			var html = "";
 
@@ -288,6 +304,7 @@ chk_role($page_key,'isAdd',1);
 			html += '<th>รุ่น</th>';
 			html += '<th>ขนาด</th>';
 			html += '<th>จำนวน</th>';
+			html += '<th>จุดสั่งซื้อ</th>';
 			html += '<th></th>';
 			html += '</tr>';
 			html += '</thead>';
@@ -302,6 +319,7 @@ chk_role($page_key,'isAdd',1);
 					html += '<td>'+data[i].modelName+'</td>';
 					html += '<td>'+data[i].productSize+'</td>';
 					html += '<td>'+data[i].productUnit+'</td>';
+					html += '<td>'+data[i].orderPoint+'</td>';
 					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
 					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
 					html += '</tr>';
@@ -309,7 +327,7 @@ chk_role($page_key,'isAdd',1);
 			}
 			else {
 				html += '<tr>';
-				html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
+				html += '<td colspan="8" align="center">ไม่พบข้อมูล</td>';
 				html += '</tr>';
 			}
 
@@ -410,10 +428,10 @@ chk_role($page_key,'isAdd',1);
 
 		if($('#supID').val() == ''){
 			$('#supID_error').show();
-			  return false;
-    }else{
-		$('#supID_error').hide();
-	}
+			return false;
+		}else{
+			$('#supID_error').hide();
+		}
 
 		var arr = $('input[id^=qty]');
 		for (var i = 0; i < arr.length; i++) {
