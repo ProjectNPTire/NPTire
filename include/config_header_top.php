@@ -21,8 +21,10 @@ if($_GET){
 			foreach($arrParam as $index => $var){
 				$arrVar = explode("=",$var);
 				${$arrVar[0]} = $arrVar[1];
+				
 			}
 		}
+
 	}
 }
 
@@ -31,8 +33,10 @@ if($_POST || $_GET){
 		${$key} = $value;
 	}
 	foreach($_GET as $key => $value){
+
 		${$key} = $value;
 	}
+
 }
 include($path.'include/paging.php');
 
