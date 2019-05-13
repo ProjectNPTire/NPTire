@@ -26,6 +26,7 @@ while ($rec_roles = $db->db_fetch_array($query_roles)) {
 $arrMenu = array(
   'desc' => array(
     '0' => 'หน้าหลัก',
+    '1' => 'ค้นหาสินค้า',
     '1_1' => 'ข้อมูลพนักงาน',
     '2_1' => 'ข้อมูลคู่ค้า',
 
@@ -45,6 +46,7 @@ $arrMenu = array(
 
   'url'=> array(
     '0' => 'main.php',
+    '1' => 'SearchProduct.php',
     '1_1' => 'UserList.php',
     '2_1' => 'SupplierList.php',
     '3' => array(
@@ -60,6 +62,7 @@ $arrMenu = array(
   ),
   'icon'=> array(
     '0' => '<i class="material-icons">home</i>',
+    '1' => '<i class="material-icons">search</i>',
     '1_1' => '<i class="material-icons">group</i>',
     '2_1' => '<i class="material-icons">group</i>',
     '3' => '<i class="material-icons">apps</i>',
@@ -159,7 +162,21 @@ $arrMenu = array(
                         <li <?php echo $active;?>>
                           <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
                         </li>
+                      <?php } 
+
+                      if($arrMenu['desc'][$key] == 'ค้นหาสินค้า'){
+                          //print_r($arrMenu['desc'][$key]);
+                        $active = '';
+                        if($key==$page_key){
+                          $active = 'class="active"';
+                        }
+                        ?>
+                        <li <?php echo $active;?>>
+                          <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
+                        </li>
                       <?php } ?>
+
+
                       <?php if(count($arrMenu['desc'][$key]) > 1){
                         $active = '';
                         if($key==$page_key){

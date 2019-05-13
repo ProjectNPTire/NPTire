@@ -60,7 +60,7 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                         <th>รุ่นสินค้า</th>
                         <th>ขนาดสินค้า</th>
                         <th>จำนวน</th>
-                        <th></th>
+                     <!--    <th></th> -->
                       </tr>
                     </thead>
                     <tbody>
@@ -73,11 +73,11 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                         <td style="text-align: center;"><?php echo $rec2['modelName'];?></td>
                         <td style="text-align: center;"><?php echo $rec2['productSize'];?></td>
                         <td style="text-align: center;"><span class="badge bg-red"><?php echo number_format($rec2['productUnit']).' '.$arr_unitType[$rec2['unitType']];?></span></td>
-                        <td style="text-align: center;">
+                      <!--   <td style="text-align: center;">
                          <a  href="OrderInfo.php?supID=<?php echo $rec2['supID'];?>&productID=<?php echo $rec2['productID'];?>&productCode=<?php echo $rec2['productCode'];?>&productName=<?php echo $rec2['productName'];?>&brandName=<?php echo get_brand_name($rec2['brandID']);?>&modelName=<?php echo $rec2['modelName'];?>&productSize=<?php echo $rec2['productSize'];?>" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="สั่งซื้อ">
                           <i class="material-icons">input</i>
                         </a>
-                      </td>
+                      </td> -->
                     </tr>
                   </tbody>
                 </table>

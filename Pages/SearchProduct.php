@@ -29,7 +29,7 @@ join tb_brand on tb_product.brandID = tb_brand.brandID
 join tb_productstore on tb_product.productID =  tb_productstore.productID
 join tb_location on tb_productstore.locationID = tb_location.locationID";
 $pk_id = "productID";
-$wh = " {$filter}";
+$wh = " {$filter} and tb_productstore.isDeleted != 1";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
 $sql = "select ".$field." from ".$table .$wh;
 
@@ -52,82 +52,82 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
             </div>
             <form id="" method="POST">
               <div class="body">
-              <!--  <?php echo $ddl_location; ?> -->
-               <div class="row clearfix">                
-                <div class="col-md-5">
-                  <div class="form-float">
-                    <select class="form-control show-tick" data-live-search="true" id="ddl_location" name="ddl_location">
-                      <option value=""<?php echo ($ddl_location=="")?"selected":"";?>>ทั้งหมด</option>
-                      <option value="1"<?php echo ($ddl_location==1)?"selected":"";?>>ตำแหน่ง</option>
-                      <option value="2"<?php echo ($ddl_location==2)?"selected":"";?>>ประเภทสินค้า</option>
-                      <option value="3"<?php echo ($ddl_location==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
-                      <option value="4"<?php echo ($ddl_location==4)?"selected":"";?>>ชื่อสินค้า</option>
-                    </select>  
-                  </div>
-                </div>
-                <div class="col-md-5">
-                  <div class="form-group">
-                    <div class="form-line">
-                      <input type="text " name="txt_search" id="txt_search" class="form-control" value="<?php echo $txt_search;?>">
+                <!--  <?php echo $ddl_location; ?> -->
+                <div class="row clearfix">                
+                  <div class="col-md-5">
+                    <div class="form-float">
+                      <select class="form-control show-tick" data-live-search="true" id="ddl_location" name="ddl_location">
+                        <option value=""<?php echo ($ddl_location=="")?"selected":"";?>>ทั้งหมด</option>
+                        <option value="1"<?php echo ($ddl_location==1)?"selected":"";?>>ตำแหน่ง</option>
+                        <option value="2"<?php echo ($ddl_location==2)?"selected":"";?>>ประเภทสินค้า</option>
+                        <option value="3"<?php echo ($ddl_location==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
+                        <option value="4"<?php echo ($ddl_location==4)?"selected":"";?>>ชื่อสินค้า</option>
+                      </select>  
                     </div>
                   </div>
-                </div>            
-                <div class="col-md-2">
-                  <div class="icon-and-text-button-demo">
-                    <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                  <div class="col-md-5" id="hide">
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text " name="txt_search" id="txt_search" class="form-control" value="<?php echo $txt_search;?>">
+                      </div>
+                    </div>
+                  </div>            
+                  <div class="col-md-2">
+                    <div class="icon-and-text-button-demo">
+                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>ลำดับ</th>
-                      <th>รหัสสินค้า</th>
-                      <th>ชื่อสินค้า</th>
-                      <th>ประเภทสินค้า</th>
-                      <th>ยี่ห้อสินค้า</th>
-                      <th>รุ่นสินค้า</th>
-                      <th>ขนาดสินค้า</th>
-                      <th>ตำแหน่งจัดเก็บ</th>
-                      <th>จำนวน</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if($nums>0){
-                      $i=0;
-                      while ($rec = $db->db_fetch_array($query)) { 
-                        $i++;
-                        ?>
-                        <tr>
-                          <td style="text-align: center;"><?php echo $i;?></td>
-                          <td style="text-align: center;"><?php echo $rec['productCode'];?></td>
-                          <td style="text-align: center;"><?php echo $rec['productName'];?></td>
-                          <td style="text-align: center;"><?php echo $rec['productTypeName'];?></td>
-                          <td style="text-align: center;"><?php echo get_brand_name($rec['brandID']);?></td>
-                          <td style="text-align: center;"><?php echo $rec['modelName'];?></td>
-                          <td style="text-align: center;"><?php echo $rec['productSize'];?></td>
-                          <td style="text-align: center;"><?php echo $rec['locationName'];?></td>
-                          <td style="text-align: center;"><span class="badge bg-green"><?php echo number_format($rec['productUnit']).' '.$arr_unitType[$rec['unitType']];?></span></td>
-                        </tr>
-                      <?php }
-                    }else{
-                      echo '<tr><td colspan="8">ไม่พบข้อมูล</td></tr>';
-                    }
-                    ?>
-                  </tbody>
-                </table>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>ลำดับ</th>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>ประเภทสินค้า</th>
+                        <th>ยี่ห้อสินค้า</th>
+                        <th>รุ่นสินค้า</th>
+                        <th>ขนาดสินค้า</th>
+                        <th>ตำแหน่งจัดเก็บ</th>
+                        <th>จำนวน</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if($nums>0){
+                        $i=0;
+                        while ($rec = $db->db_fetch_array($query)) { 
+                          $i++;
+                          ?>
+                          <tr>
+                            <td style="text-align: center;"><?php echo $i;?></td>
+                            <td style="text-align: center;"><?php echo $rec['productCode'];?></td>
+                            <td style="text-align: center;"><?php echo $rec['productName'];?></td>
+                            <td style="text-align: center;"><?php echo $rec['productTypeName'];?></td>
+                            <td style="text-align: center;"><?php echo get_brand_name($rec['brandID']);?></td>
+                            <td style="text-align: center;"><?php echo $rec['modelName'];?></td>
+                            <td style="text-align: center;"><?php echo $rec['productSize'];?></td>
+                            <td style="text-align: center;"><?php echo $rec['locationName'];?></td>
+                            <td style="text-align: center;"><span class="badge bg-green"><?php echo number_format($rec['ps_unit']).' '.$arr_unitType[$rec['unitType']];?></span></td>
+                          </tr>
+                        <?php }
+                      }else{
+                        echo '<tr><td colspan="8">ไม่พบข้อมูล</td></tr>';
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
-<?php include 'js.php';?>
+  </section>
+  <?php include 'js.php';?>
 </body>
 
 </html>
@@ -192,7 +192,12 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
   $(document).ready(function() {
    $("#table1").DataTable({
      "ordering": false,
-   })
+   });
+   if( $("#ddl_location").val() != ""){
+      $('#hide').show();
+   }else{
+     $('#hide').hide();
+   }
    //debugger
   //  if ($("#ddl_location").val() == "") {
   //   $(this).attr("selected","selected");
@@ -224,4 +229,11 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 
     $('#ModalDetail').modal('show');
   }
+  $("#ddl_location").change(function() {
+    if($(this).val() != ""){
+     $('#hide').show();
+   }else{
+     $('#hide').hide();
+   }
+ });
 </script>
