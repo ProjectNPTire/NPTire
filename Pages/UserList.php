@@ -113,7 +113,7 @@ chk_role($page_key,'isSearch',1) ;
 											  
                                                 $i++;
                                                 $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['userID'].');">'.$img_edit.'</a>';
-                                                $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['userID'].');">'.$img_del.'</a>';
+                                                // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['userID'].');">'.$img_del.'</a>';
                                                 $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['userID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
                                             ?>
                                                 <tr>

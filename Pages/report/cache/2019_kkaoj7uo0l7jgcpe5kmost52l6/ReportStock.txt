@@ -1,0 +1,15 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th width="20%">ตำแหน่งจัดเก็บ</th>
+<th width="80%">จำนวนสินค้าในตำแหน่งจัดเก็บทั้งหมด</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">แสดงสินค้าชั้น1</td>
+    <td align="right">11</td>
+    <tr>
+    <td colspan="2">11</td>
+   </tr>
+   </tr>    </tbody>
+</table>

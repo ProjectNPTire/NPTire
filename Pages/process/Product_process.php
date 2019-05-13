@@ -12,145 +12,203 @@ $productImg = $_FILES['productImg'];
 //print_pre($_POST); exit;
 $tb1 = 'tb_product';
 $tb2 = 'tb_productstore';
+$tb3 = 'tb_productsupplier';
 
 switch($proc){
 	case "add" :
-		try{
+	try{
 
-				if ($productImg["size"]>0) {
-			        $tmp_name = $productImg["tmp_name"];
-			        $type_pic =  explode(".",$productImg["name"]);
-			        $name = date('YmdHis').".".$type_pic[1];
-			         copy($tmp_name,$path_pic.$name);
-			        @unlink($path_pic.$old_file);
-			    }else{
-			    	 $name = $old_file;
-			    }
+		if ($productImg["size"]>0) {
+			$tmp_name = $productImg["tmp_name"];
+			$type_pic =  explode(".",$productImg["name"]);
+			$name = date('YmdHis').".".$type_pic[1];
+			copy($tmp_name,$path_pic.$name);
+			@unlink($path_pic.$old_file);
+		}else{
+			$name = $old_file;
+		}
+		unset($fields);
+		$fields = array(
+			"productCode"=>$productCode,
+			"productName"=>$productName,
+			"brandID"=>$hdfbrandID,
+			"productSize"=>$productSize,
+			"modelName"=>$modelName,
+			"productTypeID"=>$hdfproductTypeID,
+			"unitType"=>$unitType,
+			"productImg"=>$name,
+			"supID"=>$supID,
+			"productDetail"=>$productDetail,
+			/* "activeStatus"=>$activeStatus, */
+			"productUnit"=>str_replace(",","",$productUnit),
+			"name_nospace"=>str_replace(" ","",$productName),
+			"orderPoint"=>$orderPoint,
+			"locationTypeID"=>$locationTypeID,
+		);
+
+		$productID = $db->db_insert($tb1,$fields,'y');
+		if(sizeof($locationID)>0){
+			foreach ($locationID as $key => $value) {
 				unset($fields);
 				$fields = array(
-						"productCode"=>$productCode,
-						"productName"=>$productName,
-						"brandID"=>$hdfbrandID,
-						"productSize"=>$productSize,
-						"modelName"=>$modelName,
-						"productTypeID"=>$hdfproductTypeID,
-						"unitType"=>$unitType,
-						"productImg"=>$name,
-						"supID"=>$supID,
-						"productDetail"=>$productDetail,
-						/* "activeStatus"=>$activeStatus, */
-						"productUnit"=>str_replace(",","",$productUnit),
-						"name_nospace"=>str_replace(" ","",$productName),
-						"orderPoint"=>$orderPoint,
+					"productID"=>$productID,
+					"locationID"=>$value,
+					"ps_unit"=>$ps_unit[$key],
+
 				);
+				$db->db_insert($tb2,$fields);
 
-			 		$productID = $db->db_insert($tb1,$fields,'y');
-					if(sizeof($locationID)>0){
-							foreach ($locationID as $key => $value) {
-								unset($fields);
-								$fields = array(
-									"productID"=>$productID,
-									"locationID"=>$value,
-									"ps_unit"=>$ps_unit[$key],
-
-								);
-								$db->db_insert($tb2,$fields);
-
-							}
-					}
-			 			$detail = 'เพิ่มข้อมูลสินค้า  : '.$productName;
-					save_log($detail);
-			$text=$save_proc;
-		}catch(Exception $e){
-			$text=$e->getMessage();
+			}
 		}
+		if(sizeof($supID)>0){
+			foreach ($supID as $key => $value) {
+				unset($fields);
+				$fields = array(
+					"productID"=>$productID,
+					"supID"=>$value,
+
+				);
+				$db->db_insert($tb3,$fields);
+
+			}
+		}
+
+		$detail = 'เพิ่มข้อมูลสินค้า  : '.$productName;
+		save_log($detail);
+		$text=$save_proc;
+	}catch(Exception $e){
+		$text=$e->getMessage();
+	}
 	break;
 	case "edit" :
-		try{
+	try{
 
-				if ($productImg["size"]>0) {
-						$tmp_name = $productImg["tmp_name"];
-						$type_pic =  explode(".",$productImg["name"]);
-						$name = date('YmdHis').".".$type_pic[1];
-						 copy($tmp_name,$path_pic.$name);
-						@unlink($path_pic.$old_file);
-				}else{
-					 $name = $old_file;
-				}
-				unset($fields);
-				$fields = array(
-					"productCode"=>$productCode,
-						"productName"=>$productName,
-						"brandID"=>$hdfbrandID,
-						"productSize"=>$productSize,
-						"modelName"=>$modelName,
-						"productTypeID"=>$hdfproductTypeID,
-						"unitType"=>$unitType,
-						"productImg"=>$name,
-						"supID"=>$supID,
-						"productDetail"=>$productDetail,
-						/* "activeStatus"=>$activeStatus, */
-						"productUnit"=>str_replace(",","",$productUnit),
-						"name_nospace"=>str_replace(" ","",$productName),
-						"orderPoint"=>$orderPoint,
-				);
-
-				  $db->db_update($tb1,$fields, " productID = '".$productID."'");
-					$db->db_delete($tb2, " productID = '".$productID."'");
-					if(sizeof($locationID)>0){
-							foreach ($locationID as $key => $value) {
-								unset($fields);
-								$fields = array(
-									"productID"=>$productID,
-									"locationID"=>$value,
-									"ps_unit"=>$ps_unit[$key],
-
-								);
-								$db->db_insert($tb2,$fields);
-
-							}
-					}
-
-				  $detail = 'แก้ไขข้อมูลสินค้า : '.$productName;
-					save_log($detail);
-
-				$text=$edit_proc;
-		}catch(Exception $e){
-			$text=$e->getMessage();
+		if ($productImg["size"]>0) {
+			$tmp_name = $productImg["tmp_name"];
+			$type_pic =  explode(".",$productImg["name"]);
+			$name = date('YmdHis').".".$type_pic[1];
+			copy($tmp_name,$path_pic.$name);
+			@unlink($path_pic.$old_file);
+		}else{
+			$name = $old_file;
 		}
+		unset($fields);
+		$fields = array(
+			"productCode"=>$productCode,
+			"productName"=>$productName,
+			"brandID"=>$hdfbrandID,
+			"productSize"=>$productSize,
+			"modelName"=>$modelName,
+			"productTypeID"=>$hdfproductTypeID,
+			"unitType"=>$unitType,
+			"productImg"=>$name,
+			"supID"=>$supID,
+			"productDetail"=>$productDetail,
+			/* "activeStatus"=>$activeStatus, */
+			"productUnit"=>str_replace(",","",$productUnit),
+			"name_nospace"=>str_replace(" ","",$productName),
+			"orderPoint"=>$orderPoint,
+			"locationTypeID"=>$locationTypeID,
+		);
+
+		$db->db_update($tb1,$fields, " productID = '".$productID."'");
+		//$db->db_delete($tb2, " productID = '".$productID."'");
+		if(sizeof($locationID)>0){
+			foreach ($locationID as $key => $value) {
+				if ($_POST['ps_id'][$key]) {
+					unset($fields);
+					$fields = array(
+						"productID"=>$productID,
+						"locationID"=>$value,
+						"ps_unit"=>$ps_unit[$key],
+						"isDeleted"=>$_POST['isDeleted1'][$key],
+					);
+					$db->db_update($tb2,$fields, " ps_id = '".$_POST['ps_id'][$key]."'");
+				}else{
+					unset($fields);
+					$fields = array(
+						"productID"=>$productID,
+						"locationID"=>$value,
+						"ps_unit"=>$ps_unit[$key],
+						"isDeleted"=>0,
+
+					);
+					$db->db_insert($tb2,$fields);
+				}
+			}
+		}
+
+		if(sizeof($supID)>0){
+			foreach ($supID as $key => $value) {
+				if ($_POST['runID'][$key]) {	
+					unset($fields);
+					$fields = array(
+						"productID"=>$productID,
+						"supID"=>$_POST['supID'][$key],
+						"isDeleted"=>$_POST['isDeleted'][$key],
+					);
+					$db->db_update($tb3,$fields, " runID = '".$_POST['runID'][$key]."'");
+				}else{
+					unset($fields);
+					$fields = array(
+						"productID"=>$productID,
+						"supID"=>$value,
+						"isDeleted"=>0,
+					);
+					$db->db_insert($tb3,$fields);
+				}
+			}
+		}
+
+		$detail = 'แก้ไขข้อมูลสินค้า : '.$productName;
+		save_log($detail);
+
+		$text=$edit_proc;
+	}catch(Exception $e){
+		$text=$e->getMessage();
+	}
 	break;
 
 	case "delete" :
-		try{
-			$sql     = " SELECT *
-								 FROM $tb1
-								 where productID ='".$productID."' ";
-		 $query = $db->query($sql);
-		 $nums = $db->db_num_rows($query);
-		 $rec = $db->db_fetch_array($query);
+	try{
+		$sql     = " SELECT *
+		FROM $tb1
+		where productID ='".$productID."' ";
+		$query = $db->query($sql);
+		$nums = $db->db_num_rows($query);
+		$rec = $db->db_fetch_array($query);
 
-				$detail = 'แก้ไขข้อมูลสินค้า  : '.$rec['productName'];
-			 save_log($detail);
+		$detail = 'แก้ไขข้อมูลสินค้า  : '.$rec['productName'];
+		save_log($detail);
 
-			$db->db_delete($tb1, " productID = '".$productID."'");
-			$db->db_delete($tb2, " productID = '".$productID."'");
-			$text=$del_proc;
-		}catch(Exception $e){
-			$text=$e->getMessage();
-		}
+		$db->db_delete($tb1, " productID = '".$productID."'");
+		$db->db_delete($tb2, " productID = '".$productID."'");
+		$db->db_delete($tb3, " productID = '".$productID."'");
+
+		// if(sizeof($supID)>0){
+		// 	foreach ($supID as $key => $value) {
+		// 		$db->db_delete($tb3, " runID = '".$_POST['runID'][$key]."'");
+		// 	}
+		// }
+
+
+		$text=$del_proc;
+	}catch(Exception $e){
+		$text=$e->getMessage();
+	}
 	break;
 }
 
 if($proc!='chk_dup1' && $proc!='chk_dup2'){
-?>
-<form name="form_back" method="post" action="<?php echo $url_back;?>">
-	<input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>" />
-	<input type="hidden" id="act" name="act" value="<?php echo $act;?>" />
-</form>
-<script>
+	?>
+	<form name="form_back" method="post" action="<?php echo $url_back;?>">
+		<input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>" />
+		<input type="hidden" id="act" name="act" value="<?php echo $act;?>" />
+	</form>
+	<script>
 		alert('<?php echo $text;?>');
 		form_back.submit();
-</script>
-<?php
+	</script>
+	<?php
 }
 ?>

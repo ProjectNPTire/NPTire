@@ -1,0 +1,12 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>สินค้าในตำแหน่งจัดเก็บ</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">ชั้นเก็บยางโยโกฮาม่า<br/>จำนวนทั้งหมด 0 ชิ้น</td>
+    <td align="center">ไม่มีสินค้าในตำแหน่งจัดเก็บนี้</td>
+    </tr></tbody>
+</table>

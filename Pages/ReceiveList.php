@@ -11,16 +11,16 @@ $page_key ='5_1';
 $filter = '';
 
 if($s_receive_id){
- $filter .= " and receiveID like '%".$s_receive_id."%'";
+   $filter .= " and receiveID like '%".$s_receive_id."%'";
 }
 if($s_po_id){
- $filter .= " and poID like '%".$s_po_id."%'";
+   $filter .= " and poID like '%".$s_po_id."%'";
 }
 if($s_receive_date){
- $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
+   $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
 }
 if($s_receive_status){
- $filter .= " and receiveStatus = '".$s_receive_status."'";
+   $filter .= " and receiveStatus = '".$s_receive_status."'";
 }
 
 $field = "* ";
@@ -126,11 +126,11 @@ chk_role($page_key,'isSearch',1);
                                         <thead>
                                             <tr>
                                                 <th>ลำดับ</th>
-                                                <th style="text-align:center;">เลขที่ใบรับสินค้า</th>
-                                                <th style="text-align:center;">เลขที่ใบสั่งซื้อ</th>
-                                                <th style="text-align:center;">วันที่ทำรายการ</th>
-                                                <th style="text-align:center;">สถานะ</th>
-                                                <th></th>
+                                                <th align="center">เลขที่ใบรับสินค้า</th>
+                                                <th align="center">เลขที่ใบสั่งซื้อ</th>
+                                                <th align="center">วันที่ทำรายการ</th>
+                                                <th align="center">สถานะ</th>
+                                                <th width="10%"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -146,7 +146,7 @@ chk_role($page_key,'isSearch',1);
                                                         <td><?php echo $rec['receiveID']; ?></td>
                                                         <td><?php echo $rec['poID']; ?></td>
                                                         <td><?php echo conv_date($rec['receiveDate']); ?></td>
-                                                        <td><?php echo get_receiveStatus($rec['receiveStatus']); ?></td>
+                                                        <td><?php echo $arr_receive_status[$rec['receiveStatus']]; ?></td>
                                                         <td align="center"><?php echo $info; ?></td>
                                                     </tr>
                                                 <?php }
@@ -177,10 +177,10 @@ chk_role($page_key,'isSearch',1);
 
 <script>
   $(document).ready(function() {
-     $("#table1").DataTable({
-       "ordering": false,
-   })
- });
+   $("#table1").DataTable({
+     "ordering": false,
+ })
+});
   function searchData(){
     $('#frm-search').removeAttr('target');
     $("#frm-search").submit();
@@ -297,8 +297,9 @@ function infoReceive(id){
             html += '<th>ลำดับ</th>';
             html += '<th>รหัสสินค้า</th>';
             html += '<th>ชื่อสินค้า</th>';
-            html += '<th>ประเภท</th>';
             html += '<th>ยี่ห้อ</th>';
+            html += '<th>รุ่น</th>';
+            html += '<th>ขนาด</th>';
             html += '<th>จำนวน</th>';
             // html += '<th>รวม</th>';
             html += '<th>รับเข้า</th>';
@@ -309,19 +310,20 @@ function infoReceive(id){
 
             if(data["receive_desc"]){
                 for(var i = 0; i < data["receive_desc"].length; i++ ){
-                   html += '<tr>';
-                   html += '<td align="center">'+(i+1)+'</td>';
-                   html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
-                   html += '<td>'+data["receive_desc"][i].productName+'</td>';
-                   html += '<td>'+data["receive_desc"][i].productTypeName+'</td>';
-                   html += '<td>'+data["receive_desc"][i].brandName+'</td>';
-					html += '<td align="right">'+addCommas(data["receive_desc"][i].qty)+'</td>';
-            		html += '<td align="right">'+addCommas(data["receive_desc"][i].receive_qty)+'</td>';
-                   html += '<td>'+data["receive_desc"][i].location+'</td>';
-                   html += '</tr>';
-               }
-           }
-           else {
+                 html += '<tr>';
+                 html += '<td align="center">'+(i+1)+'</td>';
+                 html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
+                 html += '<td>'+data["receive_desc"][i].productName+'</td>';
+                 html += '<td>'+data["receive_desc"][i].brandName+'</td>';
+                 html += '<td>'+data["receive_desc"][i].modelName+'</td>';
+                 html += '<td>'+data["receive_desc"][i].productSize+'</td>';
+                 html += '<td align="right">'+addCommas(data["receive_desc"][i].qty)+'</td>';
+                 html += '<td align="right">'+addCommas(data["receive_desc"][i].receive_qty)+'</td>';
+                 html += '<td>'+data["receive_desc"][i].location+'</td>';
+                 html += '</tr>';
+             }
+         }
+         else {
             html += '<tr>';
             html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
             html += '</tr>';

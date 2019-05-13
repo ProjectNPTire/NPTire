@@ -7,6 +7,15 @@ include($path."include/config_header_top.php");
 include 'css.php';
 $page_key ='4_1';
 
+
+$getsupID =$_GET['supID'];
+$getproductID =$_GET['productID'];
+$getproductCode =$_GET['productCode'];
+$getproductName =$_GET['productName'];
+$getbrandName =$_GET['brandName'];
+$getmodelName =$_GET['modelName'];
+$getproductSize =$_GET['productSize'];
+
 $proc = ($proc=='')?"add":$proc;
 chk_role($page_key,'isAdd',1);
 ?>
@@ -27,6 +36,13 @@ chk_role($page_key,'isAdd',1);
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
 								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
 								<input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>">
+								<input type="hidden" id="hdfsupID" name="hdfsupID" value="<?php echo $getsupID; ?>">
+								<input type="hidden" id="hdfproductID" name="hdfproductID" value="<?php echo $getproductID; ?>">
+								<input type="hidden" id="hdfproductCode" name="hdfproductCode" value="<?php echo $getproductCode; ?>">
+								<input type="hidden" id="hdfproductName" name="hdfproductName" value="<?php echo $getproductName; ?>">
+								<input type="hidden" id="hdfbrandName" name="hdfbrandName" value="<?php echo $getbrandName; ?>">
+								<input type="hidden" id="hdfmodelName" name="hdfmodelName" value="<?php echo $getmodelName; ?>">
+								<input type="hidden" id="hdfproductSize" name="hdfproductSize" value="<?php echo $getproductSize; ?>">
 
 								<div class="row">
 									<div class="col-sm-4">
@@ -40,7 +56,7 @@ chk_role($page_key,'isAdd',1);
 													$query_sup = $db->query($sql_sup);
 													//$num_sup = $db->db_num_rows($query_sup);
 													while($rec_sup = $db->db_fetch_array($query_sup)){?>
-														<option value="<?php echo $rec_sup['supID'];?>"  <?php echo ($rec['supID']==$rec_sup['supID'])?"selected":"";?>> <?php echo $rec_sup['sup_name'];?></option>
+														<option value="<?php echo $rec_sup['supID'];?>"  <?php echo ($rec_sup['supID']==$getsupID	)?"selected":"";?>> <?php echo $rec_sup['sup_name'];?></option>
 
 													<?php }  ?>
 												</select>
@@ -140,6 +156,17 @@ chk_role($page_key,'isAdd',1);
 <script>
 
 	$(document).ready(function() {
+		var supID = $('#hdfsupID').val();
+		var productID = $('#hdfproductID').val();
+		var productCode = $('#hdfproductCode').val();
+		var productName = $('#hdfproductName').val();
+		var brandName = $('#hdfbrandName').val();
+		var modelName = $('#hdfmodelName').val();
+		var productSize = $('#hdfproductSize').val();
+		if (supID != "") {
+			getSupInfo(supID);
+			addProduct(productID, productCode, productName, brandName, modelName, productSize);
+		}
 		$('.error').hide();
 
 		$(".numb").inputFilter(function(value) {
@@ -164,7 +191,8 @@ chk_role($page_key,'isAdd',1);
 	}
 
 	function openModal(){
-		if($('#supID').val() == ''){
+		var supID = $('#supID').val();
+		if(supID == ''){
 			$('#supID_error').show();
 			return false;
 		}else{
@@ -172,7 +200,6 @@ chk_role($page_key,'isAdd',1);
 		}
 		var code = '';
 		var name = '';
-		var supID = $('#supID').val();
 		var sup_name = $('#hdfsupName').val();
 		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name,supID: supID  }, function( data ) {
 			var html = "";
@@ -402,7 +429,8 @@ chk_role($page_key,'isAdd',1);
 	}
 
 	function calUnitPrice(obj){
-		var price = $(obj).parent().parent().parent().find('td:eq(5) input').val();
+		debugger
+		var price = Number($(obj).parent().parent().parent().find('td:eq(5) input').val().replace(/[^0-9.-]+/g,""));;
 		var qty = $(obj).parent().parent().parent().find('td:eq(6) input').val();
 		var amount = price*qty;
 		// $(obj).parent().parent().parent().find('td:eq(7) input').val((amount).toFixed(2));

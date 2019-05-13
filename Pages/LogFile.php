@@ -17,8 +17,8 @@ $table = "tb_logfiles";
 $pk_id = "logID";
 $wh = "1=1  {$filter}";
 $orderby = "order by logID DESC";
-$limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+// $limit =" LIMIT ".$goto ." , ".$page_size ;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);

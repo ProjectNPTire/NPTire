@@ -1,0 +1,101 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>สินค้าในตำแหน่งจัดเก็บ</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">ชั้นเก็บยางToyo<br/>จำนวนทั้งหมด 4 ชิ้น</td>
+    <td>
+    <table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+    <tr>
+    <td align="center" width="20%">รหัสสินค้า</td>
+    <td align="center" width="20%">ชื่อสินค้า</td>
+    <td align="center" width="10%">ยี่ห้อ</td>
+    <td align="center" width="10%">รุ่น</td>
+    <td align="center" width="10%">ขนาด</td>
+    <td align="center" width="5%">จำนวน</td>
+    <td align="center" width="5%">หน่วย</td>
+    </tr>
+        <tr>
+        <td>TY2156516H20</td>
+        <td>ยาง TOYO H20 215/65R16</td>
+        <td>Toyo</td>
+        <td>H20</td>
+        <td>215/65R16</td>
+        <td align="right">4</td>
+        <td>เส้น</td>
+        </tr></table>
+    </td>
+    </tr><tr>
+    <td align="left">ชั้นเก็บยางโยโกฮาม่า<br/>จำนวนทั้งหมด 2 ชิ้น</td>
+    <td>
+    <table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+    <tr>
+    <td align="center" width="20%">รหัสสินค้า</td>
+    <td align="center" width="20%">ชื่อสินค้า</td>
+    <td align="center" width="10%">ยี่ห้อ</td>
+    <td align="center" width="10%">รุ่น</td>
+    <td align="center" width="10%">ขนาด</td>
+    <td align="center" width="5%">จำนวน</td>
+    <td align="center" width="5%">หน่วย</td>
+    </tr>
+        <tr>
+        <td>YK1955515AE50</td>
+        <td>ยาง YOKOHAMA AE50 195/55R15</td>
+        <td>Yokohama</td>
+        <td>AE50</td>
+        <td>195/55R15</td>
+        <td align="right">2</td>
+        <td>เส้น</td>
+        </tr></table>
+    </td>
+    </tr><tr>
+    <td align="left">ขั้นเก็บน้ำมันเครื่อง<br/>จำนวนทั้งหมด 0 ชิ้น</td>
+    <td>
+    <table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+    <tr>
+    <td align="center" width="20%">รหัสสินค้า</td>
+    <td align="center" width="20%">ชื่อสินค้า</td>
+    <td align="center" width="10%">ยี่ห้อ</td>
+    <td align="center" width="10%">รุ่น</td>
+    <td align="center" width="10%">ขนาด</td>
+    <td align="center" width="5%">จำนวน</td>
+    <td align="center" width="5%">หน่วย</td>
+    </tr><tr><td colspan="7" align="center">ไม่พบข้อมูล</td></tr></table>
+    </td>
+    </tr><tr>
+    <td align="left">ขั้นเก็บยางบริสโตน<br/>จำนวนทั้งหมด 9 ชิ้น</td>
+    <td>
+    <table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+    <tr>
+    <td align="center" width="20%">รหัสสินค้า</td>
+    <td align="center" width="20%">ชื่อสินค้า</td>
+    <td align="center" width="10%">ยี่ห้อ</td>
+    <td align="center" width="10%">รุ่น</td>
+    <td align="center" width="10%">ขนาด</td>
+    <td align="center" width="5%">จำนวน</td>
+    <td align="center" width="5%">หน่วย</td>
+    </tr>
+        <tr>
+        <td>BS2156516H20</td>
+        <td>ยาง บริสโตน</td>
+        <td>Bridgestone</td>
+        <td>H20</td>
+        <td>215/65R16</td>
+        <td align="right">5</td>
+        <td>เส้น</td>
+        </tr>
+        <tr>
+        <td>DT18514R101</td>
+        <td>Deestone KACHA – R101</td>
+        <td>Bridgestone</td>
+        <td>R101</td>
+        <td>185R14C</td>
+        <td align="right">4</td>
+        <td>เส้น</td>
+        </tr></table>
+    </td>
+    </tr>    </tbody>
+</table>

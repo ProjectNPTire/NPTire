@@ -83,10 +83,12 @@ $dow_th = array ("1"=>"จันทร์","2"=>"อังคาร","3"=>"พ�
 $dow_th2 = array ("Mon"=>"จันทร์","Tue"=>"อังคาร","Wed"=>"พุธ","Thu"=>"พฤหัสบดี","Fri"=>"ศุกร์","Sat"=>"เสาร์","Sun"=>"อาทิตย์");
 $dow_th_short = array ("1"=>"จ.","2"=>"อ.","3"=>"พ.","4"=>"พฤ.","5"=>"ศ.","6"=>"ส.","7"=>"อา.");
 $arr_active = array ("1"=>"<span style='color:green'>ใช้งาน</span>","0"=>"<span style='color:red'>ไม่ใช้งาน</span>");
-$arr_bill_status = array ("1"=>"<span style='color:green'>ปกติ</span>","2"=>"<span style='color:red'>ยกเลิก</span>");
+$arr_bill_status = array ("1"=>"<span>ปกติ</span>","2"=>"<span style='color:red'>ยกเลิก</span>");
+$arr_receive_status = array ("1"=>"<span>รับสินค้าแล้ว</span>","99"=>"<span style='color:red'>ยกเลิก</span>");
+$arr_po_status = array ("3"=>"<span>รับสินค้าครบแล้ว</span>","99"=>"<span style='color:red'>ยกเลิก</span>","1"=>"<span>รอรับสินค้า</span>","2"=>"<span>ค้างรับ</span>");
 $arr_userType = array ("1"=>"<span style='color:green'>Admin</span>","2"=>"<span style='color:red'>พนักงาน</span>");
 $arr_unitType = array ("1"=>"เส้น","2"=>"วง","3"=>"คู่","4"=>"กล่อง","5"=>"หน่วย","6"=>"ขวด","7"=>"ลิตร");
-$arr_unitType2 = array ("1"=>"เส้น","2"=>"วง");
+$arr_locationType = array ("1"=>"Large","2"=>"Small");
 $DEF_ROWS_PER_PAGE = 20;
 $DEF_POPUP_ROWS_PER_PAGE = 10;
 $DEF_POPUP_PAGE_SET = 20;

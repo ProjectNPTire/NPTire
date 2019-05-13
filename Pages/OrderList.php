@@ -119,11 +119,11 @@ chk_role($page_key,'isSearch',1);
                         <thead>
                             <tr>
                                 <th>ลำดับ</th>
-                                <th style="text-align:center;">เลขที่ใบสั่งซื้อ</th>
-                                <th style="text-align:center;">ชื่อ/บริษัทคู่ค้า</th>
-                                <th style="text-align:center;">วันที่ทำรายการ</th>
-                                <th style="text-align:center;">สถานะ</th>
-                                <th></th>
+                                <th align="center">เลขที่ใบสั่งซื้อ</th>
+                                <th align="center">ชื่อ/บริษัทคู่ค้า</th>
+                                <th align="center">วันที่ทำรายการ</th>
+                                <th align="center">สถานะ</th>
+                                <th width="10%"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,8 +143,8 @@ chk_role($page_key,'isSearch',1);
                                       <td><?php echo $rec['poID']; ?></td>
                                       <td><?php echo get_sup_name($rec['supID']); ?></td>
                                       <td><?php echo conv_date($rec['poDate']); ?></td>
-                                      <td><?php echo get_poStatus($rec['poStatus']); ?></td>
-                                      <td><?php echo $info.$del; ?></td>
+                                      <td><?php echo $arr_po_status[$rec['poStatus']]; ?></td>
+                                      <td align="center"><?php echo $info.$del; ?></td>
                                   </tr>
                               <?php }
                           }else{

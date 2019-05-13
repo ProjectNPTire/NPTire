@@ -16,9 +16,9 @@ $FILE_NAME = pathinfo(__FILE__, PATHINFO_FILENAME);
 
 if($s_date!='' && $e_date!=''){
   $H_REPORT_2 ="ระหว่างวันที่ ".$s_date."ถึง ". $e_date;
-  $filter1 =" and between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
-  $filter2 =" and between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
-  $filter3 =" and between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
+  $filter1 =" and poDate between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
+  $filter2 =" and receiveDate between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
+  $filter3 =" and billDate between  '".conv_date_db($s_date)."' and '".conv_date_db($e_date)."'";
 }
 
 if($S_REPORT_TYPE=='')
@@ -55,7 +55,9 @@ if($S_REPORT_TYPE==1){
 }
 
 $H_REPORT_1 = 'รายงานรายการ'.$head_txt;
-
+$CREATE_REPORT = $_SESSION['sys_name'];
+date_default_timezone_set("Asia/Bangkok");
+$DATE_REPORT = date("d/m/Y h:i:s");
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -92,8 +94,7 @@ if($nums>0){
 }
 
 $html .= '    </tbody>
-</table>
-';
+</table>';
                  // <td lign="center"><span class="badge bg-red">'.number_format($rec['productUnit']).' '.$arr_unitType[$rec['unitType']].'</span></td>
 
 
@@ -118,7 +119,9 @@ $html .= '    </tbody>
               <input type="hidden" name="H_REPORT_1" id="H_REPORT_1" value="<?php echo $H_REPORT_1;?>">
               <input type="hidden" name="H_REPORT_2" id="H_REPORT_2" value="<?php echo $H_REPORT_2;?>">
               <input type="hidden" name="H_REPORT_3" id="H_REPORT_3" value="">
-
+              <input type="hidden" name="CREATE_REPORT" id="CREATE_REPORT" value="<?php echo $CREATE_REPORT;?>"> 
+              <input type="hidden" name="DATE_REPORT" id="DATE_REPORT" value="<?php echo $DATE_REPORT;?>">   
+              
               <div class="row clearfix">                
                 <div class="col-md-4">
                   <b>เอกสาร</b>

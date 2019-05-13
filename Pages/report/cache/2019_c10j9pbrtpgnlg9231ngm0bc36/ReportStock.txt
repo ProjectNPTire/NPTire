@@ -1,0 +1,30 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>จำนวนสินค้าในตำแหน่งจัดเก็บทั้งหมด</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">ชั้นยางToyoจำนวนทั้งหมด11ชิ้น</td><td>
+        <table>
+        <tr>
+        <td width="10%">รหัสสินค้า</td>
+        <td width="20%">ชื่อสินค้า</td>
+        <td width="10%">ยี่ห้อ</td>
+        <td width="10%">รุ่น</td>
+        <td width="10%">ขนาด</td>
+        <td width="5%">จำนวน</td>
+        </tr>
+        <tr>
+        <td>YK1955515AE50</td>
+        <td>ยาง YOKOHAMA AE50 195/55R15</td>
+        <td>Yokohama</td>
+        <td>AE50</td>
+        <td>195/55R15</td>
+        <td>11</td>
+        </tr>
+        </tr>
+        </table>
+        </td></tr>    </tbody>
+</table>

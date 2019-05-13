@@ -38,9 +38,9 @@ $readonly = "readonly";
 							<input type="hidden" id="chk3" name="chk3" value="0">
 							<div class="body">
 								<div class="row clearfix">
-                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
-                                </div>
-                              </div>
+									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+									</div>
+								</div>
 								<div class="row clearfix">
 									<!-- <div class="col-sm-4">
 										<b>รหัสประเภทสินค้า</b>
@@ -50,7 +50,7 @@ $readonly = "readonly";
 											</div>
 										</div>
 									</div> -->
-									<div class="col-sm-6">
+									<div class="col-sm-4">
 										<b>รหัสประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
@@ -61,7 +61,7 @@ $readonly = "readonly";
 											<label id="productTypeNameShort2-error" class="error" for="productTypeNameShort">มีรหัสประเภทสินค้านี้แล้ว</label>
 										</div>
 									</div>
-									<div class="col-sm-6">
+									<div class="col-sm-4">
 										<b>ประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
@@ -71,7 +71,25 @@ $readonly = "readonly";
 											<label id="productTypeName2-error" class="error" for="productTypeName">มีประเภทสินค้านี้แล้ว</label>
 										</div>
 									</div>
-									<!-- <div class="col-sm-4">
+									<div class="col-sm-4">
+										<b>การใช้งานข้อมูล</b>
+										<div class="form-group form-float">
+											<select name="status" id="status" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="delData('status',this.value,'hdfstatus');">
+												<?php asort($arr_active);
+												foreach ($arr_active as $key => $value) {?>
+													<option value="<?php echo $key;?>"  
+														<?php 
+														if(($rec['isEnabled']  != "")){
+															echo ($rec['isEnabled']==$key)?"selected":"";
+														}
+														?>><?php echo $value;?></option>
+													<?php }  ?>
+												</select>
+												<input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
+											</div>
+										</div>
+									</div>
+								<!-- <div class="col-sm-4">
 										<b>อักษรประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
@@ -80,15 +98,12 @@ $readonly = "readonly";
 											<label id="productTypeNameShort-error" class="error" for="productTypeNameShort">กรุณาระบุ อักษรประเภทสินค้า</label>
 											<label id="productTypeNameShort2-error" class="error" for="productTypeNameShort">มีอักษรประเภทสินค้านี้แล้ว</label>
 										</div>
-									</div> -->
 								</div>
-						<!-- 		<div class="row clearfix">
-									
+								<div class="row clearfix">	
 								</div>
 								<div class="row clearfix">
-									
-								</div> -->
-								<!-- <div class="row clearfix">
+								</div>
+								<div class="row clearfix">
 									<div class="col-sm-12">
 										<div class="form-group">
 											<b>รายละเอียด</b>
@@ -192,13 +207,13 @@ $readonly = "readonly";
 		$('.error').hide();
 
 		if($('#proc').val()=='add'){
-          var productTypeCode ='';
-          $.ajaxSetup({async: false});
-          $.post('process/get_process.php',{proc:'get_productTypeCode'},function(data){
-           productTypeCode =  data['name'];
-         },'json');
-          $('#productTypeCode').val(productTypeCode);
-        }
+			var productTypeCode ='';
+			$.ajaxSetup({async: false});
+			$.post('process/get_process.php',{proc:'get_productTypeCode'},function(data){
+				productTypeCode =  data['name'];
+			},'json');
+			$('#productTypeCode').val(productTypeCode);
+		}
 
 	});
 
@@ -255,6 +270,20 @@ $readonly = "readonly";
 			}
 
 		},'json');
+	}
+	function delData(parent_id,id,hdf_id){
+		var productTypeID = $('#productTypeID').val();
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
+			if(data > 0){
+				alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากประเภทสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+				$('#'+parent_id).val(1);
+				return false;
+			}else{
+				$('#'+hdf_id).val(id);
+			}
+		},'json');
+
 	}
 //username2
 </script>

@@ -156,17 +156,23 @@ $tb1 = 'tb_user';
 
 		case "delete" :
 		try{
-			$sql     = " SELECT *
-			FROM tb_user
-			where userID ='".$userID."' ";
-			$query = $db->query($sql);
-			$nums = $db->db_num_rows($query);
-			$rec = $db->db_fetch_array($query);
+			// $sql     = " SELECT *
+			// FROM tb_user
+			// where userID ='".$userID."' ";
+			// $query = $db->query($sql);
+			// $nums = $db->db_num_rows($query);
+			// $rec = $db->db_fetch_array($query);
 
-			$detail = 'ลบข้อมูลพนักงาน Username : '.$rec['username'];
+			unset($fields);
+			$fields = array(
+				"activeStatus"=>0,
+				"userStatus"=>3,
+			);
+
+			$db->db_update($tb1,$fields, " userID = '".$userID."'");
+			$detail = 'ยกเลิกข้อมูลพนักงาน Username : '.$rec['username'];
 			save_log($detail);
 
-			$db->db_delete($tb1, " userID = '".$userID."'");
 			$text=$del_proc;
 		}catch(Exception $e){
 			$text=$e->getMessage();

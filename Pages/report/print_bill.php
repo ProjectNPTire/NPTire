@@ -165,15 +165,17 @@ $HTML .= '<table width="90%" border="1">';
 
 $HTML .= '<thead>';
 $HTML .= '<tr>';
-$HTML .= '<th width="5%">ลำดับ</th>';
+$HTML .= '<th width="10%">ลำดับ</th>';
 $HTML .= '<th width="15%">รหัสสินค้า</th>';
-$HTML .= '<th width="35%">ชื่อสินค้า</th>';
-$HTML .= '<th width="10%">ยี่ห้อสินค้า</th>';
-$HTML .= '<th width="10%">สถานที่จัดเก็บ</th>';
+$HTML .= '<th width="25%">ชื่อสินค้า</th>';
+$HTML .= '<th width="10%">ยี่ห้อ</th>';
+$HTML .= '<th width="10%">รุ่น</th>';
+$HTML .= '<th width="10%">ขนาด</th>';
+$HTML .= '<th width="5%">จำนวน</th>';
+$HTML .= '<th width="15%">สถานที่จัดเก็บ</th>';
 // $HTML .= '<th width="10%">รุ่น</th>';
 // $HTML .= '<th width="5%">ราคา/ชิ้น</th>';
-$HTML .= '<th width="5%">จำนวน</th>';
-$HTML .= '<th width="5%">หน่วยนับ</th>';
+//$HTML .= '<th width="5%">หน่วยนับ</th>';
 // $HTML .= '<th width="10%">รวม</th>';
 $HTML .= '</tr>';
 $HTML .= '</thead>';
@@ -202,6 +204,8 @@ while($rec_bd = $db->db_fetch_array($query_bd))
 	$productName = $rec_product['productName'];
 	$productTypeName = get_productType_name($rec_product['productTypeID']);
 	$brandName = get_brand_name($rec_product['brandID']);
+	$modelName = $rec_product['modelName'];
+	$productSize = $rec_product['productSize'];
 	$location = get_location_name($rec_locat['locationID']);
 
 	$qty = $rec_bd['billDescUnit'];
@@ -215,11 +219,13 @@ while($rec_bd = $db->db_fetch_array($query_bd))
 	$HTML .= '<td>'.$productCode.'</td>';
 	$HTML .= '<td>'.$productName.'</td>';
 	$HTML .= '<td>'.$brandName.'</td>';
+	$HTML .= '<td>'.$modelName.'</td>';
+	$HTML .= '<td>'.$productSize.'</td>';
+	$HTML .= '<td align="right">'.number_format($qty).'</td>';
 	$HTML .= '<td>'.$location.'</td>';
 	// $HTML .= '<td>'.$productSize.'</td>';
 	// $HTML .= '<td align="right">'.number_format($price).'</td>';
-	$HTML .= '<td align="right">'.number_format($qty).'</td>';
-	$HTML .= '<td align="right">'.$unitType.'</td>';
+	// $HTML .= '<td align="right">'.$unitType.'</td>';
 	// $HTML .= '<td align="right">'.number_format($amount).'</td>';
 	$HTML .= '</tr>';
 }
@@ -229,7 +235,7 @@ $HTML .= '</tbody>';
 
 $HTML .= '<tfoot>';
 $HTML .= '<tr>';
-$HTML .= '<td colspan="7" align="center">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
+$HTML .= '<td colspan="8" align="center">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
 // $HTML .= '<td align="right">'.number_format($total).'</td>';
 $HTML .= '</tr>';
 $HTML .= '</tfoot>';

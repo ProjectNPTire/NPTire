@@ -1,0 +1,29 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>สินค้าในตำแหน่งจัดเก็บ</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">ชั้นเก็บยางToyo<br/>จำนวนทั้งหมด 4 ชิ้น</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>TY2156516H20</td>
+        <td>ยาง TOYO H20 215/65R16</td>
+        <td>Toyo</td>
+        <td>H20</td>
+        <td>215/65R16</td>
+        <td align="right">4</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr></tbody>
+</table>

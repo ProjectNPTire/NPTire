@@ -24,6 +24,8 @@ switch($proc){
 			"brandID"=>$hdfbrandID,
 			"width"=>$width,
 			"high"=>$high,
+			"locationTypeID"=>$locationTypeID,
+			"isEnabled"=>$hdfstatus,
 		);
 				//print_pre($fields);
 		$db->db_insert($tb1,$fields);
@@ -46,6 +48,8 @@ switch($proc){
 			"brandID"=>$hdfbrandID,
 			"width"=>$width,
 			"high"=>$high,
+			"locationTypeID"=>$locationTypeID,
+			"isEnabled"=>$hdfstatus,
 		);
 
 		$db->db_update($tb1,$fields, " locationID = '".$locationID."'");

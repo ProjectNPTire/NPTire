@@ -258,6 +258,13 @@ $arrMenu = array(
                     </li>
 
                     <li>
+                      <a href="ReportStock.php">
+                        <i class="material-icons col-light-green">donut_large</i>
+                        <span>รายงานข้อมูลสินค้าทั้งหมดจัดเก็บตามพื้นที่</span>
+                      </a>
+                    </li>
+
+                    <li>
                       <a href="RoleList.php">
                         <i class="material-icons col-red">donut_large</i>
                         <span>กำหนดสิทธิ์ผู้ใช้งาน</span>

@@ -151,7 +151,6 @@ function number_format(objNumber,decimals) {
     objNumber.value = number;
 }
 function addCommas(nStr){
-    debugger
         nStr += '';
         x = nStr.split('.');
         x1 = x[0];

@@ -29,6 +29,7 @@ switch($proc){
 						"mobilesale"=>$mobilesale,
 						"idline"=>$idline,
 						"name_nospace"=>str_replace(" ","",$sup_name),
+						"isEnabled"=>$hdfstatus,
 				);
 				 $db->db_insert($tb1,$fields);
 				 $detail = "เพิ่มข้อมูลคู่ค้า/บริษัท".$sup_name;
@@ -58,6 +59,7 @@ switch($proc){
 					"mobilesale"=>$mobilesale,
 					"idline"=>$idline,
 					"name_nospace"=>str_replace(" ","",$sup_name),
+					"isEnabled"=>$hdfstatus,
 				);
 
 				 $db->db_update($tb1,$fields, " supID = '".$supID."'");

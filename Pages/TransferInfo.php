@@ -133,8 +133,10 @@ $s_location = "SELECT * from tb_location order by locationName ";
                                <div class="form-group form-float">
                                  <select class="form-control show-tick" name="s_searchType" id="s_searchType">
                                   <option value="0">ค้นหาข้อมูลทั้งหมด</option>
-                                  <option value="1">รหัส/ชื่อตำแหน่งเก็บ</option>
-                                  <option value="2">รหัส/ชื่อสินค้า</option>
+                                  <option value="1">ตำแหน่งเก็บ</option>
+                                  <option value="2">สินค้า</option>
+                                  <option value="3">ประเภท</option>
+                                  <option value="4">ยี่ห้อ</option>
                                   <!--  <option value="3">ชื่อสินค้า</option>-->
                                 </select>
                               </div>

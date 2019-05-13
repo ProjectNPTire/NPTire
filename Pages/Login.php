@@ -17,9 +17,9 @@ $password = $_POST["password"];
 
 if($username != "" & $password != ""){
 
- 	 $sqlChk		= "	SELECT *
-						FROM tb_user
-						where activeStatus =1 AND username = '".$username."' and password = '".$password."' ";
+	$sqlChk		= "	SELECT *
+	FROM tb_user
+	where username = '".$username."' and password = '".$password."' ";
 
 	$queryChk = $db->query($sqlChk);
 	$nums = $db->db_num_rows($queryChk);
@@ -29,30 +29,46 @@ if($username != "" & $password != ""){
 	if($nums){
 		$rec = $db->db_fetch_array($queryChk);
 
-		$_SESSION["sys_id"] = $rec["userID"];//รหัส per
-		$_SESSION["username"] = $rec["username"];//ชื่อผู้ใช้งาน
-		$_SESSION["userType"] = $rec["userType"];//
-		$_SESSION['sys_name'] = $rec["firstname"].' '.$rec["lastname"];
-		////
+		if ($rec["userStatus"] == 1 && $rec["activeStatus"] == 1) {
+			$_SESSION["sys_id"] = $rec["userID"];//รหัส per
+			$_SESSION["username"] = $rec["username"];//ชื่อผู้ใช้งาน
+			$_SESSION["userType"] = $rec["userType"];//
+			$_SESSION['sys_name'] = $rec["firstname"].' '.$rec["lastname"];
 
+			echo "<script>self.location.href='main.php';</script>";
+		}elseif ($rec["userStatus"] == 1 && $rec["activeStatus"] == 0) {
+			session_destroy();
 			echo "<script>
-				self.location.href='main.php';
+			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานถูกปิดการใช้งาน\");
+			self.location.href='index.php';
 			</script>";
-
+		}elseif ($rec["userStatus"] == 2 && $rec["activeStatus"] == 0) {
+			session_destroy();
+			echo "<script>
+			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานถูกระงับการใช้งาน\");
+			self.location.href='index.php';
+			</script>";
+		}elseif ($rec["userStatus"] == 3 && $rec["activeStatus"] == 0) {
+			session_destroy();
+			echo "<script>
+			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานลาออก\");
+			self.location.href='index.php';
+			</script>";
+		}
 	}else{
 			//header('Content-type: text/html; charset=utf-8');
-	session_destroy();
+		session_destroy();
 		echo "<script>
-			alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
-			self.location.href='index.php';
+		alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
+		self.location.href='index.php';
 		</script>";
 	}
 }else{
 	//header('Content-type: text/html; charset=utf-8');
 	session_destroy();
 	echo "<script>
-		alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
-		self.location.href='index.php';
+	alert(\"ชื่อผู้ใช้ หรือ รหัสผ่าน ไม่ถูกต้อง\");
+	self.location.href='index.php';
 	</script>";
 }
 ?>
