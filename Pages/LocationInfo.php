@@ -58,18 +58,18 @@ if($proc=='edit'){
 										<b>รหัสตำแหน่งจัดเก็บ</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="10" onkeyup="chkShort();" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" readonly oninput="this.value=this.value.replace(/\s/g, '');" maxlength="10" onkeyup="chkShort();" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
-											<div class="help-info">กรอกได้ไม่เกิน10ตัวอักษร</div>
+											<div class="help-info">ไม่เกิน8ตัวอักษร</div>
 											<label id="locationCode-error" class="error" for="locationCode">กรุณาระบุ รหัสตำแหน่งจัดเก็บ</label>
 											<label id="locationCode2-error" class="error" for="locationCode">มีรหัสตำแหน่งจัดเก็บนี้แล้ว</label>
 										</div>
 									</div>
 									<div class="col-sm-4">
-										<b>ตำแหน่งจัดเก็บสินค้า</b>
+										<b>ชื่อตำแหน่งจัดเก็บสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ชื่อตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<label id="locationName-error" class="error" for="locationName">กรุณาระบุ ตำแหน่งจัดเก็บสินค้า</label>
 											<label id="locationName2-error" class="error" for="locationName">มีตำแหน่งจัดเก็บสินค้นี้แล้ว</label>
@@ -91,10 +91,10 @@ if($proc=='edit'){
 								</div>
 								<div class="row clearfix">
 									<div class="col-sm-4">
-										<b>ฐาน</b>
+										<b>กว้าง</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" id="width" name="width" class="form-control numb" placeholder="ฐาน" maxlength="2" value="<?php echo $rec["width"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" onkeyup="chkzero(this.value,1);" id="width" name="width" class="form-control numb" placeholder="จำนวนสินค้าที่วาง" maxlength="2" value="<?php echo $rec["width"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้เฉพาะตัวเลขไม่เกิน2ตัวอักษรและต้องมีค่ามากกว่า0</div>
 											<label id="width_error" class="error" for="width">กรุณาระบุ ความกว้าง</label>
@@ -105,7 +105,7 @@ if($proc=='edit'){
 										<b>สูง</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" id="high" name="high" class="form-control numb" placeholder="สูง" maxlength="2" value="<?php echo $rec["high"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" onkeyup="chkzero(this.value,2);" id="high" name="high" class="form-control numb" placeholder="จำนวนชั้น" maxlength="2" value="<?php echo $rec["high"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<div class="help-info">กรอกได้เฉพาะตัวเลขไม่เกิน2ตัวอักษรและต้องมีค่ามากกว่า0</div>
 											<label id="high_error" class="error" for="high">กรุณาระบุ ความสูง</label>
@@ -118,7 +118,7 @@ if($proc=='edit'){
 											<select onchange="get_hdf(this.value,'hdfproductTypeID',1);" name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
 												<option value="">เลือก</option>
 												<?php
-												$s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
+												$s_pdtype=" SELECT * from tb_producttype where productTypeID NOT IN (1,2) and isEnabled = 1 order by productTypeName asc";
 												$q_pdtype = $db->query($s_pdtype);
 												$n_pdtype = $db->db_num_rows($q_pdtype);
 												while($r_pdtype = $db->db_fetch_array($q_pdtype)){
@@ -138,7 +138,10 @@ if($proc=='edit'){
 											<select onchange="get_hdf(this.value,'hdfbrandID',2);" name="brandID" id="brandID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
 												<option value="">เลือก</option>
 												<?php
-												$s_brand=" SELECT * from tb_brand order by brandName asc";
+												$s_brand=" SELECT * from tb_brand 
+												join tb_producttype on tb_brand.productTypeID = tb_producttype.productTypeID
+												where tb_brand.productTypeID IN (1,2)
+												order by brandName asc";
 												$q_brand = $db->query($s_brand);
 												$n_brand = $db->db_num_rows($q_brand);
 												while($r_brand = $db->db_fetch_array($q_brand)){
@@ -211,13 +214,13 @@ if($proc=='edit'){
         $('#locationID_error').show();
         return false;
     }*/
-    if($('#locationCode').val()==''){
-    	$('#locationCode-error').show();
+    // if($('#locationCode').val()==''){
+    // 	$('#locationCode-error').show();
 
-    	return false;
-    }else{
-    	$('#locationCode-error').hide();
-    }
+    // 	return false;
+    // }else{
+    // 	$('#locationCode-error').hide();
+    // }
 
     if($('#chk3').val()==1){
     	$('#locationCode2-error').show();
@@ -345,23 +348,53 @@ function chkShort(){
 	},'json');
 }
 
+function chkzero(zero,type){
+	var zero= zero;
+	if (zero == 0) {
+		if (type == 1) {
+			$('#width2_error').show();
+
+		}else if (type == 2) {
+			$('#high2_error').show();
+
+		}
+	}else{
+		if (type == 1) {
+			$('#width2_error').hide();
+
+		}else if (type == 2) {
+			$('#high2_error').hide();
+
+		}
+	}	
+}
+
+
 function get_hdf(parent_id,hdf_id,type){
+	debugger
 	if (type == 1) {
-		var html  = '<option value="">เลือก</option>';
 		var productTypeID = parent_id;
-		$.ajaxSetup({async: false});  
-		$.post('process/get_process.php',{proc:'get_brand',productTypeID:productTypeID},function(data){
+		$('#'+hdf_id).val(productTypeID);
+		
 
-			$.each(data,function(index,value){
-				html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
-			});
-			$('#hdfproductTypeID').val(productTypeID);
-			$('#brandID').html(html);
-			$('#brandID').selectpicker('refresh');
+		var newcode ='';
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'get_locationtiontype',productTypeID:productTypeID},function(data){
+			newcode =  data['name'];
+			$('#locationCode').val(newcode);
+		},'json');
 
+	}else if (type == 2) {
+		var brandID = parent_id;
+		$('#'+hdf_id).val(brandID);
+
+		var newcode ='';
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'get_locationbrand',brandID:brandID},function(data){
+			newcode =  data['name'];
+			$('#locationCode').val(newcode);
 		},'json');
 	}
-	$('#'+hdf_id).val(parent_id);
 }
 
 function ShowAndHide(){
@@ -371,10 +404,13 @@ function ShowAndHide(){
 	var locationTypeID = $('#locationTypeID').val();
 	if(locationTypeID == 1){
 		$('#brand').show();
+		$('#brand').val(0);
 	}else if(locationTypeID == 2){
 		$('#productType').show();
+		$('#productType').val(0);
 	}
 }
+
 function delData(parent_id,id,hdf_id){
 	var locationID = $('#locationID').val();
 	$.ajaxSetup({async: false});

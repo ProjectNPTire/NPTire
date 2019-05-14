@@ -127,6 +127,8 @@ function getPOInfo($id){
     $poDate = $rec_po["poDate"];
     $create_by = $rec_po["create_by"];
     $poStatus = $rec_po["poStatus"];
+    $cancelBy = $rec_po["cancelBy"];
+    $cancelDate = $rec_po["cancelDate"];
 
     $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
 
@@ -147,6 +149,8 @@ function getPOInfo($id){
         "poStatusName" => get_poStatus($poStatus),
         "isCancel" => $isCancel,
         "empname" => $empname,
+        "cancelBy" => $cancelBy,
+        "cancelDate" => $cancelDate,
     );
 
     $i = 1;

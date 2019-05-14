@@ -121,37 +121,37 @@ $HTML .= '</table>';
 
 $HTML .= '<br><br>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="50%"><b>สถานะ : </b>'.$billStstus.'</td>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '<td width="50%"><b>สถานะ : </b>'.$billStstus.'</td>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%">ชื่อผู้ยกเลิก : '.$namecan.'</td>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '<td width="90%">ชื่อผู้ยกเลิก : '.$namecan.'</td>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%">วันที่ยกเลิก : '.$datecan.'</td>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '<td width="90%">วันที่ยกเลิก : '.$datecan.'</td>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
-$HTML .= '<br><br>';
+// $HTML .= '<br><br>';
 
 $HTML .= '<table width="90%" border="0">';
 $HTML .= '<tbody>';

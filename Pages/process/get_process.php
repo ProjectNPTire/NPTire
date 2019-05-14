@@ -383,6 +383,62 @@ switch($PROC){
 	exit();
 	break;
 
+	case "get_locationtiontype" :
+	$productTypeID = $_POST['productTypeID'];
+	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeID ='".$productTypeID."'  ";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+	$rec = $db->db_fetch_array($query);
+
+
+	$sql_sub =" SELECT locationCode from tb_location where locationCode like '%".$rec['productTypeNameShort']."%' and productTypeID not in (1,2) order by locationID desc LIMIT 1";
+	$query_sub =$db->query($sql_sub);
+	$nums_sub = $db->db_num_rows($query_sub);
+	$rec_sub = $db->db_fetch_array($query_sub);
+
+	if($rec_sub['locationCode']){
+		$arr = explode('-',$rec_sub['locationCode']);
+		$int = $arr[1]+1;
+		$newcode =  'zone'.$rec['productTypeNameShort'].'-'.$int;
+	}else{
+		$newcode = 'zone'.$rec['productTypeNameShort'].'-1';
+	}
+	$OBJ['name']=	$newcode;
+
+
+
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "get_locationbrand" :
+	$brandID = $_POST['brandID'];
+	$sql=" SELECT brandName_short from tb_brand where brandID ='".$brandID."'  ";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+	$rec = $db->db_fetch_array($query);
+
+
+	$sql_sub =" SELECT locationCode from tb_location where locationCode like '%".$rec['brandName_short']."%' and productTypeID in (1,2) order by locationID desc LIMIT 1";
+	$query_sub =$db->query($sql_sub);
+	$nums_sub = $db->db_num_rows($query_sub);
+	$rec_sub = $db->db_fetch_array($query_sub);
+
+	if($rec_sub['locationCode']){
+		$arr = explode('-',$rec_sub['locationCode']);
+		$int = $arr[1]+1;
+		$newcode =  'zone'.$rec['brandName_short'].'-'.$int;
+	}else{
+		$newcode = 'zone'.$rec['brandName_short'].'-1';
+	}
+	$OBJ['name']=	$newcode;
+
+
+
+	echo json_encode($OBJ);
+	exit();
+	break;
+
 	case "chkDelData_supPO" :
 	$supID = $_POST['supID'];
 

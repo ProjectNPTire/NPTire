@@ -34,7 +34,7 @@ $pk_id = "billID";
 $wh = "1=1 {$filter}";
 $orderby = "order by billID DESC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);

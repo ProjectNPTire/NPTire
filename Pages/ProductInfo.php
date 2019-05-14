@@ -62,6 +62,7 @@ $readonly = "readonly";
                           <div class="form-line">
                             <input type="text" readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
                           </div>
+                          <div class="help-info">ไม่เกิน20ตัวอักษร</div>
                           <label id="productCode-error" class="error" for="productName">มีรหัสสินค้านี้แล้ว</label>
                         </div>
                       </div>
@@ -941,7 +942,7 @@ function ValidateSingleInput(oInput) {
         },'json');
 
       }
-       function readURL(input) {
+      function readURL(input) {
 
         if (input.files && input.files[0]) {
           var reader = new FileReader();

@@ -110,12 +110,12 @@ switch($proc){
 			 
 
 
-								$fields = array(
-									"billStstus"=>2,
-									"cancelBy"=>$_SESSION['sys_name'],
-									"cancelDate"=>date('Y-m-d'),
-									"cancelUserID"=>$_SESSION['sys_id'],
-								);
+			 $fields = array(
+			 	"billStstus"=>2,
+			 	"cancelBy"=>$_SESSION['sys_name'],
+			 	"cancelDate"=>date('Y-m-d'),
+			 	"cancelUserID"=>$_SESSION['sys_id'],
+			 );
 			$db->db_update($tb1,$fields,"billID = '".$billID."'");
 
 			$detail = 'ยกเลิกข้อมูลการเบิกสินค้า  : '.$rec['billNo'];

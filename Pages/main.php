@@ -33,38 +33,37 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 
   <section class="content">
     <div class="container-fluid">
-      <?php
-      $sql2 ="SELECT * from tb_product where productUnit < orderPoint";
-      $query2 = $db->query($sql2);
-      $nums2 = $db->db_num_rows($query2);
-      if($nums2>0){
-        echo "<script>alert('มีสินค้าที่ต้องสั่งซื้อ".$nums2."รายการ')</script>";
-        $i2=0;
-        while ($rec2 = $db->db_fetch_array($query2)) { $i2++;
-          ?>
-          <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <div class="card">
-                <div class="header">
-                  <h2>แจ้งเตือนสินค้า</h2>
-                </div>
-                <div class="body">
-                 <div class="table-responsive">
-                  <table class="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>ลำดับ</th>
-                        <th>รหัสสินค้า</th>
-                        <th>ชื่อสินค้า</th>
-                        <th>ยี่ห้อสินค้า</th>
-                        <th>รุ่นสินค้า</th>
-                        <th>ขนาดสินค้า</th>
-                        <th>จำนวน</th>
-                     <!--    <th></th> -->
-                      </tr>
-                    </thead>
-                    <tbody>
-
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>แจ้งเตือนสินค้า</h2>
+            </div>
+            <div class="body">
+             <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>ลำดับ</th>
+                    <th>รหัสสินค้า</th>
+                    <th>ชื่อสินค้า</th>
+                    <th>ยี่ห้อสินค้า</th>
+                    <th>รุ่นสินค้า</th>
+                    <th>ขนาดสินค้า</th>
+                    <th>จำนวน</th>
+                    <!--    <th></th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  $sql2 ="SELECT * from tb_product where productUnit < orderPoint";
+                  $query2 = $db->query($sql2);
+                  $nums2 = $db->db_num_rows($query2);
+                  if($nums2>0){
+                    echo "<script>alert('มีสินค้าที่ต้องสั่งซื้อ".$nums2."รายการ')</script>";
+                    $i2=0;
+                    while ($rec2 = $db->db_fetch_array($query2)) { $i2++;
+                      ?>
                       <tr>
                         <td style="text-align: center;"><?php echo $i2;?></td>
                         <td style="text-align: center;"><?php echo $rec2['productCode'];?></td>
@@ -79,15 +78,16 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                         </a>
                       </td> -->
                     </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                  <?php }
+                } ?>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-    <?php }
-  } ?>
+    </div>
+  </div>
+
 </div>
 
 </section>

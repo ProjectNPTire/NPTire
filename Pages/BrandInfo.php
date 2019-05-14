@@ -81,7 +81,7 @@
 											<select onchange="get_hdf(this.value,'hdfproductTypeID');" name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
 												<option value="">เลือก</option>
 												<?php
-												$s_pdtype=" SELECT * from tb_producttype order by productTypeName asc";
+												$s_pdtype=" SELECT * from tb_producttype where isEnabled = 1 order by productTypeName asc";
 												$q_pdtype = $db->query($s_pdtype);
 												$n_pdtype = $db->db_num_rows($q_pdtype);
 												while($r_pdtype = $db->db_fetch_array($q_pdtype)){
@@ -252,6 +252,12 @@
 				}
 			},'json');
 
+		}
+
+		function get_hdf(parent_id,hdf_id){
+			debugger
+			var brandID = parent_id;
+			$('#'+hdf_id).val(brandID);
 		}
 
 //username2

@@ -10,16 +10,16 @@ $page_key ='4_1';
 
 $filter = '';
 if($s_po_id){
-   $filter .= " and poID like '%".$s_po_id."%'";
+ $filter .= " and poID like '%".$s_po_id."%'";
 }
 if($s_sup_id){
-   $filter .= " and supID = '".$s_sup_id."'";
+ $filter .= " and supID = '".$s_sup_id."'";
 }
 if($s_po_date){
-   $filter .= " and poDate = '".conv_date_db($s_po_date)."'";
+ $filter .= " and poDate = '".conv_date_db($s_po_date)."'";
 }
 if($s_po_status){
-   $filter .= " and poStatus = '".$s_po_status."'";
+ $filter .= " and poStatus = '".$s_po_status."'";
 }
 
 $field = "* ";
@@ -28,7 +28,7 @@ $pk_id = "poID";
 $wh = "1=1  {$filter}";
 $orderby = "order by poID DESC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -121,6 +121,7 @@ chk_role($page_key,'isSearch',1);
                                 <th>ลำดับ</th>
                                 <th align="center">เลขที่ใบสั่งซื้อ</th>
                                 <th align="center">ชื่อ/บริษัทคู่ค้า</th>
+                                <th align="center">ผู้สั่งซื้อ</th>
                                 <th align="center">วันที่ทำรายการ</th>
                                 <th align="center">สถานะ</th>
                                 <th width="10%"></th>
@@ -131,10 +132,14 @@ chk_role($page_key,'isSearch',1);
                             if($nums>0){
                                 $i=0;
                                 while ($rec = $db->db_fetch_array($query)) {
+                                   $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
+                                   $query_emp = $db->query($sql_emp);
+                                   $rec_emp = $db->db_fetch_array($query_emp);
+                                   $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                                    $del = '';
-                                    if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
-                                      $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO('.$rec['poID'].');"  title="ยกเลิก" >'.$img_cancel.'</a>';
+                                   $del = '';
+                                   if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
+                                      $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO(\''.$rec["poID"].'\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
                                   }
                                   $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
                                   ?>
@@ -142,6 +147,7 @@ chk_role($page_key,'isSearch',1);
                                       <td align="center"><?php echo ++$i; ?></td>
                                       <td><?php echo $rec['poID']; ?></td>
                                       <td><?php echo get_sup_name($rec['supID']); ?></td>
+                                      <td><?php echo $empname; ?></td>
                                       <td><?php echo conv_date($rec['poDate']); ?></td>
                                       <td><?php echo $arr_po_status[$rec['poStatus']]; ?></td>
                                       <td align="center"><?php echo $info.$del; ?></td>
@@ -174,10 +180,10 @@ chk_role($page_key,'isSearch',1);
 
 <script>
     $(document).ready(function() {
-       $("#table1").DataTable({
-         "ordering": false,
-     })
-   });
+     $("#table1").DataTable({
+       "ordering": false,
+   })
+ });
     function searchData(){
         $('#frm-search').removeAttr('target');
         $("#frm-search").submit();
@@ -190,25 +196,26 @@ chk_role($page_key,'isSearch',1);
     }
 
     function cancelPO(id){
-      if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
-        $("#proc").val("cancel");
-        $("#poID").val(id);
-        $('#frm-search').removeAttr('target');
-        $("#frm-search").attr("action","process/order_process.php").submit();
+        debugger
+        if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
+            $("#proc").val("cancel");
+            $("#poID").val(id);
+            $('#frm-search').removeAttr('target');
+            $("#frm-search").attr("action","process/order_process.php").submit();
+        }
     }
-}
 
-function infoPO(id){
-    $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
-        //console.log(data);
-        var html = "";
+    function infoPO(id){
+        $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
+            console.log(data);
+            var html = "";
 
-        html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
-        html += '<div class="modal-dialog modal-lg" role="document">';
-        html += '<div class="modal-content">';
+            html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
+            html += '<div class="modal-dialog modal-lg" role="document">';
+            html += '<div class="modal-content">';
 
-        html += '<div class="modal-header">';
-        html += '<div class="row">';
+            html += '<div class="modal-header">';
+            html += '<div class="row">';
         // html += '<div class="col-sm-6">';
         // html += '<h1 class="modal-title" id="largeModalLabel">';
         // html += 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด <br/>';
@@ -344,21 +351,21 @@ function infoPO(id){
 
         if(data["po_desc"]){
             for(var i = 0; i < data["po_desc"].length; i++ ){
-               html += '<tr>';
-               html += '<td align="center">'+(i+1)+'</td>';
-               html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
-               html += '<td>'+data["po_desc"][i].productName+'</td>';
-               html += '<td>'+data["po_desc"][i].brandName+'</td>';
-               html += '<td>'+data["po_desc"][i].modelName+'</td>';
-               html += '<td>'+data["po_desc"][i].productSize+'</td>';
-               html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
-               html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
-               html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
-               html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
-               html += '</tr>';
-           }
-       }
-       else {
+             html += '<tr>';
+             html += '<td align="center">'+(i+1)+'</td>';
+             html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
+             html += '<td>'+data["po_desc"][i].productName+'</td>';
+             html += '<td>'+data["po_desc"][i].brandName+'</td>';
+             html += '<td>'+data["po_desc"][i].modelName+'</td>';
+             html += '<td>'+data["po_desc"][i].productSize+'</td>';
+             html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
+             html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
+             html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
+             html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
+             html += '</tr>';
+         }
+     }
+     else {
         html += '<tr>';
         html += '<td colspan="9" align="center">ไม่พบข้อมูล</td>';
         html += '</tr>';
@@ -374,6 +381,26 @@ function infoPO(id){
     html += '</tfoot>';
 
     html += '</table>';
+
+    if( data["po_head"].poStatus == 99)
+    {
+        html += '<br>';
+        html += '<br>';
+        html += '<div class="row clearfix">';
+        html += '<div class="col-sm-4">';
+        html += '<b>สถานะ</b>';
+        html += '<div class="form-group" id="txt_status">ยกเลิกการสั่งซื้อ</div>';
+        html += '</div>';
+        html += '<div class="col-sm-4">';
+        html += '<b>ชื่อผู้ยกเลิก</b>';
+        html += '<div class="form-group" id="txt_candel_name">'+data["po_head"].cancelBy+'</div>';
+        html += '</div>';
+        html += '<div class="col-sm-4">';
+        html += '<b>วันที่ยกเลิก</b>';
+        html += '<div class="form-group" id="txt_candel_date">'+data["po_head"].cancelDate+'</div>';
+        html += '</div>';
+    }
+
     html += '</div>';
 
     html += '<div class="modal-footer">';

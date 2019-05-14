@@ -29,7 +29,7 @@ $pk_id = "receiveID";
 $wh = "1=1  {$filter}";
 $orderby = "order by receiveID DESC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -128,6 +128,7 @@ chk_role($page_key,'isSearch',1);
                                                 <th>ลำดับ</th>
                                                 <th align="center">เลขที่ใบรับสินค้า</th>
                                                 <th align="center">เลขที่ใบสั่งซื้อ</th>
+                                                <th align="center">ผู้รับเข้า</th>
                                                 <th align="center">วันที่ทำรายการ</th>
                                                 <th align="center">สถานะ</th>
                                                 <th width="10%"></th>
@@ -138,6 +139,10 @@ chk_role($page_key,'isSearch',1);
                                             if($nums>0){
                                                 $i=0;
                                                 while ($rec = $db->db_fetch_array($query)) {
+                                                    $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
+                                                    $query_emp = $db->query($sql_emp);
+                                                    $rec_emp = $db->db_fetch_array($query_emp);
+                                                    $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
                                                     $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoReceive(\''.$rec["receiveID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
                                                     ?>
@@ -145,6 +150,7 @@ chk_role($page_key,'isSearch',1);
                                                         <td align="center"><?php echo ++$i; ?></td>
                                                         <td><?php echo $rec['receiveID']; ?></td>
                                                         <td><?php echo $rec['poID']; ?></td>
+                                                        <td><?php echo $empname; ?></td>
                                                         <td><?php echo conv_date($rec['receiveDate']); ?></td>
                                                         <td><?php echo $arr_receive_status[$rec['receiveStatus']]; ?></td>
                                                         <td align="center"><?php echo $info; ?></td>

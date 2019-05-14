@@ -11,6 +11,9 @@ $filter = '';
 if($s_userID){
 	$filter .= " and userID ='".$s_userID."'";
 }
+if($birthday){
+	$filter .= " and log_dt like '%".conv_date_db($birthday)."%'";
+}
 
 $field = "* ";
 $table = "tb_logfiles";
@@ -40,15 +43,14 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 							</h2>
 						</div>
 						<div class="body table-responsive">
-
 							<form id="frm-search" method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
 								<input type="hidden" id="proc" name="proc" value="">
 								<input type="hidden" id="form_page" name="form_page" value="ProductTypeList.php">
 								<input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
 								<input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-								<!-- <div class="row clearfix">
-									<div class="col-sm-12">
+								<div class="row clearfix">
+									<div class="col-sm-5">
 										<div class="form-group">
 											<b>ผู้ใช้งาน</b>
 											<div class="form-group form-float">
@@ -59,19 +61,30 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 													$q_p = $db->query($s_p);
 													$n_p = $db->db_num_rows($q_p);
 													while($r_p = $db->db_fetch_array($q_p)){?>
-														<option value="<?php echo $r_p['userID'];?>"  <?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
+														<option value="<?php echo $r_p['userID'];?>"<?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
 
 													<?php }  ?>
 												</select>
 											</div>
 										</div>
 									</div>
+									<div class="col-md-5">
+										<div class="form-group">
+											<b>วันที่</b>
+											<div class="form-line">
+												<input type="text" class="form-control datepicker" name="birthday" id="birthday" value="<?php echo $birthday;?>">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="icon-and-text-button-demo align-center">
+											<button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+										</div>
+									</div> 
 								</div> 
 
-								<div class="icon-and-text-button-demo align-center">
-									<button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-								</div>
-								<div class="row"><?php //echo ($nums>0) ? startPaging("frm-search",$total_record):""; ?></div>-->
+								
+								<div class="row"><?php //echo ($nums>0) ? startPaging("frm-search",$total_record):""; ?></div>
 								<table width="100%" id="table1" class="table table-bordered table-striped table-hover  dataTable">
 									<thead>
 										<tr>
@@ -119,6 +132,7 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 	$(document).ready(function() {
 		$("#table1").DataTable({
 			"ordering": false,
+     		"searching": false,
 		})
 	});
 </script>

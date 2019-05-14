@@ -48,7 +48,7 @@ if($nums>0){
     $rec1 = $db->db_fetch_array($query1);
 
     $html .=  '<tr>
-    <td align="left">'.$rec['locationName'].'<br/>จำนวนทั้งหมด '.number_format($rec1['total']).' ชิ้น</td>
+    <td align="left">'.$rec['locationName'].'</td>
     <td align="center">';
     $sqlproduct =" select  *
     from tb_product a

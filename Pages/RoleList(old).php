@@ -82,7 +82,7 @@ $arr_menu  = array(
     										<th><div align="center">ค้นหา</div></th>
     										<th><div align="center">เพิ่ม</div></th>
     										<th><div align="center">แก้ไข</div></th>
-    										<th><div align="center">ลบ</div></th>
+    										<th><div align="center">ยกเลิก</div></th>
     									</tr>
     								</thead>
     								<tbody>

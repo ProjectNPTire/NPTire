@@ -112,35 +112,35 @@ $HTML .= '</tr>';
 $HTML .= '</tbody>';
 $HTML .= '</table>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%">ที่อยู่ '.$sup_address.'</td>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '<td width="90%">ที่อยู่ '.$sup_address.'</td>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%">เบอร์โทรศัพท์ '.$sup_tel.'</td>';
-// $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '<td width="90%">เบอร์โทรศัพท์ '.$sup_tel.'</td>';
+// // $HTML .= '<td width="5%"></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
-$HTML .= '<br><br>';
+// $HTML .= '<br><br>';
 
-$HTML .= '<table width="90%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
-$HTML .= '<td><h4>รายการรับเข้าสินค้า</h4></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '<table width="90%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
+// $HTML .= '<td><h4>รายการรับเข้าสินค้า</h4></td>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
 $HTML .= '<table width="90%" border="1">';
 
@@ -171,7 +171,7 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 	$query_product = $db->query($sql_product);
 	$rec_product = $db->db_fetch_array($query_product);
 
-	$sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$receiveID."' ";
+	$sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$receiveID."' and productID = '".$rec_pd["productID"]."' ";
 	$query_receive_desc = $db->query($sql_receive_desc);
 	$rec_receive_desc = $db->db_fetch_array($query_receive_desc);
 

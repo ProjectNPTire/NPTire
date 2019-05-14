@@ -164,8 +164,8 @@ $arrMenu = array(
                         </li>
                       <?php } 
 
-                      if($arrMenu['desc'][$key] == 'ค้นหาสินค้า'){
-                          //print_r($arrMenu['desc'][$key]);
+                      else if($arrMenu['desc'][$key] == 'ค้นหาสินค้า'){
+                            //print_r($arrMenu['desc'][$key]);
                         $active = '';
                         if($key==$page_key){
                           $active = 'class="active"';

@@ -34,7 +34,7 @@ $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
 $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
 
-chk_role('2_3','isSearch',1) ;
+chk_role($page_key,'isSearch',1) ;
 
 ?>
 
@@ -82,7 +82,7 @@ chk_role('2_3','isSearch',1) ;
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                   </div> -->
                                   <div class="icon-and-text-button-demo align-right">
-                                    <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role('2_3','isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
+                                    <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                   </div>
                                   <div>
                                     <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
@@ -107,16 +107,25 @@ chk_role('2_3','isSearch',1) ;
                                           $i=0;
                                           while ($rec = $db->db_fetch_array($query)) {
                                             $i++;
-                                            $edit = ' <a style="'.chk_role('2_3','isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['productID'].');">'.$img_edit.'</a>';
+                                            $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['productID'].');">'.$img_edit.'</a>';
                                                 // $del = ' <a style="'.chk_role('2_3','isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['productID'].');">'.$img_del.'</a>';
-                                                $info = ' <a style="'.chk_role('2_3','isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['productID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
+                                                $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['productID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
                                                 $location = "";
-                                                $sql_sub  = " SELECT * FROM tb_productstore  where productID ='".$rec['productID']."' ";
-                                                $query_sub = $db->query($sql_sub);
-                                                $nums_sub = $db->db_num_rows($query_sub);
-                                                while ($rec_sub = $db->db_fetch_array($query_sub)) {
-                                                 $location .= get_location_name($rec_sub['locationID']).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '.number_format($rec_sub['ps_unit']).' '.$arr_unitType[$rec['unitType']]."<br>";
+                                                $sql_loc  = " SELECT * FROM tb_productstore  where productID ='".$rec['productID']."' ";
+                                                $query_loc = $db->query($sql_loc);
+                                                $nums_loc = $db->db_num_rows($query_loc);
+                                                while ($rec_loc = $db->db_fetch_array($query_loc)) {
+                                                 $location .= get_location_name($rec_loc['locationID']).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '.number_format($rec_loc['ps_unit']).' '.$arr_unitType[$rec['unitType']]."<br>";
                                                }
+
+                                               $supplier = "";
+                                               $sql_sub  = " SELECT * FROM tb_productsupplier  where productID ='".$rec['productID']."' ";
+                                               $query_sub = $db->query($sql_sub);
+                                               $nums_sub = $db->db_num_rows($query_sub);
+                                               while ($rec_sub = $db->db_fetch_array($query_sub)) {
+                                                $supplier .= get_sup_name($rec_sub['supID'])."<br>";
+                                               }
+
                                                ?>
                                                <tr>
                                                 <td align="center"><?php echo $i+$goto;?></td>
@@ -132,11 +141,13 @@ chk_role('2_3','isSearch',1) ;
                                                 <td style="text-align:center;"><?php echo $info.$edit.$del;?>
                                                 <input type="hidden" id="show_code_<?php echo $rec['productID'];?>" value="<?php echo $rec['productCode'];?>" >
                                                 <input type="hidden" id="show_name_<?php echo $rec['productID'];?>" value="<?php echo $rec['productName'];?>" >
+                                                <input type="hidden" id="show_type_<?php echo $rec['productID'];?>" value="<?php echo get_productType_name($rec['productTypeID']);?>" >
                                                 <input type="hidden" id="show_brand_<?php echo $rec['productID'];?>" value="<?php echo get_brand_name($rec['brandID']);?>" >
                                                 <input type="hidden" id="show_size_<?php echo $rec['productID'];?>" value="<?php echo $rec['productSize'];?>" >
                                                 <input type="hidden" id="show_model_<?php echo $rec['productID'];?>" value="<?php echo $rec['modelName'];?>" >
                                                 <input type="hidden" id="show_unit_<?php echo $rec['productID'];?>" value="<?php echo $rec['productUnit'].' '.$arr_unitType[$rec['unitType']];?>" >
                                                 <input type="hidden" id="show_location_<?php echo $rec['productID'];?>" value="<?php echo $location;?>" >
+                                                <input type="hidden" id="show_supplier_<?php echo $rec['productID'];?>" value="<?php echo $supplier;?>" >
                                                 <input type="hidden" id="show_productImg_<?php echo $rec['productID'];?>" value="<?php echo $rec['productImg'];?>" >
                                                 <input type="hidden" id="show_detail_<?php echo $rec['productID'];?>" value="<?php echo $rec['productDetail'];?>" >
 
@@ -197,20 +208,31 @@ chk_role('2_3','isSearch',1) ;
                                       <b>ชื่อสินค้า</b>
                                       <div class="form-group" id="txt_name"></div>
                                     </div>
+                                    <div class="col-sm-4">
+                                      <b>ประเภทสินค้า</b>
+                                      <div class="form-group" id="txt_type"></div>
+                                    </div>
                                   </div>
                                   <div class="row clearfix">
                                     <div class="col-sm-4">
                                       <b>ยี่ห้อ</b>
                                       <div class="form-group" id="txt_brand"></div>
                                     </div>
-
+                                    <div class="col-sm-4">
+                                      <b>รุ่น</b>
+                                      <div class="form-group" id="txt_model"></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                      <b>ขนาด</b>
+                                      <div class="form-group" id="txt_size"></div>
+                                    </div>
+                                  </div>
+                                  <div class="row clearfix">
                                     <div class="col-sm-4">
                                       <b>จำนวน</b>
                                       <div class="form-group" id="txt_unit"></div>
                                     </div>
-                                  </div>
-                                  <div class="row clearfix">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-8">
                                       <b>รายละเอียด</b>
                                       <div class="form-group" id="txt_detail"></div>
                                     </div>
@@ -223,9 +245,16 @@ chk_role('2_3','isSearch',1) ;
                                    <div class="form-group" id="txt_location"></div>
                                  </div>
                                </div>
-                               <div class="modal-footer">
-                                 <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+
+                               <div class="align-left">
+                                <div class="col-sm-12">
+                                 <b>บริษัทคู่ค้า</b>
+                                 <div class="form-group" id="txt_supplier"></div>
                                </div>
+                             </div>
+                             <div class="modal-footer">
+                               <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+                             </div>
                      <!-- <div class="modal-footer">
                         <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
                         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -249,10 +278,14 @@ chk_role('2_3','isSearch',1) ;
                     $('#txt_img').html(img);
                     $('#txt_name').html($('#show_name_'+id).val());
                     $('#txt_code').html($('#show_code_'+id).val());
+                    $('#txt_type').html($('#show_type_'+id).val());
                     $('#txt_brand').html($('#show_brand_'+id).val());
+                    $('#txt_model').html($('#show_model_'+id).val());
+                    $('#txt_size').html($('#show_size_'+id).val());
                     $('#txt_unit').html($('#show_unit_'+id).val());
                     $('#txt_location').html($('#show_location_'+id).val());
                     $('#txt_detail').html($('#show_detail_'+id).val());
+                    $('#txt_supplier').html($('#show_supplier_'+id).val());
 
 
 

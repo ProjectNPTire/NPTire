@@ -245,6 +245,7 @@ chk_role($page_key,'isSearch',1) ;
   $(document).ready(function() {
    $("#table1").DataTable({
      "ordering": false,
+     //"searching": false,
    })
  });
 function searchData(){

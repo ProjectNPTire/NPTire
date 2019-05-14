@@ -60,8 +60,11 @@ switch($proc){
 		try{
 
 			$fields = array(
-				"poStatus"=>99
-			);
+			 	"poStatus"=>99,
+			 	"cancelBy"=>$_SESSION['sys_name'],
+			 	"cancelDate"=>date('Y-m-d'),
+			 	"cancelUserID"=>$_SESSION['sys_id'],
+			 );
 
 			$db->db_update($tb1,$fields, " poID = '".$poID."'");
 

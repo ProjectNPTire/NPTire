@@ -6,7 +6,7 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 $path_image = $path."file_productImg/";
-$page_key ='0';
+$page_key ='1';
 $filter = '';
 if($ddl_location == 1){
   $filter .= " where locationName  like '%".$txt_search."%'";

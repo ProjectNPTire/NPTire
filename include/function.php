@@ -405,6 +405,7 @@ function chk_role($menu,$type,$show=''){
 	global $db;
 	if($_SESSION["userType"]==2){
 		$sql = "SELECT $type FROM tb_role WHERE menuKey = '".$menu."' ";
+		// echo ' <script>alert('.$sql.');</script>';
 		$query = $db->query($sql);
 		$rec = $db->db_fetch_array($query);
 		if($show){
