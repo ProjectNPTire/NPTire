@@ -15,12 +15,17 @@ $path_image = $path."file_img/";
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query); */
  $filter = '';
-if($s_firstname){
-    $filter .= " and firstname  like '%".$s_firstname."%'";
+ if($ddl_search == 1){
+  $filter .= " and firstname  like '%".$s_firstname."%'";
+} if($ddl_search == 2){
+  $filter .= " and userStatus  like '%".$status."%'";
 }
+/* if($s_firstname){
+    $filter .= " and firstname  like '%".$s_firstname."%'";
+} *//* 
 if($s_lastname){
     $filter .= " and lastname like '%".$s_lastname."%'";
-}
+} */
 $field = "* ";
 $table = "tb_user";
 $pk_id = "userID";
@@ -32,7 +37,7 @@ if($_SESSION["userType"] == 1){
 }
 $orderby = "order by userID DESC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+echo $sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -86,11 +91,51 @@ chk_role($page_key,'isSearch',1) ;
                                  <div class="icon-and-text-button-demo align-center">
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                 </div> -->
+								<div class="row clearfix">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                          <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                          <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อ</option>
+                          <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>สถานะการเข้าใช้งานระบบ</option>
+                        
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  
+                  <div class="col-sm-5" id="user" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                 <input type="text " name="s_firstname" id="s_firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $s_firstname;?>">
+                      </div>
+                    </div>                     
+                  </div>
+                 <div class="col-sm-5" id="status" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php 
+                          foreach ($arr_userStatus as $key => $value) { ?>
+                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="icon-and-text-button-demo align-center">
+                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                    </div>
+                  </div> 
+                </div>
                                 <div class="icon-and-text-button-demo align-right">
                                     <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                 </div>
                                 <div>
-                                    <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
+                                    <table width="100%" class="table table-bordered table-striped table-hover "> <!--js-basic-example-->
                                         <thead>
                                             <tr>
                                                 <th width="5%">ลำดับ</th>
@@ -247,6 +292,11 @@ chk_role($page_key,'isSearch',1) ;
      "ordering": false,
      //"searching": false,
    })
+   if($('#ddl_search').val() == 1){
+   $('#user').show();
+ }else if($('#ddl_search').val() == 2){
+   $('#status').show();
+ }
  });
 function searchData(){
   $("#frm-search").submit();
@@ -282,5 +332,13 @@ function delData(id){
     $("#frm-search").attr("action","process/profile_process.php").submit();
   }
 }
-
+$("#ddl_search").change(function() {
+  $('#user').hide();
+  $('#status').hide();
+  if($(this).val() == 1){
+   $('#user').show();
+ }else if($(this).val() == 2){
+   $('#status').show();
+ }
+});
 </script>

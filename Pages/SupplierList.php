@@ -13,7 +13,14 @@ FROM tb_supplier";*/
 $nums = $db->db_num_rows($query);*/
 
 $filter = '';
-if($s_sup_name){
+ if($ddl_search == 1){
+  $filter .= " and sup_name  like '%".$s_sup_name."%'";
+} if($ddl_search == 2){
+  $filter .= " and namesale  like '%".$s_name_sale."%'";
+} if($ddl_search == 3){
+  $filter .= " and isEnabled  like '%".$status."%'";
+}
+/* if($s_sup_name){
  $filter .= " and sup_name like '%".$s_sup_name."%'";
 }
 if($s_sup_email){
@@ -24,7 +31,7 @@ if($s_sup_tel){
 }
 if($s_sup_mobile){
  $filter .= " and sup_mobile like '%".$s_sup_mobile."%'";
-}
+} */
 
 $field = "* ";
 $table = "tb_supplier";
@@ -102,7 +109,65 @@ chk_role($page_key,'isSearch',1);
                                  <div class="icon-and-text-button-demo align-center">
                                     <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                   </div> -->
-
+<div class="row clearfix">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                          <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                          <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อคู่ค้า/บริษัท</option>
+                          <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ชื่อ-สกุล พนักงานที่ติดต่อ</option>
+                          <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>สถานะ</option>
+                          
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                 
+                  
+                  <div class="col-sm-5" id="sup" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+					   <input type="text " name="s_sup_name" id="s_sup_name" class="form-control" placeholder="ชื่อ" value="<?php echo $s_sup_name;?>">
+                       
+                      </div>
+                    </div>                     
+                  </div>
+				  
+				 <div class="col-sm-5" id="user" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                         <input type="text " name="s_name_sale" id="s_name_sale" class="form-control" placeholder="ชื่อ" value="<?php echo $s_name_sale;?>">
+                      </div>
+                    </div>                     
+					</div> 
+                  <div class="col-md-5" id="date" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text" class="form-control datepicker" placeholder="DD/MM/YYYY  " name="date" id="date" value="<?php echo $date;?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-5" id="status" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php  ;
+                          foreach ($arr_active as $key => $value) { ?>
+                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="icon-and-text-button-demo align-center">
+                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                    </div>
+                  </div> 
+                </div>
+				
                                   <div class="icon-and-text-button-demo align-right">
                                     <button type="button" class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                   </div>
@@ -246,7 +311,14 @@ chk_role($page_key,'isSearch',1);
                    $("#table1").DataTable({
                      "ordering": false,
                    })
-                 });
+  if($('#ddl_search').val() == 1){
+   $('#sup').show();
+ }else if($('#ddl_search').val() == 2){
+   $('#user').show();
+ }else if($('#ddl_search').val() == 3){
+   $('#status').show();
+ }
+				});
                   function searchData(){
                     $("#frm-search").submit();
                   }
@@ -290,4 +362,17 @@ chk_role($page_key,'isSearch',1);
 
                }
 
+$("#ddl_search").change(function() {
+  
+  $('#sup').hide();
+  $('#user').hide();
+  $('#status').hide();
+  if($(this).val() == 1){
+   $('#sup').show();
+ }else if($(this).val() == 2){
+   $('#user').show();
+ }else if($(this).val() == 3){
+   $('#status').show();
+ }
+});
              </script>

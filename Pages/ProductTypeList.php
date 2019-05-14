@@ -8,8 +8,10 @@ include 'css.php';
 $page_key ='3_1';
 
 $filter = '';
-if($s_productTypeName){
+if($ddl_search == 1){
  $filter .= " and productTypeName like '%".$s_productTypeName."%'";
+}else if($ddl_search == 2){
+ $filter .= " and isEnabled like '%".$status."%'";
 }
 
 $field = "* ";
@@ -62,13 +64,52 @@ chk_role($page_key,'isSearch',1) ;
                                   </div>
                                 </div> -->
 
-
+<div class="row clearfix">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                          <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                          <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อ</option>
+                          <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>สถานะการเข้าใช้งานระบบ</option>
+                        
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  
+                  <div class="col-sm-5" id="productTypeName" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                 <input type="text " name="s_productTypeName" id="s_productTypeName" class="form-control" placeholder="ชื่อ" value="<?php echo $s_productTypeName;?>">
+                      </div>
+                    </div>                     
+                  </div>
+                 <div class="col-sm-5" id="status" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php 
+                          foreach ($arr_active as $key => $value) { ?>
+                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="icon-and-text-button-demo align-center">
+                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                    </div>
+                  </div> 
+                </div>
 
                                 <div class="icon-and-text-button-demo align-right">
                                  <button  class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                </div>
                                <div class="table-responsive">
-                                <table id="table1" width="100%" class="table table-bordered table-striped table-hover dataTable">
+                                <table width="100%" class="table table-bordered table-striped table-hover dataTable">
                                   <thead>
                                     <tr>
                                       <th width="5%">ลำดับ</th>
@@ -135,6 +176,11 @@ chk_role($page_key,'isSearch',1) ;
                $("#table1").DataTable({
                  "ordering": false,
                })
+			     if($('#ddl_search').val() == 1){
+   $('#productTypeName').show();
+ }else if($('#ddl_search').val() == 2){
+   $('#status').show();
+ }
              });
 
               function searchData(){
@@ -169,5 +215,13 @@ chk_role($page_key,'isSearch',1) ;
 
                 }
               }
-
+$("#ddl_search").change(function() {
+  $('#productTypeName').hide();
+  $('#status').hide();
+  if($(this).val() == 1){
+   $('#productTypeName').show();
+ }else if($(this).val() == 2){
+   $('#status').show();
+ }
+});
             </script>
