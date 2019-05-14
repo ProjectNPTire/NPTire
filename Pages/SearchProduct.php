@@ -8,16 +8,16 @@ include 'css.php';
 $path_image = $path."file_productImg/";
 $page_key ='1';
 $filter = '';
-if($ddl_location == 1){
+if($ddl_search == 1){
   $filter .= " where locationName  like '%".$txt_search."%'";
 }
-else if($ddl_location == 2){
+else if($ddl_search == 2){
   $filter .= " where productTypeName like '%".$txt_search."%'";
 }
-else if($ddl_location == 3){
+else if($ddl_search == 3){
   $filter .= " where brandName like '%".$txt_search."%'";
 }
-else if($ddl_location == 4){
+else if($ddl_search == 4){
   $filter .= " where productName like '%".$txt_search."%'";
 }else{
   $txt_search = "";
@@ -56,12 +56,12 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                 <div class="row clearfix">                
                   <div class="col-md-5">
                     <div class="form-float">
-                      <select class="form-control show-tick" data-live-search="true" id="ddl_location" name="ddl_location">
-                        <option value=""<?php echo ($ddl_location=="")?"selected":"";?>>ทั้งหมด</option>
-                        <option value="1"<?php echo ($ddl_location==1)?"selected":"";?>>ตำแหน่ง</option>
-                        <option value="2"<?php echo ($ddl_location==2)?"selected":"";?>>ประเภทสินค้า</option>
-                        <option value="3"<?php echo ($ddl_location==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
-                        <option value="4"<?php echo ($ddl_location==4)?"selected":"";?>>ชื่อสินค้า</option>
+                      <select class="form-control show-tick" data-live-search="true" id="ddl_search" name="ddl_search">
+                        <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>ทั้งหมด</option>
+                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ตำแหน่ง</option>
+                        <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทสินค้า</option>
+                        <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
+                        <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>ชื่อสินค้า</option>
                       </select>  
                     </div>
                   </div>
@@ -193,7 +193,7 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
    $("#table1").DataTable({
      "ordering": false,
    });
-   if( $("#ddl_location").val() != ""){
+   if( $("#ddl_search").val() != ""){
       $('#hide').show();
    }else{
      $('#hide').hide();
@@ -229,7 +229,7 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
 
     $('#ModalDetail').modal('show');
   }
-  $("#ddl_location").change(function() {
+  $("#ddl_search").change(function() {
     if($(this).val() != ""){
      $('#hide').show();
    }else{

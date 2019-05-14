@@ -8,18 +8,42 @@ include 'css.php';
 
 $page_key ='4_1';
 
+// $filter = '';
+// if($s_po_id){
+//  $filter .= " and poID like '%".$s_po_id."%'";
+// }
+// if($s_sup_id){
+//  $filter .= " and supID = '".$s_sup_id."'";
+// }
+// if($s_po_date){
+//  $filter .= " and poDate = '".conv_date_db($s_po_date)."'";
+// }
+// if($s_po_status){
+//  $filter .= " and poStatus = '".$s_po_status."'";
+// }
+
+
 $filter = '';
-if($s_po_id){
- $filter .= " and poID like '%".$s_po_id."%'";
-}
-if($s_sup_id){
- $filter .= " and supID = '".$s_sup_id."'";
-}
-if($s_po_date){
- $filter .= " and poDate = '".conv_date_db($s_po_date)."'";
-}
-if($s_po_status){
- $filter .= " and poStatus = '".$s_po_status."'";
+if($ddl_search == 1){
+  if($s_billNo != ""){
+    $filter .= " and poID  like '%".$s_billNo."%'";
+  }
+}else if($ddl_search == 2){
+  if($s_sup_id != ""){
+   $filter .= " and supID ='".$s_sup_id."'";
+ }
+}else if($ddl_search == 3){
+  if($s_userID != ""){
+   $filter .= " and create_by ='".$s_userID."'";
+ }
+}else if($ddl_search == 4){
+  if($date != ""){
+    $filter .= " and poDate  like '%".conv_date_db($date)."%'";
+  }
+}else if($ddl_search == 5){
+  if($status != ""){
+   $filter .= " and poStatus = '".$status."'";
+ }
 }
 
 $field = "* ";
@@ -37,140 +61,168 @@ chk_role($page_key,'isSearch',1);
 ?>
 
 <body class="theme-red">
-    <?php include 'MasterPage.php';?>
+  <?php include 'MasterPage.php';?>
 
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Basic Examples -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>รายการสั่งซื้อสินค้า</h2>
-                        </div>
-                        <div class="body table-responsive">
-                            <form id="frm-search" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                <input type="hidden" id="proc" name="proc" value="">
-                                <input type="hidden" id="form_page" name="form_page" value="OrderList.php">
-                                <input type="hidden" id="poID" name="poID" value="">
-                                <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
-                                <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Basic Examples -->
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2>รายการสั่งซื้อสินค้า</h2>
+            </div>
+            <div class="body table-responsive">
+              <form id="frm-search" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                <input type="hidden" id="proc" name="proc" value="">
+                <input type="hidden" id="form_page" name="form_page" value="OrderList.php">
+                <input type="hidden" id="poID" name="poID" value="">
+                <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
+                <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                               <!--  <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                     <div class="form-group">
-                                      <b>เลขที่ใบสั่งซื้อ </b>
-                                      <div class="form-line">
-                                        <input type="text " name="s_po_id" id="s_po_id" class="form-control" placeholder="เลขที่ใบสั่งซื้อ" value="<?php echo $s_po_id;?>">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <b>ชื่อคู่ค้า/บริษัท </b>
-                                    <div class="form-group form-float">
-                                      <select name="s_sup_id" id="s_sup_id" class="form-control show-tick" data-live-search="true">
-                                          <option value="">เลือก</option>
-                                          <?php
-                                          $sql_sup=" SELECT * from tb_supplier order by sup_name asc";
-                                          $query_sup = $db->query($sql_sup);
-                                          while($rec_sup = $db->db_fetch_array($query_sup)){?>
-                                              <option value="<?php echo $rec_sup['supID'];?>"  <?php echo ($s_sup_id==$rec_sup['supID'])?"selected":"";?>> <?php echo $rec_sup['sup_name'];?></option>
-                                          <?php }  ?>
-                                      </select>
-                                  </div>
-                              </div>
-                          </div>
+                <div class="row clearfix">
+                  <div class="col-sm-5">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                          <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                          <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>เลขที่ใบสั่งซื้อ</option>
+                          <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>บริษัทคู่ค้า</option>
+                          <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>ผู้สั่งซื้อ</option>
+                          <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>วันที่สั่งซื้อ</option>
+                          <option value="5"<?php echo ($ddl_search==5)?"selected":"";?>>สถานะ</option>
+                        </select>
                       </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-6">
-                         <b>วันที่เอกสาร </b>
-                         <div class="input-group">
-                            <div class="form-line">
-                                <input type="text" class="form-control datepicker" name="s_po_date" id="s_po_date" placeholder="DD/MM/YYYY" value="<?php echo $s_po_date;?>">
-                            </div>
-                        </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-5" id="bill" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบเบิก" value="<?php echo $s_billNo;?>">
+                      </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <b>สถานะ </b>
-                            <div class="form-group form-float">
-                                <select name="s_po_status" id="s_po_status" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID',2);">
-                                    <option value="">เลือก</option>
-                                    <option value="1" <?php echo ($s_po_status == 1)? "selected" : ""; ?>>รอรับสินค้า</option>
-                                    <option value="2" <?php echo ($s_po_status == 2)? "selected" : ""; ?>>ค้างรับ</option>
-                                    <option value="1" <?php echo ($s_po_status == 3)? "selected" : ""; ?>>รับสินค้าครบแล้ว</option>
-                                    <option value="99" <?php echo ($s_po_status == 99)? "selected" : ""; ?>>ยกเลิก</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                  <div class="col-sm-5" id="user" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="s_userID" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT * from tb_user order by firstname asc";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['userID'];?>"<?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
 
-                <div class="icon-and-text-button-demo align-center">
-                    <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                </div> -->
+                          <?php }  ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-5" id="sup" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="s_sup_id" id="s_sup_id" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT * from tb_supplier";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['supID'];?>"<?php echo ($s_sup_id==$r_p['supID'])?"selected":"";?>> <?php echo $r_p['sup_name'];?></option>
+
+                          <?php }  ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-md-5" id="date" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text" class="form-control datepicker" placeholder="DD/MM/YYYY  " name="date" id="date" value="<?php echo $date;?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-5" id="status" style="display: none;">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          foreach ($arr_po_status as $key => $value) { ?>
+                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="icon-and-text-button-demo align-center">
+                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                    </div>
+                  </div> 
+                </div>
 
                 <div class="icon-and-text-button-demo align-right">
-                    <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
+                  <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
                 </div>
                 <div class="">
-                    <table width="100%" id="table1" class="table table-bordered table-striped table-hover ">
-                        <thead>
-                            <tr>
-                                <th>ลำดับ</th>
-                                <th align="center">เลขที่ใบสั่งซื้อ</th>
-                                <th align="center">ชื่อ/บริษัทคู่ค้า</th>
-                                <th align="center">ผู้สั่งซื้อ</th>
-                                <th align="center">วันที่ทำรายการ</th>
-                                <th align="center">สถานะ</th>
-                                <th width="10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            if($nums>0){
-                                $i=0;
-                                while ($rec = $db->db_fetch_array($query)) {
-                                   $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
-                                   $query_emp = $db->query($sql_emp);
-                                   $rec_emp = $db->db_fetch_array($query_emp);
-                                   $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
+                  <table width="100%" id="table1" class="table table-bordered table-striped table-hover ">
+                    <thead>
+                      <tr>
+                        <th>ลำดับ</th>
+                        <th align="center">เลขที่ใบสั่งซื้อ</th>
+                        <th align="center">ชื่อ/บริษัทคู่ค้า</th>
+                        <th align="center">ผู้สั่งซื้อ</th>
+                        <th align="center">วันที่สั่งซื้อ</th>
+                        <th align="center">สถานะ</th>
+                        <th width="10%"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if($nums>0){
+                        $i=0;
+                        while ($rec = $db->db_fetch_array($query)) {
+                         $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
+                         $query_emp = $db->query($sql_emp);
+                         $rec_emp = $db->db_fetch_array($query_emp);
+                         $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                                   $del = '';
-                                   if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
-                                      $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO(\''.$rec["poID"].'\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
-                                  }
-                                  $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
-                                  ?>
-                                  <tr>
-                                      <td align="center"><?php echo ++$i; ?></td>
-                                      <td><?php echo $rec['poID']; ?></td>
-                                      <td><?php echo get_sup_name($rec['supID']); ?></td>
-                                      <td><?php echo $empname; ?></td>
-                                      <td><?php echo conv_date($rec['poDate']); ?></td>
-                                      <td><?php echo $arr_po_status[$rec['poStatus']]; ?></td>
-                                      <td align="center"><?php echo $info.$del; ?></td>
-                                  </tr>
-                              <?php }
-                          }else{
-                            echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                         $del = '';
+                         if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
+                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO(\''.$rec["poID"].'\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
                         }
+                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
                         ?>
-                    </tbody>
+                        <tr>
+                          <td align="center"><?php echo ++$i; ?></td>
+                          <td><?php echo $rec['poID']; ?></td>
+                          <td><?php echo get_sup_name($rec['supID']); ?></td>
+                          <td><?php echo $empname; ?></td>
+                          <td><?php echo conv_date($rec['poDate']); ?></td>
+                          <td><?php echo $arr_po_status[$rec['poStatus']]; ?></td>
+                          <td align="center"><?php echo $info.$del; ?></td>
+                        </tr>
+                      <?php }
+                    }else{
+                      echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                    }
+                    ?>
+                  </tbody>
                 </table>
                 <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
-            </div>
-        </form>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-</div>
-</div>
-<!-- #END# Basic Examples -->
+    <!-- #END# Basic Examples -->
 
-<div id="modal-load"></div>
+    <div id="modal-load"></div>
 
-</div>
+  </div>
 </section>
 
 <?php include 'js.php';?>
@@ -179,43 +231,55 @@ chk_role($page_key,'isSearch',1);
 </html>
 
 <script>
-    $(document).ready(function() {
-     $("#table1").DataTable({
-       "ordering": false,
+  $(document).ready(function() {
+   $("#table1").DataTable({
+     "ordering": false,
+     "searching": false,
    })
- });
-    function searchData(){
-        $('#frm-search').removeAttr('target');
-        $("#frm-search").submit();
+   if($("#ddl_search").val() == 1){
+    $('#bill').show();
+  }else if($("#ddl_search").val() == 2){
+   $('#sup').show();
+ }else if($("#ddl_search").val() == 3){
+   $('#user').show();
+ }else if($("#ddl_search").val() == 4){
+   $('#date').show();
+ }else if($("#ddl_search").val() == 5){
+   $('#status').show();
+ }
+});
+  function searchData(){
+    $('#frm-search').removeAttr('target');
+    $("#frm-search").submit();
+  }
+
+  function addData(){
+    $("#proc").val("add");
+    $('#frm-search').removeAttr('target');
+    $("#frm-search").attr("action","OrderInfo.php").submit();
+  }
+
+  function cancelPO(id){
+    debugger
+    if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
+      $("#proc").val("cancel");
+      $("#poID").val(id);
+      $('#frm-search').removeAttr('target');
+      $("#frm-search").attr("action","process/order_process.php").submit();
     }
+  }
 
-    function addData(){
-        $("#proc").val("add");
-        $('#frm-search').removeAttr('target');
-        $("#frm-search").attr("action","OrderInfo.php").submit();
-    }
+  function infoPO(id){
+    $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
+      console.log(data);
+      var html = "";
 
-    function cancelPO(id){
-        debugger
-        if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
-            $("#proc").val("cancel");
-            $("#poID").val(id);
-            $('#frm-search').removeAttr('target');
-            $("#frm-search").attr("action","process/order_process.php").submit();
-        }
-    }
+      html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
+      html += '<div class="modal-dialog modal-lg" role="document">';
+      html += '<div class="modal-content">';
 
-    function infoPO(id){
-        $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
-            console.log(data);
-            var html = "";
-
-            html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
-            html += '<div class="modal-dialog modal-lg" role="document">';
-            html += '<div class="modal-content">';
-
-            html += '<div class="modal-header">';
-            html += '<div class="row">';
+      html += '<div class="modal-header">';
+      html += '<div class="row">';
         // html += '<div class="col-sm-6">';
         // html += '<h1 class="modal-title" id="largeModalLabel">';
         // html += 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด <br/>';
@@ -350,40 +414,40 @@ chk_role($page_key,'isSearch',1);
         html += '<tbody>';
 
         if(data["po_desc"]){
-            for(var i = 0; i < data["po_desc"].length; i++ ){
-             html += '<tr>';
-             html += '<td align="center">'+(i+1)+'</td>';
-             html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
-             html += '<td>'+data["po_desc"][i].productName+'</td>';
-             html += '<td>'+data["po_desc"][i].brandName+'</td>';
-             html += '<td>'+data["po_desc"][i].modelName+'</td>';
-             html += '<td>'+data["po_desc"][i].productSize+'</td>';
-             html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
-             html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
-             html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
-             html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
-             html += '</tr>';
+          for(var i = 0; i < data["po_desc"].length; i++ ){
+           html += '<tr>';
+           html += '<td align="center">'+(i+1)+'</td>';
+           html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
+           html += '<td>'+data["po_desc"][i].productName+'</td>';
+           html += '<td>'+data["po_desc"][i].brandName+'</td>';
+           html += '<td>'+data["po_desc"][i].modelName+'</td>';
+           html += '<td>'+data["po_desc"][i].productSize+'</td>';
+           html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
+           html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
+           html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
+           html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
+           html += '</tr>';
          }
-     }
-     else {
+       }
+       else {
         html += '<tr>';
         html += '<td colspan="9" align="center">ไม่พบข้อมูล</td>';
         html += '</tr>';
-    }
+      }
 
-    html += '</tbody>';
+      html += '</tbody>';
 
-    html += '<tfoot>';
-    html += '<tr>';
-    html += '<td colspan="9" align="center">ราคาสุทธิ(รวมvat)</td>';
-    html += '<td align="right">'+addCommas(data["po_head"].total)+'</td>';
-    html += '</tr>';
-    html += '</tfoot>';
+      html += '<tfoot>';
+      html += '<tr>';
+      html += '<td colspan="9" align="center">ราคาสุทธิ(รวมvat)</td>';
+      html += '<td align="right">'+addCommas(data["po_head"].total)+'</td>';
+      html += '</tr>';
+      html += '</tfoot>';
 
-    html += '</table>';
+      html += '</table>';
 
-    if( data["po_head"].poStatus == 99)
-    {
+      if( data["po_head"].poStatus == 99)
+      {
         html += '<br>';
         html += '<br>';
         html += '<div class="row clearfix">';
@@ -399,32 +463,51 @@ chk_role($page_key,'isSearch',1);
         html += '<b>วันที่ยกเลิก</b>';
         html += '<div class="form-group" id="txt_candel_date">'+data["po_head"].cancelDate+'</div>';
         html += '</div>';
-    }
+      }
 
-    html += '</div>';
+      html += '</div>';
 
-    html += '<div class="modal-footer">';
-    html += '<div class="col-sm-12 text-center">';
-    html += '<a class="btn btn-default waves-effect" onclick="printPO(\''+id+'\');">พิมพ์</a>';
-    html += '<a class="btn btn-default waves-effect" data-dismiss="modal" >ปิด</a>';
-    html += '</div>';
-    html += '</div>';
+      html += '<div class="modal-footer">';
+      html += '<div class="col-sm-12 text-center">';
+      html += '<a class="btn btn-default waves-effect" onclick="printPO(\''+id+'\');">พิมพ์</a>';
+      html += '<a class="btn btn-default waves-effect" data-dismiss="modal" >ปิด</a>';
+      html += '</div>';
+      html += '</div>';
 
-    html += '</div>';
-    html += '</div>';
-    html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
 
-    $("#modal-load").html(html);
-    $("#frm-modal").modal('show');
+      $("#modal-load").html(html);
+      $("#frm-modal").modal('show');
 
-}, "json");
+    }, "json");
 }
 
 function printPO(id){
-    $('#poID').val(id);
-    $('#frm-search').attr('action','report/print_PO.php');
-    $('#frm-search').attr('target','_blank');
-    $('#frm-search').submit();
+  $('#poID').val(id);
+  $('#frm-search').attr('action','report/print_PO.php');
+  $('#frm-search').attr('target','_blank');
+  $('#frm-search').submit();
 }
+
+$("#ddl_search").change(function() {
+  $('#bill').hide();
+  $('#sup').hide();
+  $('#user').hide();
+  $('#date').hide();
+  $('#status').hide();
+  if($(this).val() == 1){
+    $('#bill').show();
+  }else if($(this).val() == 2){
+   $('#sup').show();
+ }else if($(this).val() == 3){
+   $('#user').show();
+ }else if($(this).val() == 4){
+   $('#date').show();
+ }else if($(this).val() == 5){
+   $('#status').show();
+ }
+});
 
 </script>

@@ -8,184 +8,220 @@ include 'css.php';
 
 $page_key ='5_1';
 
+//$filter = '';
+
+// if($s_receive_id){
+//  $filter .= " and receiveID like '%".$s_receive_id."%'";
+// }
+// if($s_po_id){
+//  $filter .= " and poID like '%".$s_po_id."%'";
+// }
+// if($s_receive_date){
+//  $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
+// }
+// if($s_receive_status){
+//  $filter .= " and receiveStatus = '".$s_receive_status."'";
+// }
+
 $filter = '';
-
-if($s_receive_id){
-   $filter .= " and receiveID like '%".$s_receive_id."%'";
+if($ddl_search == 1){
+  if($s_billNo != ""){
+    $filter .= " and receiveID  like '%".$s_billNo."%'";
 }
-if($s_po_id){
-   $filter .= " and poID like '%".$s_po_id."%'";
+}else if($ddl_search == 2){
+  if($s_userID != ""){
+     $filter .= " and create_by ='".$s_userID."'";
+ }
+}else if($ddl_search == 3){
+  if($date != ""){
+    $filter .= " and receiveDate  like '%".conv_date_db($date)."%'";
 }
-if($s_receive_date){
-   $filter .= " and receiveDate = '".conv_date_db($s_receive_date)."'";
-}
-if($s_receive_status){
-   $filter .= " and receiveStatus = '".$s_receive_status."'";
-}
+ }//else if($ddl_search == 4){
+//   if($status != ""){
+//    $filter .= " and receiveStatus = '".$status."'";
+//  }
+// }
 
-$field = "* ";
-$table = "tb_receive";
-$pk_id = "receiveID";
-$wh = "1=1  {$filter}";
-$orderby = "order by receiveID DESC";
-$limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
-$query = $db->query($sql);
-$nums = $db->db_num_rows($query);
-$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
-chk_role($page_key,'isSearch',1);
-?>
+    $field = "* ";
+    $table = "tb_receive";
+    $pk_id = "receiveID";
+    $wh = "1=1  {$filter}";
+    $orderby = "order by receiveID DESC";
+    $limit =" LIMIT ".$goto ." , ".$page_size ;
+    $sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby;
 
-<body class="theme-red">
-    <?php include 'MasterPage.php';?>
+    $query = $db->query($sql);
+    $nums = $db->db_num_rows($query);
+    $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+    chk_role($page_key,'isSearch',1);
+    ?>
 
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Basic Examples -->
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2>รายการรับเข้าสินค้า</h2>
-                        </div>
-                        <div class="body table-responsive">
-                            <form id="frm-search" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
-                                <input type="hidden" id="proc" name="proc" value="">
-                                <input type="hidden" id="form_page" name="form_page" value="ReceiveList.php">
-                                <input type="hidden" id="receiveID" name="receiveID" value="">
-                                <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
-                                <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+    <body class="theme-red">
+        <?php include 'MasterPage.php';?>
 
-                                <!-- <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                         <div class="form-group">
-                                          <b>เลขที่ใบรับสินค้า </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_receive_id" id="s_receive_id" class="form-control" placeholder="เลขที่ใบรับสินค้า" value="<?php echo $s_receive_id;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                         <div class="form-group">
-                                          <b>เลขที่ใบสั่งซื้อ </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_po_id" id="s_po_id" class="form-control" placeholder="เลขที่ใบสั่งซื้อ" value="<?php echo $s_po_id;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <b>ชื่อคู่ค้า/บริษัท </b>
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Basic Examples -->
+                <div class="row clearfix">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="card">
+                            <div class="header">
+                                <h2>รายการรับเข้าสินค้า</h2>
+                            </div>
+                            <div class="body table-responsive">
+                                <form id="frm-search" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                    <input type="hidden" id="proc" name="proc" value="">
+                                    <input type="hidden" id="form_page" name="form_page" value="ReceiveList.php">
+                                    <input type="hidden" id="receiveID" name="receiveID" value="">
+                                    <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
+                                    <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-5">
+                                          <div class="form-group">
                                             <div class="form-group form-float">
-                                              <select name="s_sup_id" id="s_sup_id" class="form-control show-tick" data-live-search="true">
-                                                  <option value="">เลือก</option>
-                                              <?php
-                                                  $sql_sup=" SELECT * from tb_supplier order by sup_name asc";
-                                                  $query_sup = $db->query($sql_sup);
-                                                  while($rec_sup = $db->db_fetch_array($query_sup)){?>
-                                                  <option value="<?php echo $rec_sup['supID'];?>"  <?php echo ($s_sup_id==$rec_sup['supID'])?"selected":"";?>> <?php echo $rec_sup['sup_name'];?></option>
-                                              <?php }  ?>
-                                              </select>
-                                            </div>
+                                              <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                                                <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                                                <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>เลขที่ใบรับเข้า</option>
+                                                <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ผู้รับ</option>
+                                                <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>วันที่รับเข้า</option>
+                                                <!-- <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>สถานะ</option> -->
+                                            </select>
                                         </div>
-                                    </div>
+                                    </div>                     
                                 </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                         <b>วันที่เอกสาร </b>
-                                        <div class="input-group">
-                                            <div class="form-line">
-                                                <input type="text" class="form-control datepicker" name="s_receive_date" id="s_receive_date" placeholder="DD/MM/YYYY" value="<?php echo $s_receive_date;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <b>สถานะ </b>
-                                            <div class="form-group form-float">
-                                                <select name="s_receive_status" id="s_receive_status" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID',2);">
-                                                    <option value="">เลือก</option>
-                                                    <option value="1" <?php echo ($s_receive_status == 1)? "selected" : ""; ?>>รับสินค้าแล้ว</option>
-                                                    <option value="99" <?php echo ($s_receive_status == 99)? "selected" : ""; ?>>ยกเลิก</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="col-sm-5" id="bill" style="display: none;">
+                                  <div class="form-group">
+                                    <div class="form-line">
+                                      <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบเบิก" value="<?php echo $s_billNo;?>">
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-sm-5" id="user" style="display: none;">
+                              <div class="form-group">
+                                <div class="form-group form-float">
+                                  <select name="s_userID" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                                    <option value="">เลือก</option>
+                                    <?php
+                                    $s_p=" SELECT * from tb_user order by firstname asc";
+                                    $q_p = $db->query($s_p);
+                                    $n_p = $db->db_num_rows($q_p);
+                                    while($r_p = $db->db_fetch_array($q_p)){?>
+                                      <option value="<?php echo $r_p['userID'];?>"<?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
 
-                                <div class="icon-and-text-button-demo align-center">
-                                    <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                </div> -->
-
-                                <div class="icon-and-text-button-demo align-right">
-                                    <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
-                                </div>
-                                <div class="">
-                                    <table id="table1" width="100%" class="table table-bordered table-striped table-hover ">
-                                        <thead>
-                                            <tr>
-                                                <th>ลำดับ</th>
-                                                <th align="center">เลขที่ใบรับสินค้า</th>
-                                                <th align="center">เลขที่ใบสั่งซื้อ</th>
-                                                <th align="center">ผู้รับเข้า</th>
-                                                <th align="center">วันที่ทำรายการ</th>
-                                                <th align="center">สถานะ</th>
-                                                <th width="10%"></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            if($nums>0){
-                                                $i=0;
-                                                while ($rec = $db->db_fetch_array($query)) {
-                                                    $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
-                                                    $query_emp = $db->query($sql_emp);
-                                                    $rec_emp = $db->db_fetch_array($query_emp);
-                                                    $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
-                                                //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                                                    $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoReceive(\''.$rec["receiveID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
-                                                    ?>
-                                                    <tr>
-                                                        <td align="center"><?php echo ++$i; ?></td>
-                                                        <td><?php echo $rec['receiveID']; ?></td>
-                                                        <td><?php echo $rec['poID']; ?></td>
-                                                        <td><?php echo $empname; ?></td>
-                                                        <td><?php echo conv_date($rec['receiveDate']); ?></td>
-                                                        <td><?php echo $arr_receive_status[$rec['receiveStatus']]; ?></td>
-                                                        <td align="center"><?php echo $info; ?></td>
-                                                    </tr>
-                                                <?php }
-                                            }else{
-                                                echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                    <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- #END# Basic Examples -->
-
-            <div id="modal-load"></div>
-
+                                  <?php }  ?>
+                              </select>
+                          </div>
+                      </div>                     
+                  </div>
+                  <div class="col-md-5" id="date" style="display: none;">
+                      <div class="form-group">
+                        <div class="form-line">
+                          <input type="text" class="form-control datepicker" placeholder="DD/MM/YYYY  " name="date" id="date" value="<?php echo $date;?>">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-5" id="status" style="display: none;">
+                  <div class="form-group">
+                    <div class="form-group form-float">
+                      <select name="status" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                        <option value="">เลือก</option>
+                        <?php
+                        foreach ($arr_bill_status as $key => $value) { ?>
+                          <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                      <?php } ?>
+                  </select>
+              </div>
+          </div>                     
+      </div>
+      <div class="col-sm-2">
+          <div class="icon-and-text-button-demo align-center">
+            <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
         </div>
-    </section>
+    </div> 
+</div>
 
-    <?php include 'js.php';?>
+<div class="icon-and-text-button-demo align-right">
+    <button type="button" style="<?php echo chk_role($page_key,'isAdd'); ?>" class="btn btn-primary waves-effect" onclick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
+</div>
+<div class="">
+    <table id="table1" width="100%" class="table table-bordered table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>ลำดับ</th>
+                <th align="center">เลขที่ใบรับสินค้า</th>
+                <th align="center">เลขที่ใบสั่งซื้อ</th>
+                <th align="center">ผู้รับเข้า</th>
+                <th align="center">วันที่ทำรายการ</th>
+                <th align="center">สถานะ</th>
+                <th width="10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if($nums>0){
+                $i=0;
+                while ($rec = $db->db_fetch_array($query)) {
+                    $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
+                    $query_emp = $db->query($sql_emp);
+                    $rec_emp = $db->db_fetch_array($query_emp);
+                    $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
+                                                //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
+                    $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoReceive(\''.$rec["receiveID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
+                    ?>
+                    <tr>
+                        <td align="center"><?php echo ++$i; ?></td>
+                        <td><?php echo $rec['receiveID']; ?></td>
+                        <td><?php echo $rec['poID']; ?></td>
+                        <td><?php echo $empname; ?></td>
+                        <td><?php echo conv_date($rec['receiveDate']); ?></td>
+                        <td><?php echo $arr_receive_status[$rec['receiveStatus']]; ?></td>
+                        <td align="center"><?php echo $info; ?></td>
+                    </tr>
+                <?php }
+            }else{
+                echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+            }
+            ?>
+        </tbody>
+    </table>
+    <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<!-- #END# Basic Examples -->
+
+<div id="modal-load"></div>
+
+</div>
+</section>
+
+<?php include 'js.php';?>
 </body>
 
 </html>
 
 <script>
   $(document).ready(function() {
-   $("#table1").DataTable({
-     "ordering": false,
- })
+     $("#table1").DataTable({
+       "ordering": false,
+       "searching": false,
+   })
+     debugger
+     if($("#ddl_search").val() == 1){
+        $('#bill').show();
+    }else if($("#ddl_search").val() == 2){
+       $('#user').show();
+   }else if($("#ddl_search").val() == 3){
+       $('#date').show();
+   }
+// else if($("#ddl_search").val() == 4){
+//  $('#status').show();
+// }
 });
   function searchData(){
     $('#frm-search').removeAttr('target');
@@ -316,20 +352,20 @@ function infoReceive(id){
 
             if(data["receive_desc"]){
                 for(var i = 0; i < data["receive_desc"].length; i++ ){
-                 html += '<tr>';
-                 html += '<td align="center">'+(i+1)+'</td>';
-                 html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
-                 html += '<td>'+data["receive_desc"][i].productName+'</td>';
-                 html += '<td>'+data["receive_desc"][i].brandName+'</td>';
-                 html += '<td>'+data["receive_desc"][i].modelName+'</td>';
-                 html += '<td>'+data["receive_desc"][i].productSize+'</td>';
-                 html += '<td align="right">'+addCommas(data["receive_desc"][i].qty)+'</td>';
-                 html += '<td align="right">'+addCommas(data["receive_desc"][i].receive_qty)+'</td>';
-                 html += '<td>'+data["receive_desc"][i].location+'</td>';
-                 html += '</tr>';
-             }
-         }
-         else {
+                   html += '<tr>';
+                   html += '<td align="center">'+(i+1)+'</td>';
+                   html += '<td align="center">'+data["receive_desc"][i].productCode+'</td>';
+                   html += '<td>'+data["receive_desc"][i].productName+'</td>';
+                   html += '<td>'+data["receive_desc"][i].brandName+'</td>';
+                   html += '<td>'+data["receive_desc"][i].modelName+'</td>';
+                   html += '<td>'+data["receive_desc"][i].productSize+'</td>';
+                   html += '<td align="right">'+addCommas(data["receive_desc"][i].qty)+'</td>';
+                   html += '<td align="right">'+addCommas(data["receive_desc"][i].receive_qty)+'</td>';
+                   html += '<td>'+data["receive_desc"][i].location+'</td>';
+                   html += '</tr>';
+               }
+           }
+           else {
             html += '<tr>';
             html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
             html += '</tr>';
@@ -370,5 +406,22 @@ function printReceive(id){
     $('#frm-search').attr('target','_blank');
     $('#frm-search').submit();
 }
+
+$("#ddl_search").change(function() {
+  $('#bill').hide();
+  $('#user').hide();
+  $('#date').hide();
+  $('#status').hide();
+  if($(this).val() == 1){
+    $('#bill').show();
+}else if($(this).val() == 2){
+   $('#user').show();
+}else if($(this).val() == 3){
+   $('#date').show();
+}
+// else if($(this).val() == 4){
+//  $('#status').show();
+// }
+});
 
 </script>

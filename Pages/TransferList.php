@@ -16,16 +16,28 @@ $nums = $db->db_num_rows($query); */
 
 
 $filter = '';
-if($s_billNo){
-  $filter .= " and billNo  like '%".$s_billNo."%'";
+if($ddl_search == 1){
+  if($s_billNo != ""){
+    $filter .= " and billNo  like '%".$s_billNo."%'";
+  }
+}else if($ddl_search == 2){
+  if($s_userID != ""){
+   $filter .= " and create_by ='".$s_userID."'";
+ }
+}else if($ddl_search == 3){
+  if($date != ""){
+    $filter .= " and billDate  like '%".conv_date_db($date)."%'";
+  }
+}else if($ddl_search == 4){
+  if($status != ""){
+   $filter .= " and billStstus = '".$status."'";
+ }
 }
 
 // if($_SESSION["userType"]==2){
 //  $filter .= " and userID  = '".$_SESSION['sys_id']."'";
 // }
-if($s_userID){
- $filter .= " and userID ='".$s_userID."'";
-}
+
 
 
 $field = "* ";
@@ -57,96 +69,127 @@ chk_role($page_key,'isSearch',1) ;
             <h2>รายการเบิกสินค้า</h2>
           </div>
           <div class="body">
+
             <form id="frm-search" method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
               <input type="hidden" id="proc" name="proc" value="">
               <input type="hidden" id="form_page" name="form_page" value="TransferList.php">
               <input type="hidden" id="billID" name="billID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+              
+              <div class="row clearfix">
+                <div class="col-sm-5">
+                  <div class="form-group">
+                    <div class="form-group form-float">
+                      <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+                        <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>เลขที่ใบเบิกสินค้า</option>
+                        <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ผู้เบิก</option>
+                        <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>วันที่เบิก</option>
+                        <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>สถานะ</option>
+                      </select>
+                    </div>
+                  </div>                     
+                </div>
+                <div class="col-sm-5" id="bill" style="display: none;">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบเบิก" value="<?php echo $s_billNo;?>">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5" id="user" style="display: none;">
+                  <div class="form-group">
+                    <div class="form-group form-float">
+                      <select name="s_userID" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                        <option value="">เลือก</option>
+                        <?php
+                        $s_p=" SELECT * from tb_user order by firstname asc";
+                        $q_p = $db->query($s_p);
+                        $n_p = $db->db_num_rows($q_p);
+                        while($r_p = $db->db_fetch_array($q_p)){?>
+                          <option value="<?php echo $r_p['userID'];?>"<?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
 
+                        <?php }  ?>
+                      </select>
+                    </div>
+                  </div>                     
+                </div>
+                <div class="col-md-5" id="date" style="display: none;">
+                  <div class="form-group">
+                    <div class="form-line">
+                      <input type="text" class="form-control datepicker" placeholder="DD/MM/YYYY  " name="date" id="date" value="<?php echo $date;?>">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5" id="status" style="display: none;">
+                  <div class="form-group">
+                    <div class="form-group form-float">
+                      <select name="status" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                        <option value="">เลือก</option>
+                        <?php
+                        foreach ($arr_bill_status as $key => $value) { ?>
+                          <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
+                  </div>                     
+                </div>
+                <div class="col-sm-2">
+                  <div class="icon-and-text-button-demo align-center">
+                    <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                  </div>
+                </div> 
+              </div>
 
-                                <!-- <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                          <b>เลขที่ใบเบิก </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบเบิก" value="<?php echo $s_billNo;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
+              <div class="icon-and-text-button-demo align-right">
+                <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
+              </div>
+              <div>
+                <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
+                  <thead>
+                    <tr>
+                      <th>ลำดับ</th>
+                      <th align="center">เลขที่ใบเบิกสินค้า</th>
+                      <th align="center">ผู้เบิก</th>
+                      <th align="center">วันที่ทำรายการ</th>
+                      <th align="center">สถานะ</th>
+                      <th width="10%"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+                    if($nums>0){
+                      $i=0;
+                      while ($rec = $db->db_fetch_array($query)) {
+                        $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
+                        $query_emp = $db->query($sql_emp);
+                        $rec_emp = $db->db_fetch_array($query_emp);
+                        $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
 
-                                      <div class="form-group">
-                                        <b>ผู้เบิก</b>
-                                        <div class="form-group form-float">
-                                            <select name="s_userID" id="s_userID" class="form-control show-tick" data-live-search="true"  >
-                                                <option value="">เลือก</option>
-                                            <?php
-                                                $s_p=" SELECT * from tb_user order by firstname asc";
-                                                $q_p = $db->query($s_p);
-                                                $n_p = $db->db_num_rows($q_p);
-                                               while($r_p = $db->db_fetch_array($q_p)){?>
-                                                <option value="<?php echo $r_p['userID'];?>"  <?php echo ($s_userID==$r_p['userID'])?"selected":"";?>> <?php echo $r_p['firstname'].' '.$r_p['lastname'];?></option>
+                        $i++;
+                        $del = '';
+                        if($rec[billStstus]==1  && $_SESSION['userType']==1){
+                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cencelData('.$rec['billID'].');"  title="ยกเลิก" >'.$img_cancel.'</a>';
+                        }
+                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['billID'].');" title="รายละเอียด">'.$img_info.'</a>'; 
 
-                                            <?php }  ?>
-                                            </select>
-                                        </div>
-                                      </div>
-                      
-                                    </div>
-                                </div>
+                        ?> 
 
-                                 <div class="icon-and-text-button-demo align-center">
-                                    <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                  </div> -->
-                                  <div class="icon-and-text-button-demo align-right">
-                                    <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
-                                  </div>
-                                  <div>
-                                    <table id="table1" class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
-                                      <thead>
-                                        <tr>
-                                          <th>ลำดับ</th>
-                                          <th align="center">เลขที่ใบเบิกสินค้า</th>
-                                          <th align="center">ผู้เบิก</th>
-                                          <th align="center">วันที่ทำรายการ</th>
-                                          <th align="center">สถานะ</th>
-                                          <th width="10%"></th>
-                                        </tr>
-                                      </thead>
-                                      <tbody>
-                                        <?php
-                                        if($nums>0){
-                                          $i=0;
-                                          while ($rec = $db->db_fetch_array($query)) {
-                                            $sql_emp = "SELECT * FROM tb_user WHERE userID = '".$rec["create_by"]."' ";
-                                            $query_emp = $db->query($sql_emp);
-                                            $rec_emp = $db->db_fetch_array($query_emp);
-                                            $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
-
-                                            $i++;
-                                            $del = '';
-                                            if($rec[billStstus]==1  && $_SESSION['userType']==1){
-                                              $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cencelData('.$rec['billID'].');"  title="ยกเลิก" >'.$img_cancel.'</a>';
-                                            }
-                                            $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['billID'].');" title="รายละเอียด">'.$img_info.'</a>'; 
-
-                                            ?> 
-                                            
-                                            <tr>
-                                              <td align="center"><?php echo $i+$goto;?></td>
-                                              <td><?php echo $rec['billNo'];?></td>
-                                              <td><?php echo $empname;?></td>
-                                              <td><?php echo conv_date($rec['billDate']);?></td>
-                                              <td><?php echo $arr_bill_status[$rec['billStstus']];?></td>
-                                              <td align="center"><?php echo $info.$del;?>
-                                              <input type="hidden" id="no_status_<?php echo $rec['billID'];?>" value="<?php echo $rec['billStstus'];?>" >
-                                              <input type="hidden" id="show_no_<?php echo $rec['billID'];?>" value="<?php echo $rec['billNo'];?>" >
-                                              <input type="hidden" id="show_name_<?php echo $rec['billID'];?>" value="<?php echo $empname;?>" >
-                                              <input type="hidden" id="show_date_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['billDate']);?>" >
-                                              <input type="hidden" id="show_status_<?php echo $rec['billID'];?>" value="<?php echo $arr_bill_status[$rec['billStstus']];?>" >
-                                              <input type="hidden" id="show_cancelname_<?php echo $rec['billID'];?>" value="<?php echo $rec['cancelBy'];?>" >
-                                              <input type="hidden" id="show_canceldate_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['cancelDate']);?>" >
+                        <tr>
+                          <td align="center"><?php echo $i+$goto;?></td>
+                          <td><?php echo $rec['billNo'];?></td>
+                          <td><?php echo $empname;?></td>
+                          <td><?php echo conv_date($rec['billDate']);?></td>
+                          <td><?php echo $arr_bill_status[$rec['billStstus']];?></td>
+                          <td align="center"><?php echo $info.$del;?>
+                          <input type="hidden" id="no_status_<?php echo $rec['billID'];?>" value="<?php echo $rec['billStstus'];?>" >
+                          <input type="hidden" id="show_no_<?php echo $rec['billID'];?>" value="<?php echo $rec['billNo'];?>" >
+                          <input type="hidden" id="show_name_<?php echo $rec['billID'];?>" value="<?php echo $empname;?>" >
+                          <input type="hidden" id="show_date_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['billDate']);?>" >
+                          <input type="hidden" id="show_status_<?php echo $rec['billID'];?>" value="<?php echo $arr_bill_status[$rec['billStstus']];?>" >
+                          <input type="hidden" id="show_cancelname_<?php echo $rec['billID'];?>" value="<?php echo $rec['cancelBy'];?>" >
+                          <input type="hidden" id="show_canceldate_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['cancelDate']);?>" >
 
 
                                                          <!--  <span  data-toggle="modal" data-target="#largeModal">
@@ -210,7 +253,7 @@ $rec_sup = $db->db_fetch_array($query_sup); */
    </div>
    <div class="modal-body">
 
-     
+
      <div class="form-group">
       <div class="row">
         <div class="col-sm-12" style="border:1px dotted #ccc!important;border-radius: 10px;">
@@ -294,13 +337,24 @@ $rec_sup = $db->db_fetch_array($query_sup); */
                   $(document).ready(function() {
                    $("#table1").DataTable({
                      "ordering": false,
+                     "searching": false,
                    })
-                 });
+                   
+                   if($("#ddl_search").val() == 1){
+                    $('#bill').show();
+                  }else if($("#ddl_search").val() == 2){
+                   $('#user').show();
+                 }else if($("#ddl_search").val() == 3){
+                   $('#date').show();
+                 }else if($("#ddl_search").val() == 4){
+                   $('#status').show();
+                 }
+               });
                   function searchData(){
                     $("#frm-search").submit();
                   }
                   function infoData(id){
-                    
+
                     var no_status = $('#no_status_'+id).val();
                     
                     if(no_status == 1){
@@ -363,5 +417,19 @@ $rec_sup = $db->db_fetch_array($query_sup); */
                    $('#frm-search').submit();
                  }
 
-
-               </script>
+                 $("#ddl_search").change(function() {
+                  $('#bill').hide();
+                  $('#user').hide();
+                  $('#date').hide();
+                  $('#status').hide();
+                  if($(this).val() == 1){
+                    $('#bill').show();
+                  }else if($(this).val() == 2){
+                   $('#user').show();
+                 }else if($(this).val() == 3){
+                   $('#date').show();
+                 }else if($(this).val() == 4){
+                   $('#status').show();
+                 }
+               });
+             </script>

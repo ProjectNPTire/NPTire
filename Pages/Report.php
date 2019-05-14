@@ -262,7 +262,7 @@ if($S_REPORT_TYPE!=""){
     $('#frm-search').submit();
   }
   function searchData(){
-    debugger
+    //debugger
     // if ($('#s_date').val() == "") {
     //   $('#s_date-error').show();
     //   return false;
