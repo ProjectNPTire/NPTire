@@ -20,11 +20,7 @@ switch($proc){
 			"locationCode"=>$locationCode,
 			"locationName"=>$locationName,
 			"name_nospace"=>str_replace(" ","",$locationName),
-			"productTypeID"=>$hdfproductTypeID,
-			"brandID"=>$hdfbrandID,
-			"width"=>$width,
-			"high"=>$high,
-			"locationTypeID"=>$locationTypeID,
+			"locationTypeID"=>$hdflocationTypeID,
 			"isEnabled"=>$hdfstatus,
 		);
 				//print_pre($fields);
@@ -44,11 +40,7 @@ switch($proc){
 			"locationCode"=>$locationCode,
 			"locationName"=>$locationName,
 			"name_nospace"=>str_replace(" ","",$locationName),
-			"productTypeID"=>$hdfproductTypeID,
-			"brandID"=>$hdfbrandID,
-			"width"=>$width,
-			"high"=>$high,
-			"locationTypeID"=>$locationTypeID,
+			"locationTypeID"=>$hdflocationTypeID,
 			"isEnabled"=>$hdfstatus,
 		);
 

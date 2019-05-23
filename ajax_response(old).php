@@ -43,44 +43,30 @@ function getProduct($code, $name, $supID){
     if($name)
         $filter .= " AND productName like '%".$name."%' ";
 
-    $sql = "SELECT tb_product.* FROM tb_productsupplier
+    if(!$code && !$name) $sql = "SELECT * FROM tb_productsupplier
     join tb_product on tb_productsupplier.productID = tb_product.productID
-    WHERE isDeleted = 0 and tb_product.isEnabled = 1
+    join tb_brand on tb_brand.brandID = tb_product.brandID WHERE tb_productsupplier.supID = '".$supID."'
+    and isDeleted = 0 and tb_product.isEnabled = 1 ";
+    else $sql = "SELECT * FROM tb_productsupplier
+    join tb_product on tb_productsupplier.productID = tb_product.productID
+    join tb_brand on tb_brand.brandID = tb_product.brandID WHERE isDeleted = 0 and tb_product.isEnabled = 1
     and tb_productsupplier.supID = '".$supID."' ".$filter;
-
-    
+    //alert($sql);
     $query = $db->query($sql);
     while($rec = $db->db_fetch_array($query)){
-
-        $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-        FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-        WHERE productID = '".$rec["productID"]."'";
-        $query_attr = $db->query($sql_attr);
-        $nums_attr = $db->db_num_rows($query_attr);
-
-        $attr = '';
-
-        if($nums_attr > 0){
-            while($rec_attr = $db->db_fetch_array($query_attr))
-            {
-                $attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
-            }
-        }else{
-            $attr = '-';
-        }
-
-
         $arr[] = array(
             "productID" => $rec["productID"],
-            "productCode" => $rec["productCode"],
             "productName" => $rec["productName"],
-            "productTypeName" => get_productType_name($rec["productTypeID"]),
-            "brandName" => get_brand_name($rec["brandID"]),
+            "brandID" => $rec["brandID"],
+            "modelName" => $rec["modelName"] != '' ? $rec["modelName"] : '-',
+            "productSize" => $rec["productSize"] != '' ? $rec["productSize"] : '-',
             "productDetail" => $rec["productDetail"],
+            "productCode" => $rec["productCode"],
             "unitType" => $rec["unitType"],
             "productUnit" => $rec["productUnit"],
+            "productCode" => $rec["productCode"],
+            "brandName" => $rec["brandName"],
             "orderPoint" => $rec["orderPoint"],
-            "attr" => $attr,
         );
     }
 
@@ -172,8 +158,7 @@ function getPOInfo($id){
     while($rec_pd = $db->db_fetch_array($query_pd))
     {
 
-        $sql_product = "SELECT * FROM  tb_product
-        WHERE productID = '".$rec_pd["productID"]."' ";
+        $sql_product = "SELECT * FROM tb_product WHERE productID = '".$rec_pd["productID"]."' ";
         $query_product = $db->query($sql_product);
         $rec_product = $db->db_fetch_array($query_product);
 
@@ -181,22 +166,7 @@ function getPOInfo($id){
         $query_cnt_received = $db->query($sql_cnt_received);
         $rec_cnt_received = $db->db_fetch_array($query_cnt_received);
 
-        $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-        FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-        WHERE productID = '".$rec_pd["productID"]."'";
-        $query_attr = $db->query($sql_attr);
-        $nums_attr = $db->db_num_rows($query_attr);
-
-        $attr = '';
-
-        if($nums_attr > 0){
-            while($rec_attr = $db->db_fetch_array($query_attr))
-            {
-                $attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
-            }
-        }else{
-            $attr = '-';
-        }
+        $locationTypeID = $rec_product["locationTypeID"];
 
         $arr_desc[] = array(
             "productID"=>$rec_pd['productID'],
@@ -206,39 +176,41 @@ function getPOInfo($id){
             "brandID"=>$rec_product['brandID'],
             "productTypeName"=>get_productType_name($rec_product['productTypeID']),
             "brandName"=>get_brand_name($rec_product['brandID']),
+            "modelName" => $rec_product["modelName"] != '' ? $rec_product["modelName"] : '-',
+            "productSize" => $rec_product["productSize"] != '' ? $rec_product["productSize"] : '-',
+            // "productUnit"=>$rec_product['productUnit'],
+            // "productSize"=>$rec_product['productSize'],
             "price"=>$rec_pd['price'],
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],
             "received_qty"=>$rec_cnt_received['received_qty'] != '' ? $rec_cnt_received['received_qty'] : '0',
-            "locationTypeName" => get_locationType_name($rec_product['locationTypeID']),
-            "attr" => $attr,
-            "unitType"=>$arr_unitType[$rec_product['unitType']],
+            "locationTypeID" => $locationTypeID,
             "tempID" => $i,
         );
-        $locationTypeID = $rec_product["locationTypeID"];
-        $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID IN ('".$rec_pd["productID"]."',0)";     
+        if ($locationTypeID == 1) {
+            $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' and brandID = '".$rec_product["brandID"]."' ";
+        }else if ($locationTypeID == 2) {
+            $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' and productTypeID = '".$rec_product["productTypeID"]."' ";
+        }
+        
         $query_location = $db->query($sql_location);
-        $nums_location = $db->db_num_rows($query_location);
-        if ($nums_location > 0) {
-            while($rec_location = $db->db_fetch_array($query_location)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
-                );
-            }
-        }else{
-            $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID = 0";
-            $query_location = $db->query($sql_location);
-            while($rec_location = $db->db_fetch_array($query_location)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
-                );
-            }
+        while($rec_location = $db->db_fetch_array($query_location)){
+            $sqllocation = "select SUM(ps_unit) as total
+            from tb_productstore a
+            join tb_location b on a.locationID = b.locationID
+            where a.locationID = '".$rec_location['locationID']."'
+            GROUP BY a.locationID";
+            $querylocation = $db->query($sqllocation);
+            $reclocation = $db->db_fetch_array($querylocation);
+
+            $arr_location[] = array(
+                "locationID"=>$rec_location['locationID'],
+                "locationName"=>$rec_location['locationName'],
+                "locationTypeID"=>$rec_location['locationTypeID'],
+                "locationQty"=>$rec_location['width']*$rec_location['high'],
+                "total"=>$reclocation['total'] != null ? $reclocation['total'] : '0',
+                "tempID" => $i,
+            );
         }
         $i++;
     }
@@ -293,32 +265,13 @@ function getReceiveInfo($id){
     $query_pd = $db->query($sql_pd);
     while($rec_pd = $db->db_fetch_array($query_pd))
     {
-        $sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName FROM  tb_product JOIN
-        tb_locationtype ON tb_product.locationTypeID = tb_locationtype.locationTypeID JOIN
-        tb_location ON tb_product.locationID = tb_location.locationID
-        WHERE productID = '".$rec_pd["productID"]."' ";
+        $sql_product = "SELECT * FROM tb_product WHERE productID = '".$rec_pd["productID"]."' ";
         $query_product = $db->query($sql_product);
         $rec_product = $db->db_fetch_array($query_product);
 
         $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE productID = '".$rec_pd["productID"]."' AND receiveID = '".$id."' ";
         $query_receive_desc = $db->query($sql_receive_desc);
         $rec_receive_desc = $db->db_fetch_array($query_receive_desc);
-
-        $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-        FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
-        JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-        WHERE tb_productattr.productID = '".$rec_pd["productID"]."'";
-        $query_attr = $db->query($sql_attr);
-        $nums_attr = $db->db_num_rows($query_attr);
-
-        if($nums_attr > 0){
-            while($rec_attr = $db->db_fetch_array($query_attr))
-            {
-                $attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
-            }
-        }else{
-            $attr = '-';
-        }
 
         $arr_desc[] = array(
             "productID"=>$rec_pd['productID'],
@@ -332,9 +285,7 @@ function getReceiveInfo($id){
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],
             "receive_qty"=>$rec_receive_desc['qty'],
-            "locationTypeName" => $rec_product['locationTypeName'],
-            "locationName" => $rec_product['locationName'],
-            "attr" => $attr,
+            "location"=>get_location_name($rec_receive_desc['locationID'])
         );
     }
 

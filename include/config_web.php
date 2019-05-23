@@ -59,7 +59,7 @@ $img_edit='<i class="material-icons">edit</i>';
 $img_del='<i class="material-icons">delete_forever</i>';
 $img_cancel='<i class="material-icons">cancel</i>';
 $img_upload="<i class=\"fas fa-upload\"></i>";
-$img_download="<i class=\"fas fa-download\"></i>";
+$img_download="<i class=\"material-icons\">file_download</i>";
 $img_save="<i class=\"icon-save\"></i>";
 $img_send="<i class=\"fas fa-share-square\"></i>";
 $img_view = "<i class=\"material-icons\">search</i>";

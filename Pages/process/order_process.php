@@ -13,20 +13,20 @@ switch($proc){
 	case "add" :
 		try{
 
-            $po_ym = "PO-".date("ym");
+            // $po_ym = "PO-".date("ym");
 
-            $sql_po_no = "SELECT COUNT(*) AS poID FROM tb_po WHERE poID like '".$po_ym."%' ";
-            $query_po_no = $db->query($sql_po_no);
-            $rec_po_no = $db->db_fetch_array($query_po_no);
-            $run_no = sprintf("%03d", ($rec_po_no['poID']+1));
+            // $sql_po_no = "SELECT COUNT(*) AS poID FROM tb_po WHERE poID like '".$po_ym."%' ";
+            // $query_po_no = $db->query($sql_po_no);
+            // $rec_po_no = $db->db_fetch_array($query_po_no);
+            // $run_no = sprintf("%03d", ($rec_po_no['poID']+1));
 
-            $poID = $po_ym.$run_no;
+            // $poID = $po_ym.$run_no;
 
 			unset($fields);
 			$fields = array(
-				"poID"=>$poID,
-				"supID"=>$_POST['supID'],
-				"total"=>$_POST['total'],
+				"poID"=>$txt_po,
+				"supID"=>$supID,
+				"total"=>$total,
 				"poDate"=>date("Y-m-d"),
 				"create_by"=>$_SESSION["sys_id"],
 				"poStatus"=>1,
@@ -37,7 +37,7 @@ switch($proc){
             foreach ($_POST['productID'] as $key => $value) {
                 unset($fields);
                 $fields = array(
-                    "poID"=>$poID,
+                    "poID"=>$txt_po,
                     "productID"=>$_POST['productID'][$key],
                     "price"=>$_POST['price'][$key],
                     "qty"=>$_POST['qty'][$key],

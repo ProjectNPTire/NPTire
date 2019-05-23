@@ -98,7 +98,7 @@ chk_role($page_key,'isSearch',1);
                   <div class="col-sm-5" id="bill" style="display: none;">
                     <div class="form-group">
                       <div class="form-line">
-                        <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบเบิก" value="<?php echo $s_billNo;?>">
+                        <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="เลขที่ใบสั่งซื้อ" value="<?php echo $s_billNo;?>">
                       </div>
                     </div>
                   </div>
@@ -176,7 +176,7 @@ chk_role($page_key,'isSearch',1);
                         <th align="center">ผู้สั่งซื้อ</th>
                         <th align="center">วันที่สั่งซื้อ</th>
                         <th align="center">สถานะ</th>
-                        <th width="10%"></th>
+                        <th width="15%"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -189,11 +189,14 @@ chk_role($page_key,'isSearch',1);
                          $rec_emp = $db->db_fetch_array($query_emp);
                          $empname = $rec_emp["firstname"]." ".$rec_emp["lastname"];
                                                 //$del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="cancelPO(\''.$rec["poID"].'\');">ยกเลิกเอกสาร</a>';
-                         $del = '';
+                         $del = '';$received = '';
                          if($_SESSION['userType'] == 1 && ($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
-                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cancelPO(\''.$rec["poID"].'\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
+                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="infoPO(\''.$rec["poID"].'\',\'del\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
                         }
-                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\');" title="รายละเอียด">'.$img_info.'</a>';
+                        if(($rec['poStatus'] == 1 || $rec['poStatus'] == 2)){
+                          $received = ' <a style="'.chk_role('5_1','isAdd').'" class="btn btn-warning btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\',\'received\');" title="รับเข้า">'.$img_download.'</a>';
+                        }
+                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoPO(\''.$rec["poID"].'\',\'info\');" title="รายละเอียด">'.$img_info.'</a>';
                         ?>
                         <tr>
                           <td align="center"><?php echo ++$i; ?></td>
@@ -202,7 +205,7 @@ chk_role($page_key,'isSearch',1);
                           <td><?php echo $empname; ?></td>
                           <td><?php echo conv_date($rec['poDate']); ?></td>
                           <td><?php echo $arr_po_status[$rec['poStatus']]; ?></td>
-                          <td align="center"><?php echo $info.$del; ?></td>
+                          <td align="center"><?php echo $info.$received.$del; ?></td>
                         </tr>
                       <?php }
                     }else{
@@ -269,7 +272,8 @@ chk_role($page_key,'isSearch',1);
     }
   }
 
-  function infoPO(id){
+  function infoPO(id,type){
+    debugger
     $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
       console.log(data);
       var html = "";
@@ -396,19 +400,20 @@ chk_role($page_key,'isSearch',1);
 
 
         html += '<div class="modal-body">';
-        html += '<table class="table table-bordered" id="tb-search" style="font-size:14px">';
+        html += '<table class="table table-bordered table-hover" id="tb-search" style="font-size:14px">';
         html += '<thead>';
         html += '<tr>';
         html += '<th>ลำดับ</th>';
         html += '<th>รหัสสินค้า</th>';
-        html += '<th>ชื่อสินค้า</th>';
+        html += '<th width="15%">ชื่อสินค้า</th>';
+        html += '<th>ประเภท</th>';
         html += '<th>ยี่ห้อ</th>';
-        html += '<th>รุ่น</th>';
-        html += '<th>ขนาด</th>';
+        html += '<th width="15%" >คุณลักษณะ</th>';
         html += '<th>ราคา/หน่วย</th>';
         html += '<th>จำนวน</th>';
         html += '<th>รับแล้ว</th>';
         html += '<th>รวม</th>';
+        //html += '<th>หน่วยนับ</th>';
         html += '</tr>';
         html += '</thead>';
         html += '<tbody>';
@@ -417,21 +422,22 @@ chk_role($page_key,'isSearch',1);
           for(var i = 0; i < data["po_desc"].length; i++ ){
            html += '<tr>';
            html += '<td align="center">'+(i+1)+'</td>';
-           html += '<td align="center">'+data["po_desc"][i].productCode+'</td>';
+           html += '<td>'+data["po_desc"][i].productCode+'</td>';
            html += '<td>'+data["po_desc"][i].productName+'</td>';
+           html += '<td>'+data["po_desc"][i].productTypeName+'</td>';
            html += '<td>'+data["po_desc"][i].brandName+'</td>';
-           html += '<td>'+data["po_desc"][i].modelName+'</td>';
-           html += '<td>'+data["po_desc"][i].productSize+'</td>';
+           html += '<td>'+data["po_desc"][i].attr+'</td>';
            html += '<td align="right">'+addCommas(data["po_desc"][i].price)+'</td>';
            html += '<td align="right">'+data["po_desc"][i].qty+'</td>';
            html += '<td align="right">'+data["po_desc"][i].received_qty+'</td>';
            html += '<td align="right">'+addCommas(data["po_desc"][i].amount)+'</td>';
+           //html += '<td>'+data["po_desc"][i].unitType+'</td>';
            html += '</tr>';
          }
        }
        else {
         html += '<tr>';
-        html += '<td colspan="9" align="center">ไม่พบข้อมูล</td>';
+        html += '<td colspan="11" align="center">ไม่พบข้อมูล</td>';
         html += '</tr>';
       }
 
@@ -439,8 +445,8 @@ chk_role($page_key,'isSearch',1);
 
       html += '<tfoot>';
       html += '<tr>';
-      html += '<td colspan="9" align="center">ราคาสุทธิ(รวมvat)</td>';
-      html += '<td align="right">'+addCommas(data["po_head"].total)+'</td>';
+      html += '<td colspan="7" align="center">ราคาสุทธิ</td>';
+      html += '<td colspan="3" align="right">'+addCommas(data["po_head"].total)+' บาท</td>';
       html += '</tr>';
       html += '</tfoot>';
 
@@ -469,7 +475,13 @@ chk_role($page_key,'isSearch',1);
 
       html += '<div class="modal-footer">';
       html += '<div class="col-sm-12 text-center">';
-      html += '<a class="btn btn-default waves-effect" onclick="printPO(\''+id+'\');">พิมพ์</a>';
+      if (type == 'info') {
+        html += '<a class="btn btn-default waves-effect" onclick="printPO(\''+id+'\');">พิมพ์</a>';
+      }else if (type == 'del') {
+        html += '<a class="btn bg-red waves-effect" onclick="cancelPO(\''+id+'\');">ยกเลิกใบเสั่งซื้อ</a>';
+      }else if (type == 'received') {
+        html += '<a class="btn btn-default waves-effect" onclick="receivedPO(\''+id+'\');">รับเข้า</a>';
+      }
       html += '<a class="btn btn-default waves-effect" data-dismiss="modal" >ปิด</a>';
       html += '</div>';
       html += '</div>';
@@ -484,11 +496,19 @@ chk_role($page_key,'isSearch',1);
     }, "json");
 }
 
+
 function printPO(id){
   $('#poID').val(id);
   $('#frm-search').attr('action','report/print_PO.php');
   $('#frm-search').attr('target','_blank');
   $('#frm-search').submit();
+}
+
+function receivedPO(id){
+  $("#form_page").val("ReceiveList.php");
+  $("#proc").val("add");
+  $('#poID').val(id);
+  $("#frm-search").attr("action","ReceiveInfo.php").submit();
 }
 
 $("#ddl_search").change(function() {

@@ -81,16 +81,16 @@ $HTML = '';
 // $HTML .= '</tbody>';
 // $HTML .= '</table>';
 
-$HTML .= '<table width="90%" border="0">';
+$HTML .= '<table width="100%" border="0">';
 $HTML .= '<tbody>';
 $HTML .= '<tr>';
-$HTML .= '<td width="22%"><img src="'.$img_logo.'"></td>';
+$HTML .= '<td width="20%"><img src="'.$img_logo.'"></td>';
 $HTML .= '<td>';
 $HTML .= 'บริษัท เอ็นพี ไทร์ (ล้อทอง) จำกัด NPTIRE GOLDWHEELS<br>ถนนมีนบุรี-ร่มเกล้า เขตมีนบุรี กรุงเทพฯ 10510<br>';
 $HTML .= 'โทร. 02-543-8957, 02-061-5957 , 095-7923290, <br>';
 $HTML .= '092-2766964, 081-4384057';
 $HTML .= '</td>';
-$HTML .= '<td width="30%" align="right" style="vertical-align:top">';
+$HTML .= '<td width="35%" align="right" valign="top">';
 $HTML .= '<h1>ใบรับสินค้า</h1>';
 $HTML .= '<h4>เลขที่ใบรับสินค้า : '.$receiveID.'</h4>';
 $HTML .= '<h4>เลขที่ใบสั่งซื้อ : '.$rec_po["poID"].'</h4>';
@@ -102,15 +102,15 @@ $HTML .= '</table>';
 
 $HTML .= '<br><br>';
 
-$HTML .= '<table width="85%" border="0">';
-$HTML .= '<tbody>';
-$HTML .= '<tr>';
+// $HTML .= '<table width="85%" border="0">';
+// $HTML .= '<tbody>';
+// $HTML .= '<tr>';
 // $HTML .= '<td width="5%"></td>';
-$HTML .= '<td width="90%"><b>บริษัทคู่ค้า : </b>'.$sup_name.'</td>';
+// $HTML .= '<td width="90%"><b>บริษัทคู่ค้า : </b>'.$sup_name.'</td>';
 // $HTML .= '<td width="5%"></td>';
-$HTML .= '</tr>';
-$HTML .= '</tbody>';
-$HTML .= '</table>';
+// $HTML .= '</tr>';
+// $HTML .= '</tbody>';
+// $HTML .= '</table>';
 
 // $HTML .= '<table width="85%" border="0">';
 // $HTML .= '<tbody>';
@@ -142,21 +142,20 @@ $HTML .= '</table>';
 // $HTML .= '</tbody>';
 // $HTML .= '</table>';
 
-$HTML .= '<table width="90%" border="1">';
+$HTML .= '<table class="table table-bordered" width="100%" border="1" valign="top">';
 
 $HTML .= '<thead>';
 $HTML .= '<tr>';
-$HTML .= '<th width="10%">ลำดับ</th>';
-$HTML .= '<th width="15%">รหัสสินค้า</th>';
-$HTML .= '<th width="25%">ชื่อสินค้า</th>';
-$HTML .= '<th width="10%">ยี่ห้อ</th>';
-$HTML .= '<th width="10%">รุ่น</th>';
-$HTML .= '<th width="10%">ขนาด</th>';
-// $HTML .= '<th width="10%">รุ่น</th>';
-// $HTML .= '<th width="5%">ราคา/ชิ้น</th>';
-$HTML .= '<th width="10%">จำนวน</th>';
-$HTML .= '<th width="10%">รับเข้า</th>';
-// $HTML .= '<th width="10%">รวม</th>';
+$HTML .= '<th>ลำดับ</th>';
+$HTML .= '<th>รหัสสินค้า</th>';
+$HTML .= '<th>ชื่อสินค้า</th>';
+$HTML .= '<th>ประเภท</th>';
+$HTML .= '<th>ยี่ห้อ</th>';
+$HTML .= '<th>คุณลักษณะ</th>';
+$HTML .= '<th>ประเภทตำแหน่งเก็บ</th>';
+$HTML .= '<th>ตำแหน่งเก็บ</th>';
+$HTML .= '<th>จำนวน</th>';
+$HTML .= '<th>รับเข้า</th>';
 $HTML .= '</tr>';
 $HTML .= '</thead>';
 
@@ -167,7 +166,10 @@ $qty1 = 0;
 while($rec_pd = $db->db_fetch_array($query_pd))
 {
 
-	$sql_product = "SELECT * FROM tb_product WHERE productID = '".$rec_pd["productID"]."' ";
+	$sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName FROM tb_product INNER JOIN
+	tb_locationtype ON tb_product.locationTypeID = tb_locationtype.locationTypeID INNER JOIN
+	tb_location ON tb_product.locationID = tb_location.locationID
+	WHERE productID = '".$rec_pd["productID"]."' ";
 	$query_product = $db->query($sql_product);
 	$rec_product = $db->db_fetch_array($query_product);
 
@@ -175,9 +177,23 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 	$query_receive_desc = $db->query($sql_receive_desc);
 	$rec_receive_desc = $db->db_fetch_array($query_receive_desc);
 
+	$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
+	FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
+	JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+	WHERE tb_productattr.productID = '".$rec_pd["productID"]."'";
+	$query_attr = $db->query($sql_attr);
+	$nums_attr = $db->db_num_rows($query_attr);
+
+	if($nums_attr > 0){
+		while($rec_attr = $db->db_fetch_array($query_attr))
+		{
+			$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
+		}
+	}else{
+		$attr = '-';
+	}
+
 	$productID = $rec_pd['productID'];
-	$productCode = $rec_product['productCode'];
-	$productName = $rec_product['productName'];
 	$productTypeName = get_productType_name($rec_product['productTypeID']);
 	$brandName = get_brand_name($rec_product['brandID']);
 	$modelName = $rec_product['modelName'];
@@ -190,17 +206,15 @@ while($rec_pd = $db->db_fetch_array($query_pd))
 
 	$HTML .= '<tr>';
 	$HTML .= '<td align="center">'.(++$i).'</td>';
-	$HTML .= '<td>'.$productCode.'</td>';
-	$HTML .= '<td>'.$productName.'</td>';
-	//$HTML .= '<td>'.$productTypeName.'</td>';
-	$HTML .= '<td>'.$brandName.'</td>';
-	$HTML .= '<td>'.$modelName.'</td>';
-	$HTML .= '<td>'.$productSize.'</td>';
-	// $HTML .= '<td>'.$productSize.'</td>';
-	// $HTML .= '<td align="right">'.number_format($price).'</td>';
+	$HTML .= '<td>'.$rec_product['productCode'].'</td>';
+	$HTML .= '<td>'.$rec_product['productName'].'</td>';
+	$HTML .= '<td>'.get_productType_name($rec_product['productTypeID']).'</td>';
+	$HTML .= '<td>'.get_brand_name($rec_product['brandID']).'</td>';
+	$HTML .= '<td>'.$attr.'</td>';
+	$HTML .= '<td>'.$rec_product['locationTypeName'].'</td>';
+	$HTML .= '<td>'.$rec_product['locationName'].'</td>';
 	$HTML .= '<td align="right">'.number_format($qty).'</td>';
 	$HTML .= '<td align="right">'.number_format($receive_qty).'</td>';
-	// $HTML .= '<td align="right">'.number_format($amount).'</td>';
 	$HTML .= '</tr>';
 }
 
@@ -209,7 +223,7 @@ $HTML .= '</tbody>';
 
 $HTML .= '<tfoot>';
 $HTML .= '<tr>';
-$HTML .= '<td colspan="8" align="center">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
+$HTML .= '<td colspan="10" align="center">รวม '.$i.' รายการ จำนวน '.$qty1.' ชิ้น</td>';
 // $HTML .= '<td align="right">'.number_format($total).'</td>';
 $HTML .= '</tr>';
 $HTML .= '</tfoot>';

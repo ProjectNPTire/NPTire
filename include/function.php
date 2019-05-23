@@ -179,25 +179,25 @@ function convert_bahttext($number){
 	if($number[1]=='0' OR $number[1]=='00' OR 
 		$number[1]==''){ 
 		$convert .= 'ถ้วน'; 
-}else{ 
-	$strlen = strlen($number[1]); 
-	for($i=0;$i<$strlen;$i++){ 
-		$n = substr($number[1], $i,1); 
-		if($n!=0){ 
-			if($i==($strlen-1) AND $n==1){$convert 
-				.= 'เอ็ด';} 
-				elseif($i==($strlen-2) AND 
-					$n==2){$convert .= 'ยี่';} 
+	}else{ 
+		$strlen = strlen($number[1]); 
+		for($i=0;$i<$strlen;$i++){ 
+			$n = substr($number[1], $i,1); 
+			if($n!=0){ 
+				if($i==($strlen-1) AND $n==1){$convert 
+					.= 'เอ็ด';} 
 					elseif($i==($strlen-2) AND 
-						$n==1){$convert .= '';} 
-						else{ $convert .= $txtnum1[$n];} 
-					$convert .= $txtnum2[$strlen-$i-1]; 
+						$n==2){$convert .= 'ยี่';} 
+						elseif($i==($strlen-2) AND 
+							$n==1){$convert .= '';} 
+							else{ $convert .= $txtnum1[$n];} 
+						$convert .= $txtnum2[$strlen-$i-1]; 
+					} 
 				} 
-			} 
-			$convert .= 'สตางค์'; 
-		} 
-		return $convert; 
-	} 
+				$convert .= 'สตางค์'; 
+	} 																			
+	return $convert; 
+} 
 
 
 function url2code($paramLink){
@@ -400,6 +400,20 @@ function get_location_name($locationID){
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	return text($rec['locationName']);
+}
+function get_locationType_name($locationTypeID){
+	global $db;
+	 $sql = "SELECT locationTypeName FROM tb_locationtype WHERE locationTypeID = '".$locationTypeID."' ";
+	$query = $db->query($sql);
+	$rec = $db->db_fetch_array($query);
+	return text($rec['locationTypeName']);
+}
+function get_attr_name($attrID){
+	global $db;
+	 $sql = "SELECT attrName FROM tb_attribute WHERE attrID = '".$attrID."' ";
+	$query = $db->query($sql);
+	$rec = $db->db_fetch_array($query);
+	return text($rec['attrName']);
 }
 function chk_role($menu,$type,$show=''){
 	global $db;

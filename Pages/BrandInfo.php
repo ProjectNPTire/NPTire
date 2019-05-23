@@ -4,7 +4,7 @@
   <?php $path = "../";
   include($path."include/config_header_top.php");
   include 'css.php';
-  $page_key ='3_2';
+  $page_key ='3_3';
   $sql     = " SELECT *
   FROM tb_brand
   where brandID ='".$brandID."' ";
@@ -42,223 +42,173 @@
   									</div>
   								</div>
   								<div class="row clearfix">
-									<!-- <div class="col-sm-12">
-										<b>รหัสยี่ห้อสินค้า <span style="color:red"> *</span></b>
-										<div class="form-group">
-											<div class="form-line">
-												<input type="text " <?php echo $readonly ?> name="brandCode" id="brandCode" class="form-control" value="<?php echo $rec['brandCode'];?>">
-											</div>
-										</div>
-									</div> -->
-									<div class="col-sm-6">
-										<b>รหัสยี่ห้อสินค้า</b>
-										<div class="form-group">
-											<div class="form-line">
-												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkShort();" name="brandName_short" id="brandName_short" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandName_short'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-											</div>
-											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
-											<label id="brandName_short-error" class="error" for="brandName_short">กรุณาระบุ รหัสยี่ห้อสินค้า</label>
-											<label id="brandName_short2-error" class="error" for="brandName_short">มีรหัสสินค้านี้แล้ว</label>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<b>ยี่ห้อสินค้า</b>
-										<div class="form-group">
-											<div class="form-line">
-												<input type="text " onkeyup="chk1();" name="brandName" id="brandName" class="form-control" placeholder="ยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-											</div>
-											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ยี่ห้อสินค้า</label>
-											<label id="brandName2-error" class="error" for="brandName">มียี่ห้อสินค้านี้แล้ว</label>
-										</div>
-									</div>
-								</div>
-								
-								<div class="row clearfix">
-									
-									<div class="col-sm-6">
-										<b>ประเภทสินค้า</b>
-										<div class="form-group form-float">
-											<select onchange="get_hdf(this.value,'hdfproductTypeID');" name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
-												<option value="">เลือก</option>
-												<?php
-												$s_pdtype=" SELECT * from tb_producttype where isEnabled = 1 order by productTypeName asc";
-												$q_pdtype = $db->query($s_pdtype);
-												$n_pdtype = $db->db_num_rows($q_pdtype);
-												while($r_pdtype = $db->db_fetch_array($q_pdtype)){
+  									<div class="col-sm-4">
+  										<b>รหัสยี่ห้อสินค้า</b>
+  										<div class="form-group">
+  											<div class="form-line">
+  												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkCode();" name="brandCode" id="brandCode" class="form-control" placeholder="รหัสยี่ห้อสินค้า" value="<?php echo $rec['brandCode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+  											</div>
+  											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
+  											<label id="brandCode-error" class="error" for="brandCode">กรุณาระบุ รหัสยี่ห้อสินค้า</label>
+  											<label id="brandCode-error2" class="error" for="brandCode">มีรหัสสินค้านี้แล้ว</label>
+  										</div>
+  									</div>
+  									<div class="col-sm-4">
+  										<b>ชื่อยี่ห้อสินค้า</b>
+  										<div class="form-group">
+  											<div class="form-line">
+  												<input type="text " onkeyup="chkName();" name="brandName" id="brandName" class="form-control" placeholder="ชื่อยี่ห้อสินค้า" value="<?php echo $rec['brandName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+  											</div>
+  											<label id="brandName-error" class="error" for="brandName">กรุณาระบุ ชื่อยี่ห้อสินค้า</label>
+  											<label id="brandName-error2" class="error" for="brandName">มีชื่อยี่ห้อสินค้านี้แล้ว</label>
+  										</div>
+  									</div>
+  									<div class="col-sm-4">
+  										<b>การใช้งานข้อมูล</b>
+  										<div class="form-group form-float">
+  											<select name="status" id="status" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="delData('status',this.value,'hdfstatus');">
+  												<?php asort($arr_active);
+  												foreach ($arr_active as $key => $value) {?>
+  													<option value="<?php echo $key;?>"  
+  														<?php 
+  														if(($rec['isEnabled']  != "")){
+  															echo ($rec['isEnabled']==$key)?"selected":"";
+  														}
+  														?>><?php echo $value;?></option>
+  													<?php }  ?>
+  												</select>
+  												<input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
+  											</div>
+  										</div>
+  									</div>
+  									<div class="align-center">
+  										<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
+  										<button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
+  									</div>
+  								</div>
+  							</form>
+  						</div>
+  					</div>
+  				</div>
+  			</div>
+  		</section>
+  		<?php include 'js.php';?>
+  	</body>
 
-													?>
-													<option value="<?php echo $r_pdtype['productTypeID'];?>"  <?php echo ($rec['productTypeID']==$r_pdtype['productTypeID'])?"selected":"";?>> <?php echo $r_pdtype['productTypeName'];?></option>
+  	</html>
 
-												<?php }  ?>
-											</select>
-											<input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
-											<label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
-										</div>
-									</div>
-									<div class="col-sm-6">
-										<b>การใช้งานข้อมูล</b>
-										<div class="form-group form-float">
-											<select name="status" id="status" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="delData('status',this.value,'hdfstatus');">
-												<?php asort($arr_active);
-												foreach ($arr_active as $key => $value) {?>
-													<option value="<?php echo $key;?>"  
-														<?php 
-														if(($rec['isEnabled']  != "")){
-															echo ($rec['isEnabled']==$key)?"selected":"";
-														}
-														?>><?php echo $value;?></option>
-													<?php }  ?>
-												</select>
-												<input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
-											</div>
-										</div>
-									</div>
-<!--<div class="col-sm-12">
-										<b>รายละเอียด </b>
-										<div class="form-group">
-											<div class="form-line">
-												<textarea  class="form-control" placeholder="รายละเอียด" id="brandDetail" name="brandDetail"> <?php echo $rec['brandDetail'];?> </textarea>
-											</div>
-										</div>
-									</div> -->
-									<div class="align-center">
-										<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
-										<button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
-									</div>
+  	<script>
+  		function OnCancel()
+  		{
 
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		<?php include 'js.php';?>
-	</body>
+  			$(location).attr('href',"<?php echo  $form_page?>");
+  		}
 
-	</html>
+  		function chkinput(){
 
-	<script>
-		function OnCancel()
-		{
+  			if($('#chk2').val()==1){
+  				$('#brandCode-error2').show();
+  				$('#brandCode').focus();
+  				return false;
+  			}else{
+  				$('#brandCode-error2').hide();
+  			}
 
-			$(location).attr('href',"<?php echo  $form_page?>");
-		}
+  			if($('#brandCode').val()==''){
+  				$('#brandCode-error').show();
+  				$('#brandCode').focus();
+  				return false;
+  			}else{
+  				$('#brandCode-error').hide();
+  			}
 
-		function chkinput(){
+  			if($('#chk').val()==1){
+  				$('#brandName-error2').show();
+  				$('#brandName').focus();
+  				return false;
+  			}else{
+  				$('#brandName-error2').hide();
+  			}
 
-			if($('#chk2').val()==1){
-				$('#brandName_short2-error').show();
-				$('#brandName_short').focus();
-				return false;
-			}else{
-				$('#brandName_short2-error').hide();
-			}
 
-			if($('#brandName_short').val()==''){
-				$('#brandName_short-error').show();
-				$('#brandName_short').focus();
-				return false;
-			}else{
-				$('#brandName_short-error').hide();
-			}
+  			if($('#brandName').val()==''){
+  				$('#brandName-error').show();
+  				$('#brandName').focus();
+  				return false;
+  			}else{
+  				$('#brandName-error').hide();
+  			}
 
-			if($('#brandName').val()==''){
-				$('#brandName-error').show();
-				$('#brandName').focus();
-				return false;
-			}else{
-				$('#brandName-error').hide();
-			}
-			
-			if($('#productTypeID').val()==''){
-				$('#productTypeID-error').show();
-				$('#productTypeID').focus();
-				return false;
-			}else{
-				$('#productTypeID-error').hide();
-			}
+  			if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
+  				$("#frm-input").submit();
+  			}
+  		}
 
-			if($('#chk').val()==1){
-				return false;
-			}
+  		$(document).ready(function() {
+  			$('.form-line').removeClass('focused');
+  			$('.error').hide();
 
-			if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
-				$("#frm-input").submit();
-			}
-		}
+  			// if($('#proc').val()=='add'){
+  			// 	var brandCode	 ='';
+  			// 	$.ajaxSetup({async: false});
+  			// 	$.post('process/get_process.php',{proc:'get_brandCode'},function(data){
+  			// 		brandCode =  data['name'];
+  			// 	},'json');
+  			// 	$('#brandCode').val(brandCode);
+  			// }
 
-		$(document).ready(function() {
-			$('.form-line').removeClass('focused');
-			$('.error').hide();
+  		});
 
-			if($('#proc').val()=='add'){
-				var brandCode	 ='';
-				$.ajaxSetup({async: false});
-				$.post('process/get_process.php',{proc:'get_brandCode'},function(data){
-					brandCode =  data['name'];
-				},'json');
-				$('#brandCode').val(brandCode);
-			}
+  		function chkName(){
+  			var brandName= $('#brandName').val();
+  			var brandID= $('#brandID').val();
+  			$.ajaxSetup({async: false});
+  			$.post('process/get_process.php',{proc:'chk_brandName',brandName:brandName,brandID:brandID},function(data){
+  				$('.error').hide();
+  				if(data==1){
+  					$('#brandName-error2').show();
+  					$('#chk').val(1);
+  				}else{
+  					$('#brandName-error2').hide();
+  					$('#chk').val(0);
 
-		});
+  				}
 
-		function chk1(){
-			var brandName= $('#brandName').val();
-			var brandID= $('#brandID').val();
-			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chk_brandName',brandName:brandName,brandID:brandID},function(data){
-				$('.error').hide();
-				if(data==1){
-					$('#brandName2-error').show();
-					$('#chk').val(1);
-				}else{
-					$('#brandName2-error').hide();
-					$('#chk').val(0);
+  			},'json');
+  		}
 
-				}
+  		function chkCode(){
+  			var brandCode= $('#brandCode').val();
+  			var brandID= $('#brandID').val();
+  			$.ajaxSetup({async: false});
+  			$.post('process/get_process.php',{proc:'chk_brandCode',brandCode:brandCode,brandID:brandID},function(data){
+  				$('.error').hide();
+  				if(data==1){
+  					$('#brandCode-error2').show();
+  					$('#chk2').val(1);
+  				}else{
+  					$('#brandCode-error2').hide();
+  					$('#chk2').val(0);
 
-			},'json');
-		}
+  				}
 
-		function chkShort(){
-			var brandName_short= $('#brandName_short').val();
-			var brandID= $('#brandID').val();
-			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chk_brandName_short',brandName_short:brandName_short,brandID:brandID},function(data){
-				$('.error').hide();
-				if(data==1){
-					$('#brandName_short2-error').show();
-					$('#chk2').val(1);
-				}else{
-					$('#brandName_short2-error').hide();
-					$('#chk2').val(0);
+  			},'json');
+  		}
 
-				}
+  		function delData(parent_id,id,hdf_id){
+  			var brandID = $('#brandID').val();
+  			$.ajaxSetup({async: false});
+  			$.post('process/get_process.php',{proc:'chkDelData_Brand',brandID:brandID},function(data){
+  				if(data > 0){
+  					alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากยี่ห้อสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+  					$('#'+parent_id).val(1);
+  					return false;
+  				}else{
+  					$('#'+hdf_id).val(id);
+  				}
+  			},'json');
 
-			},'json');
-		}
-
-		function delData(parent_id,id,hdf_id){
-			var brandID = $('#brandID').val();
-			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chkDelData_Brand',brandID:brandID},function(data){
-				if(data > 0){
-					alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากยี่ห้อสินค้านี้มีการใช้ข้อมูลนี้อยู่');
-					$('#'+parent_id).val(1);
-					return false;
-				}else{
-					$('#'+hdf_id).val(id);
-				}
-			},'json');
-
-		}
-
-		function get_hdf(parent_id,hdf_id){
-			debugger
-			var brandID = parent_id;
-			$('#'+hdf_id).val(brandID);
-		}
+  		}
 
 //username2
 </script>

@@ -5,12 +5,12 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_5';
+$page_key ='3_4';
 $form_page = $form_page;
 
 $sql     = " SELECT *
-FROM tb_location
-where locationID ='".$locationID."' ";
+FROM tb_locationtype
+where locationTypeID ='".$locationTypeID."' ";
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
@@ -35,10 +35,10 @@ if($proc=='edit'){
 							<h2><?php echo $txt;?>ข้อมูลประเภทตำแหน่งจัดเก็บสินค้า</h2>
 						</div>
 						<div class="body">
-							<form id="frm-input" action="process/location_process.php" method="POST">
+							<form id="frm-input" action="process/locationtype_process.php" method="POST">
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
 								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
-								<input type="hidden" id="locationID" name="locationID" value="<?php echo $locationID; ?>">
+								<input type="hidden" id="locationTypeID" name="locationTypeID" value="<?php echo $locationTypeID; ?>">
 								<input type="hidden" id="chk2" name="chk2" value="0">
 								<input type="hidden" id="chk3" name="chk3" value="0">
 								<div class="row clearfix">
@@ -54,44 +54,38 @@ if($proc=='edit'){
 								</div>-->
 								<div class="row clearfix">
 									<div class="col-sm-6">
-										<b>รหัสตำแหน่งจัดเก็บ</b>
+										<b>รหัสประเภทตำแหน่งจัดเก็บ</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" name="locationCode" id="locationCode" class="form-control" placeholder="รหัสตำแหน่งจัดเก็บ" value="<?php echo $rec['locationCode'];?>" <?php echo $readonly;?>>
+												<input type="text" readonly oninput="this.value=this.value.replace(/\s/g, '');" onkeyup="chkCode();" name="locationTypeCode" id="locationTypeCode" class="form-control" placeholder="รหัสประเภทตำแหน่งจัดเก็บ" value="<?php echo $rec['locationTypeCode'];?>" <?php echo $readonly;?>>
 											</div>
 											<div class="help-info">กรอกอัตโนมัติ</div>
-											<label id="locationCode-error" class="error" for="locationCode">มีรหัสตำแหน่งจัดเก็บนี้แล้ว</label>
+											<label id="locationTypeCode-error" class="error" for="locationTypeCode">รหัสประเภทตำแหน่งจัดเก็บ</label>
 										</div>
 									</div>
 									<div class="col-sm-6">
-										<b>ชื่อตำแหน่งจัดเก็บสินค้า</b>
+										<b>ชื่อประเภทตำแหน่งจัดเก็บสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" onkeyup="chkName();" id="locationName" name="locationName" class="form-control" placeholder="ชื่อตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" onkeyup="chkName();" id="locationTypeName" name="locationTypeName" class="form-control" placeholder="ชื่อประเภทตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationTypeName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
-											<label id="locationName-error" class="error" for="locationName">กรุณาระบุ ชื่อตำแหน่งจัดเก็บสินค้า</label>
-											<label id="locationName-error2" class="error" for="locationName">มีชื่อตำแหน่งจัดเก็บสินค้านี้แล้ว</label>
+											<label id="locationTypeName-error" class="error" for="locationTypeName">กรุณาระบุ ชื่อประเภทตำแหน่งจัดเก็บสินค้า</label>
+											<label id="locationTypeName-error2" class="error" for="locationTypeName">ชื่อประเภทตำแหน่งจัดเก็บสินค้า</label>
 										</div>
 									</div> 			
 								</div>
 								<div class="row clearfix">
 									<div class="col-sm-6">
-										<b>ชื่อประเภทตำแหน่งจัดเก็บ</b>
+										<b>ขนาดประเภทตำแหน่งจัดเก็บ</b>
 										<div class="form-group form-float">
-											<select name="locationTypeID" id="locationTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="get_hdflocationType(this.value,'hdflocationTypeID');">
-												<option value="">เลือก</option>a                 
-												<?php
-												$s_pdtype=" SELECT * from tb_locationtype order by locationTypeID asc";
-												$q_pdtype = $db->query($s_pdtype);
-												$n_pdtype = $db->db_num_rows($q_pdtype);
-												while($r_pdtype = $db->db_fetch_array($q_pdtype)){
-													?>
-													<option value="<?php echo $r_pdtype['locationTypeID'];?>" <?php echo ($rec['locationTypeID']==$r_pdtype['locationTypeID'])?"selected":"";?>> <?php echo $r_pdtype['locationTypeName'];?></option>
-
+											<select name="locationType" id="locationType" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="gen_code(this.value,'hdflocationType');">                   
+												<option value="">เลือก</option>
+												<?php   foreach ($arr_locationType as $key => $value) {?>
+													<option value="<?php echo $key;?>"  <?php echo ($rec['locationType']==$key)?"selected":"";?>> <?php echo $value;?></option>
 												<?php }  ?>
 											</select>
-											<input type="hidden" name="hdflocationTypeID" id="hdflocationTypeID" value="<?php echo $rec['locationTypeID'] ?>">
-											<label id="locationTypeID-error" class="error" for="locationTypeID">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
+											<input type="hidden" name="hdflocationType" id="hdflocationType" value="<?php echo $rec['locationType'] ?>">
+											<label id="locationType-error" class="error" for="locationType">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
 										</div>
 									</div>		
 									<div class="col-sm-6">
@@ -133,15 +127,8 @@ if($proc=='edit'){
 		$(document).ready(function() {
 			$('.form-line').removeClass('focused');
 			$('.error').hide();
-
-			if($('#proc').val()=='add'){	
-				var newcode ='';
-				$.ajaxSetup({async: false});
-				$.post('process/get_process.php',{proc:'get_locationCode'},function(data){
-					newcode =  data['name'];
-				},'json');
-				$('#locationCode').val(newcode);		
-			}
+			$(".numb").inputFilter(function(value) {
+				return /^\d*$/.test(value); });
 		});
 
 		function OnCancel(){
@@ -151,35 +138,35 @@ if($proc=='edit'){
 		function chkinput(){
 
 			if($('#chk3').val()==1){
-				$('#locationCode-error').show();
-				$('#locationCode').focus();
+				$('#locationTypeCode-error').show();
+				$('#locationTypeCode').focus();
 				return false;
 			}else{
-				$('#locationCode-error').hide();
+				$('#locationTypeCode-error').hide();
 			}
 
-			if($('#locationName').val()==''){
-				$('#locationName-error').show();
-				$('#locationName').focus();
+			if($('#locationTypeName').val()==''){
+				$('#locationTypeName-error').show();
+				$('#locationTypeName').focus();
 				return false;
 			}else{
-				$('#locationName-error').hide();
+				$('#locationTypeName-error').hide();
 			}
 
 			if($('#chk2').val()==1){
-				$('#locationName-error2').show();
-				$('#locationName').focus();
+				$('#locationTypeName-error2').show();
+				$('#locationTypeName').focus();
 				return false;
 			}else{
-				$('#locationName-error2').hide();
+				$('#locationTypeName-error2').hide();
 			}
 
-			if($('#locationTypeID').val()==''){
-				$('#locationTypeID-error').show();
-				$('#locationTypeID').focus();
+			if($('#locationType').val()==''){
+				$('#locationType-error').show();
+				$('#locationType').focus();
 				return false;
 			}else{
-				$('#locationTypeID-error').hide();
+				$('#locationType-error').hide();
 			}
 
 			if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
@@ -188,17 +175,17 @@ if($proc=='edit'){
 		}
 
 		function chkName(id){
-			var locationName= $('#locationName').val();
-			var locationID= $('#locationID').val();
+			var locationTypeName= $('#locationTypeName').val();
+			var locationTypeID= $('#locationTypeID').val();
 			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chk_LocationName',locationName:locationName,locationID:locationID},function(data){
+			$.post('process/get_process.php',{proc:'chk_LocationTypeName',locationTypeName:locationTypeName,locationTypeID:locationTypeID},function(data){
 				$('.error').hide();
 			//alert(data);
 			if(data==1){
-				$('#locationName-error2').show();
+				$('#locationTypeName-error2').show();
 				$('#chk2').val(1);
 			}else{
-				$('#locationName-error2').hide();
+				$('#locationTypeName-error2').hide();
 				$('#chk2').val(0);
 
 			}
@@ -207,16 +194,16 @@ if($proc=='edit'){
 		}
 
 		function chkCode(){
-			var locationCode= $('#locationCode').val();
-			var locationID= $('#locationID').val();
+			var locationTypeCode= $('#locationTypeCode').val();
+			var locationTypeID= $('#locationTypeID').val();
 			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chk_locationCode',locationCode:locationCode,locationID:locationID},function(data){
+			$.post('process/get_process.php',{proc:'chk_locationTypeCode',locationTypeCode:locationTypeCode,locationTypeID:locationTypeID},function(data){
 				$('.error').hide();
 				if(data==1){
-					$('#locationCode-error').show();
+					$('#locationTypeCode-error').show();
 					$('#chk3').val(1);
 				}else{
-					$('#locationCode-error').hide();
+					$('#locationTypeCode-error').hide();
 					$('#chk3').val(0);
 
 				}
@@ -225,11 +212,11 @@ if($proc=='edit'){
 		}
 
 		function delData(parent_id,id,hdf_id){
-			var locationID = $('#locationID').val();
+			var locationTypeID = $('#locationTypeID').val();
 			$.ajaxSetup({async: false});
-			$.post('process/get_process.php',{proc:'chkDelData_Location',locationID:locationID},function(data){
+			$.post('process/get_process.php',{proc:'chkDelData_LocationType',locationTypeID:locationTypeID},function(data){
 				if(data > 0){
-					alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากมีการใช้ข้อมูลตำแหน่งจัดเก็บนี้อยู่');
+					alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากมีการใช้ข้อมูลประเภทตำแหน่งจัดเก็บนี้อยู่');
 					$('#'+parent_id).val(1);
 					return false;
 				}else{
@@ -238,10 +225,17 @@ if($proc=='edit'){
 			},'json');
 
 		}
-		function get_hdflocationType(id,hdf_id){
-			var locationTypeID = id;
-			if (locationTypeID != "") {
-				$('#'+hdf_id).val(locationTypeID);
+		function gen_code(id,hdf_id){
+			var locationType = id;
+			var newcode ='';
+			if (locationType != "") {
+				$('#'+hdf_id).val(locationType);
+				debugger
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'get_locationTypeCode',locationType:locationType},function(data){
+					newcode =  data['name'];
+				},'json');
 			}
+			$('#locationTypeCode').val(newcode);
 		}
 	</script>

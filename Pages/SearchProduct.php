@@ -8,34 +8,35 @@ include 'css.php';
 $path_image = $path."file_productImg/";
 $page_key ='1';
 $filter = '';
-if($ddl_search == 1){
-  $filter .= " where locationName  like '%".$txt_search."%'";
+
+
+if($typeID != ""){
+  $filter .= " and productTypeID ='".$typeID."'";
 }
-else if($ddl_search == 2){
-  $filter .= " where productTypeName like '%".$txt_search."%'";
+if($brandID != ""){
+ $filter .= " and brandID ='".$brandID."'";
 }
-else if($ddl_search == 3){
-  $filter .= " where brandName like '%".$txt_search."%'";
+if($attrID != ""){
+ $filter .= " and attrID ='".$attrID."'";
 }
-else if($ddl_search == 4){
-  $filter .= " where productName like '%".$txt_search."%'";
-}else{
-  $txt_search = "";
+if($txt_value != ""){
+  $filter .= " and value like '%".$txt_value."%'";
 }
+
 $field = "* ";
 $table = "tb_product
-join tb_producttype on tb_product.productTypeID = tb_producttype.productTypeID
-join tb_brand on tb_product.brandID = tb_brand.brandID
-join tb_productstore on tb_product.productID =  tb_productstore.productID
-join tb_location on tb_productstore.locationID = tb_location.locationID";
+join tb_productattr on tb_product.productID = tb_productattr.productID";
 $pk_id = "productID";
-$wh = " {$filter} and tb_productstore.isDeleted != 1";
+$wh = " where 1 {$filter}";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table .$wh;
+$group =" group by tb_productattr.productID";
+$sql = "select ".$field." from ".$table .$wh.$group;
 
-$query = $db->query($sql);
-$nums = $db->db_num_rows($query);
-$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+if ($chk != 0) {
+  $query = $db->query($sql);
+  $nums = $db->db_num_rows($query);
+  $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+}
 
 ?>
 
@@ -50,36 +51,104 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
             <div class="header">
               <h2>ค้นหาสินค้า</h2>
             </div>
-            <form id="" method="POST">
+            <form id="frm-search" method="POST">
               <div class="body">
-                <!--  <?php echo $ddl_location; ?> -->
+                <input type="hidden" id="chk" name="chk" value="0">
+                <!-- <?php echo isset($btn_search); ?> -->
                 <div class="row clearfix">                
-                  <div class="col-md-5">
-                    <div class="form-float">
-                      <select class="form-control show-tick" data-live-search="true" id="ddl_search" name="ddl_search">
-                        <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>ทั้งหมด</option>
-                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ตำแหน่ง</option>
-                        <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทสินค้า</option>
-                        <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
-                        <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>ชื่อสินค้า</option>
-                      </select>  
-                    </div>
-                  </div>
-                  <div class="col-md-5" id="hide">
+                  <div class="col-lg-2 form-control-label">
+                    <label for="email_address_2">ประเภท</label>
+                  </div>                 
+                  <div class="col-lg-4" id="type">
                     <div class="form-group">
-                      <div class="form-line">
-                        <input type="text " name="txt_search" id="txt_search" class="form-control" value="<?php echo $txt_search;?>">
+                      <div class="form-group form-float">
+                        <select name="typeID" id="typeID" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT * from tb_producttype where isEnabled = 1";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['productTypeID'];?>"<?php echo ($typeID==$r_p['productTypeID'])?"selected":"";?>> <?php echo $r_p['productTypeName'];?></option>
+
+                          <?php }  ?>
+                        </select>
                       </div>
-                    </div>
-                  </div>            
-                  <div class="col-md-2">
-                    <div class="icon-and-text-button-demo">
-                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                    </div>
+                    </div>                     
                   </div>
+                  <div class="col-lg-1 form-control-label">
+                    <label for="email_address_2">ยี่ห้อ</label>
+                  </div>
+                  <div class="col-lg-4" id="brand">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT * from tb_brand where isEnabled = 1";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['brandID'];?>"<?php echo ($brandID==$r_p['brandID'])?"selected":"";?>> <?php echo $r_p['brandName'];?></option>
+
+                          <?php }  ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div> 
                 </div>
+                <div class="row clearfix">
+                  <div class="col-lg-2 form-control-label">
+                    <label for="email_address_2">คุณลักษณะ</label>
+                  </div>
+                  <div class="col-lg-4" id="brand">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="attrID" id="attrID" onchange="get_value(this.value,'txt_value',);" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT * from tb_attribute
+                          join tb_productattr on tb_attribute.attrID = tb_productattr.attrID
+                          where isEnabled = 1";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['attrID'];?>"<?php echo ($attrID==$r_p['attrID'])?"selected":"";?>> <?php echo $r_p['attrName'];?></option>
+
+                          <?php }  ?>
+                        </select>
+                      </div>
+                    </div>                     
+                  </div>
+                  <div class="col-lg-1 form-control-label">
+                    <label for="email_address_2"></label>
+                  </div>
+                  <div class="col-lg-4" id="brand">
+                    <div class="form-group">
+                      <div class="form-group form-float">
+                        <select name="txt_value" id="txt_value" class="form-control show-tick" data-live-search="true"  >
+                          <option value="">เลือก</option>
+                          <?php
+                          $s_p=" SELECT value as DATA_VALUE ,value as DATA_NAME from tb_productattr
+                          where attrID ='".$attrID."' group by value order by value asc";
+                          $q_p = $db->query($s_p);
+                          $n_p = $db->db_num_rows($q_p);
+                          while($r_p = $db->db_fetch_array($q_p)){?>
+                            <option value="<?php echo $r_p['DATA_VALUE'];?>"<?php echo ($txt_value==$r_p['DATA_VALUE'])?"selected":"";?>> <?php echo $r_p['DATA_NAME'];?></option>
+
+                          <?php }  ?>
+                        </select>
+                        <label id="value-error" class="error" for="txt_value">กรุณาระบุ</label>
+                      </div>
+                    </div>                     
+                  </div> 
+                </div>
+                <div class="icon-and-text-button-demo align-center">
+                  <button type="button" class="btn btn-success waves-effect" id="btn_search" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+                </div>
+
                 <div class="table-responsive">
-                  <table class="table table-hover">
+                  <table id="tb_data" class="table table-hover">
                     <thead>
                       <tr>
                         <th>ลำดับ</th>
@@ -87,9 +156,9 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                         <th>ชื่อสินค้า</th>
                         <th>ประเภทสินค้า</th>
                         <th>ยี่ห้อสินค้า</th>
-                        <th>รุ่นสินค้า</th>
-                        <th>ขนาดสินค้า</th>
+                        <th>ประเภทตำแหน่งจัดเก็บ</th>
                         <th>ตำแหน่งจัดเก็บ</th>
+                        <th><?php echo get_attr_name($attrID);?></th>
                         <th>จำนวน</th>
                         <th></th>
                       </tr>
@@ -105,135 +174,65 @@ $total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." w
                             <td style="text-align: center;"><?php echo $i;?></td>
                             <td style="text-align: center;"><?php echo $rec['productCode'];?></td>
                             <td style="text-align: center;"><?php echo $rec['productName'];?></td>
-                            <td style="text-align: center;"><?php echo $rec['productTypeName'];?></td>
+                            <td style="text-align: center;"><?php echo get_productType_name($rec['productTypeID']);?></td>
                             <td style="text-align: center;"><?php echo get_brand_name($rec['brandID']);?></td>
-                            <td style="text-align: center;"><?php echo $rec['modelName'];?></td>
-                            <td style="text-align: center;"><?php echo $rec['productSize'];?></td>
-                            <td style="text-align: center;"><?php echo $rec['locationName'];?></td>
+                            <td style="text-align: center;"><?php echo get_locationType_name($rec['locationTypeID']);?></td>
+                            <td style="text-align: center;"><?php echo get_location_name($rec['locationID']);?></td>
+                            <td style="text-align: center;"><?php echo $txt_value;?></td>
                             <td style="text-align: center;"><span class="badge bg-green"><?php echo number_format($rec['ps_unit']).' '.$arr_unitType[$rec['unitType']];?></span></td>
                           </tr>
                         <?php }
                       }else{
-                        echo '<tr><td colspan="8">ไม่พบข้อมูล</td></tr>';
+                        echo '<tr><td align="center" colspan="9">ไม่พบข้อมูล</td></tr>';
                       }
                       ?>
                     </tbody>
                   </table>
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
-  <?php include 'js.php';?>
-</body>
-
-</html>
-
-
-<!-- Large Size -->
-<div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title" id="largeModalLabel">ข้อมูลสินค้า</h4>
-      </div>
-      <div class="modal-body">
-        <div class="align-center">
-          <div class="col-sm-12">
-            <div class="form-group" id="txt_img"></div>
+            </form>
           </div>
         </div>
-        <div class="row clearfix">
-          <div class="col-sm-4">
-            <b>รหัสสินค้า</b>
-            <div class="form-group" id="txt_code"></div>
-          </div>
-          <div class="col-sm-4">
-            <b>ชื่อสินค้า</b>
-            <div class="form-group" id="txt_name"></div>
-          </div>
-        </div>
-        <div class="row clearfix">
-          <div class="col-sm-4">
-            <b>ยี่ห้อ</b>
-            <div class="form-group" id="txt_brand"></div>
-          </div>
-          <div class="col-sm-4">
-            <b>รุ่น</b>
-            <div class="form-group" id="txt_model"></div>
-          </div>
-          <div class="col-sm-4">
-            <b>ขนาด</b>
-            <div class="form-group" id="txt_size"></div>
-          </div>
-          <div class="col-sm-4">
-            <b>จำนวน</b>
-            <div class="form-group" id="txt_unit"></div>
-          </div>
-        </div>
-      </div>
-      <div class="align-left">
-        <div class="col-sm-12">
-          <b>ตำแหน่งจัดเก็บสินค้า</b>
-          <div class="form-group" id="txt_location"></div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
       </div>
     </div>
   </div>
 </div>
+</section>
+<?php include 'js.php';?>
+</body>
+
+</html>
 
 <script>
   $(document).ready(function() {
-   $("#table1").DataTable({
-     "ordering": false,
-   });
-   if( $("#ddl_search").val() != ""){
-      $('#hide').show();
-   }else{
-     $('#hide').hide();
-   }
-   //debugger
-  //  if ($("#ddl_location").val() == "") {
-  //   $(this).attr("selected","selected");
-  // }else if ($("#ddl_location").val() == 1) {
-  //   $(this).attr("selected","selected");
-  // }else if ($("#ddl_location").val() == 2) {
-  //   $(this).attr("selected","selected");
-  // }else if ($("#ddl_location").val() == 3) {
-  //   $(this).attr("selected","selected");
-  // }else if ($("#ddl_location").val() == 4) {
-  //   $(this).attr("selected","selected");
-  // }
-});
+    $('.error').hide();
+    //$('#tb_data').hide();
+  });
   function searchData(){
+    debugger
+    if ($('#attrID').val() != "") {
+      if ($('#txt_value').val() == "") {
+        $('#value-error').show();
+        return false;
+      }
+    }
+    $('#chk').val(1);
     $("#frm-search").submit();
+    //$('#tb_data').show();
   }
-  function infoData(id){
 
-    var img = '<img width="410px" height="307px" src="<?php echo $path_image;?>'+$('#show_productImg_'+id).val()+'">';
-    $('#txt_img').html(img);
-    $('#txt_name').html($('#show_name_'+id).val());
-    $('#txt_code').html($('#show_code_'+id).val());
-    $('#txt_brand').html($('#show_brand_'+id).val());
-    $('#txt_size').html($('#show_size_'+id).val());
-    $('#txt_model').html($('#show_model_'+id).val());
-    $('#txt_unit').html($('#show_unit_'+id).val());
-    $('#txt_location').html($('#show_location_'+id).val());
+  function get_value(parent_id,id){
+    debugger
+    var html  = '<option value="">เลือก</option>';
+    $.ajaxSetup({async: false});  
+    $.post('process/get_process.php',{proc:'get_value',parent_id:parent_id},function(data){
 
+      $.each(data,function(index,value){
+        html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+      });
+      $('#'+id).html(html);
+      $('#'+id).selectpicker('refresh');
 
-    $('#ModalDetail').modal('show');
+    },'json');
   }
-  $("#ddl_search").change(function() {
-    if($(this).val() != ""){
-     $('#hide').show();
-   }else{
-     $('#hide').hide();
-   }
- });
 </script>

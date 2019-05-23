@@ -8,6 +8,36 @@ $PROC = $_POST['proc'];
 
 switch($PROC){
 
+	case "get_value" :
+	$parent_id = $_POST['parent_id'];
+	$sql ="  SELECT value as DATA_VALUE ,value as DATA_NAME from tb_productattr
+	where attrID ='".$parent_id."' group by value order by value asc ";
+
+	$query=$db->query($sql);
+	$OBJ=array();
+	while ($rec = $db->db_fetch_array($query)){
+		$row['DATA_VALUE'] =$rec['DATA_VALUE'];
+		$row['DATA_NAME'] =$rec['DATA_NAME'];
+		array_push($OBJ,$row);
+	}
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "get_location" :
+	$locationTypeID = $_POST['locationTypeID'];
+	$sql =" SELECT locationID as DATA_VALUE ,locationName as DATA_NAME from tb_location where  locationTypeID ='".$locationTypeID."' AND productID = 0 order by locationName asc ";
+	$query=$db->query($sql);
+	$OBJ=array();
+	while ($rec = $db->db_fetch_array($query)){
+		$row['DATA_VALUE'] =$rec['DATA_VALUE'];
+		$row['DATA_NAME'] =$rec['DATA_NAME'];
+		array_push($OBJ,$row);
+	}
+	echo json_encode($OBJ);
+	exit();
+	break;
+	
 	case "get_brand" :
 	$productTypeID = $_POST['productTypeID'];
 	$sql ="  SELECT brandID as DATA_VALUE ,brandName as DATA_NAME from tb_brand where  productTypeID ='".$productTypeID."' order by brandName asc ";
@@ -108,6 +138,21 @@ switch($PROC){
 	exit();
 	break;
 
+	case "get_poID" :
+	$po_ym = "PO-".date("ym");
+
+	$sql_po_no = "SELECT COUNT(*) AS poID FROM tb_po WHERE poID like '".$po_ym."%' ";
+	$query_po_no = $db->query($sql_po_no);
+	$rec_po_no = $db->db_fetch_array($query_po_no);
+	$run_no = sprintf("%03d", ($rec_po_no['poID']+1));
+
+	$poID = $po_ym.$run_no;
+	
+	$OBJ['name']=$poID;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
 	case "chk_user" :
 	$userID = $_POST['userID'];
 	$username = $_POST['username'];
@@ -175,6 +220,20 @@ switch($PROC){
 	exit();
 	break;
 
+	case "chk_LocationTypeName" :
+	$locationTypeID = $_POST['locationTypeID'];
+	$locationTypeName = $_POST['locationTypeName'];
+	$name_nospace = str_replace(" ","",$locationTypeName);
+
+
+	$sql=" SELECT locationTypeName from tb_locationtype where name_nospace ='".$name_nospace."'  and locationTypeID !='".$locationTypeID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
 
 	case "chk_LocationName" :
 	$locationID = $_POST['locationID'];
@@ -183,6 +242,19 @@ switch($PROC){
 
 
 	$sql=" SELECT locationName from tb_location where name_nospace ='".$name_nospace."'  and locationID !='".$locationID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_locationTypeCode" :
+	$locationTypeCode = $_POST['locationTypeCode'];
+	$locationTypeID = $_POST['locationTypeID'];
+
+	$sql=" SELECT locationTypeCode from tb_locationtype where locationTypeCode ='".$locationCode."'  and locationTypeID !='".$locationTypeID."' ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -231,11 +303,11 @@ switch($PROC){
 	exit();
 	break;
 
-	case "chk_brandName_short" :
-	$brandName_short = $_POST['brandName_short'];
+	case "chk_brandCode" :
+	$brandCode = $_POST['brandCode'];
 	$brandID = $_POST['brandID'];
 
-	$sql=" SELECT brandName_short from tb_brand where brandName_short ='".$brandName_short."'  and brandID !='".$brandID."'";
+	$sql=" SELECT brandCode from tb_brand where brandCode ='".$brandCode."'  and brandID !='".$brandID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -245,12 +317,12 @@ switch($PROC){
 	break;
 
 	case "get_productcode" :
-	$brand = $_POST['brand'];
-	$sql=" SELECT brandName_short from tb_brand where brandID ='".$brand."'  ";
+	$brandID = $_POST['brandID'];
+	$sql=" SELECT brandCode from tb_brand where brandID ='".$brandID."'  ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
-	$OBJ['name']=$rec['brandName_short'];
+	$OBJ['name']=$rec['brandCode'];
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -300,10 +372,8 @@ switch($PROC){
 	$productTypeID = $_POST['productTypeID'];
 
 	$sql=" SELECT * FROM tb_producttype
-	LEFT JOIN tb_brand on tb_producttype.productTypeID = tb_brand.productTypeID
-	LEFT JOIN tb_location on tb_producttype.productTypeID = tb_location.productTypeID
 	LEFT JOIN tb_product on tb_producttype.productTypeID = tb_product.productTypeID
-	WHERE tb_producttype.productTypeID ='".$productTypeID."' AND (tb_brand.productTypeID IS NOT NULL OR tb_location.productTypeID OR tb_product.productTypeID)";
+	WHERE tb_producttype.productTypeID ='".$productTypeID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -341,6 +411,20 @@ switch($PROC){
 	exit();
 	break;
 
+	case "chkDelData_LocationType" :
+	$locationTypeID = $_POST['locationTypeID'];
+
+	$sql=" SELECT * FROM  tb_locationtype
+	JOIN tb_location on tb_location.locationTypeID = tb_locationtype.locationID
+	WHERE tb_locationtype.locationTypeID ='".$locationTypeID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
 	case "chkDelData_Product" :
 	$productID = $_POST['productID'];
 
@@ -357,13 +441,13 @@ switch($PROC){
 
 	case "get_productcoder_other" :
 	$productTypeID = $_POST['productTypeID'];
-	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeID ='".$productTypeID."'  ";
+	$sql=" SELECT productTypeCode from tb_producttype where productTypeID ='".$productTypeID."'	 ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
 
 
-	$sql_sub =" SELECT productCode from tb_product where productCode like '".$rec['productTypeNameShort']."%' and productTypeID != 1 order by productID desc LIMIT 1";
+	$sql_sub =" SELECT productCode from tb_product where productCode like '%".$rec['productTypeCode']."%' and productTypeID != 1 order by productID desc";
 	$query_sub =$db->query($sql_sub);
 	$nums_sub = $db->db_num_rows($query_sub);
 	$rec_sub = $db->db_fetch_array($query_sub);
@@ -371,9 +455,9 @@ switch($PROC){
 	if($rec_sub['productCode']){
 		$arr = explode('-',$rec_sub['productCode']);
 		$int = $arr[1]+1;
-		$newcode =  $rec['productTypeNameShort'].'-'.sprintf("%'.03d",$int);
+		$newcode =  $rec['productTypeCode'].'-'.sprintf("%'.03d",$int);
 	}else{
-		$newcode = $rec['productTypeNameShort'].'-001';
+		$newcode = $rec['productTypeCode'].'-001';
 	}
 	$OBJ['name']=	$newcode;
 
@@ -383,58 +467,40 @@ switch($PROC){
 	exit();
 	break;
 
-	case "get_locationtiontype" :
-	$productTypeID = $_POST['productTypeID'];
-	$sql=" SELECT productTypeNameShort from tb_producttype where productTypeID ='".$productTypeID."'  ";
-	$query=$db->query($sql);
+	case "get_locationTypeCode" :
+	$locationType = $_POST['locationType'];	
+	$name = $arr_locationType[$locationType];
+	$sql =" SELECT locationTypeCode from tb_locationtype where locationType ='".$locationType."' order by locationTypeCode desc ";
+	$query =$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
 
+	if($rec['locationTypeCode']){
+		$sql_sub =" SELECT locationTypeCode from tb_locationtype where locationTypeCode like '%".$rec['locationTypeCode']."%'";
+		$query_sub =$db->query($sql_sub);
+		$nums_sub = $db->db_num_rows($query_sub);
+		$rec_sub = $db->db_fetch_array($query_sub);
 
-	$sql_sub =" SELECT locationCode from tb_location where locationCode like '%".$rec['productTypeNameShort']."%' and productTypeID not in (1,2) order by locationID desc LIMIT 1";
-	$query_sub =$db->query($sql_sub);
-	$nums_sub = $db->db_num_rows($query_sub);
-	$rec_sub = $db->db_fetch_array($query_sub);
-
-	if($rec_sub['locationCode']){
-		$arr = explode('-',$rec_sub['locationCode']);
+		$arr = explode('-',$rec_sub['locationTypeCode']);
 		$int = $arr[1]+1;
-		$newcode =  'zone'.$rec['productTypeNameShort'].'-'.$int;
+		$newcode =  $name.'-'.sprintf("%'.03d",$int);
+
 	}else{
-		$newcode = 'zone'.$rec['productTypeNameShort'].'-1';
+		$newcode = $name.'-001';
 	}
 	$OBJ['name']=	$newcode;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
 
-	case "get_locationbrand" :
-	$brandID = $_POST['brandID'];
-	$sql=" SELECT brandName_short from tb_brand where brandID ='".$brandID."'  ";
-	$query=$db->query($sql);
-	$nums = $db->db_num_rows($query);
-	$rec = $db->db_fetch_array($query);
+	case "get_locationCode" :
 
-
-	$sql_sub =" SELECT locationCode from tb_location where locationCode like '%".$rec['brandName_short']."%' and productTypeID in (1,2) order by locationID desc LIMIT 1";
+	$sql_sub =" SELECT COUNT(*) AS locationCode from tb_location order by locationID desc";
 	$query_sub =$db->query($sql_sub);
-	$nums_sub = $db->db_num_rows($query_sub);
 	$rec_sub = $db->db_fetch_array($query_sub);
-
-	if($rec_sub['locationCode']){
-		$arr = explode('-',$rec_sub['locationCode']);
-		$int = $arr[1]+1;
-		$newcode =  'zone'.$rec['brandName_short'].'-'.$int;
-	}else{
-		$newcode = 'zone'.$rec['brandName_short'].'-1';
-	}
+	$run_sub = sprintf("%03d", ($rec_sub['locationCode']+1));
+	$newcode = 'Location-'.$run_sub;	
 	$OBJ['name']=	$newcode;
-
-
-
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -484,51 +550,104 @@ switch($PROC){
 		}
 	}
 
-	if($type == 0 && !$name) $sql=" SELECT a.* ,b.productName,c.locationName,b.productCode,b.modelName,b.productSize,b.brandID,b.unitType,b.productTypeID
-	from tb_productstore a
-	join tb_product b on a.productID = b.productID
-	join tb_location c on a.locationID = c.locationID
-	join tb_producttype d on b.productTypeID = d.productTypeID
-	join tb_brand e on b.brandID = e.brandID
-	where ps_unit > 0";
-	else $sql=" SELECT a.* ,b.productName,c.locationName,b.productCode,b.modelName,b.productSize,b.brandID,b.unitType,b.productTypeID
-	from tb_productstore a
-	join tb_product b on a.productID = b.productID
-	join tb_location c on a.locationID = c.locationID
-	join tb_producttype d on b.productTypeID = d.productTypeID
-	join tb_brand e on b.brandID = e.brandID
+	// if($type == 0 && !$name) $sql="select a.* ,b.productName,c.locationName,b.productCode,b.brandID,b.unitType,b.productTypeID
+	// from tb_productstore a
+	// join tb_product b on a.productID = b.productID
+	// join tb_location c on a.locationID = c.locationID
+	// join tb_producttype d on b.productTypeID = d.productTypeID
+	// join tb_brand e on b.brandID = e.brandID
+	// where ps_unit > 0";
+	// else 
+	$sql=" SELECT tb_product.*,tb_productstore.ps_unit,tb_locationtype.locationTypeName,tb_location.locationName
+	FROM  tb_productstore INNER JOIN
+	tb_product ON tb_productstore.productID = tb_product.productID INNER JOIN
+	tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID INNER JOIN
+	tb_location ON tb_productstore.locationID = tb_location.locationID INNER JOIN
+	tb_producttype ON tb_product.productTypeID = tb_producttype.productTypeID INNER JOIN
+	tb_brand ON tb_product.brandID = tb_brand.brandID
 	where ps_unit > 0 {$filter}";
 
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	// if($filter!=''){
 	while($rec = $db->db_fetch_array($query)){
-		$detail ='';
-		if($rec['modelName']){
-			$detail .=' รุ่น '.$rec['modelName'];
-		}
-		if($rec['productSize']){
-			$detail .='  ขนาด '.$rec['productSize'];
-		}
+		
+		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
+		FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
+		JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+		WHERE tb_productattr.productID = '".$rec["productID"]."'";
+		$query_attr = $db->query($sql_attr);
+		$nums_attr = $db->db_num_rows($query_attr);
 
+		if($nums_attr > 0){
+			while($rec_attr = $db->db_fetch_array($query_attr))
+			{
+				$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
+			}
+		}else{
+			$attr = '-';
+		}
+		
+
+		$row['productID']  = $rec['productID'];
 		$row['productCode']  = $rec['productCode'];
 		$row['productName']  = $rec['productName'];
-		$row['productID']  = $rec['productID'];
-		$row['locationName']  = $rec['locationName'];
-		$row['locationID']  = $rec['locationID'];
-		$row['brand']  = get_brand_name($rec['brandID']);
 		$row['productTypeName']  = get_productType_name($rec['productTypeID']);
-		$row['brandID']  = $rec['brandID'];
-		$row['detail']  = $detail;
+		$row['brandName']  = get_brand_name($rec['brandID']);
+		$row['locationTypeName']  = $rec['locationTypeName'];
+		$row['locationName']  = $rec['locationName'];
+		$row['locationTypeID']  = $rec['locationTypeID'];
+		$row['locationID']  = $rec['locationID'];
 		$row['ps_unit']  = number_format($rec['ps_unit']);
 		$row['unitType']  = $arr_unitType[$rec['unitType']];
+		$row['attr']  = $attr;
 		array_push($OBJ,$row);
 	}
-	// }
-			//	$OBJ['name']=$rec['brandName_short'];
+	echo json_encode($OBJ);
+	exit();
+	break;
 
+	case "get_attribute" :
+	$name = $_POST['name'];
+	
+	$filter = "";
+	$OBJ  = array();
 
+	if($name){
+		$filter .= " and attrName  like '%".$name."%'";
+	}
 
+	$sql=" select *
+	from tb_attribute
+	where isEnabled = 1 {$filter}";
+
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+	while($rec = $db->db_fetch_array($query)){
+		$row['attrID']  = $rec['attrID'];
+		$row['attrName']  = $rec['attrName'];
+		array_push($OBJ,$row);
+	}
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "get_typeattr" :
+	$productTypeID = $_POST['productTypeID'];
+	
+	$OBJ  = array();
+
+	$sql=" select * from tb_typeattr
+	join tb_attribute on tb_typeattr.attrID = tb_attribute.attrID
+	where isEnabled = 1 and productTypeID ='".$productTypeID."' order by seq";
+
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+	while($rec = $db->db_fetch_array($query)){
+		$row['attrID']  = $rec['attrID'];
+		$row['attrName']  = $rec['attrName'];
+		array_push($OBJ,$row);
+	}
 	echo json_encode($OBJ);
 	exit();
 	break;
@@ -536,22 +655,44 @@ switch($PROC){
 	case "get_product_bill" :
 	$OBJ  = array();
 	$id = $_POST['id'];
-	$sql=" SELECT a.* ,b.*,c.locationName
+
+	$sql=" SELECT a.billDescUnit ,b.*,c.locationName,d.locationTypeName
 	from tb_bill_desc a
 	join tb_product b on a.productID = b.productID
 	join tb_location c on a.locationID = c.locationID
-	where 1=1 and billID ='".$id."'";
+	join tb_locationtype d on a.locationTypeID = d.locationTypeID
+	where billID ='".$id."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 	while($rec = $db->db_fetch_array($query)){
+
+		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
+		FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
+		JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+		WHERE tb_productattr.productID = '".$rec["productID"]."'";
+		$query_attr = $db->query($sql_attr);
+		$nums_attr = $db->db_num_rows($query_attr);
+
+		if($nums_attr > 0){
+			while($rec_attr = $db->db_fetch_array($query_attr))
+			{
+				$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
+			}
+		}else{
+			$attr = '-';
+		}
+
 		$row['productCode']  = $rec['productCode'];
 		$row['productName']  = $rec['productName'];
+		$row['productTypeName']  = get_productType_name($rec['productTypeID']);
+		$row['brandName']  = get_brand_name($rec['brandID']);
+		$row['locationTypeName']  = $rec['locationTypeName'];
 		$row['locationName']  = $rec['locationName'];
-		$row['brand']  = get_brand_name($rec['brandID']);
-		$row['modelName'] = $rec['modelName'] != '' ? $rec["modelName"] : '-';
-		$row['productSize'] = $rec["productSize"] != '' ? $rec["productSize"] : '-';
+		$row['locationTypeID']  = $rec['locationTypeID'];
+		$row['locationID']  = $rec['locationID'];
 		$row['billDescUnit']  = number_format($rec['billDescUnit']);
 		$row['unitType']  = $arr_unitType[$rec['unitType']];
+		$row['attr']  = $attr;
 		array_push($OBJ,$row);
 	}
 	echo json_encode($OBJ);

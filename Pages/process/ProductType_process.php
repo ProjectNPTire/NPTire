@@ -9,6 +9,7 @@ $productTypeID = $_REQUEST['productTypeID'];
 
 
 $tb1 = 'tb_producttype';
+$tb2 = 'tb_typeattr';
 
 switch($proc){
 	case "add" :
@@ -17,16 +18,30 @@ switch($proc){
 
 		unset($fields);
 		$fields = array(
+			"productTypeCode"=>strtoupper($productTypeCode),
 			"productTypeName"=>$productTypeName,
-			"productTypeDetail"=>$productTypeDetail,
-			"productTypeCode"=>$productTypeCode,
-			"productTypeNameShort"=>$productTypeNameShort,
 			"name_nospace"=>str_replace(" ","",$productTypeName),
 			"isEnabled"=>$hdfstatus,
+			// "productTypeDetail"=>$productTypeDetail,
+			// "productTypeNameShort"=>$productTypeNameShort,
 
 		);
 				 //print_pre($fields);
 		$db->db_insert($tb1,$fields);
+
+		if(sizeof($attrID)>0){
+			foreach ($attrID as $key => $value) {
+				unset($fields);
+				$fields = array(
+					"productTypeID"=>$productTypeID,
+					"attrID"=>$value,
+					"seq"=>$seq[$key],
+
+				);
+				$db->db_insert($tb2,$fields);
+			}
+		}
+
 		$detail = 'เพิ่มข้อมูลประเภท : '.$productTypeName;
 		save_log($detail);
 		$text=$save_proc;
@@ -41,15 +56,29 @@ switch($proc){
 
 		unset($fields);
 		$fields = array(
+			'productTypeCode'=>strtoupper($productTypeCode),
 			"productTypeName"=>$productTypeName,
-			"productTypeDetail"=>$productTypeDetail,
-			'productTypeCode'=>$productTypeCode,
-			'productTypeNameShort'=>$productTypeNameShort,
 			"name_nospace"=>str_replace(" ","",$productTypeName),
 			"isEnabled"=>$hdfstatus,
+			// "productTypeDetail"=>$productTypeDetail,
+			// 'productTypeNameShort'=>$productTypeNameShort,
 		);
 
 		$db->db_update($tb1,$fields, " productTypeID = '".$productTypeID."'");
+
+		$db->db_delete($tb2, " productTypeID = '".$productTypeID."'");
+		if(sizeof($attrID)>0){
+			foreach ($attrID as $key => $value) {
+				unset($fields);
+				$fields = array(
+					"productTypeID"=>$productTypeID,
+					"attrID"=>$value,
+					"seq"=>$seq[$key],
+
+				);
+				$db->db_insert($tb2,$fields);
+			}
+		}
 
 		$detail = 'แก้ไขข้อมูลประเภท : '.$productTypeName;
 		save_log($detail);
@@ -62,7 +91,7 @@ switch($proc){
 
 	case "delete" :
 	try{
-		$detail = 'ลบข้อมูข้อมูลยี่ห้อ  : '.$rec['productTypeName'];
+		$detail = 'ยกเลิกข้อมูลประเภท  : '.$rec['productTypeName'];
 		save_log($detail);
 		$db->db_delete($tb1, " productTypeID = '".$productTypeID."'");
 		$text=$del_proc;

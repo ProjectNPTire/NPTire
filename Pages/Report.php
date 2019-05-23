@@ -25,7 +25,7 @@ if($S_REPORT_TYPE=='')
   $S_REPORT_TYPE = '';
 if($S_REPORT_TYPE==1){
   $head_txt = 'สั่งซื้อสินค้า';
-  $sql =" select a.poID as BILL_NO,c.productName,c.productCode,c.brandID,c.productSize,c.modelName,
+  $sql =" select a.poID as BILL_NO,c.productName,c.productCode,c.brandID,
   sum(a.qty) as productUnit,c.unitType,b.total,b.poDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField
   from tb_po_desc a  
   join tb_po b on  a.poID = b.poID
@@ -150,7 +150,7 @@ if($S_REPORT_TYPE!=""){
     }
     if($S_REPORT_TYPE==1){
       $td .= '<td colspan="3" align="center" >รวม '.$i.' รายการ จำนวน '.$total.' ชิ้น</td>
-      <td colspan="3" align="center" >รวมสุทธิ(รวมvat) '.number_format($sum).' บาท</td>';
+      <td colspan="3" align="center" >รวมสุทธิ '.number_format($sum).' บาท</td>';
     }else if($S_REPORT_TYPE==2){
       $td .= '<td colspan="'.$col_span.'" align="center" >รวม '.$i.' รายการ จำนวน '.$total.' ชิ้น</td>';
     }else if($S_REPORT_TYPE==3){

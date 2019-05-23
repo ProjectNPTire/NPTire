@@ -5,7 +5,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_5';
+$page_key ='3_4';
 /*$sql     = " SELECT *
             FROM tb_location
             ";*/
@@ -20,26 +20,26 @@ $nums = $db->db_num_rows($query);*/
 
 if($ddl_search == 1){
   if($s_billNo != ""){
-    $filter .= " and locationName  like '%".$s_billNo."%'";
+    $filter .= " and locationTypeName  like '%".$s_billNo."%'";
   }
 }else if($ddl_search == 2){
   if($type != ""){
-   $filter .= " and locationTypeID ='".$type."'";
+   $filter .= " and locationType ='".$type."'";
  }
-}else if($ddl_search == 3){
+}else if($ddl_search == 6){
   if($status != ""){
    $filter .= " and isEnabled = '".$status."'";
  }
 }
 
 $field = "* ";
-$table = "tb_location";
-$pk_id = "locationID";
-$join = "tb_locationtype on tb_location.locationTypeID = tb_locationtype.locationTypeID";
+$table = "tb_locationtype";
+$pk_id = "locationTypeID";
 $wh = "1=1  {$filter}";
-$orderby = "order by locationID ASC";
+$orderby = "order by locationTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." join ".$join." where ".$wh ." ".$orderby; //.$limit;
+$sql = "select ".$field." from ".$table." 
+where ".$wh ." ".$orderby; //.$limit;
 // join tb_producttype on tb_producttype.productTypeID = ".$table.".productTypeID
 // join tb_brand on tb_brand.brandID = ".$table.".brandID
 
@@ -66,11 +66,11 @@ chk_role($page_key,'isSearch',1) ;
           <div class="body">
             <form id="frm-search" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
               <input type="hidden" id="proc" name="proc" value="">
-              <input type="hidden" id="form_page" name="form_page" value="LocationList.php">
-              <input type="hidden" id="locationID" name="locationID" value="">
+              <input type="hidden" id="form_page" name="form_page" value="LocationTypeList.php">
+              <input type="hidden" id="locationTypeID" name="locationTypeID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-             
+              
 
               <div class="row clearfix">
                 <div class="col-sm-5">
@@ -80,7 +80,7 @@ chk_role($page_key,'isSearch',1) ;
                         <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
                         <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อตำแหน่ง</option>
                         <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทตำแหน่ง</option>
-                        <option value="3"<?php echo ($ddl_search==5)?"selected":"";?>>สถานะ</option>
+                        <option value="5"<?php echo ($ddl_search==5)?"selected":"";?>>สถานะ</option>
                       </select>
                     </div>
                   </div>                     
@@ -88,14 +88,14 @@ chk_role($page_key,'isSearch',1) ;
                 <div class="col-sm-5" id="name" style="display: none;">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="text " name="s_name" id="s_name" class="form-control" placeholder="ชื่อตำแหน่ง" value="<?php echo $s_name;?>">
+                      <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="ชื่อตำแหน่ง" value="<?php echo $s_billNo;?>">
                     </div>
                   </div>
                 </div>
                 <div class="col-sm-5" id="status" style="display: none;">
                   <div class="form-group">
                     <div class="form-group form-float">
-                      <select name="s_status" id="s_status" class="form-control show-tick" data-live-search="true"  >
+                      <select name="status" id="s_userID" class="form-control show-tick" data-live-search="true"  >
                         <?php asort($arr_active);
                         foreach ($arr_active as $key => $value) { ?>
                          <option value="<?php echo $key;?>"  
@@ -109,18 +109,13 @@ chk_role($page_key,'isSearch',1) ;
                     </div>
                   </div>                     
                 </div>
-                <div class="col-sm-5" id="type" style="display: none;">
+                <div class="col-sm-5" id="typeloc" style="display: none;">
                   <div class="form-group">
                     <div class="form-group form-float">
-                      <select name="s_locationType" id="s_locationType" class="form-control show-tick" data-live-search="true"  >
-                        <option value="">เลือก</option>
-                          <?php
-                          $s_p=" SELECT * from tb_locationtype where isEnabled = 1";
-                          $q_p = $db->query($s_p);
-                          $n_p = $db->db_num_rows($q_p);
-                          while($r_p = $db->db_fetch_array($q_p)){?>
-                            <option value="<?php echo $r_p['locationTypeID'];?>"<?php echo ($s_locationType==$r_p['locationTypeID'])?"selected":"";?>> <?php echo $r_p['locationTypeName'];?></option>
-                          <?php }  ?>
+                      <select name="type" id="s_userID" class="form-control show-tick" data-live-search="true"  >
+                        <?php   foreach ($arr_locationType as $key => $value) {?>
+                          <option value="<?php echo $key;?>"  <?php echo ($rec['locationTypeID']==$key)?"selected":"";?>> <?php echo $value;?></option>
+                        <?php }  ?>
                       </select>
                     </div>
                   </div>                     
@@ -141,9 +136,9 @@ chk_role($page_key,'isSearch',1) ;
                   <thead>
                     <tr>
                       <th width="5%">ลำดับ</th>
-                      <th width="10%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
-                      <th width="15%" style="text-align:center;">ชื่อตำแหน่งจัดเก็บ</th>
-                      <th width="10%" style="text-align:center;">ชื่อประเภทตำแหน่งจัดเก็บ</th>
+                      <th width="10%" style="text-align:center;">รหัสประเภทตำแหน่งจัดเก็บ</th>
+                      <th width="15%" style="text-align:center;">ชื่อประเภทตำแหน่งจัดเก็บ</th>
+                      <th width="10%" style="text-align:center;">ประเภทตำแหน่งจัดเก็บ</th>
                       <th width="5%" style="text-align:center;">สถานะ</th>
                       <th width="5%"></th>
                     </tr>
@@ -154,14 +149,14 @@ chk_role($page_key,'isSearch',1) ;
                       $i=0;
                       while ($rec = $db->db_fetch_array($query)) {
                         $i++;
-                        $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['locationID'].');">'.$img_edit.'</a>';
+                        $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['locationTypeID'].');">'.$img_edit.'</a>';
                         // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['locationID'].');">'.$img_del.'</a>';
                         ?>
                         <tr>
                           <td align="center"><?php echo $i;?></td>
-                          <td><?php echo $rec['locationCode'];?></td> 
-                          <td><?php echo $rec['locationName'];?></td>
+                          <td><?php echo $rec['locationTypeCode'];?></td> 
                           <td><?php echo $rec['locationTypeName'];?></td>
+                          <td><?php echo $arr_locationType[$rec['locationType']];?></td>
                           <td><?php echo $arr_active[$rec['isEnabled']];?></td>
                           <td align="center"><?php echo $edit.$del;?></td>
                         </tr>
@@ -194,8 +189,12 @@ chk_role($page_key,'isSearch',1) ;
    if($("#ddl_search").val() == 1 ){
     $('#name').show();
   }else if($("#ddl_search").val() == 2){
-   $('#type').show();
+   $('#typeloc').show();
  }else if($("#ddl_search").val() == 3){
+   $('#type').show();
+ }else if($("#ddl_search").val() == 4){
+   $('#brand').show();
+ }else if($("#ddl_search").val() == 5){
    $('#status').show();
  }
 });
@@ -206,12 +205,12 @@ chk_role($page_key,'isSearch',1) ;
 
   function addData(){
     $("#proc").val("add");
-    $("#frm-search").attr("action","LocationInfo.php").submit();
+    $("#frm-search").attr("action","LocationTypeInfo.php").submit();
   }
   function editData(id){
     $("#proc").val("edit");
-    $("#locationID").val(id);
-    $("#frm-search").attr("action","LocationInfo.php").submit();
+    $("#locationTypeID").val(id);
+    $("#frm-search").attr("action","LocationTypeInfo.php").submit();
   }
   function delData(id){
     var locationID = id;
@@ -235,12 +234,18 @@ chk_role($page_key,'isSearch',1) ;
   $("#ddl_search").change(function() {
     $('#name').hide();
     $('#type').hide();
+    $('#brand').hide();
+    $('#typeloc').hide();
     $('#status').hide();
     if($(this).val() == 1){
       $('#name').show();
     }else if($(this).val() == 2){
-     $('#type').show();
+     $('#typeloc').show();
    }else if($(this).val() == 3){
+     $('#type').show();
+   }else if($(this).val() == 4){
+     $('#brand').show();
+   }else if($(this).val() == 5){
      $('#status').show();
    }
  });

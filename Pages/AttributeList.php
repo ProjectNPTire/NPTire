@@ -5,31 +5,28 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_3';
+$page_key ='3_1';
 
 $filter = '';
-// if($s_brandName){
-//  $filter .= " and brandName like '%".$s_brandName."%'";
-// }
 
 if($ddl_search == 1){
   if($s_billNo != ""){
-    $filter .= " and brandName  like '%".$s_billNo."%'";
+    $filter .= " and attrName  like '%".$s_billNo."%'";
   }
-}else if($ddl_search == 2){
+}else if($ddl_search == 3){
   if($status != ""){
    $filter .= " and isEnabled = '".$status."'";
  }
 }
 
 $field = "* ";
-$table = "tb_brand";
-$pk_id = "brandID";
+$table = "tb_attribute";
+$pk_id = "attrID";
 $wh = "1=1  {$filter}";
-$orderby = "order by brandID ASC";
+// $orderby = "order by ".$table.".productTypeID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
 $sql = "select ".$field." from ".$table."
-where ".$wh ." ".$orderby; //.$limit;
+where ".$wh; //." ".$orderby; .$limit;
 //join tb_producttype on tb_producttype.productTypeID = ".$table.".productTypeID
 
 
@@ -50,22 +47,23 @@ chk_role($page_key,'isSearch',1) ;
       <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
         <div class="card">
           <div class="header">
-            <h2>ยี่ห้อสินค้า</h2>
+            <h2>คุณลักษณะสินค้า</h2>
           </div>
           <div class="body">
             <form id="frm-search" method="post" enctype="multipart/form-data" action="<?php echo $_SERVER['PHP_SELF']; ?>" >
               <input type="hidden" id="proc" name="proc" value="">
-              <input type="hidden" id="form_page" name="form_page" value="BrandList.php">
-              <input type="hidden" id="brandID" name="brandID" value="">
+              <input type="hidden" id="form_page" name="form_page" value="AttributeList.php">
+              <input type="hidden" id="attrID" name="attrID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
+
               <div class="row clearfix">
                 <div class="col-sm-5">
                   <div class="form-group">
                     <div class="form-group form-float">
                       <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
                         <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
-                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อยี่ห้อสินค้า</option>
+                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อคุณลักษณะสินค้า</option>
                         <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>สถานะ</option>
                       </select>
                     </div>
@@ -74,11 +72,11 @@ chk_role($page_key,'isSearch',1) ;
                 <div class="col-sm-5" id="name" style="display: none;">
                   <div class="form-group">
                     <div class="form-line">
-                      <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="ชื่อยี่ห้อสินค้า" value="<?php echo $s_billNo;?>">
+                      <input type="text " name="s_billNo" id="s_billNo" class="form-control" placeholder="ชื่อคุณลักษณะสินค้า" value="<?php echo $s_billNo;?>">
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-5" id="type" style="display: none;">
+                 <div class="col-sm-5" id="type" style="display: none;">
                   <div class="form-group">
                     <div class="form-group form-float">
                       <select name="s_userID" id="s_userID" class="form-control show-tick" data-live-search="true"  >
@@ -127,11 +125,8 @@ chk_role($page_key,'isSearch',1) ;
                 <thead>
                   <tr>
                     <th width="5%">ลำดับ</th>
-                    <th width="20%" style="text-align:center;">รหัสยี่ห้อสินค้า</th>
-                    <th width="50%" style="text-align:center;">ชื่อยี่ห้อสินค้า</th>
-                    <th width="15%" style="text-align:center;">สถานะ</th>
-                    <!--       <th width="15%" style="text-align:left">อักษรประเภทสินค้า</th> -->
-                    <!--   <th style="text-align:left">รายละเอียด</th> -->
+                    <th width="35%" style="text-align:center;">ชื่อคุณลักษณะ</th>
+                    <th width="10%" style="text-align:center;">สถานะ</th>
                     <th width="10%"></th>
                   </tr>
                 </thead>
@@ -141,14 +136,13 @@ chk_role($page_key,'isSearch',1) ;
                     $i=0;
                     while ($rec = $db->db_fetch_array($query)) {
                       $i++;
-                      $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['brandID'].');">'.$img_edit.'</a>';
-                                    // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['brandID'].');">'.$img_del.'</a>';
-                                            //  $info = ' <a class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['userID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
+                      $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect"  onClick="editData('.$rec['attrID'].');">'.$img_edit.'</a>';
+                      // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="delData('.$rec['attrID'].');">'.$img_del.'</a>';
+                              //  $info = ' <a class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['userID'].');">'.$img_info.'</a>';  //  data-toggle="modal" data-target="#largeModal" id="btn_info" data-toggle="tooltip" data-placement="top" title="ข้อมูล"
                       ?>
                       <tr>
                         <td style="text-align: center;"><?php echo $i+$goto;?></td>
-                        <td><?php echo $rec['brandCode'];?></td>
-                        <td><?php echo $rec['brandName'];?></td>
+                        <td><?php echo $rec['attrName'];?></td>
                         <td><?php echo $arr_active[$rec['isEnabled']];?></td>
                         <td style="text-align: center;"><?php echo $edit.$del;?></td>
                       </tr>
@@ -195,26 +189,26 @@ chk_role($page_key,'isSearch',1) ;
 
   function addData(){
     $("#proc").val("add");
-    $("#frm-search").attr("action","BrandInfo.php").submit();
+    $("#frm-search").attr("action","AttributeInfo.php").submit();
   }
   function editData(id){
     $("#proc").val("edit");
-    $("#brandID").val(id);
-    $("#frm-search").attr("action","BrandInfo.php").submit();
+    $("#attrID").val(id);
+    $("#frm-search").attr("action","AttributeInfo.php").submit();
   }
   function delData(id){
-    var brandID = id;
+    var attrID = id;
     if(confirm("ต้องการลบข้อมูลใช่หรือไม่ ?")){
       $.ajaxSetup({async: false});
-      $.post('process/get_process.php',{proc:'chkDelData_Brand',brandID:brandID},function(data){
+      $.post('process/get_process.php',{proc:'chkDelData_Attribute',attrID:attrID},function(data){
       //alert(data);
       if(data > 0){
-        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากยี่ห้อสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+        alert('ไม่สามารถลบข้อมูลได้ เนื่องจากคุณลักษณะสินค้านี้มีการใช้ข้อมูลนี้อยู่');
         return false;
       }else{
         $("#proc").val("delete");
-        $("#brandID").val(id);
-        $("#frm-search").attr("action","process/brand_process.php").submit();
+        $("#attrID").val(id);
+        $("#frm-search").attr("action","process/attr_process.php").submit();
       }
     },'json');
 
@@ -223,7 +217,6 @@ chk_role($page_key,'isSearch',1) ;
 
   $("#ddl_search").change(function() {
     $('#name').hide();
-    $('#brand').hide();
     $('#status').hide();
     if($(this).val() == 1){
       $('#name').show();

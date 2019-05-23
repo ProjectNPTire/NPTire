@@ -11,8 +11,9 @@ $productID = $_REQUEST['productID'];
 $productImg = $_FILES['productImg'];
 //print_pre($_POST); exit;
 $tb1 = 'tb_product';
-$tb2 = 'tb_productstore';
+$tb2 = 'tb_productattr';
 $tb3 = 'tb_productsupplier';
+$tb4 = 'tb_location';
 
 switch($proc){
 	case "add" :
@@ -31,42 +32,48 @@ switch($proc){
 		$fields = array(
 			"productCode"=>$productCode,
 			"productName"=>$productName,
-			"brandID"=>$hdfbrandID,
-			"productSize"=>$productSize,
-			"modelName"=>$modelName,
-			"productTypeID"=>$hdfproductTypeID,
-			"unitType"=>$unitType,
-			"productImg"=>$name,
-			"supID"=>$supID,
-			"productDetail"=>$productDetail,
-			/* "activeStatus"=>$activeStatus, */
-			"productUnit"=>str_replace(",","",$productUnit),
 			"name_nospace"=>str_replace(" ","",$productName),
-			"orderPoint"=>$orderPoint,
+			"productTypeID"=>$hdfproductTypeID,
+			"brandID"=>$hdfbrandID,
 			"locationTypeID"=>$locationTypeID,
+			"locationID"=>$locationID,
+			"productImg"=>$name,
+			"orderPoint"=>$orderPoint,
+			"productUnit"=>str_replace(",","",$productUnit),
+			"unitType"=>$hdfunitType,
+			"isEnabled"=>$hdfstatus,
+			"productDetail"=>$productDetail,
 		);
 
 		$productID = $db->db_insert($tb1,$fields,'y');
-		if(sizeof($locationID)>0){
-			foreach ($locationID as $key => $value) {
+
+		unset($fields);
+		$fields = array(
+			"productID"=>$productID,
+		);
+				//print_pre($fields);
+		
+		$db->db_update($tb4,$fields, " locationTypeID = '".$locationTypeID."' AND locationID = '".$locationID."'");
+
+		if(sizeof($attrID)>0){
+			foreach ($attrID as $key => $value) {
 				unset($fields);
 				$fields = array(
 					"productID"=>$productID,
-					"locationID"=>$value,
-					"ps_unit"=>$ps_unit[$key],
+					"attrID"=>$value,
+					"value"=>$value[$key],
 
 				);
 				$db->db_insert($tb2,$fields);
-
 			}
 		}
+
 		if(sizeof($supID)>0){
 			foreach ($supID as $key => $value) {
 				unset($fields);
 				$fields = array(
 					"productID"=>$productID,
 					"supID"=>$value,
-
 				);
 				$db->db_insert($tb3,$fields);
 
@@ -96,67 +103,48 @@ switch($proc){
 		$fields = array(
 			"productCode"=>$productCode,
 			"productName"=>$productName,
-			"brandID"=>$hdfbrandID,
-			"productSize"=>$productSize,
-			"modelName"=>$modelName,
-			"productTypeID"=>$hdfproductTypeID,
-			"unitType"=>$unitType,
-			"productImg"=>$name,
-			"supID"=>$supID,
-			"productDetail"=>$productDetail,
-			/* "activeStatus"=>$activeStatus, */
-			"productUnit"=>str_replace(",","",$productUnit),
 			"name_nospace"=>str_replace(" ","",$productName),
-			"orderPoint"=>$orderPoint,
+			"productTypeID"=>$hdfproductTypeID,
+			"brandID"=>$hdfbrandID,
 			"locationTypeID"=>$locationTypeID,
+			"locationID"=>$locationID,
+			"productImg"=>$name,
+			"orderPoint"=>$orderPoint,
+			"productUnit"=>str_replace(",","",$productUnit),
+			"unitType"=>$hdfunitType,
+			"isEnabled"=>$hdfstatus,
+			"productDetail"=>$productDetail,
 		);
 
 		$db->db_update($tb1,$fields, " productID = '".$productID."'");
-		//$db->db_delete($tb2, " productID = '".$productID."'");
-		if(sizeof($locationID)>0){
-			foreach ($locationID as $key => $value) {
-				if ($_POST['ps_id'][$key]) {
-					unset($fields);
-					$fields = array(
-						"productID"=>$productID,
-						"locationID"=>$value,
-						"ps_unit"=>$ps_unit[$key],
-						"isDeleted"=>$_POST['isDeleted1'][$key],
-					);
-					$db->db_update($tb2,$fields, " ps_id = '".$_POST['ps_id'][$key]."'");
-				}else{
-					unset($fields);
-					$fields = array(
-						"productID"=>$productID,
-						"locationID"=>$value,
-						"ps_unit"=>$ps_unit[$key],
-						"isDeleted"=>0,
+		
+		$db->db_delete($tb2, " productID = '".$productID."'");
+		if(sizeof($attrID)>0){
+			foreach ($attrID as $key => $value) {
+				unset($fields);
+				$fields = array(
+					"productID"=>$productID,
+					"attrID"=>$value,
+					"value"=>$valuetxt[$key],
 
-					);
-					$db->db_insert($tb2,$fields);
-				}
+				);
+				// echo  "<pre>";
+				// print_r($valuetxt[2]);
+				// echo "</pre>";
+				// exit;
+				$db->db_insert($tb2,$fields);
 			}
 		}
 
+		$db->db_delete($tb3, " productID = '".$productID."'");
 		if(sizeof($supID)>0){
 			foreach ($supID as $key => $value) {
-				if ($_POST['runID'][$key]) {	
-					unset($fields);
-					$fields = array(
-						"productID"=>$productID,
-						"supID"=>$_POST['supID'][$key],
-						"isDeleted"=>$_POST['isDeleted'][$key],
-					);
-					$db->db_update($tb3,$fields, " runID = '".$_POST['runID'][$key]."'");
-				}else{
-					unset($fields);
-					$fields = array(
-						"productID"=>$productID,
-						"supID"=>$value,
-						"isDeleted"=>0,
-					);
-					$db->db_insert($tb3,$fields);
-				}
+				unset($fields);
+				$fields = array(
+					"productID"=>$productID,
+					"supID"=>$value,
+				);
+				$db->db_insert($tb3,$fields);
 			}
 		}
 

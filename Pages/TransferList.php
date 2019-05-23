@@ -170,9 +170,9 @@ chk_role($page_key,'isSearch',1) ;
                         $i++;
                         $del = '';
                         if($rec[billStstus]==1  && $_SESSION['userType']==1){
-                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="cencelData('.$rec['billID'].');"  title="ยกเลิก" >'.$img_cancel.'</a>';
+                          $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect"  onClick="infoData('.$rec['billID'].',\'del\');"  title="ยกเลิก" >'.$img_cancel.'</a>';
                         }
-                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['billID'].');" title="รายละเอียด">'.$img_info.'</a>'; 
+                        $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['billID'].',\'info\');" title="รายละเอียด">'.$img_info.'</a>'; 
 
                         ?> 
 
@@ -190,37 +190,24 @@ chk_role($page_key,'isSearch',1) ;
                           <input type="hidden" id="show_status_<?php echo $rec['billID'];?>" value="<?php echo $arr_bill_status[$rec['billStstus']];?>" >
                           <input type="hidden" id="show_cancelname_<?php echo $rec['billID'];?>" value="<?php echo $rec['cancelBy'];?>" >
                           <input type="hidden" id="show_canceldate_<?php echo $rec['billID'];?>" value="<?php echo conv_date($rec['cancelDate']);?>" >
+                        </td>
+                      </tr>
+                    <?php }
 
-
-                                                         <!--  <span  data-toggle="modal" data-target="#largeModal">
-                                                            <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
-                                                                <i class="material-icons">info_outline</i>
-                                                            </button>
-                                                          </span> -->
-                                                        </td>
-                                                      </tr>
-                                                    <?php }
-                                                    
-/* echo $sql_sup = "SELECT * FROM tb_supplier WHERE supID = '".$rec["supID"]."' ";
-$query_sup = $db->query($sql_sup);
-$rec_sup = $db->db_fetch_array($query_sup); */
-
-}else{
-  echo '<tr><td colspan="7" align="center">ไม่พบข้อมูล</td></tr>';
-}
-?>
-
-
-</tbody>
-</table>
-<!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-<!-- #END# Basic Examples -->
+                  }else{
+                    echo '<tr><td colspan="7" align="center">ไม่พบข้อมูล</td></tr>';
+                  }
+                  ?>
+                </tbody>
+              </table>
+              <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Basic Examples -->
 </div>
 </section>
 
@@ -229,207 +216,273 @@ $rec_sup = $db->db_fetch_array($query_sup); */
 
 </html>
 
-
+<!-- <div class="modal fade" id="ModalDetail1" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="row">
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" id="bill">ใบเบิกสินค้า </h1>
+          </div>
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" >เลขที่ใบเบิก :<span id="txt_no"></span></h1>
+          </div>
+          <div class="col-sm-12 text-right">
+           <h1 class="modal-title" id="largeModalLabel">ชื่อผู้เบิก :<span id="txt_name"></span></h1>
+         </div> 
+         <div class="col-sm-12 text-right">
+           <h1 class="modal-title" id="largeModalLabel">วันที่เบิก :<span id="txt_date"></span></h1>
+         </div>
+       </div>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-striped table-hover  dataTable " >
+        <thead>
+          <tr>
+            <th width="3%">ลำดับ</th>
+            <th style="text-align:left">รหัสสินค้า</th>
+            <th style="text-align:left">ชื่อสินค้า</th>
+            <th style="text-align:left">ยี่ห้อ</th>
+            <th style="text-align:left">รุ่น</th>
+            <th style="text-align:left">ขนาด</th>
+            <th width="15%" style="text-align:left">สถานที่จัดเก็บ</th>
+            <th width="3%" style="text-align:left">จำนวน</th>
+            <th style="text-align:left">หน่วยนับ</th>
+          </tr>
+        </thead>
+        <tbody id="ModalDATA">
+        </tbody>
+        </table>                          
+      </div>
+      <div class="modal-footer">
+        <div class="col-sm-12 text-center">
+          <a class="btn bg-red waves-effect" id="del" >ยกเลิกใบเบิก</a>
+          <a class="btn btn-default waves-effect" data-dismiss="modal">ปิด</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 <!-- Large Size -->
 <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-       <div class="row">
-        <div class="col-sm-12 text-right">
-         <h1 class="modal-title" id="bill">ใบเบิกสินค้า </h1>
-       </div>
-       <div class="col-sm-12 text-right">
-         <h1 class="modal-title" >เลขที่ใบเบิก :<span id="txt_no"></span></h1>
-       </div>
-       <div class="col-sm-12 text-right">
-         <h1 class="modal-title" id="largeModalLabel">ชื่อผู้เบิก :<span id="txt_name"></span></h1>
-       </div> 
-       <div class="col-sm-12 text-right">
-         <h1 class="modal-title" id="largeModalLabel">วันที่เบิก :<span id="txt_date"></span></h1>
-       </div>
-     </div>
-   </div>
-   <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" id="bill">ใบเบิกสินค้า </h1>
+          </div>
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" >เลขที่ใบเบิก :<span id="txt_no"></span></h1>
+          </div>
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" id="largeModalLabel">ชื่อผู้เบิก :<span id="txt_name"></span></h1>
+          </div> 
+          <div class="col-sm-12 text-right">
+            <h1 class="modal-title" id="largeModalLabel">วันที่เบิก :<span id="txt_date"></span></h1>
+          </div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" style="font-size:14px" > <!--js-basic-example-->
+          <thead>
+            <tr>
+              <th>ลำดับ</th>
+              <th>รหัสสินค้า</th>
+              <th>ชื่อสินค้า</th>
+              <th>ประเภท</th>
+              <th>ยี่ห้อ</th>
+              <th width="15%">คุณลักษณะ</th>
+              <th>ประเภทตำแหน่งจัดเก็บ</th>
+              <th>ตำแหน่งจัดเก็บ</th>
+              <th>จำนวน</th>
+              <th>หน่วยนับ</th>
+              <!-- <th></th>-->
+            </tr>
+          </thead>
+          <tbody id="ModalDATA">
+          </tbody>
+        </table>
+        <br>
+        <br>
 
+        <div class="row clearfix" id="test">
+          <div class="col-sm-4">
+            <b>สถานะ</b>
+            <div class="form-group" id="txt_status"></div>
+          </div>
+          <div class="col-sm-4">
+            <b>ชื่อผู้ยกเลิก</b>
+            <div class="form-group" id="txt_candel_name"></div> 
+          </div>
+          <div class="col-sm-4">
+            <b>วันที่ยกเลิก</b>
+            <div class="form-group" id="txt_candel_date"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="col-sm-12 text-center">
+          <a class="btn bg-red waves-effect" id="del">ยกเลิกใบเบิก</a>
+          <a class="btn btn-default waves-effect" id="print">พิมพ์</a>
+          <a class="btn btn-default waves-effect" data-dismiss="modal">ปิด</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-     <div class="form-group">
-      <div class="row">
-        <div class="col-sm-12" style="border:1px dotted #ccc!important;border-radius: 10px;">
-         <div class="col-sm-offset-1">
-          <div class="row clearfix">
-									<!--	<br/>
-										
-										<div class="form-group">
-										
-										<b>บริษัทคู่ค้า : </b> 
-                                      <div class="col-sm-4">
-                                        <b>เลขที่ใบเบิก</b>
-                                        <div class="form-group" id="txt_no"></div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <b>ชื่อผู้เบิก</b>
-                                        <div class="form-group" id="txt_name"></div>
-                                      </div>
-                                      <div class="col-sm-4">
-                                        <b>วันที่เบิก</b>
-                                        <div class="form-group" id="txt_date"></div>
-                                      </div>
+<script>
+  $(document).ready(function() {
+    $("#table1").DataTable({
+      "ordering": false,
+      "searching": false,
+    })
 
-                                    </div>	-->
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <table class="table table-bordered table-striped table-hover  dataTable " > <!--js-basic-example-->
-                            <thead>
-                              <tr>
-                                <th width="3%">ลำดับ</th>
-                                <th style="text-align:left">รหัสสินค้า</th>
-                                <th style="text-align:left">ชื่อสินค้า</th>
-                                <th style="text-align:left">ยี่ห้อ</th>
-                                <th style="text-align:left">รุ่น</th>
-                                <th style="text-align:left">ขนาด</th>
-                                <th width="15%" style="text-align:left">สถานที่จัดเก็บ</th>
-                                <!--<th style="text-align:left">ชื่อสินค้า</th> -->
-                                <th width="3%" style="text-align:left">จำนวน</th>
-                                <th style="text-align:left">หน่วยนับ</th>
-                                <!-- <th></th>-->
-                              </tr>
-                            </thead>
-                            <tbody id="ModalDATA">
-                            </tbody>
-                          </table>
-                          <br>
-                          <br>
-                          
-                          <div class="row clearfix" id="test">
-                            <div class="col-sm-4">
-                              <b>สถานะ</b>
-                              <div class="form-group" id="txt_status"></div>
-                            </div>
-                            <div class="col-sm-4">
-                              <b>ชื่อผู้ยกเลิก</b>
-                              <div class="form-group" id="txt_candel_name"></div> 
-                            </div>
-                            <div class="col-sm-4">
-                              <b>วันที่ยกเลิก</b>
-                              <div class="form-group" id="txt_candel_date"></div>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="modal-footer">
-                         <div class="col-sm-12 text-center">
-                          <a class="btn btn-default waves-effect" id="print" >พิมพ์</a>
-                          <a class="btn btn-default waves-effect" data-dismiss="modal">ปิด</a>
-                        </div>
-                      </div>
-                     <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
-                        <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
-                      </div> -->
-                    </div>
-                  </div>
-                </div>
-                <script>
-                  $(document).ready(function() {
-                   $("#table1").DataTable({
-                     "ordering": false,
-                     "searching": false,
-                   })
-                   
-                   if($("#ddl_search").val() == 1){
-                    $('#bill').show();
-                  }else if($("#ddl_search").val() == 2){
-                   $('#user').show();
-                 }else if($("#ddl_search").val() == 3){
-                   $('#date').show();
-                 }else if($("#ddl_search").val() == 4){
-                   $('#status').show();
-                 }
-               });
-                  function searchData(){
-                    $("#frm-search").submit();
-                  }
-                  function infoData(id){
+    if($("#ddl_search").val() == 1){
+      $('#bill').show();
+    }else if($("#ddl_search").val() == 2){
+      $('#user').show();
+    }else if($("#ddl_search").val() == 3){
+      $('#date').show();
+    }else if($("#ddl_search").val() == 4){
+      $('#status').show();
+    }
+  });
+  function searchData(){
+    $("#frm-search").submit();
+  }
+  function infoData(id,type){
 
-                    var no_status = $('#no_status_'+id).val();
-                    
-                    if(no_status == 1){
-                      $('#test').hide();
-                    }else{
-                      $('#test').show();
-                    }
-                    
-                    $('#txt_no').html($('#show_no_'+id).val());
-                    $('#txt_name').html($('#show_name_'+id).val());
-                    $('#txt_date').html($('#show_date_'+id).val());
-                    $('#txt_status').html($('#show_status_'+id).val());
-                    $('#txt_candel_name').html($('#show_cancelname_'+id).val());
-                    $('#txt_candel_date').html($('#show_canceldate_'+id).val());
-                    
-                    $('#print').attr('onclick', "printbill('"+id+"');");
+    $('#print').hide();
+    $('#del').hide();
+    var no_status = $('#no_status_'+id).val();
 
-                    var html ='';
-                    $.ajaxSetup({async: false});
-                    $.post('process/get_process.php',{proc:'get_product_bill',id:id},function(data){
-                      //alert(data);
-                      $.each(data,function(index,value){
-                        html += '<tr>';
-                        html += '<td align="center">'+(index+1)+'</td>';
-                        html += '<td>'+value['productCode']+'</td>';
-                        html += '<td>'+value['productName']+'</td>';
-                        html += '<td>'+value['brand']+'</td>';
-                        html += '<td>'+value['modelName']+'</td>';
-                        html += '<td>'+value['productSize']+'</td>';
-                        html += '<td>'+value['locationName']+'</td>';
-                        html += '<td align="right">'+value['billDescUnit']+'</td>';
-                        html += '<td>'+value['unitType']+'</td>';
+    if(no_status == 1){
+      $('#test').hide();
+    }else{
+      $('#test').show();
+    }
 
-                        html += '</tr>';
-                      });
-                    },'json');
-                    $('#ModalDATA').html(html);    
+    $('#txt_no').html($('#show_no_'+id).val());
+    $('#txt_name').html($('#show_name_'+id).val());
+    $('#txt_date').html($('#show_date_'+id).val());
+    $('#txt_status').html($('#show_status_'+id).val());
+    $('#txt_candel_name').html($('#show_cancelname_'+id).val());
+    $('#txt_candel_date').html($('#show_canceldate_'+id).val());
 
+    var html ='';
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'get_product_bill',id:id},function(data){
 
+      $.each(data,function(index,value){
+        html += '<tr>';
+        html += '<td align="center">'+(index+1)+'</td>';
+        html += '<td>'+value['productCode']+'</td>';
+        html += '<td>'+value['productName']+'</td>';
+        html += '<td>'+value['productTypeName']+'</td>';
+        html += '<td>'+value['brandName']+'</td>';
+        html += '<td>'+value['attr']+'</td>';
+        html += '<td>'+value['locationTypeName']+'</td>';
+        html += '<td>'+value['locationName']+'</td>';
+        html += '<td align="right">'+value['billDescUnit']+'</td>';
+        html += '<td>'+value['unitType']+'</td>';
 
-                    $('#ModalDetail').modal('show');
-                  }
-                  function addData(){
-                    $("#proc").val("add");
-                    $("#frm-search").attr("action","TransferInfo.php").submit();
-                  }
+        html += '</tr>';
+      });
+    },'json');
+    debugger
+    if (type == 'info') {
+      $('#print').show();
+      $('#print').attr('onclick', "printbill('"+id+"');");
+    }else if (type == 'del') {
+      $('#del').show();
+      $('#del').attr('onclick', 'cencelData('+id+')');
+    }
+    $('#ModalDATA').html(html);    
+    $('#ModalDetail').modal('show');
 
-                  function cencelData(id){
-                    if(confirm("ต้องการยกเลิกข้อมูลใช่หรือไม่ ?")){
-                      $("#proc").val("cancel");
-                      $("#billID").val(id);
-                      $("#frm-search").attr("action","process/Transfer_process.php").submit();
-                    }
-                  }
-                  function printbill(id){
-                   debugger
-                   $('#billID').val(id);
-                   $('#frm-search').attr('action','report/print_bill.php');
-                   $('#frm-search').attr('target','_blank');
-                   $('#frm-search').submit();
-                 }
+  }
 
-                 $("#ddl_search").change(function() {
-                  $('#bill').hide();
-                  $('#user').hide();
-                  $('#date').hide();
-                  $('#status').hide();
-                  if($(this).val() == 1){
-                    $('#bill').show();
-                  }else if($(this).val() == 2){
-                   $('#user').show();
-                 }else if($(this).val() == 3){
-                   $('#date').show();
-                 }else if($(this).val() == 4){
-                   $('#status').show();
-                 }
-               });
-             </script>
+  function delData(id){
+
+    var no_status = $('#no_status_'+id).val();
+
+    if(no_status == 1){
+      $('#test').hide();
+    }else{
+      $('#test').show();
+    }
+
+    $('#txt_no').html($('#show_no_'+id).val());
+    $('#txt_name').html($('#show_name_'+id).val());
+    $('#txt_date').html($('#show_date_'+id).val());
+    $('#txt_status').html($('#show_status_'+id).val());
+    $('#txt_candel_name').html($('#show_cancelname_'+id).val());
+    $('#txt_candel_date').html($('#show_canceldate_'+id).val());
+
+    $('#print').attr('onclick', "printbill('"+id+"');");
+
+    var html ='';
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'get_product_bill',id:id},function(data){
+
+      $.each(data,function(index,value){
+        html += '<tr>';
+        html += '<td align="center">'+(index+1)+'</td>';
+        html += '<td>'+value['productCode']+'</td>';
+        html += '<td>'+value['productName']+'</td>';
+        html += '<td>'+value['brand']+'</td>';
+        html += '<td>'+value['modelName']+'</td>';
+        html += '<td>'+value['productSize']+'</td>';
+        html += '<td>'+value['locationName']+'</td>';
+        html += '<td align="right">'+value['billDescUnit']+'</td>';
+        html += '<td>'+value['unitType']+'</td>';
+
+        html += '</tr>';
+      });
+    },'json');
+    $('#ModalDATA').html(html);
+
+    $('#ModalDetail1').modal('show');
+    $('#del').attr('onclick', 'cencelData('+id+')');
+  }
+
+  function addData(){
+    $("#proc").val("add");
+    $("#frm-search").attr("action","TransferInfo.php").submit();
+  }
+
+  function cencelData(id){
+    if(confirm("ต้องการยกเลิกข้อมูลใช่หรือไม่ ?")){
+      $("#proc").val("cancel");
+      $("#billID").val(id);
+      $("#frm-search").attr("action","process/Transfer_process.php").submit();
+    }
+  }
+
+  function printbill(id){
+    debugger
+    $('#billID').val(id);
+    $('#frm-search').attr('action','report/print_bill.php');
+    $('#frm-search').attr('target','_blank');
+    $('#frm-search').submit();
+  }
+
+  $("#ddl_search").change(function() {
+    $('#bill').hide();
+    $('#user').hide();
+    $('#date').hide();
+    $('#status').hide();
+    if($(this).val() == 1){
+      $('#bill').show();
+    }else if($(this).val() == 2){
+      $('#user').show();
+    }else if($(this).val() == 3){
+      $('#date').show();
+    }else if($(this).val() == 4){
+      $('#status').show();
+    }
+  });
+</script>

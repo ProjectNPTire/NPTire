@@ -32,10 +32,12 @@ $arrMenu = array(
 
     '3' => array(
       '0' => 'สินค้า',
-      '3_1' => 'ประเภทสินค้า',
-      '3_2' => 'ยี่ห้อสินค้า',
-      '3_3' => 'ตำแหน่งจัดเก็บสินค้า',
-      '3_4' => 'ข้อมูลสินค้า',
+      '3_1' => 'คุณลักษณะสินค้า',
+      '3_2' => 'ประเภทสินค้า',
+      '3_3' => 'ยี่ห้อสินค้า',
+      '3_4' => 'ประเภทตำแหน่งจัดเก็บสินค้า',
+      '3_5' => 'ตำแหน่งจัดเก็บสินค้า',
+      '3_6' => 'ข้อมูลสินค้า',
     ),
     '4_1' => 'สั่งซื้อสินค้า',
     '5_1' => 'รับเข้าสินค้า',
@@ -51,10 +53,12 @@ $arrMenu = array(
     '2_1' => 'SupplierList.php',
     '3' => array(
       '0' => '#',
-      '3_1' => 'ProductTypeList.php',
-      '3_2' => 'BrandList.php',
-      '3_3' => 'LocationList.php',
-      '3_4' => 'ProductList.php',
+      '3_1' => 'AttributeList.php',
+      '3_2' => 'ProductTypeList.php',
+      '3_3' => 'BrandList.php',
+      '3_4' => 'LocationTypeList.php',
+      '3_5' => 'LocationList.php',
+      '3_6' => 'ProductList.php',
     ),
     '4_1' => 'OrderList.php',
     '5_1' => 'ReceiveList.php',
@@ -153,7 +157,7 @@ $arrMenu = array(
                     <?php //print_pre($arrMenu['desc']);
                     foreach ($arrMenu['desc'] as $key => $value) {
                       if($arrMenu['desc'][$key] == 'หน้าหลัก'){
-                          //print_r($arrMenu['desc'][$key]);
+                          //print_r($page_key);
                         $active = '';
                         if($key==$page_key){
                           $active = 'class="active"';
@@ -165,7 +169,6 @@ $arrMenu = array(
                       <?php } 
 
                       else if($arrMenu['desc'][$key] == 'ค้นหาสินค้า'){
-                            //print_r($arrMenu['desc'][$key]);
                         $active = '';
                         if($key==$page_key){
                           $active = 'class="active"';
@@ -242,8 +245,11 @@ $arrMenu = array(
 
 
                       <?php }else{
+                       //print_r($key);
                        $active = '';
                        if($key==$page_key){
+                       // print_r($page_key);
+                       // print_r($key);
                         $active = 'class="active"';
                       }
                       ?>

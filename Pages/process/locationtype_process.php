@@ -2,33 +2,31 @@
 header ('Content-type: text/html; charset=utf-8');
 $path = "../../";
 include($path."include/config_header_top.php");
-
+//$path_pic = $path."file_img/";
 $url_back = '../'.$_REQUEST['form_page'];
 $proc = $_REQUEST['proc'];
-$brandID = $_REQUEST['brandID'];
+$locationTypeID = $_REQUEST['locationTypeID'];
+//$userID = $_REQUEST['userID'];
+//$img = $_FILES['img'];
 
-
-$tb1 = 'tb_brand';
+$tb1 = 'tb_locationtype';
 
 switch($proc){
 	case "add" :
 	try{
-
-
 		unset($fields);
 		$fields = array(
-			"brandCode"=>strtoupper($brandCode),
-			"brandName"=>$brandName,
-			"name_nospace"=>str_replace(" ","",$brandName),
+						//"locationID"=>$locationID,
+			"locationTypeCode"=>$locationTypeCode,
+			"locationTypeName"=>$locationTypeName,
+			"name_nospace"=>str_replace(" ","",$locationTypeName),
+			"locationType"=>$hdflocationType,
 			"isEnabled"=>$hdfstatus,
-
 		);
 				//print_pre($fields);
-		
 		$db->db_insert($tb1,$fields);
-		$detail = 'เพิ่มข้อมูลยี่ห้อ : '.$brandName;
+		$detail = "เพิ่มข้อมูลประเภทตำแหน่งสินค้า ".$locationTypeName;
 		save_log($detail);
-//exit;
 		$text=$save_proc;
 	}catch(Exception $e){
 		$text=$e->getMessage();
@@ -36,17 +34,22 @@ switch($proc){
 	break;
 	case "edit" :
 	try{
-
 		unset($fields);
 		$fields = array(
-			"brandCode"=>strtoupper($brandCode),
-			"brandName"=>$brandName,
-			"name_nospace"=>str_replace(" ","",$brandName),
+			"locationTypeCode"=>$locationTypeCode,
+			"locationTypeName"=>$locationTypeName,
+			"name_nospace"=>str_replace(" ","",$locationTypeName),
+			"locationType"=>$hdflocationType,
 			"isEnabled"=>$hdfstatus,
 		);
 
-		$db->db_update($tb1,$fields, " brandID = '".$brandID."'");
-		$detail = 'แก้ไขข้อมูลยี่ห้อ : '.$brandName;
+		$db->db_update($tb1,$fields, " locationTypeID = '".$locationTypeID."'");
+		// echo "<pre>";
+		
+		// print_r($db);
+		// echo "</pre>";
+//exit;
+		$detail = "แก้ไขข้อมูลตำแหน่งสินค้า locationTypeName : ".$locationTypeName;
 		save_log($detail);
 
 		$text=$edit_proc;
@@ -57,20 +60,10 @@ switch($proc){
 
 	case "delete" :
 	try{
-
-		$sql     = " SELECT *
-		FROM ".$tb1."
-		where $brandID ='".$brandID."' ";
-		$query = $db->query($sql);
-		$nums = $db->db_num_rows($query);
-		$rec = $db->db_fetch_array($query);
-		$detail = 'ยกเลิกข้อมูลยี่ห้อ  : '.$rec['brandName'];
+		$db->db_delete($tb1, " locationTypeID = '".$locationTypeID."'");
+		$detail = "ลบข้อมูลตำแหน่งสินค้า locationTypeName : ".$locationTypeName;
 		save_log($detail);
-
-
-		$db->db_delete($tb1, " brandID = '".$brandID."'");
 		$text=$del_proc;
-
 	}catch(Exception $e){
 		$text=$e->getMessage();
 	}

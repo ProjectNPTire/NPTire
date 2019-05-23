@@ -45,7 +45,15 @@ chk_role($page_key,'isAdd',1);
 								<input type="hidden" id="hdfproductSize" name="hdfproductSize" value="<?php echo $getproductSize; ?>">
 
 								<div class="row">
-									<div class="col-sm-4">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<b>เลขที่ใบสั่งซื้อ </b>
+											<div class="form-line">
+												<input type="text" class="form-control" id="txt_po" name="txt_po" value="<?php echo $txt_po; ?>">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-6">
 										<div class="form-group">
 											<b>บริษัทคู่ค้า <span style="color:red"> *</span></b>
 											<div class="form-group form-float">
@@ -65,17 +73,17 @@ chk_role($page_key,'isAdd',1);
 											<label id="supID_error" class="error" for="supID_error">กรุณาเลือก บริษัทคู่ค้า</label>
 										</div>
 									</div>
-									<div class="col-sm-8">
+								<!-- 	<div class="col-sm-8">
 										<div class="form-group">
 											<b>ที่อยู่ </b>
 											<div class="form-line">
 												<input type="text" class="form-control" id="sup_address" name="sup_address" value="" readonly>
 											</div>
 										</div>
-									</div>
+									</div> -->
 								</div>
 
-								<div class="row">
+							<!-- 	<div class="row">
 									<div class="col-sm-4">
 										<div class="form-group">
 											<b>จังหวัด </b>
@@ -100,7 +108,7 @@ chk_role($page_key,'isAdd',1);
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 
 								<div class="icon-and-text-button-demo align-right">
 									<button type="button" class="btn btn-primary waves-effect" onclick="openModal();">
@@ -112,14 +120,14 @@ chk_role($page_key,'isAdd',1);
 									<table id="tb-data" class="table table-hover table-bordered">
 										<thead>
 											<tr>
-												<th style="text-align:center">รหัสสินค้า</th>
-												<th style="text-align:center">ชื่อสินค้า</th>
-												<th style="text-align:center">ยี่ห้อ</th>
-												<th style="text-align:center">รุ่น</th>
-												<th style="text-align:center">ขนาด</th>
-												<th width="10%" style="text-align:right;">ราคา/หน่วย</th>
-												<th width="10%" style="text-align:right">จำนวน</th>
-												<th width="10%" style="text-align:right">รวม</th>
+												<th align="center">รหัสสินค้า</th>
+												<th align="center">ชื่อสินค้า</th>
+												<th align="center">ประเภท</th>
+												<th align="center">ยี่ห้อ</th>
+												<th width="15%" align="center">คุณลักษณะ</th>
+												<th width="10%" align="right;">ราคา/หน่วย</th>
+												<th width="10%" align="right;">จำนวน</th>
+												<th width="10%" align="right;">รวม</th>
 												<th></th>
 											</tr>
 										</thead>
@@ -171,6 +179,15 @@ chk_role($page_key,'isAdd',1);
 
 		$(".numb").inputFilter(function(value) {
 			return /^\d*$/.test(value); });
+
+		if($('#proc').val()=='add'){
+			var poID	 ='';
+			$.ajaxSetup({async: false});
+			$.post('process/get_process.php',{proc:'get_poID'},function(data){
+				poID =  data['name'];
+			},'json');
+			$('#txt_po').val(poID);
+		}
 	});
 
 	function getSupInfo(id){
@@ -180,10 +197,10 @@ chk_role($page_key,'isAdd',1);
 		$("#btn-submit").hide();
 		$.post( "process/ajax_response.php", { func: "getSupInfo", id: id }, function( data ) {
 
-			$("#sup_address").val((data).sup_address);
-			$("#province_name_th").val((data).province_name_th);
-			$("#district_name_th").val((data).district_name_th);
-			$("#subDistrict_name_th").val((data).subDistrict_name_th);
+			//$("#sup_address").val((data).sup_address);
+			//$("#province_name_th").val((data).province_name_th);
+			// $("#district_name_th").val((data).district_name_th);
+			// $("#subDistrict_name_th").val((data).subDistrict_name_th);
 			$("#hdfsupName").val((data).sup_name);
 
 
@@ -201,7 +218,9 @@ chk_role($page_key,'isAdd',1);
 		var code = '';
 		var name = '';
 		var sup_name = $('#hdfsupName').val();
+
 		$.post( "process/ajax_response.php", { func: "getProduct", code: code, name: name,supID: supID  }, function( data ) {
+			console.log(data);
 			var html = "";
 
 			html += '<div class="modal fade" id="frm-modal" tabindex="-1" role="dialog">';
@@ -251,14 +270,15 @@ chk_role($page_key,'isAdd',1);
 			html += '<table class="table table-bordered" id="tb-search">';
 			html += '<thead>';
 			html += '<tr>';
-			html += '<th>รหัส</th>';
-			html += '<th>ชื่อสินค้า</th>';
-			html += '<th>ยี่ห้อ</th>';
-			html += '<th>รุ่น</th>';
-			html += '<th>ขนาด</th>';
-			html += '<th>จำนวน</th>';
-			html += '<th>จุดสั่งซื้อ</th>';
-			html += '<th></th>';
+			html += '<th width="5%">ลำดับ</th>';
+			html += '<th width="10%">รหัสสินค้า</th>';
+			html += '<th width="30%">ชื่อสินค้า</th>';
+			html += '<th width="15%">ประเภท</th>';
+			html += '<th width="10%">ยี่ห้อ</th>';
+			html += '<th width="20%">คุณลักษณะ</th>';
+			html += '<th width="5%">จำนวน</th>';
+			html += '<th width="5%">จุดสั่งซื้อ</th>';
+			html += '<th width="10%"></th>';
 			html += '</tr>';
 			html += '</thead>';
 			html += '<tbody>';
@@ -270,17 +290,17 @@ chk_role($page_key,'isAdd',1);
 					
 				} */
 				for(var i = 0; i < data.length; i++ ){
-
+					var index = i+1;
 					html += '<tr>';
+					html += '<td align="center">'+index+'</td>';
 					html += '<td>'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
+					html += '<td>'+data[i].productTypeName+'</td>';
 					html += '<td>'+data[i].brandName+'</td>';
-					html += '<td>'+data[i].modelName+'</td>';
-					html += '<td>'+data[i].productSize+'</td>';
-					html += '<td>'+data[i].productUnit+'</td>';
-					html += '<td>'+data[i].orderPoint+'</td>';
-					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
-					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
+					html += '<td>'+data[i].attr+'</td>';
+					html += '<td align="right">'+data[i].productUnit+'</td>';
+					html += '<td align="right">'+data[i].orderPoint+'</td>';
+					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].productTypeName+'\', \''+data[i].brandName+'\', \''+data[i].attr+'\');">เลือก</button></td>';
 					html += '</tr>';
 				}
 			}
@@ -292,13 +312,8 @@ chk_role($page_key,'isAdd',1);
 
 			html += '</tbody>';
 			html += '</table>';
-			// html += '</div>'; //responsive
 
 			html += '</div>'; // body
-
-			// html += '<div class="modal-footer">';
-			// html += '<button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>';
-			// html += '</div>';
 
 			html += '</div>';
 			html += '</div>';
@@ -325,30 +340,32 @@ chk_role($page_key,'isAdd',1);
 			html += '<table class="table table-bordered" id="tb-search">';
 			html += '<thead>';
 			html += '<tr>';
-			html += '<th>รหัส</th>';
-			html += '<th>ชื่อสินค้า</th>';
-			html += '<th>ยี่ห้อ</th>';
-			html += '<th>รุ่น</th>';
-			html += '<th>ขนาด</th>';
-			html += '<th>จำนวน</th>';
-			html += '<th>จุดสั่งซื้อ</th>';
-			html += '<th></th>';
+			html += '<th width="5%">ลำดับ</th>';
+			html += '<th width="10%">รหัสสินค้า</th>';
+			html += '<th width="30%">ชื่อสินค้า</th>';
+			html += '<th width="15%">ประเภท</th>';
+			html += '<th width="10%">ยี่ห้อ</th>';
+			html += '<th width="20%">คุณลักษณะ</th>';
+			html += '<th width="5%">จำนวน</th>';
+			html += '<th width="5%">จุดสั่งซื้อ</th>';
+			html += '<th width="10%"></th>';
 			html += '</tr>';
 			html += '</thead>';
 			html += '<tbody>';
 
 			if(data){
 				for(var i = 0; i < data.length; i++ ){
+					var index = i+1;
 					html += '<tr>';
-					html += '<td align="center">'+data[i].productCode+'</td>';
+					html += '<td align="center">'+index+'</td>';
+					html += '<td>'+data[i].productCode+'</td>';
 					html += '<td>'+data[i].productName+'</td>';
+					html += '<td>'+data[i].productTypeName+'</td>';
 					html += '<td>'+data[i].brandName+'</td>';
-					html += '<td>'+data[i].modelName+'</td>';
-					html += '<td>'+data[i].productSize+'</td>';
-					html += '<td>'+data[i].productUnit+'</td>';
-					html += '<td>'+data[i].orderPoint+'</td>';
-					// html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandID+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');"><i class="material-icons">done</i></button></td>';
-					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].brandName+'\', \''+data[i].modelName+'\', \''+data[i].productSize+'\');">เลือก</button></td>';
+					html += '<td>'+data[i].attr+'</td>';
+					html += '<td align="right">'+data[i].productUnit+'</td>';
+					html += '<td align="right">'+data[i].orderPoint+'</td>';
+					html += '<td align="center"><button type="button" class="btn bg-grey waves-effect" onclick="addProduct(\''+data[i].productID+'\', \''+data[i].productCode+'\', \''+data[i].productName+'\', \''+data[i].productTypeName+'\', \''+data[i].brandName+'\', \''+data[i].attr+'\');">เลือก</button></td>';
 					html += '</tr>';
 				}
 			}
@@ -368,7 +385,7 @@ chk_role($page_key,'isAdd',1);
 
 	}
 
-	function addProduct(productID, productCode, productName, brandName, modelName, productSize){
+	function addProduct(productID, productCode, productName,productTypeName, brandName, attr){
 
 		var html = "";
 
@@ -388,9 +405,9 @@ chk_role($page_key,'isAdd',1);
 		html += '<tr>';
 		html += '<td align="center">'+productCode+'<input type="hidden" name="productID['+productID+']" value="'+productID+'"></td>';
 		html += '<td>'+productName+'</td>';
+		html += '<td>'+productTypeName+'</td>';
 		html += '<td>'+brandName+'</td>';
-		html += '<td>'+modelName+'</td>';
-		html += '<td>'+productSize+'</td>';
+		html += '<td>'+attr+'</td>';;
 		html += '<td><div class="form-line"><input type="text" value="1" name="price['+productID+']" class="form-control text-right numb" onblur="NumberFormat(this);calUnitPrice(this);" required></div></td>';
 		html += '<td><div class="form-line"><input type="text" value="1" id="qty['+productID+']" name="qty['+productID+']" class="form-control text-right numb" onblur="NumberFormat(this);calUnitPrice(this);get_nozero(this);" required></div></td>';
 		// html += '<td><div class="form-line"><input type="text" value="1.00" name="amount['+productID+']" class="form-control text-right" readonly></div></td>';
