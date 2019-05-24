@@ -74,7 +74,7 @@ $readonly = "readonly";
                             <input type="text" onkeyup="chkName();" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>"<?php echo $_SESSION["userType"] == "2" ?"readonly":""?>>
                           </div>
                           <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
-                          <label id="productName-error2" class="error" for="productName">มีชื่อฆสินค้านี้แล้ว</label>
+                          <label id="productName-error2" class="error" for="productName">มีชื่อสินค้านี้แล้ว</label>
                         </div>
                       </div>
                     </div>
@@ -262,7 +262,7 @@ $readonly = "readonly";
                           <tr>
                             <th width="10%">ลำดับ</th>
                             <th width="50%">คุณลักษณะ</th>
-                            <th width="30%"></th>   
+                            <th width="30%">รายละเอียด</th>   
                           </tr>
                         </thead>
                         <?php 
@@ -797,7 +797,7 @@ function chk(){
   var productCode = $('#productCode').val();
   $.ajaxSetup({async: false});
   $.post('process/get_process.php',{proc:'chk_productCode',productCode:productCode},function(data){
-    if(data==1){
+    if(data>0){
       $('#productCode-error').show();
       $('#chk').val(1);
     }else{
@@ -1057,7 +1057,7 @@ function ValidateSingleInput(oInput) {
         var productID= $('#productID').val();
         $.ajaxSetup({async: false});
         $.post('process/get_process.php',{proc:'chk_productName',productName:productName,productID:productID},function(data){
-          if(data>1){
+          if(data>0){
             $('#productName-error2').show();
             $('#chk1').val(1);
           }else{
