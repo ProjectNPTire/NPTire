@@ -155,7 +155,7 @@ $page_key ='5_1';
 							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(pending).length+'" value="'+addCommas(receive)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="checkReceiveQTY(this);NumberFormat(this);" required></div></td>';
 							// html += '<td><input type="hidden" id="locationTypeID" name="locationTypeID" value="'+data["po_desc"][i].locationTypeID+'">'+data["po_desc"][i].locationTypeName+'</td>';
 							html += '<td align="right">';
-							html += '<select onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
+							html += '<select onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\','+data["po_desc"][i].productID+');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
 							for (var j = 0; j < data["locationType"].length; j++) {
 								html += '<option value="'+data["locationType"][j].locationTypeID+'">'+data["locationType"][j].locationTypeName+'</option>';
 							}
@@ -262,12 +262,13 @@ function checkReceiveQTY(obj)
 		}
 	}
 
-	function get_location(parent_id,id){
+	function get_location(parent_id,id,productID){
 		console.log(id);
 		var locationTypeID = parent_id;
+		var productID = productID;
 		var html;
 		$.ajaxSetup({async: false});
-		$.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
+		$.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID,productID:productID},function(data){
 			//console.log(data);
 			$.each(data,function(index,value){
 				html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";

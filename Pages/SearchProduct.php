@@ -55,8 +55,8 @@ if ($chk != 0) {
               <div class="body">
                 <input type="hidden" id="chk" name="chk" value="0">
                 <!-- <?php echo isset($btn_search); ?> -->
-                <div class="row clearfix">                
-                  <div class="col-lg-2 form-control-label">
+                <div class="row clearfix">               
+                  <div class="col-lg-1 form-control-label">
                     <label for="email_address_2">ประเภท</label>
                   </div>                 
                   <div class="col-lg-4" id="type">
@@ -76,7 +76,7 @@ if ($chk != 0) {
                       </div>
                     </div>                     
                   </div>
-                  <div class="col-lg-1 form-control-label">
+                  <div class="col-lg-2 form-control-label">
                     <label for="email_address_2">ยี่ห้อ</label>
                   </div>
                   <div class="col-lg-4" id="brand">
@@ -98,7 +98,7 @@ if ($chk != 0) {
                   </div> 
                 </div>
                 <div class="row clearfix">
-                  <div class="col-lg-2 form-control-label">
+                  <div class="col-lg-1 form-control-label">
                     <label for="email_address_2">คุณลักษณะ</label>
                   </div>
                   <div class="col-lg-4" id="brand">
@@ -120,8 +120,8 @@ if ($chk != 0) {
                       </div>
                     </div>                     
                   </div>
-                  <div class="col-lg-1 form-control-label">
-                    <label for="email_address_2"></label>
+                  <div class="col-lg-2 form-control-label">
+                    <label for="email_address_2">รายละเอียด</label>
                   </div>
                   <div class="col-lg-4" id="brand">
                     <div class="form-group">

@@ -415,6 +415,7 @@ $readonly = "readonly";
                                   <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
                                     <option value="">เลือก</option>
                                     <?php
+                                    
                                     $q_location = $db->query($s_location);
                                     while ($r_location = $db->db_fetch_array($q_location)) {?>
                                       <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
@@ -890,7 +891,7 @@ function addRow(){
 
     html += '<tr>';
     html += '<td>';
-    html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\');" >';
+    html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
     html += '<option value="">เลือก</option>';
     <?php
     $q_locationtype = $db->query($s_locationtype);
@@ -1147,12 +1148,13 @@ function ValidateSingleInput(oInput) {
         },'json');
       }
 
-      function get_location(parent_id,id){
+      function get_location(parent_id,id,productID){
         debugger
         var locationTypeID = parent_id;
+        var productID = productID;
         var html  = '<option value="">เลือก</option>';
         $.ajaxSetup({async: false});
-        $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
+        $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID,productID:productID},function(data){
           console.log(data);
           $.each(data,function(index,value){
             html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
