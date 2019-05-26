@@ -899,7 +899,6 @@ function addRow(){
     html += '<tr>';
     html += '<td>';
     html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
-    // html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
     html += '<option value="">เลือก</option>';
     <?php
     $q_locationtype2 = $db->query($s_locationtype2);
@@ -930,6 +929,7 @@ function addRow(){
     html += '</tr>';
     $('#tb_data tbody').append(html);
     $('#rowid').val(rowid);
+    $('#locationTypeID_'+rowid).selectpicker('refresh');
     $('#locationID_'+rowid).selectpicker('refresh');
     $(".numb").inputFilter(function(value) {
       return /^\d*$/.test(value); });
