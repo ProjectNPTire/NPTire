@@ -32,14 +32,17 @@ if($ddl_search == 1){
  }
 }
 
-$field = "* ";
+$field = "  tb_location.locationID,locationCode,locationName,locationTypeName,tb_location.isEnabled,productName,locationType";
 $table = "tb_location";
 $pk_id = "locationID";
-$join = "tb_locationtype on tb_location.locationTypeID = tb_locationtype.locationTypeID";
+$join = " JOIN tb_locationtype on tb_location.locationTypeID = tb_locationtype.locationTypeID
+LEFT JOIN tb_productstore on tb_location.locationID = tb_productstore.locationID
+LEFT JOIN tb_product on tb_product.productID = tb_productstore.productID";
 $wh = "1=1  {$filter}";
-$orderby = "order by locationID ASC";
+$groupby = " GROUP by tb_location.locationID";
+$orderby = " order by tb_location.locationID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." join ".$join." where ".$wh ." ".$orderby; //.$limit;
+$sql = "select ".$field." from ".$table.$join." where ".$wh .$groupby.$orderby; //.$limit;
 // join tb_producttype on tb_producttype.productTypeID = ".$table.".productTypeID
 // join tb_brand on tb_brand.brandID = ".$table.".brandID
 
@@ -70,115 +73,124 @@ chk_role($page_key,'isSearch',1) ;
               <input type="hidden" id="locationID" name="locationID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-             
-
-              <div class="row clearfix">
-                <div class="col-sm-5">
-                  <div class="form-group">
-                    <div class="form-group form-float">
-                      <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
-                        <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
-                        <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อตำแหน่ง</option>
-                        <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทตำแหน่ง</option>
-                        <option value="3"<?php echo ($ddl_search==5)?"selected":"";?>>สถานะ</option>
-                      </select>
-                    </div>
-                  </div>                     
-                </div>
-                <div class="col-sm-5" id="name" style="display: none;">
-                  <div class="form-group">
-                    <div class="form-line">
-                      <input type="text " name="s_name" id="s_name" class="form-control" placeholder="ชื่อตำแหน่ง" value="<?php echo $s_name;?>">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-sm-5" id="status" style="display: none;">
-                  <div class="form-group">
-                    <div class="form-group form-float">
-                      <select name="s_status" id="s_status" class="form-control show-tick" data-live-search="true"  >
-                        <?php asort($arr_active);
-                        foreach ($arr_active as $key => $value) { ?>
-                         <option value="<?php echo $key;?>"  
-                          <?php 
-                          if(($rec['isEnabled']  != "")){
-                            echo ($rec['isEnabled']==$key)?"selected":"";
-                          }
-                          ?>><?php echo $value;?></option>
-                        <?php }  ?>
-                      </select>
-                    </div>
-                  </div>                     
-                </div>
-                <div class="col-sm-5" id="type" style="display: none;">
-                  <div class="form-group">
-                    <div class="form-group form-float">
-                      <select name="s_locationType" id="s_locationType" class="form-control show-tick" data-live-search="true"  >
-                        <option value="">เลือก</option>
-                          <?php
-                          $s_p=" SELECT * from tb_locationtype where isEnabled = 1";
-                          $q_p = $db->query($s_p);
-                          $n_p = $db->db_num_rows($q_p);
-                          while($r_p = $db->db_fetch_array($q_p)){?>
-                            <option value="<?php echo $r_p['locationTypeID'];?>"<?php echo ($s_locationType==$r_p['locationTypeID'])?"selected":"";?>> <?php echo $r_p['locationTypeName'];?></option>
-                          <?php }  ?>
-                      </select>
-                    </div>
-                  </div>                     
-                </div>
-                <div class="col-sm-2">
-                  <div class="icon-and-text-button-demo align-center">
-                    <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                  </div>
-                </div> 
-              </div>
-
-
-              <div class="icon-and-text-button-demo align-right">
-                <button type="button" style="<?php echo chk_role($page_key,'isadd');?>" class="btn btn-primary waves-effect" onClick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
-              </div>
-              <div>
-                <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
-                  <thead>
-                    <tr>
-                      <th width="5%">ลำดับ</th>
-                      <th width="10%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
-                      <th width="15%" style="text-align:center;">ชื่อตำแหน่งจัดเก็บ</th>
-                      <th width="10%" style="text-align:center;">ชื่อประเภทตำแหน่งจัดเก็บ</th>
-                      <th width="5%" style="text-align:center;">สถานะ</th>
-                      <th width="5%"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <?php
-                    if($nums>0){
-                      $i=0;
-                      while ($rec = $db->db_fetch_array($query)) {
-                        $i++;
-                        $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['locationID'].');">'.$img_edit.'</a>';
-                        // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['locationID'].');">'.$img_del.'</a>';
-                        ?>
-                        <tr>
-                          <td align="center"><?php echo $i;?></td>
-                          <td><?php echo $rec['locationCode'];?></td> 
-                          <td><?php echo $rec['locationName'];?></td>
-                          <td><?php echo $rec['locationTypeName'];?></td>
-                          <td><?php echo $arr_active[$rec['isEnabled']];?></td>
-                          <td align="center"><?php echo $edit.$del;?></td>
-                        </tr>
-                      <?php }
-                    }else{
-                      echo '<tr><td align="center" colspan="6">ไม่พบข้อมูล</td></tr>';
-                    }
-                    ?>
-                  </tbody>
-                </table>
-              </div>
-            </form>
-          </div>
-        </div>
+<!--              <?php echo $sql; ?>
+-->
+<div class="row clearfix">
+  <div class="col-sm-5">
+    <div class="form-group">
+      <div class="form-group form-float">
+        <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
+          <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
+          <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อตำแหน่ง</option>
+          <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทตำแหน่ง</option>
+          <option value="3"<?php echo ($ddl_search==5)?"selected":"";?>>สถานะ</option>
+        </select>
+      </div>
+    </div>                     
+  </div>
+  <div class="col-sm-5" id="name" style="display: none;">
+    <div class="form-group">
+      <div class="form-line">
+        <input type="text " name="s_name" id="s_name" class="form-control" placeholder="ชื่อตำแหน่ง" value="<?php echo $s_name;?>">
       </div>
     </div>
   </div>
+  <div class="col-sm-5" id="status" style="display: none;">
+    <div class="form-group">
+      <div class="form-group form-float">
+        <select name="s_status" id="s_status" class="form-control show-tick" data-live-search="true"  >
+          <?php asort($arr_active);
+          foreach ($arr_active as $key => $value) { ?>
+           <option value="<?php echo $key;?>"  
+            <?php 
+            if(($rec['isEnabled']  != "")){
+              echo ($rec['isEnabled']==$key)?"selected":"";
+            }
+            ?>><?php echo $value;?></option>
+          <?php }  ?>
+        </select>
+      </div>
+    </div>                     
+  </div>
+  <div class="col-sm-5" id="type" style="display: none;">
+    <div class="form-group">
+      <div class="form-group form-float">
+        <select name="s_locationType" id="s_locationType" class="form-control show-tick" data-live-search="true"  >
+          <option value="">เลือก</option>
+          <?php
+          $s_p=" SELECT * from tb_locationtype where isEnabled = 1";
+          $q_p = $db->query($s_p);
+          $n_p = $db->db_num_rows($q_p);
+          while($r_p = $db->db_fetch_array($q_p)){?>
+            <option value="<?php echo $r_p['locationTypeID'];?>"<?php echo ($s_locationType==$r_p['locationTypeID'])?"selected":"";?>> <?php echo $r_p['locationTypeName'];?></option>
+          <?php }  ?>
+        </select>
+      </div>
+    </div>                     
+  </div>
+  <div class="col-sm-2">
+    <div class="icon-and-text-button-demo align-center">
+      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
+    </div>
+  </div> 
+</div>
+
+
+<div class="icon-and-text-button-demo align-right">
+  <button type="button" style="<?php echo chk_role($page_key,'isadd');?>" class="btn btn-primary waves-effect" onClick="addData();"><span>เพิ่มข้อมูล</span><i class="material-icons">add</i></button>
+</div>
+<div>
+  <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
+    <thead>
+      <tr>
+        <th width="5%">ลำดับ</th>
+        <th width="10%" style="text-align:center;">รหัสตำแหน่งจัดเก็บ</th>
+        <th width="15%" style="text-align:center;">ชื่อตำแหน่งจัดเก็บ</th>
+        <th width="10%" style="text-align:center;">ชื่อประเภทตำแหน่งจัดเก็บ</th>
+        <th width="10%" style="text-align:center;">สินค้า</th>
+        <th width="5%" style="text-align:center;">สถานะ</th>
+        <th width="5%"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
+      if($nums>0){
+        $i=0;
+        while ($rec = $db->db_fetch_array($query)) {
+          $i++;
+          $status='';
+          $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['locationID'].');">'.$img_edit.'</a>';
+                        // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['locationID'].');">'.$img_del.'</a>';
+          if ($rec['locationType'] != 3) {
+            if($rec['productName'] != ''){
+              $status = $rec['productName'];
+            }
+          }
+
+          ?>
+          <tr>
+            <td align="center"><?php echo $i;?></td>
+            <td><?php echo $rec['locationCode'];?></td> 
+            <td><?php echo $rec['locationName'];?></td>
+            <td><?php echo $rec['locationTypeName'];?></td>
+            <td><?php echo $status;?></td>
+            <td><?php echo $arr_active[$rec['isEnabled']];?></td>
+            <td align="center"><?php echo $edit.$del;?></td>
+          </tr>
+        <?php }
+      }else{
+        echo '<tr><td align="center" colspan="6">ไม่พบข้อมูล</td></tr>';
+      }
+      ?>
+    </tbody>
+  </table>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section>
 <?php include 'js.php';?>

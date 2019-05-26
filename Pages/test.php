@@ -14,29 +14,45 @@
 </head>
 <body>
 
-<table width="100%" border="1">
-  <tr>
-<td rowspan="4">15/05/2019</td>
-<td colspan="2" rowspan="2">001</td>
-<td>นาย ก</td>
-<td>นาย ข</td>
-  </tr>
-  <tr>
-<td width="12%">2</td>
-<td width="38%">&nbsp;</td>
-<td>&nbsp;</td>
-  </tr>
-  <tr>
-<td>3</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-  </tr>
-  <tr>
-<td>4</td>
-<td>&nbsp;</td>
-<td>&nbsp;</td>
-  </tr>
-</table>
+	<table width="100%" border="1">
+		<tr>
+			<th>วันที่</td>
+			<th >รหัส</th>
+			<th>ชื่อ</th>		
+		</tr>
+		<tr>
+			<td width="15%" rowspan="4">15/05/2019</td>
+			<td  rowspan="2">001</td>
+			<td>นาย ก</td>		
+		</tr>
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td rowspan="2">002</td>
+			<td>นาย ก</td>
+		</tr>
+
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td width="15%" rowspan="4">17/05/2019</td>
+			<td rowspan="2">001</td>
+			<td>นาย ก</td>		
+		</tr>
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td  rowspan="2">002</td>
+			<td>นาย ก</td>
+		</tr>
+
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+	</table>
 
 
 </body>

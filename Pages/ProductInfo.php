@@ -20,9 +20,13 @@ $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 $s_location = "SELECT * from tb_location order by locationName ";
 $s_locationtype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
-    JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
-    WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore where productID ='".$productID."') 
-    ORDER BY FIELD(locationType,3,1,2)";
+JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore where productID ='".$productID."') 
+ORDER BY FIELD(locationType,3,1,2)";
+$s_locationtype2 = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
+JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore) 
+ORDER BY FIELD(locationType,3,1,2)";
 // $locationTypeID =  $rec['locationTypeID'];
 
 // if ($locationTypeID == 1) {
@@ -895,11 +899,12 @@ function addRow(){
     html += '<tr>';
     html += '<td>';
     html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
+    // html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
     html += '<option value="">เลือก</option>';
     <?php
-    $q_locationtype = $db->query($s_locationtype);
-    while ($r_locationtype = $db->db_fetch_array($q_locationtype)) {?>
-      html +='<option value="<?php echo $r_locationtype['locationTypeID'];?>"><?php echo $r_locationtype['locationTypeName'];?></option>';
+    $q_locationtype2 = $db->query($s_locationtype2);
+    while ($r_locationtype2 = $db->db_fetch_array($q_locationtype2)) {?>
+      html +='<option value="<?php echo $r_locationtype2['locationTypeID'];?>"><?php echo $r_locationtype2['locationTypeName'];?></option>';
     <?php } ?>
     html +='</select>';
     html +='</td>';
