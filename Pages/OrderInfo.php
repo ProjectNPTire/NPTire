@@ -446,7 +446,7 @@ chk_role($page_key,'isAdd',1);
 	}
 
 	function calUnitPrice(obj){
-		debugger
+		
 		var price = Number($(obj).parent().parent().parent().find('td:eq(5) input').val().replace(/[^0-9.-]+/g,""));;
 		var qty = $(obj).parent().parent().parent().find('td:eq(6) input').val();
 		var amount = price*qty;

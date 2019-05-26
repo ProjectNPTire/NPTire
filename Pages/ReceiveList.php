@@ -211,7 +211,7 @@ if($ddl_search == 1){
        "ordering": false,
        "searching": false,
      })
-     debugger
+     
      if($("#ddl_search").val() == 1){
       $('#bill').show();
     }else if($("#ddl_search").val() == 2){

@@ -57,7 +57,7 @@ chk_role($page_key,'isAdd',1);
                                     <div class="form-group">
                                         <b>บริษัทคู่ค้า</b>
                                         <div class="form-line">
-                                            <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชือบริษัทคู่ค้า" value="<?php echo $rec['sup_name'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?> onkeyup="chk_sup();">
+                                            <input type="text" id="sup_name" name="sup_name" class="form-control" placeholder="ชือบริษัทคู่ค้า" value="<?php echo $rec['sup_name'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?> onchange="chk_sup();">
                                         </div>
                                         <label id="sup_name_error" class="error" for="sup_name">กรุณาระบุ ชื่อคู่ค้า/บริษัท</label>
                                         <label id="sup_name2_error" class="error" for="sup_name">มีชื่อบริษัทนี้แล้ว</label>
@@ -152,7 +152,7 @@ chk_role($page_key,'isAdd',1);
                             <div class="form-group">
                                 <b>รหัสไปรษณีย์</b>
                                 <div class="form-line">
-                                 <input type="text" class="form-control" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                                 <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                              </div>
                              <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
                          </div>
@@ -267,6 +267,9 @@ chk_role($page_key,'isAdd',1);
         $('.form-line').removeClass('focused');
         //$('.focused').removeClass('focused');
         $('.error').hide();
+        $(".numb").inputFilter(function(value) {
+          return /^\d*$/.test(value);
+        });
 
         if($('#proc').val()=='add'){
           var supCode ='';
@@ -472,7 +475,7 @@ function chk_sup(){
 }
 
 function isPhoneNo(input,type){
-    debugger
+    
     var res = input.value.replace(/-/g, "");
     if (type == 1) {
         var regExp = /^02([0-9]{7})$/i;

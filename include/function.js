@@ -1,5 +1,4 @@
 function chkFormatNam (str,input) {// Can Be {0-9,-, .}
-debugger
 	strlen = str.length;
 	var amount = '';
 	var dot = 0;

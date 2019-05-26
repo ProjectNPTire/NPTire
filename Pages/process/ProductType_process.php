@@ -27,7 +27,13 @@ switch($proc){
 
 		);
 				 //print_pre($fields);
-		$db->db_insert($tb1,$fields);
+		$productTypeID = $db->db_insert($tb1,$fields,'y');
+
+
+				// echo  "<pre>";
+				// print_r($productTypeID);
+				// echo "</pre>";
+				// exit;
 
 		if(sizeof($attrID)>0){
 			foreach ($attrID as $key => $value) {
@@ -76,6 +82,11 @@ switch($proc){
 					"seq"=>$seq[$key],
 
 				);
+
+				// echo  "<pre>";
+				// print_r($attrID);
+				// echo "</pre>";
+				// exit;
 				$db->db_insert($tb2,$fields);
 			}
 		}

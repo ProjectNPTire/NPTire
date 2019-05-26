@@ -154,7 +154,7 @@ chk_role($page_key,'isSearch',1) ;
                       </tr>
                     <?php }
                   }else{
-                    echo '<tr><td colspan="5">ไม่พบข้อมูล</td></tr>';
+                    echo '<tr><td align="center" colspan="5">ไม่พบข้อมูล</td></tr>';
                   }
                   ?>
                 </tbody>

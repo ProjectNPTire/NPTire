@@ -26,7 +26,7 @@ switch($PROC){
 
 	case "get_location" :
 	$locationTypeID = $_POST['locationTypeID'];
-	$sql =" SELECT locationID as DATA_VALUE ,locationName as DATA_NAME from tb_location where  locationTypeID ='".$locationTypeID."' AND productID = 0 order by locationName asc ";
+	$sql =" SELECT locationID as DATA_VALUE ,locationName as DATA_NAME from tb_location where  locationTypeID ='".$locationTypeID."'";
 	$query=$db->query($sql);
 	$OBJ=array();
 	while ($rec = $db->db_fetch_array($query)){
@@ -323,6 +323,17 @@ switch($PROC){
 	$nums = $db->db_num_rows($query);
 	$rec = $db->db_fetch_array($query);
 	$OBJ['name']=$rec['brandCode'];
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_editeattr" :
+
+	$sql=" SELECT * from tb_attribute join tb_typeattr on tb_typeattr.attrID = tb_attribute.attrID ";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
 	echo json_encode($OBJ);
 	exit();
 	break;

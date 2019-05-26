@@ -249,7 +249,7 @@ $readonly = "readonly";
 			}
 
 			if($('#rowid').val() == 0){
-				debugger
+				
 				$('#tb_data_attr-error').show();
 				return false;
 			}else{
@@ -382,7 +382,7 @@ $readonly = "readonly";
 
 function chkEdit(){
 	if($('#proc').val()=='edit'){
-		debugger
+		
 		var productTypeID = $('#productTypeID').val();
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
@@ -415,7 +415,7 @@ function chkName(){
 }
 
 function chkCode(){
-	debugger
+	
 	var productTypeCode= $('#productTypeCode').val();
 	var productTypeID= $('#productTypeID').val();
 	$.ajaxSetup({async: false});

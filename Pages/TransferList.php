@@ -392,7 +392,7 @@ chk_role($page_key,'isSearch',1) ;
         html += '</tr>';
       });
     },'json');
-    debugger
+    
     if (type == 'info') {
       $('#print').show();
       $('#print').attr('onclick', "printbill('"+id+"');");
@@ -463,7 +463,7 @@ chk_role($page_key,'isSearch',1) ;
   }
 
   function printbill(id){
-    debugger
+    
     $('#billID').val(id);
     $('#frm-search').attr('action','report/print_bill.php');
     $('#frm-search').attr('target','_blank');

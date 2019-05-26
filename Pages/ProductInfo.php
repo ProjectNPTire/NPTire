@@ -126,13 +126,13 @@ $readonly = "readonly";
                 </div>
 
                 <div class="row clearfix">
-                  <div class="col-sm-4">
+                 <!--  <div class="col-sm-4">
                     <b>ประเภทตำแหน่งจัดเก็บ</b>
                     <div class="form-group form-float">
                       <select name="locationTypeID" id="locationTypeID" onchange="get_hdflocationType(this.value,'locationID,hdflocationTypeID');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>                   
                         <option value="">เลือก</option>a                 
                         <?php
-                        $s_pdtype=" SELECT * from tb_locationtype order by locationTypeID asc";
+                        $s_pdtype=" SELECT * FROM `tb_locationtype` where  locationTypeID = '".$rec['locationTypeID']."' OR locationTypeID in (SELECT locationTypeID FROM `tb_location` WHERE productID = 0 GROUP by locationTypeID)";
                         $q_pdtype = $db->query($s_pdtype);
                         $n_pdtype = $db->db_num_rows($q_pdtype);
                         while($r_pdtype = $db->db_fetch_array($q_pdtype)){
@@ -161,20 +161,7 @@ $readonly = "readonly";
                       <input type="hidden" name="hdflocationID" id="hdflocationID" value="<?php echo $rec['locationTypeID'] ?>">
                       <label id="locationID-error" class="error" for="locationID">กรุณาเลือก ตำแหน่งจัดเก็บ</label>
                     </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <b>รูปภาพ</b>
-                    <div class="form-group">
-                      <div class="form-line">
-                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
-                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
-                      </div>
-                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
-                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
-                    </div>
-                  </div>       
-                </div>
-                <div class="row clearfix">
+                  </div> -->
                   <div class="col-sm-4">
                     <b>หน่วยนับ</b>
                     <div class="form-group form-float">
@@ -200,6 +187,19 @@ $readonly = "readonly";
                     </div>
                   </div>
                   <div class="col-sm-4">
+                    <b>รูปภาพ</b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
+                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
+                      </div>
+                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
+                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
+                    </div>
+                  </div>       
+                </div>
+                <div class="row clearfix">
+                  <div class="col-sm-4">
                     <b>จำนวนสินค้า </b>
                     <div class="form-group">
                       <div class="form-line">
@@ -207,8 +207,6 @@ $readonly = "readonly";
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row clearfix">
                   <div class="col-sm-4">
                     <b>การใช้งานข้อมูล</b>
                     <div class="form-group form-float">
@@ -226,7 +224,9 @@ $readonly = "readonly";
                       <input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
                     </div>
                   </div>
-                  <div class="col-sm-8">
+                </div>
+                <div class="row clearfix">
+                  <div class="col-sm-12">
                     <b>รายละเอียด </b>
                     <div class="form-group">
                       <div class="form-line">
@@ -240,7 +240,7 @@ $readonly = "readonly";
                 <ul class="nav nav-tabs tab-nav-right" role="tablist">
                   <li role="presentation" class="active"><a href="#home" data-toggle="tab">คุณลักษณะ</a></li>
                   <li role="presentation"><a href="#messages" data-toggle="tab">คู่ค้า</a></li>
-                  <!--              <li role="presentation"><a href="#profile" data-toggle="tab">ตำแหน่งจัดเก็บ</a></li> -->
+                  <li role="presentation"><a href="#profile" data-toggle="tab">ตำแหน่งจัดเก็บ</a></li>
                 </ul>
                 <div class="tab-content">
                   <div role="tabpanel" class="tab-pane fade in active" id="home">
@@ -254,7 +254,6 @@ $readonly = "readonly";
                       $query_attr = $db->query($sql_attr);
                       $nums_attr = $db->db_num_rows($query_attr);             
                       ?>
-                      <!--     <a  class="btn btn-primary waves-effect" onClick="popup();"><span>เลือกคุณลักษณะ</span><i class="material-icons">add_box</i></a> -->
                     </div>
                     <div class="form-group">
                       <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data_attr" >
@@ -302,7 +301,7 @@ $readonly = "readonly";
                   <div role="tabpanel" class="tab-pane fade" id="messages">
                     <?php
                     $total=0; $a=1;
-                    $sql_sub  = " SELECT * FROM tb_productsupplier  where productID ='".$productID."' and isDeleted != 1";
+                    $sql_sub  = " SELECT * FROM tb_productsupplier  where productID ='".$productID."'";
 
                     $query_sub = $db->query($sql_sub);
                     $nums_sub = $db->db_num_rows($query_sub);             
@@ -328,7 +327,6 @@ $readonly = "readonly";
                               <tr>
                                 <td>
                                   <input type="hidden" name="runID[]" id="runID<?php echo $a;?>" value="<?php echo $rec_sub['runID'];?>">
-                                  <input type="hidden" name="isDeleted[]" id="isDeleted<?php echo $a;?>" value="0">
                                   <select name="supID[]" id="supID_<?php echo $a;?>" class="form-control show-tick" data-live-search="true" onchange="chk_sup(this,<?php echo $rec_sub['supID'];?>);">
                                     <option value="">เลือก</option>
                                     <?php
@@ -370,6 +368,67 @@ $readonly = "readonly";
                       </table>
                     </div>
                   </div>
+                  <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <?php
+                    $i=0; $total=0;
+                    $sql_location  = " SELECT * FROM tb_productstore  where productID ='".$productID."'";
+
+                    $query_location = $db->query($sql_location);
+                    $nums_location = $db->db_num_rows($query_location);
+                    if($nums_location>0){
+                      ?>
+                      <div class="icon-and-text-button-demo align-right">
+                        <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
+                      </div>
+                    <?php } ?>
+                    <div class="form-group">
+                      <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
+                        <thead>
+                          <tr>
+                            <th width="70%">สถานที่จัดเก็บสินค้า</th>
+                            <th width="20%">จำนวน</th>
+                            <th width="10%">จัดการ</th>   
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          if($nums_location>0){
+                           while ($rec_location = $db->db_fetch_array($query_location)) {
+                            $i++;
+                            $del = '<a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTB(this,'.$rec_location['locationID'].','.$i.');">'.$img_del.'</a>';
+                            ?>
+                            <tr>
+                              <td>
+                                <input type="hidden" name="ps_id[]" id="ps_id<?php echo $i;?>" value="<?php echo $rec_location['ps_id'];?>">
+                                <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                                  <option value="">เลือก</option>
+                                  <?php
+                                  $q_location = $db->query($s_location);
+                                  while ($r_location = $db->db_fetch_array($q_location)) {?>
+                                    <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                                  <?php } ?>
+                                </select>
+                                <label id="locationID<?php echo $i;?>-error" class="error" for="locationID_<?php echo $i;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
+                              </td>
+                              <td>
+                                <div class="form-line">
+                                  <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
+                                </div>
+                              </td>
+                              <td style="text-align: center;">
+                                <?php echo $del;?>
+                              </td>
+                            </tr>
+                          <?php   }
+                        }else{
+                          echo '<tr id="nodata"><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                        } ?>
+                      </tbody>
+                    </table>
+                    <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
+                    <label id="tb_data-error2" class="error" for="tb_data">กรุณาเลือกตำแหน่งจัดเก็บ</label>
+                  </div>
+                </div>
                 </div>
                 <input type="hidden" id="total_unit" value="<?php echo $total;?>">
                 <input type="hidden" id="rowid" value="<?php echo $i;?>">
@@ -728,10 +787,10 @@ function get_code(){
         html += '<tr>';
         html += '<td align="center">'+i+'</td>';
         html += '<td>'+value['attrName'];
-        html += '<input type="hidden" id="F_attrName_'+index+'" value="'+value['attrName']+'">';
+        html += '<input type="hidden" name="attrID[]" id="F_attrID_'+index+'" value="'+value['attrID']+'">';
         html += '</td>';
         html += '<td align="center">';
-        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" id="F_valuetxt_'+index+'" value="" ></div><label id="valuetxt_'+index+'-error" class="error" for="F_valuetxt_'+index+'">กรุณาเลือก</label></div>';
+        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_valuetxt_'+index+'" value="" ></div><label id="valuetxt_'+index+'-error" class="error" for="F_valuetxt_'+index+'">กรุณาเลือก</label></div>';
         html += '</td>';
         html += '</tr>';
         i++;
@@ -938,8 +997,6 @@ function addRow(){
             alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีการสั่งซื้อสินค้าจากบริษัทคู่ค้านี้อยู่');
             return false;
           }else{
-
-            $('#isDeleted'+index).val(1);
             var row = parseInt($('#tb_datasup tbody tr').length);     
             if (row != 1) {
               //$('#nodatasup').show();

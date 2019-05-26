@@ -209,7 +209,7 @@ if ($chk != 0) {
     //$('#tb_data').hide();
   });
   function searchData(){
-    debugger
+    
     if ($('#attrID').val() != "") {
       if ($('#txt_value').val() == "") {
         $('#value-error').show();
@@ -222,7 +222,7 @@ if ($chk != 0) {
   }
 
   function get_value(parent_id,id){
-    debugger
+    
     var html  = '<option value="">เลือก</option>';
     $.ajaxSetup({async: false});  
     $.post('process/get_process.php',{proc:'get_value',parent_id:parent_id},function(data){

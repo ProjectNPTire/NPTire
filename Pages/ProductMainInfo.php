@@ -307,7 +307,7 @@ function OnCancel()
  }
 
 function chkinput(){
-debugger
+
 
   if($('#chk').val()==1){
       $('#productCode-error').show();

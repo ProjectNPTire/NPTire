@@ -152,11 +152,15 @@ chk_role($page_key,'isSearch',1);
                                     <div class="form-group">
                                       <div class="form-group form-float">
                                         <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
-                                          <option value="">เลือก</option>
-                                          <?php  ;
-                                          foreach ($arr_active as $key => $value) { ?>
-                                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
-                                          <?php } ?>
+                                         <?php asort($arr_active);
+                                         foreach ($arr_active as $key => $value) { ?>
+                                           <option value="<?php echo $key;?>"  
+                                            <?php 
+                                            if(($status  != "")){
+                                              echo ($status==$key)?"selected":"";
+                                            }
+                                            ?>><?php echo $value;?></option>
+                                          <?php }  ?>
                                         </select>
                                       </div>
                                     </div>                     

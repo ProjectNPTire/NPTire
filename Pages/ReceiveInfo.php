@@ -74,7 +74,7 @@ $page_key ='5_1';
 
 		$(".numb").inputFilter(function(value) {
 			return /^\d*$/.test(value); });
-		debugger
+		
 		if ($("#poID").val() != "") {
 			getPOInfo()
 		}
@@ -119,16 +119,16 @@ $page_key ='5_1';
 					html += '<tr>';
 					//html += '<th width="5%">ลำดับ</th>';
 					html += '<th align="center">รหัสสินค้า</th>';
-					html += '<th width="15%" align="center"">ชื่อสินค้า</th>';
-					html += '<th width="10%" align="center">ประเภทสินค้า</th>';
+					html += '<th align="center"">ชื่อสินค้า</th>';
+					html += '<th align="center">ประเภทสินค้า</th>';
 					html += '<th align="center"">ยี่ห้อ</th>';
-					html += '<th width="12%" align="center"">คุณลักษณะ</th>';
+					html += '<th width="11%" align="center">คุณลักษณะ</th>';
 					html += '<th align="center">จำนวน</th>';
 					html += '<th align="center">รับแล้ว</th>';
 					html += '<th align="center">ค้างรับ</th>';
 					html += '<th width="8%" align="center">รับเข้า</th>';
-					html += '<th align="center">ประเภทตำแหน่งเก็บ</th>';
-					html += '<th width="15%" align="center">ตำแหน่งเก็บ</th>';
+					html += '<th width="11%" align="center">ประเภทตำแหน่งเก็บ</th>';
+					html += '<th align="center">ตำแหน่งเก็บ</th>';
 					html += '</tr>';
 					html += '</thead>';
 					html += '<tbody>';
@@ -153,49 +153,63 @@ $page_key ='5_1';
 							html += '<td align="right">'+addCommas(received_qty)+'</td>';
 							html += '<td align="right">'+addCommas(pending)+'</td>';
 							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(pending).length+'" value="'+addCommas(receive)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="checkReceiveQTY(this);NumberFormat(this);" required></div></td>';
-							html += '<td><input type="hidden" id="locationTypeID" name="locationTypeID" value="'+data["po_desc"][i].locationTypeID+'">'+data["po_desc"][i].locationTypeName+'</td>';
-
-							if (data["location"]) {
-								var count = 0;
-								let result = [];
-								for (var j = 0; j < data["location"].length; j++) {
-									if (data["po_desc"][i].tempID == data["location"][j].tempID){
-										// count += (parseInt(data["location"][j].locationQty)-parseInt(data["location"][j].total));
-
-										// html += '<input type="hidden" id="qty['+data["po_desc"][i].productID+']"value="'+count+'">';
-										result.push(data["location"][j]);
-									}
-									// }else if (data["po_desc"][i].locationTypeID == 2 && data["location"][j].locationTypeID == 2){
-									// 	count += (parseInt(data["location"][j].locationQty)-parseInt(data["location"][j].total));
-									// 	html += '<input type="hidden" id="qty['+data["po_desc"][i].productID+']"value="'+count+'">';
-									// 	result.push(data["location"][j]);
-
-									// }
-								}
-								if (result.length == 0) {
-									if(confirm('ไม่มีตำแหน่งที่จัดเก็บได้ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].productName)){
-										window.location.href = "LocationInfo.php??locationTypeID="+data["po_desc"][i].locationTypeID;
-									}else{
-										window.location.href = "ReceiveList.php";
-									}								
-									return;
-								}
-
-								html += '<td align="right">';
-								html += '<select name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
-								for (var a = 0; a < result.length; a++) {
-									html += '<option value="'+result[a].locationID+'">'+result[a].locationName+'</option>';
-								}	
-								html += '</select></td>';
-
-							}else{
-								if(confirm('ไม่มีตำแหน่งที่จัดเก็บได้ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].productName)){
-									window.location.href = "LocationInfo.php??locationTypeID="+data["po_desc"][i].locationTypeID;
-								}else{
-									window.location.href = "ReceiveList.php";
-								}								
-								return;
+							// html += '<td><input type="hidden" id="locationTypeID" name="locationTypeID" value="'+data["po_desc"][i].locationTypeID+'">'+data["po_desc"][i].locationTypeName+'</td>';
+							html += '<td align="right">';
+							html += '<select onchange="get_location(this.value,"'+data["location"][j].locationID+'");" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
+							for (var j = 0; j < data["locationType"].length; j++) {
+								html += '<option value="'+data["locationType"][j].locationTypeID+'">'+data["locationType"][j].locationTypeName+'</option>';
 							}
+							html += '</select>';
+							html += '</td>';
+							html += '<td align="right">';
+							html += '<select id="locationID['+data["po_desc"][i].productID+']" name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
+							for (var j = 0; j < data["location"].length; j++) {
+								html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
+							}
+							html += '</select>';
+							html += '</td>';
+
+							// if (data["locationType"]) {
+							// 	var count = 0;
+							// 	let result = [];
+							// 	for (var j = 0; j < data["locationType"].length; j++) {
+							// 		if (data["po_desc"][i].tempID == data["locationType"][j].tempID){
+							// 			// count += (parseInt(data["location"][j].locationQty)-parseInt(data["location"][j].total));
+
+							// 			// html += '<input type="hidden" id="qty['+data["po_desc"][i].productID+']"value="'+count+'">';
+							// 			result.push(data["location"][j]);
+							// 		}
+							// 		// }else if (data["po_desc"][i].locationTypeID == 2 && data["location"][j].locationTypeID == 2){
+							// 		// 	count += (parseInt(data["location"][j].locationQty)-parseInt(data["location"][j].total));
+							// 		// 	html += '<input type="hidden" id="qty['+data["po_desc"][i].productID+']"value="'+count+'">';
+							// 		// 	result.push(data["location"][j]);
+
+							// 		// }
+							// 	}
+							// 	if (result.length == 0) {
+							// 		if(confirm('ไม่มีตำแหน่งที่จัดเก็บได้ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].productName)){
+							// 			window.location.href = "LocationInfo.php??locationTypeID="+data["po_desc"][i].locationTypeID;
+							// 		}else{
+							// 			window.location.href = "ReceiveList.php";
+							// 		}								
+							// 		return;
+							// 	}
+
+							// 	html += '<td align="right">';
+							// 	html += '<select name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
+							// 	for (var a = 0; a < result.length; a++) {
+							// 		html += '<option value="'+result[a].locationID+'">'+result[a].locationName+'</option>';
+							// 	}	
+							// 	html += '</select></td>';
+
+							// }else{
+							// 	if(confirm('ไม่มีตำแหน่งที่จัดเก็บได้ กรุณาเพิ่มตำแหน่งเก็บของ'+data["po_desc"][i].productName)){
+							// 		window.location.href = "LocationInfo.php??locationTypeID="+data["po_desc"][i].locationTypeID;
+							// 	}else{
+							// 		window.location.href = "ReceiveList.php";
+							// 	}								
+							// 	return;
+							//}
 							html += '</tr>';
 						}
 					}
@@ -246,6 +260,19 @@ function checkReceiveQTY(obj)
 			$('#tb_data-error').show();
 			return false;
 		}
+	}
+
+	function get_location(parent_id,id){
+		$.ajaxSetup({async: false});
+		$.post('process/get_process.php',{proc:'get_location',parent_id:parent_id},function(data){
+
+			$.each(data,function(index,value){
+				html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+			});
+			$('#'+id).html(html);
+			$('#'+id).selectpicker('refresh');
+
+		},'json');
 	}
 
 	// function checkLocationQTY(obj,productTypeName,brandName,productTypeID,brandID)

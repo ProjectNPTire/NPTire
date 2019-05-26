@@ -64,7 +64,7 @@ $readonly = "readonly";
                         <b>ชื่อ</b>
                         <div class="form-group">
                           <div class="form-line">
-                            <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                            <input type="text" onchange="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                           </div>
                           <label id="firstname-error" class="error" for="firstname">กรุณาระบุ ชื่อพนักงาน</label>
                         </div>
@@ -214,7 +214,7 @@ $readonly = "readonly";
      <b>รหัสไปรษณีย์</b>
      <div class="form-group">
       <div class="form-line">
-        <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+        <input type="text" maxlength="5" class="form-control numb" placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
       </div>
     </div>
     <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์ามบัตรประชาชน</label>
@@ -294,7 +294,7 @@ $readonly = "readonly";
  <b>รหัสไปรษณีย์</b>
  <div class="form-group">
   <div class="form-line">
-    <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+    <input type="text" class="form-control numb" maxlength="5" name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
   </div>
   <label id="zipcodeIDCard-error" class="error" for="zipcodeIDCard">กรุณาระบุ รหัสไปรษณีย์ตามที่อยู่ปัจจุบัน</label>
 </div>
@@ -681,7 +681,7 @@ $readonly = "readonly";
                     function get_address(){
   // console.log('getaddress');
   if($('#adsIDCard').is(':checked')) {
-    debugger
+    
     let province_id = $('#hdfProvinceID').val();
     let district_id = $('#hdfDistrictID').val();
     let subdistrict_id = $('#hdfSubDistrictID').val();
@@ -727,7 +727,7 @@ function get_area(parent_id,id,hdf_id,type){
   },'json');
 }
 function get_zipcode(parent_id,id,hdf_id){
-  debugger
+  
   // console.log(parent_id,hdf_id);
   var html  = '';
   $.ajaxSetup({async: false});
@@ -888,7 +888,7 @@ function ValidateSingleInput(oInput) {
         }
       }
       function chk_idcard(){
-        debugger
+        
         var idcard = $('#idcard').val();
         var userID = $('#userID').val();
         $.ajaxSetup({async: false});

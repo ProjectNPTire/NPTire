@@ -57,7 +57,7 @@ switch($proc){
 
 				$db->db_update('tb_product',array('productUnit'=>$total),"productID = '".$value."'");
 
-				$sql_sub     = " SELECT * FROM tb_productstore  where locationTypeID = '".$locationTypeID[$key]."' and locationID ='".$locationID[$key]."' and productID = '".$value."' ";
+				$sql_sub     = " SELECT * FROM tb_productstore  where locationID ='".$locationID[$key]."' and productID = '".$value."' ";
 				$query_sub = $db->query($sql_sub);
 				$rec_sub = $db->db_fetch_array($query_sub);
 				$total_sub = $rec_sub['ps_unit'] - (str_replace(',','',$billDescUnit[$key]));

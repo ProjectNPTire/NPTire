@@ -45,7 +45,7 @@ function getProduct($code, $name, $supID){
 
     $sql = "SELECT tb_product.* FROM tb_productsupplier
     join tb_product on tb_productsupplier.productID = tb_product.productID
-    WHERE isDeleted = 0 and tb_product.isEnabled = 1
+    WHERE tb_product.isEnabled = 1
     and tb_productsupplier.supID = '".$supID."' ".$filter;
 
     
@@ -210,45 +210,69 @@ function getPOInfo($id){
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],
             "received_qty"=>$rec_cnt_received['received_qty'] != '' ? $rec_cnt_received['received_qty'] : '0',
-            "locationTypeName" => get_locationType_name($rec_product['locationTypeID']),
             "attr" => $attr,
             "unitType"=>$arr_unitType[$rec_product['unitType']],
             "tempID" => $i,
         );
-        $locationTypeID = $rec_product["locationTypeID"];
-        $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID IN ('".$rec_pd["productID"]."',0)";     
-        $query_location = $db->query($sql_location);
-        $nums_location = $db->db_num_rows($query_location);
-        if ($nums_location > 0) {
-            while($rec_location = $db->db_fetch_array($query_location)){
+        // $locationTypeID = $rec_product["locationTypeID"];
+        // $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID IN ('".$rec_pd["productID"]."',0)";     
+        // $query_location = $db->query($sql_location);
+        // $nums_location = $db->db_num_rows($query_location);
+        // if ($nums_location > 0) {
+        //     while($rec_location = $db->db_fetch_array($query_location)){
+        //         $arr_location[] = array(
+        //             "locationID"=>$rec_location['locationID'],
+        //             "locationName"=>$rec_location['locationName'],
+        //             "locationTypeID"=>$rec_location['locationTypeID'],
+        //             "tempID" => $i,
+        //         );
+        //     }
+        // }else{
+        //     $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID = 0";
+        //     $query_location = $db->query($sql_location);
+        //     while($rec_location = $db->db_fetch_array($query_location)){
+        //         $arr_location[] = array(
+        //             "locationID"=>$rec_location['locationID'],
+        //             "locationName"=>$rec_location['locationName'],
+        //             "locationTypeID"=>$rec_location['locationTypeID'],
+        //             "tempID" => $i,
+        //         );
+        //     }
+        // }
+        // $i++;
+    }
+
+    $sql_loctype = "SELECT * FROM tb_locationType ORDER BY FIELD(locationType,3,1,2)";     
+    $query_loctype = $db->query($sql_loctype);
+    $nums_loctype = $db->db_num_rows($query_loctype);
+    if ($nums_loctype > 0) {
+        while($rec_loctype = $db->db_fetch_array($query_loctype)){
+            $arr_locationType[] = array(
+                "locationTypeID"=>$rec_loctype['locationTypeID'],
+                "locationTypeName"=>$rec_loctype['locationTypeName'],
+            );
+        }
+    }
+
+    $sql_loc = "SELECT * FROM tb_location 
+    join tb_locationType on tb_location.locationTypeID = tb_locationType.locationTypeID
+    where locationType = 3";     
+        $query_loc = $db->query($sql_loc);
+        $nums_loc = $db->db_num_rows($query_loc);
+        if ($nums_loc > 0) {
+            while($rec_loc = $db->db_fetch_array($query_loc)){
                 $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
-                );
-            }
-        }else{
-            $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID = 0";
-            $query_location = $db->query($sql_location);
-            while($rec_location = $db->db_fetch_array($query_location)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
+                    "locationID"=>$rec_loc['locationID'],
+                    "locationName"=>$rec_loc['locationName'],
                 );
             }
         }
-        $i++;
-    }
-
-    
 
     $arr = array(
         "po_head" => $arr_head,
         "po_desc" => $arr_desc,
         "location" => $arr_location,
+        "locationType" => $arr_locationType,
     );
 
     echo json_encode($arr);

@@ -10,7 +10,7 @@
 			return false; return true;}
 
 			function checkForm()
-			{ debugger
+			{ 
 				if(!checkID(document.form1.txtID.value))
 				alert('รหัสประชาชนไม่ถูกต้อง');
 				else alert('รหัสประชาชนถูกต้อง เชิญผ่านได้');}

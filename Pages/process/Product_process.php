@@ -13,7 +13,8 @@ $productImg = $_FILES['productImg'];
 $tb1 = 'tb_product';
 $tb2 = 'tb_productattr';
 $tb3 = 'tb_productsupplier';
-$tb4 = 'tb_location';
+$tb4 = 'tb_productstore';
+
 
 switch($proc){
 	case "add" :
@@ -35,8 +36,6 @@ switch($proc){
 			"name_nospace"=>str_replace(" ","",$productName),
 			"productTypeID"=>$hdfproductTypeID,
 			"brandID"=>$hdfbrandID,
-			"locationTypeID"=>$locationTypeID,
-			"locationID"=>$locationID,
 			"productImg"=>$name,
 			"orderPoint"=>$orderPoint,
 			"productUnit"=>str_replace(",","",$productUnit),
@@ -44,16 +43,17 @@ switch($proc){
 			"isEnabled"=>$hdfstatus,
 			"productDetail"=>$productDetail,
 		);
-
 		$productID = $db->db_insert($tb1,$fields,'y');
 
-		unset($fields);
-		$fields = array(
-			"productID"=>$productID,
-		);
-				//print_pre($fields);
+		// unset($fields);
+		// $fields = array(
+		// 	"productID"=>$productID,
+		// );
+		// 		//print_pre($fields);
 		
-		$db->db_update($tb4,$fields, " locationTypeID = '".$locationTypeID."' AND locationID = '".$locationID."'");
+		// $db->db_update($tb4,$fields, " locationTypeID = '".$locationTypeID."' AND locationID = '".$locationID."'");
+
+
 
 		if(sizeof($attrID)>0){
 			foreach ($attrID as $key => $value) {
@@ -61,9 +61,10 @@ switch($proc){
 				$fields = array(
 					"productID"=>$productID,
 					"attrID"=>$value,
-					"value"=>$value[$key],
+					"value"=>$txtvalue[$key],
 
 				);
+
 				$db->db_insert($tb2,$fields);
 			}
 		}
@@ -106,8 +107,6 @@ switch($proc){
 			"name_nospace"=>str_replace(" ","",$productName),
 			"productTypeID"=>$hdfproductTypeID,
 			"brandID"=>$hdfbrandID,
-			"locationTypeID"=>$locationTypeID,
-			"locationID"=>$locationID,
 			"productImg"=>$name,
 			"orderPoint"=>$orderPoint,
 			"productUnit"=>str_replace(",","",$productUnit),
@@ -125,7 +124,7 @@ switch($proc){
 				$fields = array(
 					"productID"=>$productID,
 					"attrID"=>$value,
-					"value"=>$valuetxt[$key],
+					"value"=>$txtvalue[$key],
 
 				);
 				// echo  "<pre>";
@@ -145,6 +144,21 @@ switch($proc){
 					"supID"=>$value,
 				);
 				$db->db_insert($tb3,$fields);
+			}
+		}
+
+		$db->db_delete($tb4, " productID = '".$productID."'");
+		if(sizeof($locationID)>0){
+			foreach ($locationID as $key => $value) {
+				unset($fields);
+				$fields = array(
+					"productID"=>$productID,
+					"locationID"=>$value,
+					"ps_unit"=>$ps_unit[$key],
+
+				);
+				$db->db_insert($tb4,$fields);
+
 			}
 		}
 
