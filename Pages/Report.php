@@ -25,37 +25,44 @@ if($S_REPORT_TYPE=='')
   $S_REPORT_TYPE = '';
 if($S_REPORT_TYPE==1){
   $head_txt = 'สั่งซื้อสินค้า';
-  $sql =" select a.poID as BILL_NO,c.productName,c.productCode,c.brandID,
-  sum(a.qty) as productUnit,c.unitType,b.total,b.poDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField
+ $sql =" select a.poID as BILL_NO,c.productName,c.productCode,c.brandID,
+  sum(a.qty) as productUnit,c.unitType,b.supID,b.total,CONCAT(d.firstname,' ',d.lastname) AS ConcatField
+  ,b.poDate as doc_date
   from tb_po_desc a  
   join tb_po b on  a.poID = b.poID
   join tb_product c on a.productID = c.productID
   join tb_user d on b.create_by = d.userID
   where b.poStatus != 99 {$filter1}
-  group by a.poID
-  order by poDate asc,b.poID desc"; 
-  $col_span = 6;
+  group by   a.poID Having Sum(b.poDate)>1	/*b.poDate*/
 
+  order by poDate asc,b.poID desc"; 
+    $col_span = 6;
+ // exit;
 }else if($S_REPORT_TYPE==2){
   $head_txt = 'รับเข้าสินค้า';
-  $sql =" select a.receiveID as BILL_NO,c.productName,c.productCode,c.brandID,c.productSize,c.modelName,
-  sum(a.qty) as productUnit,c.unitType,b.receiveDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField
+echo  $sql =" select a.receiveID as BILL_NO,c.productName,c.productCode,c.brandID,c.productSize,c.modelName,
+  sum(a.qty) as productUnit,c.unitType,b.receiveDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField,
+f.locationName
   from tb_receive_desc a  
   join tb_receive b on  a.receiveID = b.receiveID
   join tb_product c on a.productID = c.productID
   join tb_user d on b.create_by = d.userID
+  JOIN tb_location f ON f.locationID = f.locationID
   where receiveStatus!=99 {$filter2}
   group by a.receiveID
   order by receiveDate asc,b.receiveID desc";
   $col_span = 5; 
+  
 }else if($S_REPORT_TYPE==3){
   $head_txt = 'เบิกสินค้า';
   $sql =" select b.billNo as BILL_NO,c.productName,c.productCode,c.brandID,c.productSize,c.modelName,
-  sum(a.billDescUnit) as productUnit,c.unitType,b.billDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField
+  sum(a.billDescUnit) as productUnit,c.unitType,b.billDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField,
+f.locationName
   from tb_bill_desc a  
   join tb_bill b on  a.billID = b.billID
   join tb_product c on a.productID = c.productID
   join tb_user d on b.create_by = d.userID
+    JOIN tb_location f ON f.locationID = f.locationID
   where billStstus = 1 {$filter3}
   group by b.billNo
   order by billDate asc,b.billNo desc";
@@ -72,6 +79,7 @@ $DATE_REPORT = date("d/m/Y h:i:s");
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
+
 // <th width="5%">ลำดับ</th>
 // <th width="10%">วันที่สั่งซื้อ</th>
 // <th width="10%">เลขที่ใบสั่งซื้อ</th>
@@ -91,24 +99,30 @@ if($S_REPORT_TYPE!=""){
   <thead>
   <tr>';
   if($S_REPORT_TYPE==1){
-    $html .= '<th width="5%">ลำดับ</th>
+ /*  <th width="5%">ลำดับ</th> */
+    $html .= '
     <th width="10%">วันที่สั่งซื้อ</th>
     <th width="10%">เลขที่ใบสั่งซื้อ</th>
+    <th width="10%">บริษัทคู่ค้า</th>
+    <th width="10%">รหัสสินค้า</th>
+    <th width="10%">ชื่อสินค้า</th>
     <th width="10%">จำนวนสั่งซื้อ</th>
-    <th width="10%">จำนวนเงิน</th>
-    <th width="20%">ผู้สั่งซื้อ</th>';
+    <th width="10%">จำนวนเงิน</th>';
+  /*   <th width="20%">ผู้สั่งซื้อ</th> */
   } else if($S_REPORT_TYPE==2){
     $html .= '<th width="5%">ลำดับ</th>
     <th width="10%">วันที่รับเข้า</th>
     <th width="10%">เลขที่ใบรับเข้า</th>
     <th width="10%">จำนวนรับเข้า</th>
-    <th width="20%">ผู้รับเข้า</th>';
+    <th width="20%">ผู้รับเข้า</th>
+    <th width="20%">ตำแหน่งเก็บ</th>';
   } else if($S_REPORT_TYPE==3){
     $html .= '<th width="5%">ลำดับ</th>
     <th width="10%">วันที่เบิก</th>
     <th width="10%">เลขที่เบิก</th>
     <th width="10%">จำนวนเบิก</th>
-    <th width="20%">ผู้เบิก</th>';
+    <th width="20%">ผู้เบิก</th>
+	 <th width="20%">ตำแหน่งเก็บ</th>';
   }
   $html .= '</tr>
   </thead>
@@ -119,15 +133,21 @@ if($S_REPORT_TYPE!=""){
     $sum=0;
     while ($rec = $db->db_fetch_array($query)) {
       $i++;
+
+			
       if($S_REPORT_TYPE==1){
+	/*   <td align="center" >'.$i.'</td> 
+		<td align="center" >'.$rec['doc_date'].'</td>*/
         $html .=  '<tr>
-        <td align="center" >'.$i.'</td>
-        <td align="center" >'.$rec['doc_date'].'</td>
+        <td align="center"  >'.$rec['doc_date'].'</td>
         <td align="center" >'.$rec['BILL_NO'].'</td>
-        <td align="center">'.number_format($rec['productUnit']).'</td>
+		<td align="center" >'.get_sup_name($rec['supID']).'</td>
+		 <td align="center" >'.$rec['productCode'].'</td>
+		 <td align="center" >'.$rec['productName'].'</td>
+		<td align="center">'.number_format($rec['productUnit']).'</td>
         <td align="center" >'.number_format($rec["total"]).'</td>
-        <td align="center" >'.$rec["ConcatField"].'</td>
-        </tr>';
+       </tr>';
+		/* <td align="center" >'.$rec["ConcatField"].'</td> */
       }else if($S_REPORT_TYPE==2){
         $html .=  '<tr>
         <td align="center" >'.$i.'</td>
@@ -135,6 +155,7 @@ if($S_REPORT_TYPE!=""){
         <td align="center" >'.$rec['BILL_NO'].'</td>
         <td align="center">'.number_format($rec['productUnit']).'</td>
         <td align="center" >'.$rec["ConcatField"].'</td>
+        <td align="center" >'.$rec["locationName"].'</td>
         </tr>';
       }else if($S_REPORT_TYPE==3){
         $html .=  '<tr>
@@ -143,6 +164,7 @@ if($S_REPORT_TYPE!=""){
         <td align="center" >'.$rec['BILL_NO'].'</td>
         <td align="center">'.number_format($rec['productUnit']).'</td>
         <td align="center" >'.$rec["ConcatField"].'</td>
+		<td align="center" >'.$rec["locationName"].'</td>
         </tr>';
       }
       $total += number_format($rec['productUnit']);
