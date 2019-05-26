@@ -18,6 +18,8 @@ $nums = $db->db_num_rows($query);
 $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
+$s_location = "SELECT * from tb_location order by locationName ";
+$s_locationtype = "SELECT * from tb_locationtype order by locationTypeName ";
 // $locationTypeID =  $rec['locationTypeID'];
 
 // if ($locationTypeID == 1) {
@@ -279,9 +281,9 @@ $readonly = "readonly";
                               <td>
                                 <div class="form-group">
                                   <div class="form-line">
-                                    <input type="text" class="form-control" name="valuetxt[]" id="valuetxt_<?php echo $i;?>" value="<?php echo $rec_attr['value'];?>" >
+                                    <input type="text" class="form-control" name="txtvalue[]" id="txtvalue_<?php echo $i;?>" value="<?php echo $rec_attr['value'];?>" >
                                   </div>
-                                  <label id="valuetxt_<?php echo $i;?>-error" class="error" for="valuetxt_<?php echo $i;?>">กรุณาเลือก</label>
+                                  <label id="txtvalue_<?php echo $i;?>-error" class="error" for="txtvalue_<?php echo $i;?>">กรุณาเลือก</label>
                                 </div> 
                               </td>
                              <!--    <td style="text-align: center;">
@@ -385,7 +387,8 @@ $readonly = "readonly";
                       <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
                         <thead>
                           <tr>
-                            <th width="70%">สถานที่จัดเก็บสินค้า</th>
+                            <th width="35%">ประเภทตำแหน่งจัดเก็บสิน้คา</th>
+                            <th width="35%">ตำแหน่งจัดเก็บสิน้คา</th>
                             <th width="20%">จำนวน</th>
                             <th width="10%">จัดการ</th>   
                           </tr>
@@ -399,36 +402,45 @@ $readonly = "readonly";
                             ?>
                             <tr>
                               <td>
-                                <input type="hidden" name="ps_id[]" id="ps_id<?php echo $i;?>" value="<?php echo $rec_location['ps_id'];?>">
-                                <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                                <select name="locationTypeID[]" id="locationTypeID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true">
                                   <option value="">เลือก</option>
                                   <?php
-                                  $q_location = $db->query($s_location);
-                                  while ($r_location = $db->db_fetch_array($q_location)) {?>
-                                    <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                                  $q_locationtpye = $db->query($s_locationtype);
+                                  while ($r_locationtype = $db->db_fetch_array($q_locationtpye)) {?>
+                                    <option value="<?php echo $r_locationtype['locationTypeID'];?>" <?php echo ($r_locationtype['locationTypeID']==$rec_location['locationTypeID'])?"selected":"";?>><?php echo $r_locationtype['locationTypeName'];?></option>
                                   <?php } ?>
-                                </select>
-                                <label id="locationID<?php echo $i;?>-error" class="error" for="locationID_<?php echo $i;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
-                              </td>
-                              <td>
-                                <div class="form-line">
-                                  <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
-                                </div>
-                              </td>
-                              <td style="text-align: center;">
-                                <?php echo $del;?>
-                              </td>
-                            </tr>
-                          <?php   }
-                        }else{
-                          echo '<tr id="nodata"><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
-                        } ?>
-                      </tbody>
-                    </table>
-                    <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
-                    <label id="tb_data-error2" class="error" for="tb_data">กรุณาเลือกตำแหน่งจัดเก็บ</label>
+                                </select></td>
+                                <td>
+                                  <input type="hidden" name="ps_id[]" id="ps_id<?php echo $i;?>" value="<?php echo $rec_location['ps_id'];?>">
+                                  <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                                    <option value="">เลือก</option>
+                                    <?php
+                                    $q_location = $db->query($s_location);
+                                    while ($r_location = $db->db_fetch_array($q_location)) {?>
+                                      <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                                    <?php } ?>
+                                  </select>
+                                  <label id="locationID<?php echo $i;?>-error" class="error" for="locationID_<?php echo $i;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
+                                </td>
+                                <td>
+                                  <div class="form-line">
+                                    <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
+                                  </div>
+                                </td>
+                                <td style="text-align: center;">
+                                  <?php echo $del;?>
+                                </td>
+                              </tr>
+                            <?php   }
+                          }else{
+                            echo '<tr id="nodata"><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
+                          } ?>
+                        </tbody>
+                      </table>
+                      <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
+                      <label id="tb_data-error2" class="error" for="tb_data">กรุณาเลือกตำแหน่งจัดเก็บ</label>
+                    </div>
                   </div>
-                </div>
                 </div>
                 <input type="hidden" id="total_unit" value="<?php echo $total;?>">
                 <input type="hidden" id="rowid" value="<?php echo $i;?>">
@@ -583,10 +595,10 @@ $readonly = "readonly";
       $('#productDetail_error').hide();
     }
 
-    // if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
-    //   $('#tb_data-error').show();
-    //   return false;
-    // }
+    if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
+      $('#tb_data-error').show();
+      return false;
+    }
     if($('#chk').val()==1){
       $('#productCode-error').show();
       $('#productCode').focus();
@@ -744,8 +756,8 @@ function get_hdfbrand(id,hdf_id){
     chk();
   }
 }
-function get_hdflocationType(arent_id,id,hdf_id){
-  var locationTypeID = arent_id;
+function get_hdflocationType(parent_id,id,hdf_id){
+  var locationTypeID = parent_id;
   var html  = '<option value="">เลือก</option>';
   $.ajaxSetup({async: false});  
   $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
@@ -754,7 +766,7 @@ function get_hdflocationType(arent_id,id,hdf_id){
       html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
     });
 
-  $('#'+hdf_id).val(locationTypeID);
+    $('#'+hdf_id).val(locationTypeID);
     $('#'+id).html(html);
     $('#'+id).selectpicker('refresh');
 
@@ -790,7 +802,7 @@ function get_code(){
         html += '<input type="hidden" name="attrID[]" id="F_attrID_'+index+'" value="'+value['attrID']+'">';
         html += '</td>';
         html += '<td align="center">';
-        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_valuetxt_'+index+'" value="" ></div><label id="valuetxt_'+index+'-error" class="error" for="F_valuetxt_'+index+'">กรุณาเลือก</label></div>';
+        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_txtvalue_'+index+'" value="" ></div><label id="valuetxt_'+index+'-error" class="error" for="F_valuetxt_'+index+'">กรุณาเลือก</label></div>';
         html += '</td>';
         html += '</tr>';
         i++;
@@ -844,8 +856,8 @@ function get_code2(){
         $('#brandID').focus();
         var obj_id = $("#tb_data_attr tbody tr");
         $.each(obj_id, function(){ 
-           $(this).find('td:eq(2)').find('input').val('');
-        });
+         $(this).find('td:eq(2)').find('input').val('');
+       });
         return false;
       }
     }
@@ -878,13 +890,22 @@ function addRow(){
 
     html += '<tr>';
     html += '<td>';
-    html += '<select name="locationID[]" id="locationID_'+rowid+'" onchange="chk_location(this.value);" class="form-control show-tick" data-live-search="true" >';
+    html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\');" >';
     html += '<option value="">เลือก</option>';
     <?php
-    $q_location = $db->query($s_location);
-    while ($r_location = $db->db_fetch_array($q_location)) {?>
-      html +='<option value="<?php echo $r_location['locationID'];?>"><?php echo $r_location['locationName'];?></option>';
+    $q_locationtype = $db->query($s_locationtype);
+    while ($r_locationtype = $db->db_fetch_array($q_locationtype)) {?>
+      html +='<option value="<?php echo $r_locationtype['locationTypeID'];?>"><?php echo $r_locationtype['locationTypeName'];?></option>';
     <?php } ?>
+    html +='</select>';
+    html +='</td>';
+    html += '<td>';
+    html += '<select name="locationID[]" id="locationID_'+rowid+'" onchange="chk_location(this.value);" class="form-control show-tick" data-live-search="true" >';
+    html += '<option value="">เลือก</option>';
+    // <?php
+    // $q_location = $db->query($s_location);
+    // while ($r_location = $db->db_fetch_array($q_location)) {?>
+    //   html +='<option value="<?php echo $r_location['locationID'];?>"><?php echo $r_location['locationName'];?></option>';
     html +='</select>';
     html +='<label id="locationID'+rowid+'-error" class="error" for="locationID_'+rowid+'">ตำแหน่งนี้ถูกใช้แล้ว</label>';
     html +='<label id="locationID'+rowid+'-error2" class="error" for="locationID_'+rowid+'">กรุณาเลือกตำแหน่งจัดเก็บ</label>'; 
@@ -1122,6 +1143,22 @@ function ValidateSingleInput(oInput) {
             $('#chk1').val(0);
 
           }
+
+        },'json');
+      }
+
+      function get_location(parent_id,id){
+        debugger
+        var locationTypeID = parent_id;
+        var html  = '<option value="">เลือก</option>';
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
+          console.log(data);
+          $.each(data,function(index,value){
+            html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+          });
+          $('#'+id).html(html);
+          $('#'+id).selectpicker('refresh');
 
         },'json');
       }

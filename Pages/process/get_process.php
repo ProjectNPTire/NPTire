@@ -26,7 +26,7 @@ switch($PROC){
 
 	case "get_location" :
 	$locationTypeID = $_POST['locationTypeID'];
-	$sql =" SELECT locationID as DATA_VALUE ,locationName as DATA_NAME from tb_location where  locationTypeID ='".$locationTypeID."'";
+	$sql =" SELECT locationID as DATA_VALUE ,locationName as DATA_NAME from tb_location where locationTypeID ='".$locationTypeID."'";
 	$query=$db->query($sql);
 	$OBJ=array();
 	while ($rec = $db->db_fetch_array($query)){

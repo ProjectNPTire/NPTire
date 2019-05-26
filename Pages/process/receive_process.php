@@ -76,6 +76,7 @@ switch($proc){
             unset($fields);
             $fields = array(
                 "productID"=>$key,
+                "locationTypeID"=>$_POST['locationTypeID'][$key],
                 "locationID"=>$_POST['locationID'][$key],
                 "ps_unit"=>$_POST['qty'][$key],
             );

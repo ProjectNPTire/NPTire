@@ -153,7 +153,8 @@ switch($proc){
 				unset($fields);
 				$fields = array(
 					"productID"=>$productID,
-					"locationID"=>$value,
+					"locationTypeID"=>$locationTypeID[$key],
+					"locationID"=>$locationID[$key],
 					"ps_unit"=>$ps_unit[$key],
 
 				);
