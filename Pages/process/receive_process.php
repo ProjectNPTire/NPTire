@@ -80,6 +80,10 @@ switch($proc){
                 "locationID"=>$_POST['locationID'][$key],
                 "ps_unit"=>$_POST['qty'][$key],
             );
+        // echo  "<pre>";
+        // print_r($fields);
+        // echo "</pre>";
+        // exit;
             if($_POST['qty'][$key] > 0){
                 $db->db_insert($tb3,$fields);
             }

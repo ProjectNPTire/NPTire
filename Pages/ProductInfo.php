@@ -19,7 +19,10 @@ $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 $s_location = "SELECT * from tb_location order by locationName ";
-$s_locationtype = "SELECT * from tb_locationtype order by locationTypeName ";
+$s_locationtype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
+    JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+    WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore where productID ='".$productID."') 
+    ORDER BY FIELD(locationType,3,1,2)";
 // $locationTypeID =  $rec['locationTypeID'];
 
 // if ($locationTypeID == 1) {
@@ -415,7 +418,7 @@ $readonly = "readonly";
                                   <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
                                     <option value="">เลือก</option>
                                     <?php
-                                    
+
                                     $q_location = $db->query($s_location);
                                     while ($r_location = $db->db_fetch_array($q_location)) {?>
                                       <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>

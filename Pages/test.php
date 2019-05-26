@@ -14,28 +14,29 @@
 </head>
 <body>
 
-	<table>
-		<tr>
-			<th>date</th>
-			<th>id</th>
-			<th>name</th>
-		</tr>
-		<tr>
-			<td>
-				<p>15/05/2019</p>
-			</td>
-			<td>
-				<table>
-					<tr>
-						<td>001</td>
-					</tr>
-					<tr>
-						<td>002</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
+<table width="100%" border="1">
+  <tr>
+<td rowspan="4">15/05/2019</td>
+<td colspan="2" rowspan="2">001</td>
+<td>นาย ก</td>
+<td>นาย ข</td>
+  </tr>
+  <tr>
+<td width="12%">2</td>
+<td width="38%">&nbsp;</td>
+<td>&nbsp;</td>
+  </tr>
+  <tr>
+<td>3</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+  </tr>
+  <tr>
+<td>4</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+  </tr>
+</table>
 
 
 </body>

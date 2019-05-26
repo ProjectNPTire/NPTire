@@ -242,7 +242,10 @@ function getPOInfo($id){
         // $i++;
     }
 
-    $sql_loctype = "SELECT * FROM tb_locationType ORDER BY FIELD(locationType,3,1,2)";     
+    $sql_loctype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
+    JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+    WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore) 
+    ORDER BY FIELD(locationType,3,1,2)";     
     $query_loctype = $db->query($sql_loctype);
     $nums_loctype = $db->db_num_rows($query_loctype);
     if ($nums_loctype > 0) {
@@ -257,16 +260,16 @@ function getPOInfo($id){
     $sql_loc = "SELECT * FROM tb_location 
     join tb_locationType on tb_location.locationTypeID = tb_locationType.locationTypeID
     where locationType = 3";     
-        $query_loc = $db->query($sql_loc);
-        $nums_loc = $db->db_num_rows($query_loc);
-        if ($nums_loc > 0) {
-            while($rec_loc = $db->db_fetch_array($query_loc)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_loc['locationID'],
-                    "locationName"=>$rec_loc['locationName'],
-                );
-            }
+    $query_loc = $db->query($sql_loc);
+    $nums_loc = $db->db_num_rows($query_loc);
+    if ($nums_loc > 0) {
+        while($rec_loc = $db->db_fetch_array($query_loc)){
+            $arr_location[] = array(
+                "locationID"=>$rec_loc['locationID'],
+                "locationName"=>$rec_loc['locationName'],
+            );
         }
+    }
 
     $arr = array(
         "po_head" => $arr_head,
