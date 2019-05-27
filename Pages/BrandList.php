@@ -59,7 +59,7 @@ chk_role($page_key,'isSearch',1) ;
               <input type="hidden" id="brandID" name="brandID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-              <div class="row clearfix">
+          <!--     <div class="row clearfix">
                 <div class="col-sm-5">
                   <div class="form-group">
                     <div class="form-group form-float">
@@ -117,7 +117,7 @@ chk_role($page_key,'isSearch',1) ;
                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                   </div>
                 </div> 
-              </div>
+              </div> -->
 
               <div class="icon-and-text-button-demo align-right">
                <button  class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>

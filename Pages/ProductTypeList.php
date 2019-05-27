@@ -64,7 +64,7 @@ chk_role($page_key,'isSearch',1) ;
                                   </div>
                                 </div> -->
 
-                                <div class="row clearfix">
+                           <!--      <div class="row clearfix">
                                   <div class="col-sm-5">
                                     <div class="form-group">
                                       <div class="form-group form-float">
@@ -103,13 +103,13 @@ chk_role($page_key,'isSearch',1) ;
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                   </div>
                                 </div> 
-                              </div>
+                              </div> -->
 
                               <div class="icon-and-text-button-demo align-right">
                                <button  class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                              </div>
                              <div class="table-responsive">
-                              <table width="100%" class="table table-bordered table-striped table-hover dataTable">
+                              <table width="100%" id="table1" class="table table-bordered table-striped table-hover dataTable">
                                 <thead>
                                   <tr>
                                     <th width="5%">ลำดับ</th>

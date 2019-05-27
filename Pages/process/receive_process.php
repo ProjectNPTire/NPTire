@@ -117,6 +117,7 @@ switch($proc){
         else{
             unset($fields);
             $fields = array(
+                //"docID"=>0,
                 "productID"=>$key,
                 "week"=>$_POST['week'][$key],
                 "unit"=>$_POST['qty'][$key],
@@ -182,38 +183,38 @@ switch($proc){
 
     $text=$save_proc;
 }catch(Exception $e){
-   $text=$e->getMessage();
+ $text=$e->getMessage();
 }
 break;
 
 case "cancel":
 try{
 
-   $sql_receive = "SELECT * FROM tb_receive WHERE receiveID = '".$_POST["receiveID"]."' ";
-   $query_receive = $db->query($sql_receive);
-   $rec_receive = $db->db_fetch_array($query_receive);
+ $sql_receive = "SELECT * FROM tb_receive WHERE receiveID = '".$_POST["receiveID"]."' ";
+ $query_receive = $db->query($sql_receive);
+ $rec_receive = $db->db_fetch_array($query_receive);
 
-   unset($fields);
-   $fields = array(
+ unset($fields);
+ $fields = array(
     "receiveStatus"=>99
 );
 
-   $db->db_update($tb1,$fields, " receiveID = '".$_POST['receiveID']."'");
+ $db->db_update($tb1,$fields, " receiveID = '".$_POST['receiveID']."'");
 
 
 
-   $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$_POST["receiveID"]."' ";
-   $query_receive_desc = $db->query($sql_receive_desc);
+ $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$_POST["receiveID"]."' ";
+ $query_receive_desc = $db->query($sql_receive_desc);
 
-   $arr_product_remain = array();
-   unset($arr_product_remain);
+ $arr_product_remain = array();
+ unset($arr_product_remain);
 
-   while($rec_receive_desc = $db->db_fetch_array($query_receive_desc)){
+ while($rec_receive_desc = $db->db_fetch_array($query_receive_desc)){
 
     unset($fields);
     $fields = array(
-     "cancelFlag"=>1,
- );
+       "cancelFlag"=>1,
+   );
 
     $db->db_update($tb2,$fields, " productID = '".$rec_receive_desc["productID"]."' AND receiveID = '".$rec_receive_desc["receiveID"]."' ");
 
@@ -235,8 +236,8 @@ try{
 
     unset($fields);
     $fields = array(
-     "productUnit"=>$rec_cnt_product['sum_ps_unit'],
- );
+       "productUnit"=>$rec_cnt_product['sum_ps_unit'],
+   );
 
     $db->db_update($tb4,$fields, " productID = '".$rec_receive_desc["productID"]."'");
 
@@ -274,7 +275,7 @@ save_log($detail);
 
 $text=$save_proc;
 }catch(Exception $e){
-   $text=$e->getMessage();
+ $text=$e->getMessage();
 }
 break;
 }

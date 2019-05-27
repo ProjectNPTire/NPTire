@@ -71,7 +71,7 @@ switch($proc){
 				while ($i > 0) {
 					//i = return sql();
 					//case 1
-					$sql_week = " SELECT runID,unit FROM tb_week where productID = '".$value."' order by week limit 1 ";
+					$sql_week = " SELECT runID,unit,week FROM tb_week where productID = '".$value."' order by week limit 1 ";
 					$query_week = $db->query($sql_week);
 					$rec_week = $db->db_fetch_array($query_week);
 					$unit = $rec_week['unit']; //จำนวนที่อายุสินค้าน้อยที่สุด
@@ -79,9 +79,19 @@ switch($proc){
 						$db->db_delete("tb_week", " runID = '".$rec_week['runID']."'"); //ลบrow
 						$i = $i - $unit; //จำนวนที่เหลือ
 					}else{ // ถ้าจำนวนที่รับมาน้อยกว่าจำนวนที่มีอยู่
-						$db->db_update('tb_week',array('unit'=>$unit - $i),"runID = '".$rec_week['runID']."'"); //อัพเดต
+						$unit = $unit - $i;
+						$db->db_update('tb_week',array('unit'=>$unit),"runID = '".$rec_week['runID']."'"); //อัพเดต
 						$i = 0; //สินค้าที่รับมาถูกอัพเดตเรียบร้อย
 					}
+					unset($fields);
+					$fields = array(
+						"transID"=>$billID,
+						"productID"=>$value,
+						"week"=>$rec_week['week'],
+						"unit"=>$unit * -1,
+
+					);
+					$db->db_insert('tb_temp',$fields);
 
 
 				}
@@ -175,6 +185,36 @@ switch($proc){
 			"cancelUserID"=>$_SESSION['sys_id'],
 		);
 		$db->db_update($tb1,$fields,"billID = '".$billID."'");
+
+		$sql_temp     = " SELECT * FROM tb_temp  where transID ='".$billID."' ";
+		$query_temp = $db->query($sql_temp);
+
+		
+		while ($rec_temp = $db->db_fetch_array($query_temp)) {
+
+			$sql_p = " SELECT *  FROM tb_week where productID ='".$rec_temp['productID']."' and week ='".$rec_temp['week']."' ";
+			// echo  "<pre>";
+			// 	print_r($sql_p);
+			// 	echo "</pre>";
+			// 	exit;
+			$query_p = $db->query($sql_p);
+			$num_p = $db->db_num_rows($query_p);
+
+			if ($num_p > 0) {
+				$rec_p = $db->db_fetch_array($query_p);
+				$db->db_update('tb_week',array('unit'=>abs($rec_temp['unit'])+$rec_p['unit']),"productID = '".$rec_temp['productID']."' and week = '".$rec_temp['week']."' ");
+			}else{
+				unset($fields);
+				$fields = array(
+					"productID"=>$rec_temp['productID'],
+					"week"=>$rec_temp['week'],
+					"unit"=>abs($rec_temp['unit']),
+
+				);
+				$db->db_insert('tb_week',$fields);
+			}
+
+		}
 
 		$detail = 'ยกเลิกข้อมูลการเบิกสินค้า  : '.$rec['billNo'];
 		save_log($detail);

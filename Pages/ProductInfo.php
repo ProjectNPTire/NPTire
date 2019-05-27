@@ -21,10 +21,8 @@ $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 //$s_store = "SELECT * from tb_productstore where productID ='".$productID."' ";
 
 
-$s_locationtype2 = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
-JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
-WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore) 
-ORDER BY FIELD(locationType,3,1,2)";
+$s_locationtype2 = "SELECT locationTypeID,locationTypeName FROM tb_locationType
+    WHERE locationType = '".$rec['locationType']."'";
 // $locationTypeID =  $rec['locationTypeID'];
 
 // if ($locationTypeID == 1) {
@@ -55,7 +53,7 @@ $readonly = "readonly";
               <input type="hidden" id="chk3" name="chk3" value="0">
               <input type="hidden" id="chk4" name="chk4" value="0">
               <input type="hidden" id="chk5" name="chk5" value="0">
-
+<?php echo $s_locationtype2 ?>
               <div class="body">
                 <div class="row clearfix">
                   <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -133,25 +131,20 @@ $readonly = "readonly";
                 </div>
 
                 <div class="row clearfix">
-                 <!--  <div class="col-sm-4">
+                  <div class="col-sm-4">
                     <b>ประเภทตำแหน่งจัดเก็บ</b>
                     <div class="form-group form-float">
-                      <select name="locationTypeID" id="locationTypeID" onchange="get_hdflocationType(this.value,'locationID,hdflocationTypeID');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>                   
-                        <option value="">เลือก</option>a                 
-                        <?php
-                        $s_pdtype=" SELECT * FROM `tb_locationtype` where  locationTypeID = '".$rec['locationTypeID']."' OR locationTypeID in (SELECT locationTypeID FROM `tb_location` WHERE productID = 0 GROUP by locationTypeID)";
-                        $q_pdtype = $db->query($s_pdtype);
-                        $n_pdtype = $db->db_num_rows($q_pdtype);
-                        while($r_pdtype = $db->db_fetch_array($q_pdtype)){
-                          ?>
-                          <option value="<?php echo $r_pdtype['locationTypeID'];?>" <?php echo ($rec['locationTypeID']==$r_pdtype['locationTypeID'])?"selected":"";?>> <?php echo $r_pdtype['locationTypeName'];?></option>
+                      <select name="locationType" id="locationType" onchange="get_hdflocationType(this.value,'hdflocationType');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>                 
+                        <option value="0">ทั้งหมด</option>
+                        <?php   foreach ($arr_locationType as $key => $value) {?>
+                          <option value="<?php echo $key;?>"  <?php echo ($rec['locationType']==$key)?"selected":"";?>> <?php echo $value;?></option>
                         <?php }  ?>
                       </select>
-                      <input type="hidden" name="hdflocationTypeID" id="hdflocationTypeID" value="<?php echo $rec['locationTypeID'] ?>">
-                      <label id="locationTypeID-error" class="error" for="locationTypeID">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
+                      <input type="hidden" name="hdflocationType" id="hdflocationType" value="<?php echo $rec['locationType'] ?>">
+                      <label id="locationType-error" class="error" for="locationType">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
                     </div>
                   </div>
-                  <div class="col-sm-4">
+                  <!-- <div class="col-sm-4">
                     <b>ตำแหน่งจัดเก็บ</b>
                     <div class="form-group form-float">
                       <select name="locationID" id="locationID" onchange="get_hdflocation(this.value,'hdflocationID');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>                   
@@ -184,16 +177,6 @@ $readonly = "readonly";
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <b>จุดสั่งซื้อ </b>
-                    <div class="form-group">
-                      <div class="form-line">
-                        <input type="text " name="orderPoint" maxlength="2" id="orderPoint" class="form-control numb" value="<?php echo number_format($rec['orderPoint']);?>">
-                      </div>
-                      <div class="help-info">กรอกได้เฉพาะตัวเลขไม่เกิน2ตัวอักษร</div>
-                      <label id="orderPoint_error" class="error" for="orderPoint">กรุณาระบุ จุดสั่งซื้อ</label>
-                    </div>
-                  </div>
-                  <div class="col-sm-4">
                     <b>รูปภาพ</b>
                     <div class="form-group">
                       <div class="form-line">
@@ -206,6 +189,16 @@ $readonly = "readonly";
                   </div>       
                 </div>
                 <div class="row clearfix">
+                  <div class="col-sm-4">
+                    <b>จุดสั่งซื้อ </b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text " name="orderPoint" maxlength="2" id="orderPoint" class="form-control numb" value="<?php echo number_format($rec['orderPoint']);?>">
+                      </div>
+                      <div class="help-info">กรอกได้เฉพาะตัวเลขไม่เกิน2ตัวอักษร</div>
+                      <label id="orderPoint_error" class="error" for="orderPoint">กรุณาระบุ จุดสั่งซื้อ</label>
+                    </div>
+                  </div>
                   <div class="col-sm-4">
                     <b>จำนวนสินค้า </b>
                     <div class="form-group">
@@ -377,8 +370,8 @@ $readonly = "readonly";
                   </div>
                   <div role="tabpanel" class="tab-pane fade" id="profile">
                     <?php
-                    $i=0; $total=0;
-                    $sql_location  = " SELECT * FROM tb_productstore  where productID ='".$productID."'";
+                    $x=0; $total=0;
+                    $sql_location  = " SELECT * FROM tb_productstore where productID ='".$productID."'";
 
                     $query_location = $db->query($sql_location);
                     $nums_location = $db->db_num_rows($query_location);
@@ -402,41 +395,41 @@ $readonly = "readonly";
                           <?php 
                           if($nums_location>0){
                            while ($rec_location = $db->db_fetch_array($query_location)) {
-                            $i++;
-                            $del = '<a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTB(this,'.$rec_location['locationID'].','.$i.');">'.$img_del.'</a>';
+                            $x++;
+                            $del = '<a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTB(this,'.$rec_location['locationID'].','.$x.');">'.$img_del.'</a>';
                             ?>
                             <tr>
                               <td>
-                                <select name="locationTypeID[]" id="locationTypeID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true">
+                                <select name="locationTypeID[]" id="locationTypeID_<?php echo $x;?>" class="form-control show-tick" data-live-search="true">
                                   <option value="">เลือก</option>
                                   <?php
-                                  $s_locationtype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
-                                  WHERE locationType = 3 OR locationTypeID = '".$rec_location['locationTypeID']."' OR locationTypeID NOT IN (SELECT locationTypeID FROM tb_productstore) 
-                                  ORDER BY FIELD(locationType,3,1,2)";
+                                  $s_locationtype = "SELECT locationTypeID,locationTypeName FROM tb_locationType
+                                  WHERE locationType = '".$rec["locationType"]."'";
                                   $q_locationtpye = $db->query($s_locationtype);
                                   while ($r_locationtype = $db->db_fetch_array($q_locationtpye)) {?>
                                     <option value="<?php echo $r_locationtype['locationTypeID'];?>" <?php echo ($r_locationtype['locationTypeID']==$rec_location['locationTypeID'])?"selected":"";?>><?php echo $r_locationtype['locationTypeName'];?></option>
                                   <?php } ?>
                                 </select></td>
                                 <td>
-                                  <input type="hidden" name="ps_id[]" id="ps_id<?php echo $i;?>" value="<?php echo $rec_location['ps_id'];?>">
-                                  <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                                  <input type="hidden" name="ps_id[]" id="ps_id<?php echo $x;?>" value="<?php echo $rec_location['ps_id'];?>">
+                                  <select name="locationID[]" id="locationID_<?php echo $x;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
                                     <option value="">เลือก</option>
                                     <?php
-                                    
-                                    $s_location = "SELECT * FROM tb_productstore
-                                    JOIN tb_location on tb_productstore.locationID = tb_location.locationID
-                                    WHERE ps_unit = 0 or tb_productstore.locationID = '".$rec_location['locationTypeID']."' and tb_productstore.locationTypeID = '".$rec_location['locationID']."' ";
+
+                                    $s_location = "SELECT *
+                                    FROM tb_location
+                                    LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
+                                    WHERE tb_location.locationTypeID = '".$rec_location['locationTypeID']."' AND (ps_id IS null or ps_unit = 0) OR(productID = '".$rec_location['productID']."' and ps_unit > 0) ";
                                     $q_location = $db->query($s_location);
                                     while ($r_location = $db->db_fetch_array($q_location)) {?>
                                       <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
                                     <?php } ?>
                                   </select>
-                                  <label id="locationID<?php echo $i;?>-error" class="error" for="locationID_<?php echo $i;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
+                                  <label id="locationID<?php echo $x;?>-error" class="error" for="locationID_<?php echo $x;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
                                 </td>
                                 <td>
                                   <div class="form-line">
-                                    <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
+                                    <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $x;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
                                   </div>
                                 </td>
                                 <td style="text-align: center;">
@@ -457,6 +450,7 @@ $readonly = "readonly";
                 <input type="hidden" id="total_unit" value="<?php echo $total;?>">
                 <input type="hidden" id="rowid" value="<?php echo $i;?>">
                 <input type="hidden" id="rowid2" value="<?php echo $a;?>">
+                <input type="hidden" id="rowid3" value="<?php echo $x;?>">
                 <div class="align-center">
                   <button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
                   <button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
@@ -607,9 +601,11 @@ $readonly = "readonly";
       $('#productDetail_error').hide();
     }
 
-    if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
-      $('#tb_data-error').show();
-      return false;
+    if($('#rowid3').val() !='0'){
+      if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
+        $('#tb_data-error').show();
+        return false;
+      }
     }
     if($('#chk').val()==1){
       $('#productCode-error').show();
@@ -768,37 +764,39 @@ function get_hdfbrand(id,hdf_id){
     chk();
   }
 }
-function get_hdflocationType(parent_id,id,hdf_id){
-  var locationTypeID = parent_id;
-  var html  = '<option value="">เลือก</option>';
-  $.ajaxSetup({async: false});  
-  $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
+function get_hdflocationType(parent_id,hdf_id){
+  //var locationTypeID = parent_id;
+  //var html  = '<option value="">เลือก</option>';
+  // $.ajaxSetup({async: false});  
+  // $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
 
-    $.each(data,function(index,value){
-      html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
-    });
+  //   $.each(data,function(index,value){
+  //     html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+  //   });
 
-    $('#'+hdf_id).val(locationTypeID);
-    $('#'+id).html(html);
-    $('#'+id).selectpicker('refresh');
+  $('#'+hdf_id).val(parent_id);
+    // $('#'+id).html(html);
+    // $('#'+id).selectpicker('refresh');
 
-  },'json');
+  // },'json');
 }
 
 function get_code(){
   var productTypeID = $('#productTypeID').val();
-  if (productTypeID != 1) {
-    var newcode ='';
-    $.ajaxSetup({async: false});
-    $.post('process/get_process.php',{proc:'get_productcoder_other',productTypeID:productTypeID},function(data){
-     newcode =  data['name'];
-     $('#productCode').val(newcode);
-   },'json');
-  }else{
-    $('#productCode').val('');
+  if($('#proc').val()=='add'){
+    if (productTypeID != 1) {
+      var newcode ='';
+      $.ajaxSetup({async: false});
+      $.post('process/get_process.php',{proc:'get_productcoder_other',productTypeID:productTypeID},function(data){
+       newcode =  data['name'];
+       $('#productCode').val(newcode);
+     },'json');
+    }else{
+      $('#productCode').val('');
+    }
+    $('#hdfproductTypeID').val(productTypeID);
+    chk();
   }
-  $('#hdfproductTypeID').val(productTypeID);
-  chk();
 
   $('#ModalDATA').html('');
   var html ='';
@@ -892,14 +890,14 @@ function chk(){
 function addRow(){
   $('#nodata').hide();
   var html = '';
-  var rowid = parseInt($('#rowid').val())+1;
+  var rowid = parseInt($('#rowid3').val())+1;
 
   if($('#locationID'+$('#rowid').val()).val() == ""){
     $('#locationID'+$('#rowid').val()+'-error2').show();
     return false;
   }else{
     $('#locationID'+$('#rowid').val()+'-error2').hide();
-
+    debugger
     html += '<tr>';
     html += '<td>';
     html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
@@ -932,7 +930,7 @@ function addRow(){
     html += '</td>';
     html += '</tr>';
     $('#tb_data tbody').append(html);
-    $('#rowid').val(rowid);
+    $('#rowid3').val(rowid);
     $('#locationTypeID_'+rowid).selectpicker('refresh');
     $('#locationID_'+rowid).selectpicker('refresh');
     $(".numb").inputFilter(function(value) {
@@ -1065,6 +1063,7 @@ function addRow(){
 
  function  chk_location(){
   var arr = $('[id^=locationID_]');
+  debugger
   var total = 0;
   for (var i = 0; i < arr.length; i++) {
     var num = $(arr[i]).val().trim();

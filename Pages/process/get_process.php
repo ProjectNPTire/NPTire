@@ -10,8 +10,8 @@ switch($PROC){
 
 	case "get_value" :
 	$parent_id = $_POST['parent_id'];
-	$sql ="  SELECT value as DATA_VALUE ,value as DATA_NAME from tb_productattr
-	where attrID ='".$parent_id."' group by value order by value asc ";
+	$sql ="  SELECT value as DATA_VALUE ,value as DATA_NAME FROM `tb_productattr` JOIN tb_typeattr on tb_typeattr.attrID = tb_productattr.attrID WHERE tb_productattr.attrID = '".$parent_id."'
+	group by value order by value asc ";
 
 	$query=$db->query($sql);
 	$OBJ=array();
@@ -28,8 +28,12 @@ switch($PROC){
 	$locationTypeID = $_POST['locationTypeID'];
 	$productID = $_POST['productID'];
 
-	$sql ="SELECT tb_location.locationID as DATA_VALUE ,locationName as DATA_NAME FROM tb_location
-	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND locationID IN (SELECT locationID FROM tb_productstore WHERE productID = '".$productID."' OR ps_unit = 0 )";
+	$sql ="SELECT tb_location.locationID as DATA_VALUE ,locationName as DATA_NAME
+	FROM tb_location
+	LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
+	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND (ps_id IS null or ps_unit = 0) OR(productID = '".$productID."' and ps_unit > 0)";
+
+	
 
 	$query=$db->query($sql);
 	$OBJ=array();
@@ -45,6 +49,22 @@ switch($PROC){
 	case "get_brand" :
 	$productTypeID = $_POST['productTypeID'];
 	$sql ="  SELECT brandID as DATA_VALUE ,brandName as DATA_NAME from tb_brand where  productTypeID ='".$productTypeID."' order by brandName asc ";
+	$query=$db->query($sql);
+	$OBJ=array();
+	while ($rec = $db->db_fetch_array($query)){
+		$row['DATA_VALUE'] =$rec['DATA_VALUE'];
+		$row['DATA_NAME'] =$rec['DATA_NAME'];
+		array_push($OBJ,$row);
+	}
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "get_attr" :
+	$productTypeID = $_POST['parent_id'];
+	$sql =" SELECT tb_attribute.attrID as DATA_VALUE ,attrName as DATA_NAME FROM tb_attribute 
+	JOIN tb_typeattr ON tb_attribute.attrID = tb_typeattr.attrID
+	WHERE productTypeID ='".$productTypeID."' ";
 	$query=$db->query($sql);
 	$OBJ=array();
 	while ($rec = $db->db_fetch_array($query)){

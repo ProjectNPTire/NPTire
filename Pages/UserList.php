@@ -91,7 +91,7 @@ chk_role($page_key,'isSearch',1) ;
                                  <div class="icon-and-text-button-demo align-center">
                                     <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                   </div> -->
-                                  <div class="row clearfix">
+                                 <!--  <div class="row clearfix">
                                     <div class="col-sm-5">
                                       <div class="form-group">
                                         <div class="form-group form-float">
@@ -129,12 +129,12 @@ chk_role($page_key,'isSearch',1) ;
                                       <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                                     </div>
                                   </div> 
-                                </div>
+                                </div> -->
                                 <div class="icon-and-text-button-demo align-right">
                                   <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                                 </div>
                                 <div>
-                                  <table width="100%" class="table table-bordered table-striped table-hover "> <!--js-basic-example-->
+                                  <table width="100%" id="table1" class="table table-bordered table-striped table-hover "> <!--js-basic-example-->
                                     <thead>
                                       <tr>
                                         <th width="5%">ลำดับ</th>
@@ -289,8 +289,7 @@ chk_role($page_key,'isSearch',1) ;
                   $(document).ready(function() {
                    $("#table1").DataTable({
                      "ordering": false,
-     //"searching": false,
-   })
+                   })
                    if($('#ddl_search').val() == 1){
                      $('#user').show();
                    }else if($('#ddl_search').val() == 2){

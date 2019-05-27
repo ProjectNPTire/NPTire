@@ -86,7 +86,7 @@ chk_role($page_key,'isSearch',1) ;
                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
 
-                <div class="row clearfix">
+              <!--   <div class="row clearfix">
                   <div class="col-sm-5">
                     <div class="form-group">
                       <div class="form-group form-float">
@@ -94,9 +94,7 @@ chk_role($page_key,'isSearch',1) ;
                           <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
                           <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อสินค้า</option>
                           <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ประเภทสินค้า</option>
-                          <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>ยี่ห้อสินค้า</option><!-- 
-                          <option value="4"<?php echo ($ddl_search==4)?"selected":"";?>>รุ่นสินค้า</option>
-                          <option value="5"<?php echo ($ddl_search==5)?"selected":"";?>>ขนาด</option> -->
+                          <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>ยี่ห้อสินค้า</option>
                           <option value="6"<?php echo ($ddl_search==6)?"selected":"";?>>สถานะ</option>
                         </select>
                       </div>
@@ -165,7 +163,7 @@ chk_role($page_key,'isSearch',1) ;
                       <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
                     </div>
                   </div> 
-                </div>
+                </div> -->
                 <div class="icon-and-text-button-demo align-right">
                   <button  class="btn btn-primary waves-effect" onClick="addData();" style="<?php echo chk_role($page_key,'isadd');?>"> <span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
                 </div>

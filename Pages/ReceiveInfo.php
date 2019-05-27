@@ -24,6 +24,7 @@ $page_key ='5_1';
 							<form id="frm-input" method="POST" action="process/receive_process.php">
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
 								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
+								<input type="hidden" id="chk3" name="chk3" value="0">
 								<!-- <input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>"> -->
 
 								<div class="row table-responsive">
@@ -155,23 +156,24 @@ $page_key ='5_1';
 							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(pending).length+'" value="'+addCommas(receive)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="checkReceiveQTY(this);NumberFormat(this);" required></div></td>';
 							// html += '<td><input type="hidden" id="locationTypeID" name="locationTypeID" value="'+data["po_desc"][i].locationTypeID+'">'+data["po_desc"][i].locationTypeName+'</td>';
 							html += '<td align="right">';
-							html += '<select onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\','+data["po_desc"][i].productID+');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
+							html += '<select onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\','+data["po_desc"][i].productID+');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true"><option value="">เลือก</option>';
+
 							for (var j = 0; j < data["locationType"].length; j++) {
 								html += '<option value="'+data["locationType"][j].locationTypeID+'">'+data["locationType"][j].locationTypeName+'</option>';
 							}
 							html += '</select>';
 							html += '</td>';
 							html += '<td align="right">';
-							html += '<select id="locationID_'+data["po_desc"][i].productID+'" name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true">';
-							for (var j = 0; j < data["location"].length; j++) {
-								html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
-							}
-							html += '</select>';
+							html += '<select onchange="chk_location('+data["po_desc"][i].productID+');" id="locationID_'+data["po_desc"][i].productID+'" name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true"><option value="">เลือก</option>';
+							// for (var j = 0; j < data["location"].length; j++) {
+							// 	html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
+							// }
+							html += '</select><label id="locationID'+data["po_desc"][i].productID+'-error" class="error" for="locationID_'+data["po_desc"][i].productID+'">ตำแหน่งนี้ถูกใช้แล้ว</label>';
 							html += '</td>';
 							html += '<td>';
 							html += '<input type="hidden" value="'+data["po_desc"][i].productTypeID+'" name="type['+data["po_desc"][i].productID+']" class="form-control">';
 							if(data["po_desc"][i].productTypeID == 1){
-								html += '<div class="form-line"><input type="text" value="" id="week_'+data["po_desc"][i].productID+'" maxlength="2" name="week['+data["po_desc"][i].productID+']" class="form-control text-right numb" required></div>';
+								html += '<div class="form-group"><div class="form-line"><input type="text" value="" id="week_'+data["po_desc"][i].productID+'" maxlength="2" name="week['+data["po_desc"][i].productID+']" class="form-control text-right numb" required></div><label id="week'+data["po_desc"][i].productID+'-error" class="error" for="week_'+data["po_desc"][i].productID+'">กรุณาระบุ ชื่อสินค้า</label></div>';
 							}else{
 								html += '-';
 							}
@@ -272,7 +274,7 @@ function checkReceiveQTY(obj)
 		console.log(id);
 		var locationTypeID = parent_id;
 		var productID = productID;
-		var html;
+		var html  = '<option value="">เลือก</option>';
 		$.ajaxSetup({async: false});
 		$.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID,productID:productID},function(data){
 			//console.log(data);
@@ -283,6 +285,26 @@ function checkReceiveQTY(obj)
 			$('#'+id).selectpicker('refresh');
 
 		},'json');
+	}
+	function  chk_location(id){
+		var arr = $('[id^=locationID_]');
+		var total = 0;
+		for (var i = 0; i < arr.length; i++) {
+			var num = $(arr[i]).val().trim();
+			if (i != 0) {
+				var a = i-1;
+				var x = i + 1;
+				if(num == $(arr[a]).val().trim())
+				{
+					$('#locationID'+id+'-error').show();
+					$('#chk3').val(1);
+					return false;    
+				}else{
+					$('#locationID'+id+'-error').hide();
+					$('#chk3').val(0);
+				}
+			}
+		}
 	}
 
 	// function checkLocationQTY(obj,productTypeName,brandName,productTypeID,brandID)
@@ -312,6 +334,9 @@ function checkReceiveQTY(obj)
 	    //     $('#supID').show();
 	    //     return false;
 	    // }
+	    if($('#chk3').val()==1){
+	    	return false;
+	    }
 
 		// $("#frm-input").attr("action", "process/receive_process.php");
 		if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){

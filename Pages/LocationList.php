@@ -32,7 +32,7 @@ if($ddl_search == 1){
  }
 }
 
-$field = "  tb_location.locationID,locationCode,locationName,locationTypeName,tb_location.isEnabled,productName,locationType";
+$field = "  tb_location.locationID,locationCode,locationName,locationTypeName,tb_location.isEnabled,productName,tb_locationtype.locationType";
 $table = "tb_location";
 $pk_id = "locationID";
 $join = " JOIN tb_locationtype on tb_location.locationTypeID = tb_locationtype.locationTypeID
@@ -73,9 +73,9 @@ chk_role($page_key,'isSearch',1) ;
               <input type="hidden" id="locationID" name="locationID" value="">
               <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
               <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-<!--              <?php echo $sql; ?>
--->
-<div class="row clearfix">
+            <!--  <?php echo $sql; ?> -->
+
+<!-- <div class="row clearfix">
   <div class="col-sm-5">
     <div class="form-group">
       <div class="form-group form-float">
@@ -133,7 +133,7 @@ chk_role($page_key,'isSearch',1) ;
       <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
     </div>
   </div> 
-</div>
+</div> -->
 
 
 <div class="icon-and-text-button-demo align-right">
