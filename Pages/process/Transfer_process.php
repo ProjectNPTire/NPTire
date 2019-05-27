@@ -67,8 +67,65 @@ switch($proc){
 				$total_sub = $rec_sub['ps_unit'] - (str_replace(',','',$billDescUnit[$key]));
 				$db->db_update('tb_productstore',array('ps_unit'=>$total_sub),"ps_id = '".$rec_sub['ps_id']."'");
 
+				$i = $billDescUnit[$key];
+				while ($i > 0) {
+					//i = return sql();
+					//case 1
+					$sql_week = " SELECT runID,unit FROM tb_week where productID = '".$value."' order by week limit 1 ";
+					$query_week = $db->query($sql_week);
+					$rec_week = $db->db_fetch_array($query_week);
+					$unit = $rec_week['unit']; //จำนวนที่อายุสินค้าน้อยที่สุด
+					if ($i >= $unit) { //ถ้าจำนวนที่รับมามากกว่าหรือเท่าจำนวนของอายุสินค้าน้อย
+						$db->db_delete("tb_week", " runID = '".$rec_week['runID']."'"); //ลบrow
+						$i = $i - $unit; //จำนวนที่เหลือ
+					}else{ // ถ้าจำนวนที่รับมาน้อยกว่าจำนวนที่มีอยู่
+						$db->db_update('tb_week',array('unit'=>$unit - $i),"runID = '".$rec_week['runID']."'"); //อัพเดต
+						$i = 0; //สินค้าที่รับมาถูกอัพเดตเรียบร้อย
+					}
+
+
+				}
+
+				// $sum = 0;
+								// while ($rec_week = $db->db_fetch_array($query_week)){
+				// 	if($billDescUnit[$key] > $rec_week['unit']){
+				// 		$sum = $billDescUnit[$key] - $rec_week['unit'];
+				// 		$db->db_delete("tb_week", " runID = '".$rec_week['runID']."'");
+				// 	}else{
+				// 		$sum = $billDescUnit[$key];
+				// 		$db->db_update('tb_week',array('unit'=>$rec_week['unit']-$sum),"runID = '".$rec_week['runID']."'");
+				// 	}
+				// }
+
+				// $sql_week = " SELECT runID,unit FROM tb_week where productID = '".$value."' order by week ";
+				// $query_week = $db->query($sql_week);
+
+				// $num_sell = $billDescUnit[$key];
+				// $data = array();
+				// $ = 1;
+				// while ($rec_week = $db->db_fetch_array($query_week)){
+				// 	if($num_sell > 0){
+				// 		if($rec_week['unit'] < $num_sell){
+				// 			$data[$i]['runID'] = $rec_week['runID'];
+				// 			$data[$i]['unit'] = $rec_week['unit'];
+				// 			$num_sell = $num_sell - $rec_week['unit'];
+
+				// 			$db->db_update('tb_week',array('unit'=>$num_sell),"runID = '".$rec_week['runID']."'");
+				// 			$i++;
+				// 		}else{
+				// 			$data[$i]['id'] = $rec_week['runID'];
+				// 			$data[$i]['unit'] = $rec_week['unit'];
+				// 			break;
+				// 		}
+				// 	}
+				// 	// else{
+				// 	// 	break;
+				// 	// }
+				// }
+
 			}
 		}
+
 		$detail = 'เพิ่มข้อมูลการเบิกสินค้า  : '.$new_no;
 		save_log($detail);
 		$text=$save_proc;
@@ -76,7 +133,7 @@ switch($proc){
 		$text=$e->getMessage();
 	}
 	break;
-	
+
 
 	case "cancel" :
 	try{

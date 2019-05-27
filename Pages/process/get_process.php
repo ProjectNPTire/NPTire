@@ -27,9 +27,9 @@ switch($PROC){
 	case "get_location" :
 	$locationTypeID = $_POST['locationTypeID'];
 	$productID = $_POST['productID'];
-	$sql ="	SELECT tb_location.locationID as DATA_VALUE ,locationName as DATA_NAME FROM tb_location
-	LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
-	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND productID = '".$productID."' OR ps_id IS null";
+
+	$sql ="SELECT tb_location.locationID as DATA_VALUE ,locationName as DATA_NAME FROM tb_location
+	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND locationID IN (SELECT locationID FROM tb_productstore WHERE productID = '".$productID."' OR ps_unit = 0 )";
 
 	$query=$db->query($sql);
 	$OBJ=array();
