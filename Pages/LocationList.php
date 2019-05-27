@@ -38,7 +38,7 @@ $pk_id = "locationID";
 $join = " JOIN tb_locationtype on tb_location.locationTypeID = tb_locationtype.locationTypeID
 LEFT JOIN tb_productstore on tb_location.locationID = tb_productstore.locationID
 LEFT JOIN tb_product on tb_product.productID = tb_productstore.productID";
-$wh = "1=1  {$filter}";
+$wh = "1=1 {$filter}";
 $groupby = " GROUP by tb_location.locationID";
 $orderby = " order by tb_location.locationID ASC";
 $limit =" LIMIT ".$goto ." , ".$page_size ;
@@ -165,6 +165,9 @@ chk_role($page_key,'isSearch',1) ;
             if($rec['productName'] != ''){
               $status = $rec['productName'];
             }
+            // else if(){
+
+            // }
           }
 
           ?>

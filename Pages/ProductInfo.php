@@ -18,11 +18,9 @@ $nums = $db->db_num_rows($query);
 $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
-$s_location = "SELECT * from tb_location order by locationName ";
-$s_locationtype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
-JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
-WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore where productID ='".$productID."') 
-ORDER BY FIELD(locationType,3,1,2)";
+//$s_store = "SELECT * from tb_productstore where productID ='".$productID."' ";
+
+
 $s_locationtype2 = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
 JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
 WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore) 
@@ -412,6 +410,9 @@ $readonly = "readonly";
                                 <select name="locationTypeID[]" id="locationTypeID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true">
                                   <option value="">เลือก</option>
                                   <?php
+                                  $s_locationtype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
+                                  WHERE locationType = 3 OR locationTypeID = '".$rec_location['locationTypeID']."' OR locationTypeID NOT IN (SELECT locationTypeID FROM tb_productstore) 
+                                  ORDER BY FIELD(locationType,3,1,2)";
                                   $q_locationtpye = $db->query($s_locationtype);
                                   while ($r_locationtype = $db->db_fetch_array($q_locationtpye)) {?>
                                     <option value="<?php echo $r_locationtype['locationTypeID'];?>" <?php echo ($r_locationtype['locationTypeID']==$rec_location['locationTypeID'])?"selected":"";?>><?php echo $r_locationtype['locationTypeName'];?></option>
@@ -422,7 +423,10 @@ $readonly = "readonly";
                                   <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
                                     <option value="">เลือก</option>
                                     <?php
-
+                                    
+                                    $s_location = "SELECT * FROM tb_productstore
+                                    JOIN tb_location on tb_productstore.locationID = tb_location.locationID
+                                    WHERE ps_unit = 0 or tb_productstore.locationID = '".$rec_location['locationTypeID']."' and tb_productstore.locationTypeID = '".$rec_location['locationID']."' ";
                                     $q_location = $db->query($s_location);
                                     while ($r_location = $db->db_fetch_array($q_location)) {?>
                                       <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>

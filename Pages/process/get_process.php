@@ -573,11 +573,9 @@ switch($PROC){
 	// join tb_brand e on b.brandID = e.brandID
 	// where ps_unit > 0";
 	// else 
-	$sql=" SELECT tb_product.*,tb_productstore.ps_unit,tb_locationtype.locationTypeName,tb_location.locationName
+	$sql=" SELECT tb_product.*,tb_productstore.ps_unit,tb_productstore.locationTypeID,tb_productstore.locationID
 	FROM  tb_productstore INNER JOIN
 	tb_product ON tb_productstore.productID = tb_product.productID INNER JOIN
-	tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID INNER JOIN
-	tb_location ON tb_productstore.locationID = tb_location.locationID INNER JOIN
 	tb_producttype ON tb_product.productTypeID = tb_producttype.productTypeID INNER JOIN
 	tb_brand ON tb_product.brandID = tb_brand.brandID
 	where ps_unit > 0 {$filter}";
@@ -609,8 +607,8 @@ switch($PROC){
 		$row['productName']  = $rec['productName'];
 		$row['productTypeName']  = get_productType_name($rec['productTypeID']);
 		$row['brandName']  = get_brand_name($rec['brandID']);
-		$row['locationTypeName']  = $rec['locationTypeName'];
-		$row['locationName']  = $rec['locationName'];
+		$row['locationTypeName']  = get_locationType_name($rec['locationTypeID']);
+		$row['locationName']  = get_location_name($rec['locationID']);
 		$row['locationTypeID']  = $rec['locationTypeID'];
 		$row['locationID']  = $rec['locationID'];
 		$row['ps_unit']  = number_format($rec['ps_unit']);

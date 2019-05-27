@@ -244,7 +244,7 @@ function getPOInfo($id){
 
     $sql_loctype = "SELECT tb_locationType.locationTypeID,locationTypeName FROM tb_locationType
     JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
-    WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore) 
+    WHERE locationType = 3 OR locationID NOT IN (SELECT locationID FROM tb_productstore WHERE ps_unit >0) 
     ORDER BY FIELD(locationType,3,1,2)";     
     $query_loctype = $db->query($sql_loctype);
     $nums_loctype = $db->db_num_rows($query_loctype);

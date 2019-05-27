@@ -13,6 +13,7 @@ $tb4 = 'tb_product';
 $tb5 = 'tb_po';
 $tb6 = 'tb_po_desc';
 $tb7 = 'tb_location';
+$tb7 = 'tb_week';
 
 switch($proc){
 	case "add" :
@@ -96,6 +97,40 @@ switch($proc){
                 $db->db_update($tb7,$fields,"locationID = '".$_POST['locationID'][$key]."' ");
             }
         }
+
+
+
+        $sql_week = "SELECT * FROM tb_week WHERE productID = '".$key."' AND week = '".$_POST['week'][$key]."' ";
+        $query_week = $db->query($sql_week);
+        $nums_week = $db->db_num_rows($query_week);
+        $rec_week = $db->db_fetch_array($query_week);
+
+        if($nums_week > 0){
+                    // update
+            unset($fields);
+            $fields = array(
+                "unit"=>($rec_week['unit'] + $_POST['qty'][$key]),
+            );
+
+            $db->db_update($tb7,$fields, " productID = '".$key."' AND week = '".$_POST['week'][$key]."' ");
+        }
+        else{
+            unset($fields);
+            $fields = array(
+                "productID"=>$key,
+                "week"=>$_POST['week'][$key],
+                "unit"=>$_POST['qty'][$key],
+            );
+
+        // echo  "<pre>";
+        // print_r($fields);
+        // echo "</pre>";
+        // exit;
+            if($_POST['week'][$key] > 0){
+                $db->db_insert($tb7,$fields);
+            }
+        }   
+
 
         $sql_check_received = "SELECT SUM(qty) AS sum_received FROM tb_receive_desc WHERE productID = '".$key."' AND pOID = '".$_POST["poID"]."' AND cancelFlag = '0' ";
         $query_check_received = $db->query($sql_check_received);

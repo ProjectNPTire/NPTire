@@ -129,10 +129,10 @@ $page_key ='5_1';
 					html += '<th width="8%" align="center">รับเข้า</th>';
 					html += '<th width="11%" align="center">ประเภทตำแหน่งเก็บ</th>';
 					html += '<th align="center">ตำแหน่งเก็บ</th>';
+					html += '<th align="center">สัปดาห์ยาง</th>';
 					html += '</tr>';
 					html += '</thead>';
 					html += '<tbody>';
-
 					var qty = 0;
 
 					if(data["po_desc"]){
@@ -168,7 +168,15 @@ $page_key ='5_1';
 							}
 							html += '</select>';
 							html += '</td>';
+							html += '<td>';
+							html += '<input type="hidden" value="'+data["po_desc"][i].productTypeID+'" name="type['+data["po_desc"][i].productID+']" class="form-control">';
+							if(data["po_desc"][i].productTypeID == 1){
+								html += '<div class="form-line"><input type="text" value="" id="week_'+data["po_desc"][i].productID+'" maxlength="2" name="week['+data["po_desc"][i].productID+']" class="form-control text-right numb" required></div>';
+							}else{
+								html += '-';
+							}
 
+							html += '</td>';
 							// if (data["locationType"]) {
 							// 	var count = 0;
 							// 	let result = [];
@@ -212,8 +220,7 @@ $page_key ='5_1';
 							//}
 							html += '</tr>';
 						}
-					}
-					else {
+					} else {
 						html += '<tr>';
 						html += '<td colspan="6" align="center">ไม่พบข้อมูล</td>';
 						html += '</tr>';
@@ -234,8 +241,7 @@ $page_key ='5_1';
 						"showTick" : true
 					});
 				}
-			}
-			else {
+			} else {
 				var html = "";
 				$("#receive-load").html(html);
 				$("#btn-submit").hide();
