@@ -292,12 +292,12 @@ chk_role($page_key,'isSearch',1);
                           <span class="form-group" id="txt_idline"></span>
                         </div>
                       </div>
-                      <div class="row clearfix">
+                      <!--<div class="row clearfix">
                         <div class="col-sm-12">
                           <b>หมายเหตุ  </b>
                           <span class="form-group" id="txt_note"></span>
                         </div>
-                      </div>
+                      </div> -->
 
                     </div>
                     <div class="modal-footer">

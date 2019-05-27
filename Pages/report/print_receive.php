@@ -166,12 +166,15 @@ $qty1 = 0;
 while($rec_pd = $db->db_fetch_array($query_pd))
 {
 
-	$sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName FROM tb_product INNER JOIN
-	tb_locationtype ON tb_product.locationTypeID = tb_locationtype.locationTypeID INNER JOIN
-	tb_location ON tb_product.locationID = tb_location.locationID
-	WHERE productID = '".$rec_pd["productID"]."' ";
-	$query_product = $db->query($sql_product);
-	$rec_product = $db->db_fetch_array($query_product);
+	$sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
+	,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
+	FROM  tb_productstore 
+	JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
+	JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
+	JOIN tb_product ON tb_productstore.productID = tb_product.productID
+        WHERE tb_productstore.productID = '".$rec_pd["productID"]."' ";
+        $query_product = $db->query($sql_product);
+        $rec_product = $db->db_fetch_array($query_product);
 
 	$sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$receiveID."' and productID = '".$rec_pd["productID"]."' ";
 	$query_receive_desc = $db->query($sql_receive_desc);
