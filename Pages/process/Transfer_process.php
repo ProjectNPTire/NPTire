@@ -67,13 +67,15 @@ switch($proc){
 				$total_sub = $rec_sub['ps_unit'] - (str_replace(',','',$billDescUnit[$key]));
 				$db->db_update('tb_productstore',array('ps_unit'=>$total_sub),"ps_id = '".$rec_sub['ps_id']."'");
 
-				$i = $billDescUnit[$key];
-				while ($i > 0) {
+				if($rec_head['locationType'] == 3){
+
+					$i = $billDescUnit[$key];
+					while ($i > 0) {
 					//i = return sql();
 					//case 1
-					$sql_week = " SELECT runID,unit,week FROM tb_week where productID = '".$value."' order by week limit 1 ";
-					$query_week = $db->query($sql_week);
-					$rec_week = $db->db_fetch_array($query_week);
+						$sql_week = " SELECT runID,unit,week FROM tb_week where productID = '".$value."' order by week limit 1 ";
+						$query_week = $db->query($sql_week);
+						$rec_week = $db->db_fetch_array($query_week);
 					$unit = $rec_week['unit']; //จำนวนที่อายุสินค้าน้อยที่สุด
 					if ($i >= $unit) { //ถ้าจำนวนที่รับมามากกว่าหรือเท่าจำนวนของอายุสินค้าน้อย
 						$db->db_delete("tb_week", " runID = '".$rec_week['runID']."'"); //ลบrow
@@ -95,6 +97,7 @@ switch($proc){
 
 
 				}
+			}
 
 				// $sum = 0;
 								// while ($rec_week = $db->db_fetch_array($query_week)){

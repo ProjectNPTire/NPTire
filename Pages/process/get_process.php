@@ -31,7 +31,7 @@ switch($PROC){
 	$sql ="SELECT tb_location.locationID as DATA_VALUE ,locationName as DATA_NAME
 	FROM tb_location
 	LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
-	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND (ps_id IS null or ps_unit = 0) OR(productID = '".$productID."' and ps_unit > 0)";
+	WHERE tb_location.locationTypeID = '".$locationTypeID."' AND (ps_id IS null or ps_unit = 0)";
 
 	
 
@@ -606,20 +606,21 @@ switch($PROC){
 	while($rec = $db->db_fetch_array($query)){
 		
 		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-		FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
-		JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-		WHERE tb_productattr.productID = '".$rec["productID"]."'";
-		$query_attr = $db->query($sql_attr);
-		$nums_attr = $db->db_num_rows($query_attr);
+        FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+        WHERE productID = '".$rec["productID"]."'";
+        $query_attr = $db->query($sql_attr);
+        $nums_attr = $db->db_num_rows($query_attr);
 
-		if($nums_attr > 0){
-			while($rec_attr = $db->db_fetch_array($query_attr))
-			{
-				$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
-			}
-		}else{
-			$attr = '-';
-		}
+        $attr = '';
+
+        if($nums_attr > 0){
+            while($rec_attr = $db->db_fetch_array($query_attr))
+            {
+                $attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
+            }
+        }else{
+            $attr = '-';
+        }
 		
 
 		$row['productID']  = $rec['productID'];
