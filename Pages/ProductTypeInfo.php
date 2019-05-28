@@ -36,6 +36,7 @@ $readonly = "readonly";
 							<input type="hidden" id="chk" name="chk" value="0">
 							<input type="hidden" id="chk2" name="chk2" value="0">
 							<input type="hidden" id="chk3" name="chk3" value="0">
+							<input type="hidden" id="chk1" name="chk1" value="0">
 							<div class="body">
 								<div class="row clearfix">
 									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -209,6 +210,24 @@ $readonly = "readonly";
 		}
 
 		function chkinput(){
+
+			if($('#proc').val()=='edit'){
+				var productTypeID = $('#productTypeID').val();
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'chk_editpdtype',productTypeID:productTypeID},function(data){
+					if(data > 0){
+						alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากประเภทสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+						$('#chk1').val(1);
+						return false;
+					}else{
+						$('#chk1').val(0);
+					}
+				},'json');		
+			}
+
+			if($('#chk1').val()==1){
+				return false;
+			}
 
 			if($('#productTypeCode').val()==''){
 				$('#productTypeCode-error').show();

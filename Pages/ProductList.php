@@ -200,6 +200,14 @@ chk_role($page_key,'isSearch',1) ;
                              $location .= get_location_name($rec_loc['locationID']).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '.number_format($rec_loc['ps_unit']).' '.$arr_unitType[$rec['unitType']]."<br>";
                            }
 
+                           $week = "";
+                           $sql_week  = " SELECT * FROM tb_week  where productID ='".$rec['productID']."' ";
+                           $query_week = $db->query($sql_week);
+                           $nums_week = $db->db_num_rows($query_week);
+                           while ($rec_week = $db->db_fetch_array($query_week)) {
+                             $week .= number_format($rec_week['week']).' สัปดาห์&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; '.number_format($rec_week['unit'])." เส้น <br>";
+                           }
+
                            $supplier = "";
                            $sql_sub  = " SELECT * FROM tb_productsupplier  where productID ='".$rec['productID']."' ";
                            $query_sub = $db->query($sql_sub);
@@ -248,6 +256,7 @@ chk_role($page_key,'isSearch',1) ;
                             <input type="hidden" id="show_supplier_<?php echo $rec['productID'];?>" value="<?php echo $supplier;?>" >
                             <input type="hidden" id="show_productImg_<?php echo $rec['productID'];?>" value="<?php echo $rec['productImg'];?>" >
                             <input type="hidden" id="show_detail_<?php echo $rec['productID'];?>" value="<?php echo $rec['productDetail'];?>" >
+                            <input type="hidden" id="show_week_<?php echo $rec['productID'];?>" value="<?php echo $week;?>" >
 
                                      <!--  <span  data-toggle="modal" data-target="#largeModal">
                                         <button id="btn_info" type="button" class="btn btn-info btn-xs waves-effect" data-toggle="tooltip" data-placement="top" title="ข้อมูล">
@@ -350,9 +359,15 @@ chk_role($page_key,'isSearch',1) ;
              <div class="form-group" id="txt_supplier"></div>
            </div>
          </div>
-         <div class="modal-footer">
-           <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+         <div class="align-left">
+          <div class="col-sm-12">
+           <b>สัปดาห์ยาง</b>
+           <div class="form-group" id="txt_week"></div>
          </div>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+       </div>
      <!-- <div class="modal-footer">
         <button type="button" class="btn btn-link waves-effect">SAVE CHANGES</button>
         <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">CLOSE</button>
@@ -393,6 +408,7 @@ chk_role($page_key,'isSearch',1) ;
     $('#txt_location').html($('#show_location_'+id).val());
     $('#txt_detail').html($('#show_detail_'+id).val());
     $('#txt_supplier').html($('#show_supplier_'+id).val());
+    $('#txt_week').html($('#show_week_'+id).val());
 
 
 

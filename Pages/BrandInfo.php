@@ -36,6 +36,7 @@
   							<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
   							<input type="hidden" id="chk" name="chk" value="0">
   							<input type="hidden" id="chk2" name="chk2" value="0">
+                <input type="hidden" id="chk1" name="chk1" value="0">
   							<div class="body">
   								<div class="row clearfix">
   									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -105,6 +106,24 @@
   		}
 
   		function chkinput(){
+
+        if($('#proc').val()=='edit'){
+        var brandID= $('#brandID').val();
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chk_editbrand',brandID:brandID},function(data){
+          if(data > 0){
+            alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากยี่ห้อนี้มีการใช้ข้อมูลนี้อยู่');
+            $('#chk1').val(1);
+            return false;
+          }else{
+            $('#chk1').val(0);
+          }
+        },'json');    
+      }
+
+      if($('#chk1').val()==1){
+        return false;
+      }
 
   			if($('#chk2').val()==1){
   				$('#brandCode-error2').show();

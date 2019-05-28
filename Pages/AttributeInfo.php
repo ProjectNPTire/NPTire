@@ -32,6 +32,7 @@ $readonly = "readonly";
 							<input type="hidden" id="attrID" name="attrID" value="<?php echo $attrID;?>">
 							<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
 							<input type="hidden" id="chk" name="chk" value="0">
+							<input type="hidden" id="chk1" name="chk1" value="0">
 							<div class="body">
 								<div class="row clearfix">
 									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b></div>
@@ -93,12 +94,19 @@ $readonly = "readonly";
 			if($('#proc').val()=='edit'){
 				var attrID= $('#attrID').val();
 				$.ajaxSetup({async: false});
-				$.post('process/get_process.php',{proc:'chk_editeattr',attrID:attrID},function(data){
+				$.post('process/get_process.php',{proc:'chk_editattr',attrID:attrID},function(data){
 					if(data > 0){
 						alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณลักษณะนี้มีการใช้ข้อมูลนี้อยู่');
+						$('#chk1').val(1);
 						return false;
+					}else{
+						$('#chk1').val(0);
 					}
 				},'json');		
+			}
+
+			if($('#chk1').val()==1){
+				return false;
 			}
 
 			if($('#attrName').val()==''){

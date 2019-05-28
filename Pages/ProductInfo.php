@@ -22,7 +22,7 @@ $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
 
 
 $s_locationtype2 = "SELECT locationTypeID,locationTypeName FROM tb_locationType
-    WHERE locationType = '".$rec['locationType']."'";
+WHERE locationType = '".$rec['locationType']."'";
 // $locationTypeID =  $rec['locationTypeID'];
 
 // if ($locationTypeID == 1) {
@@ -53,7 +53,8 @@ $readonly = "readonly";
               <input type="hidden" id="chk3" name="chk3" value="0">
               <input type="hidden" id="chk4" name="chk4" value="0">
               <input type="hidden" id="chk5" name="chk5" value="0">
-<!-- <?php echo $s_locationtype2 ?> -->
+              <input type="hidden" id="chk6" name="chk6" value="0">
+              <!-- <?php echo $s_locationtype2 ?> -->
               <div class="body">
                 <div class="row clearfix">
                   <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -526,6 +527,24 @@ $readonly = "readonly";
 
   function chkinput(){
 
+    if($('#proc').val()=='edit'){
+        var productID= $('#productID').val();
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chk_editproduct',productID:productID},function(data){
+          if(data > 0){
+            alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+            $('#chk6').val(1);
+            return false;
+          }else{
+            $('#chk6').val(0);
+          }
+        },'json');    
+      }
+
+      if($('#chk6').val()==1){
+        return false;
+      }
+
     if($('#chk2').val()==1){
       $('#productName-error2').show();
       $('#productName').focus();
@@ -811,8 +830,8 @@ function get_code(){
         html += '<td>'+value['attrName'];
         html += '<input type="hidden" name="attrID[]" id="F_attrID_'+index+'" value="'+value['attrID']+'">';
         html += '</td>';
-        html += '<td align="center">';
-        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_txtvalue_'+index+'" value="" ></div><label id="valuetxt_'+index+'-error" class="error" for="F_valuetxt_'+index+'">กรุณาเลือก</label></div>';
+        html += '<td>';
+        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_txtvalue_'+index+'" value="" ></div><label id="txtvalue_'+index+'-error" class="error" for="F_txtvalue_'+index+'">กรุณาระบุ รายละเอียด</label></div>';
         html += '</td>';
         html += '</tr>';
         i++;

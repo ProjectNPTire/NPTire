@@ -21,8 +21,8 @@ if($S_REPORT_TYPE!=''){
 
 $sql =" SELECT * FROM tb_locationtype
 JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
-JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
-JOIN tb_product ON tb_productstore.productID = tb_product.productID
+LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
+LEFT JOIN tb_product ON tb_productstore.productID = tb_product.productID
 {$filter}";
 
 
@@ -132,13 +132,13 @@ $html .= '</tbody>
                       <select class="form-control show-tick" data-live-search="true" id="S_REPORT_TYPE" name="S_REPORT_TYPE">
                         <option value="">ทั้งหมด</option>
                         <?php
-                        $s_location=" SELECT * from tb_location order by locationID asc";
+                        $s_location=" SELECT * from tb_locationtype order by locationTypeName";
                         $q_location = $db->query($s_location);
                         $n_location = $db->db_num_rows($q_location);
                         while($r_location = $db->db_fetch_array($q_location)){
 
                           ?>
-                          <option value="<?php echo $r_location['locationID'];?>" <?php echo ($S_REPORT_TYPE==$r_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                          <option value="<?php echo $r_location['locationTypeID'];?>" <?php echo ($S_REPORT_TYPE==$r_location['locationTypeID'])?"selected":"";?>><?php echo $r_location['locationTypeName'];?></option>
 
                         <?php }  ?>
                       </select>  

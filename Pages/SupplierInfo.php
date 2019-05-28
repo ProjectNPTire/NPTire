@@ -40,6 +40,7 @@ chk_role($page_key,'isAdd',1);
                                 <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
                                 <input type="hidden" id="supID" name="supID" value="<?php echo $supID; ?>">
                                 <input type="hidden" id="chksup" name="chksup" value="0">
+                                <input type="hidden" id="chk1" name="chk1" value="0">
                                 <div class="row clearfix">
                                     <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
                                     </div>
@@ -111,12 +112,12 @@ chk_role($page_key,'isAdd',1);
                                         <b>เขต/อำเภอ</b>
                                         <div class="form-group form-float">
                                             <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-                                             <option value="">เลือก</option>
-                                             <?php
-                                             $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
-                                             $q_d = $db->query($s_d);
-                                             $n_d = $db->db_num_rows($q_d);
-                                             while($r_d = $db->db_fetch_array($q_d)){?>
+                                               <option value="">เลือก</option>
+                                               <?php
+                                               $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
+                                               $q_d = $db->query($s_d);
+                                               $n_d = $db->db_num_rows($q_d);
+                                               while($r_d = $db->db_fetch_array($q_d)){?>
                                                 <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtID']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
                                             <?php }  ?>
                                         </select>
@@ -152,14 +153,14 @@ chk_role($page_key,'isAdd',1);
                             <div class="form-group">
                                 <b>รหัสไปรษณีย์</b>
                                 <div class="form-line">
-                                 <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                             </div>
-                             <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
-                         </div>
-                     </div>
-                 </div>
-                 <h2 class="card-inside-title">พนักงานที่ติดต่อ</h2><hr />
-                 <div class="row clearfix">
+                                   <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                               </div>
+                               <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
+                           </div>
+                       </div>
+                   </div>
+                   <h2 class="card-inside-title">พนักงานที่ติดต่อ</h2><hr />
+                   <div class="row clearfix">
                     <div class="col-sm-4">
                       <b>ชื่อพนักงานที่ติดต่อ</b>
                       <div class="form-group">
@@ -269,14 +270,14 @@ chk_role($page_key,'isAdd',1);
         $('.error').hide();
         $(".numb").inputFilter(function(value) {
           return /^\d*$/.test(value);
-        });
+      });
 
         if($('#proc').val()=='add'){
           var supCode ='';
           $.ajaxSetup({async: false});
           $.post('process/get_process.php',{proc:'get_supCode'},function(data){
-             userName =  data['name'];
-         },'json');
+           userName =  data['name'];
+       },'json');
           $('#supCode').val(userName);
       }
 
@@ -288,6 +289,24 @@ chk_role($page_key,'isAdd',1);
     }
 
     function chkinput(){
+
+        if($('#proc').val()=='edit'){
+            var supID= $('#supID').val();
+            $.ajaxSetup({async: false});
+            $.post('process/get_process.php',{proc:'chk_editsup',supID:supID},function(data){
+                if(data > 0){
+                    alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากบริษัทคู่ค้านี้มีการใช้ข้อมูลนี้อยู่');
+                    $('#chk1').val(1);
+                    return false;
+                }else{
+                    $('#chk1').val(0);
+                }
+            },'json');      
+        }
+
+        if($('#chk1').val()==1){
+            return false;
+        }
 
         if($('#sup_name').val()==''){
             $('#sup_name_error').show();
@@ -460,13 +479,13 @@ function chk_sup(){
     $.ajaxSetup({async: false});
     $.post('process/get_process.php',{proc:'chk_sup',sup_name:sup_name,supID:supID},function(data){
         if(data==1){
-           $('#sup_name2_error').show();
-           $('#chksup').val(1);
-       }else{
-           $('#sup_name2_error').hide();
-           $('#chksup').val(0);
+         $('#sup_name2_error').show();
+         $('#chksup').val(1);
+     }else{
+         $('#sup_name2_error').hide();
+         $('#chksup').val(0);
 
-       }
+     }
         //alert(data);
            //$('#chkuser').val()
 
@@ -475,7 +494,7 @@ function chk_sup(){
 }
 
 function isPhoneNo(input,type){
-    
+
     var res = input.value.replace(/-/g, "");
     if (type == 1) {
         var regExp = /^02([0-9]{7})$/i;

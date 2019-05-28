@@ -362,12 +362,14 @@ function checkReceiveQTY(obj)
 	    			$('#'+name).hide();
 	    			$('#chk4').val(0);
 	    		}
-	    		if(($(this).find('td:eq(11)').find('input.numb').val()).toString() == ""){
-	    			$(this).find('td:eq(11)').find('.error').show();
-	    			$('#chk5').val(1);
-	    		}else{
-	    			$(this).find('td:eq(11)').find('.error').hide();
-	    			$('#chk5').val(0);
+	    		if ($(this).find('td:eq(11)').find('input[type=hidden]').val() == 1) {
+	    			if(($(this).find('td:eq(11)').find('input.numb').val()).toString() == ""){
+	    				$(this).find('td:eq(11)').find('.error').show();
+	    				$('#chk5').val(1);
+	    			}else{
+	    				$(this).find('td:eq(11)').find('.error').hide();
+	    				$('#chk5').val(0);
+	    			}
 	    		}
 	    	});
 	    }
@@ -384,7 +386,7 @@ function checkReceiveQTY(obj)
 	    // }else{
 	    // 	$('#tb-data-error').hide();
 	    // 	$.each(obj_id, function(){
-	    		
+
 	    // 	});
 	    // }
 
