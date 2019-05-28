@@ -25,6 +25,7 @@ $page_key ='5_1';
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
 								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
 								<input type="hidden" id="chk3" name="chk3" value="0">
+								<input type="hidden" id="chk4" name="chk4" value="0">
 								<input type="hidden" id="chk5" name="chk5" value="0">
 								<!-- <input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>"> -->
 
@@ -156,25 +157,25 @@ $page_key ='5_1';
 							html += '<td align="right">'+addCommas(pending)+'</td>';
 							html += '<td align="right"><div class="form-line"><input type="text" maxlength="'+addCommas(pending).length+'" value="'+addCommas(receive)+'" id="qty['+data["po_desc"][i].productID+']" name="qty['+data["po_desc"][i].productID+']" class="form-control text-right numb" onblur="checkReceiveQTY(this);NumberFormat(this);" required></div></td>';
 							// html += '<td><input type="hidden" id="locationTypeID" name="locationTypeID" value="'+data["po_desc"][i].locationTypeID+'">'+data["po_desc"][i].locationTypeName+'</td>';
-							html += '<td align="right">';
-							html += '<select onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\','+data["po_desc"][i].productID+');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true"><option value="">เลือก</option>';
+							html += '<td>';
+							html += '<select id="locationTypeID_'+data["po_desc"][i].productID+'" onchange="get_location(this.value,\'locationID_'+data["po_desc"][i].productID+'\','+data["po_desc"][i].productID+');" name="locationTypeID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true"><option value="">เลือก</option>';
 
 							for (var j = 0; j < data["locationType"].length; j++) {
 								html += '<option value="'+data["locationType"][j].locationTypeID+'">'+data["locationType"][j].locationTypeName+'</option>';
 							}
-							html += '</select>';
+							html += '</select><label id="locationTypeID_'+data["po_desc"][i].productID+'-error" class="error" for="locationTypeID_'+data["po_desc"][i].productID+'">กรุณาเลือก ประเภทตำแหน่งเก็บ</label>';
 							html += '</td>';
-							html += '<td align="right">';
+							html += '<td>';
 							html += '<select onchange="chk_location('+data["po_desc"][i].productID+');" id="locationID_'+data["po_desc"][i].productID+'" name="locationID['+data["po_desc"][i].productID+']" class="form-control show-tick" data-live-search="true"><option value="">เลือก</option>';
 							// for (var j = 0; j < data["location"].length; j++) {
 							// 	html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
 							// }
-							html += '</select><label id="locationID'+data["po_desc"][i].productID+'-error" class="error" for="locationID_'+data["po_desc"][i].productID+'">ตำแหน่งนี้ถูกใช้แล้ว</label>';
+							html += '</select><label id="locationID'+data["po_desc"][i].productID+'-error" class="error" for="locationID_'+data["po_desc"][i].productID+'">ตำแหน่งนี้ถูกใช้แล้ว</label><label id="locationID_'+data["po_desc"][i].productID+'-error2" class="error" for="locationTypeID_'+data["po_desc"][i].productID+'">กรุณาเลือก ตำแหน่งเก็บ</label>';
 							html += '</td>';
 							html += '<td>';
 							html += '<input type="hidden" value="'+data["po_desc"][i].productTypeID+'" name="type['+data["po_desc"][i].productID+']" class="form-control">';
 							if(data["po_desc"][i].productTypeID == 1){
-								html += '<div class="form-group"><div class="form-line"><input type="text" value="" id="week_'+data["po_desc"][i].productID+'" maxlength="2" name="week['+data["po_desc"][i].productID+']" class="form-control text-right numb" required></div><label id="week'+data["po_desc"][i].productID+'-error" class="error" for="week_'+data["po_desc"][i].productID+'">กรุณาระบุ ชื่อสินค้า</label></div>';
+								html += '<div class="form-group"><div class="form-line"><input type="text" value="" id="week_'+data["po_desc"][i].productID+'" maxlength="2" name="week['+data["po_desc"][i].productID+']" class="form-control text-right numb" required></div><label id="week'+data["po_desc"][i].productID+'-error" class="error" for="week_'+data["po_desc"][i].productID+'">กรุณาระบุ สัปดาห์ยาง</label></div>';
 							}else{
 								html += '-';
 							}
@@ -336,18 +337,32 @@ function checkReceiveQTY(obj)
 	    //     $('#supID').show();
 	    //     return false;
 	    // }
-	    if($('#chk3').val()==1){
-	    	return false;
-	    }
-	    debugger
+
 	    var obj_id = $("#tb-data tbody tr");
+	    debugger
 	    if($('#rowid').val() == 0){
 	    	$('#tb-data-error').show();
 	    	return false;
 	    }else{
 	    	$('#tb-data-error').hide();
 	    	$.each(obj_id, function(){
-	    		if(($(this).find('td:eq(11)').find('input').val()).toString() == ""){
+	    		if(($(this).find('td:eq(9)').find('select').val()).toString() == ""){
+	    			$(this).find('td:eq(9)').find('.error').show();
+	    			$('#chk4').val(1);
+	    		}else{
+	    			$(this).find('td:eq(9)').find('.error').hide();
+	    			$('#chk4').val(0);
+	    		}
+	    		if(($(this).find('td:eq(10)').find('select').val()).toString() == ""){
+	    			var name = $(this).find('td:eq(10)').find('.error').get(1).id;
+	    			$('#'+name).show();
+	    			$('#chk4').val(1);
+	    		}else{
+	    			var name = $(this).find('td:eq(10)').find('.error').get(1).id;
+	    			$('#'+name).hide();
+	    			$('#chk4').val(0);
+	    		}
+	    		if(($(this).find('td:eq(11)').find('input.numb').val()).toString() == ""){
 	    			$(this).find('td:eq(11)').find('.error').show();
 	    			$('#chk5').val(1);
 	    		}else{
@@ -356,6 +371,22 @@ function checkReceiveQTY(obj)
 	    		}
 	    	});
 	    }
+	    if($('#chk4').val()==1){
+	    	return false;
+	    }
+	    if($('#chk3').val()==1){
+	    	return false;
+	    }
+	    // var obj_id = $("#tb-data tbody tr");
+	    // if($('#rowid').val() == 0){
+	    // 	$('#tb-data-error').show();
+	    // 	return false;
+	    // }else{
+	    // 	$('#tb-data-error').hide();
+	    // 	$.each(obj_id, function(){
+	    		
+	    // 	});
+	    // }
 
 	    if($('#chk5').val()==1){
 	    	return false;
