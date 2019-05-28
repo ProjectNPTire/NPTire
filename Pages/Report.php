@@ -31,7 +31,6 @@ if($S_REPORT_TYPE==1){
   JOIN tb_po_desc ON tb_po.poID = tb_po_desc.poID
   JOIN tb_product ON tb_po_desc.productID = tb_product.productID
   where poStatus != 99 {$filter1}
-  -- group by   tb_po.poID	/*b.poDate*/
   order by poDate,tb_po.poID"; 
   $col_span = 6;
  // exit;
@@ -44,24 +43,20 @@ if($S_REPORT_TYPE==1){
   JOIN tb_location ON tb_receive_desc.locationID = tb_location.locationID
   JOIN tb_locationtype ON tb_locationtype.locationTypeID = tb_location.locationTypeID
   where receiveStatus!=99 {$filter2}
-  -- group by tb_receive.receiveID
   order by receiveDate,tb_receive.receiveID";
   $col_span = 9; 
   
 }else if($S_REPORT_TYPE==3){
   $head_txt = 'เบิกสินค้า';
-  $sql =" select b.billNo as BILL_NO,c.productName,c.productCode,c.brandID,c.productSize,c.modelName,
-  sum(a.billDescUnit) as productUnit,c.unitType,b.billDate as doc_date,CONCAT(d.firstname,' ',d.lastname) AS ConcatField,
-  f.locationName
-  from tb_bill_desc a  
-  join tb_bill b on  a.billID = b.billID
-  join tb_product c on a.productID = c.productID
-  join tb_user d on b.create_by = d.userID
-  JOIN tb_location f ON f.locationID = f.locationID
+  $sql =" SELECT billDate,billNo,billDescUnit,productCode,productName,locationName,locationTypeName
+  FROM tb_bill
+  JOIN tb_bill_desc ON tb_bill.billID = tb_bill_desc.billID
+  JOIN tb_product ON tb_bill_desc.productID = tb_product.productID
+  JOIN tb_location ON tb_bill_desc.locationID = tb_location.locationID
+  JOIN tb_locationtype ON tb_locationtype.locationTypeID = tb_location.locationTypeID
   where billStstus = 1 {$filter3}
-  group by b.billNo
-  order by billDate asc,b.billNo desc";
-  $col_span = 5; 
+  order by billDate,tb_bill.billNo";
+  $col_span = 7; 
           //billDate
 }
 
@@ -96,31 +91,33 @@ if($S_REPORT_TYPE!=""){
   if($S_REPORT_TYPE==1){
    /*  <th width="5%">ลำดับ</th> */
    $html .= '
-   <th width="10%">วันที่สั่งซื้อ</th>
-   <th width="10%">เลขที่ใบสั่งซื้อ</th>
-   <th width="10%">บริษัทคู่ค้า</th>
-   <th width="10%">รหัสสินค้า</th>
-   <th width="10%">ชื่อสินค้า</th>
-   <th width="10%">จำนวนสั่งซื้อ</th>
-   <th width="10%">จำนวนเงิน</th>';
+   <th>วันที่สั่งซื้อ</th>
+   <th>เลขที่ใบสั่งซื้อ</th>
+   <th>บริษัทคู่ค้า</th>
+   <th>รหัสสินค้า</th>
+   <th>ชื่อสินค้า</th>
+   <th>จำนวนสั่งซื้อ</th>
+   <th>จำนวนเงิน</th>';
    /*   <th width="20%">ผู้สั่งซื้อ</th> */
  } else if($S_REPORT_TYPE==2){
   $html .= '
-  <th width="10%">วันที่รับเข้า</th>
-  <th width="10%">เลขที่ใบรับเข้า</th>
-  <th width="10%">เลขที่ใบสั่งซื้อ</th>
-  <th width="10%">รหัสสินค้า</th>
-  <th width="10%">ชื่อสินค้า</th>
-  <th width="10%">จำนวนรับเข้า</th>
-  <th width="20%">ประเภทตำแหน่งเก็บ</th>
-  <th width="20%">ตำแหน่งเก็บ</th>';
+  <th>วันที่รับเข้า</th>
+  <th>เลขที่ใบรับเข้า</th>
+  <th>เลขที่ใบสั่งซื้อ</th>
+  <th>รหัสสินค้า</th>
+  <th>ชื่อสินค้า</th>
+  <th>จำนวนรับเข้า</th>
+  <th>ประเภทตำแหน่งเก็บ</th>
+  <th>ตำแหน่งเก็บ</th>';
 } else if($S_REPORT_TYPE==3){
   $html .= '
-  <th width="10%">วันที่เบิก</th>
-  <th width="10%">เลขที่เบิก</th>
-  <th width="10%">จำนวนเบิก</th>
-  <th width="20%">ผู้เบิก</th>
-  <th width="20%">ตำแหน่งเก็บ</th>';
+  <th>วันที่เบิก</th>
+  <th>เลขที่เบิก</th>
+  <th>รหัสสินค้า</th>
+  <th>ชื่อสินค้า</th>
+  <th>จำนวนเบิก</th>
+  <th>ประเภทตำแหน่งเก็บที่เบิก</th>
+  <th>ตำแหน่งเก็บที่เบิก</th>';
 }
 $html .= '</tr>
 </thead>
@@ -147,7 +144,6 @@ if($nums>0){
   </tr>';
   $total += number_format($rec['qty']);
   $sum += $rec["amount"];
-  /* <td align="center" >'.$rec["ConcatField"].'</td> */
 }else if($S_REPORT_TYPE==2){
   $html .=  '<tr>
   <td align="center" >'.$rec['receiveDate'].'</td>
@@ -162,15 +158,16 @@ if($nums>0){
   $total += number_format($rec['qty']);
 }else if($S_REPORT_TYPE==3){
   $html .=  '<tr>
-  <td align="center" >'.$rec['doc_date'].'</td>
-  <td align="center" >'.$rec['BILL_NO'].'</td>
-  <td align="center">'.number_format($rec['productUnit']).'</td>
-  <td align="center" >'.$rec["ConcatField"].'</td>
+  <td align="center" >'.$rec['billDate'].'</td>
+  <td align="center" >'.$rec['billNo'].'</td>
+  <td align="center" >'.$rec['productCode'].'</td>
+  <td align="center" >'.$rec['productName'].'</td>
+  <td align="center">'.number_format($rec['billDescUnit']).'</td>
+  <td align="center" >'.$rec["locationTypeName"].'</td>
   <td align="center" >'.$rec["locationName"].'</td>
   </tr>';
+  $total += number_format($rec['billDescUnit']);
 }
-$total += number_format($rec['productUnit']);
-$sum += $rec["total"];
 }
 if($S_REPORT_TYPE==1){
   $td .= '<td colspan="3" align="center" >รวม '.$i.' รายการ จำนวน '.$total.' ชิ้น</td>
@@ -215,6 +212,7 @@ $html .=  '<tr>'.$td.'</tr>';
               <input type="hidden" name="CREATE_REPORT" id="CREATE_REPORT" value="<?php echo $CREATE_REPORT;?>"> 
               <input type="hidden" name="DATE_REPORT" id="DATE_REPORT" value="<?php echo $DATE_REPORT;?>">   
               <!--  <?php echo $DATE_FROM; ?> -->
+        
               <div class="row clearfix">                
                 <div class="col-md-4">
                   <b>ประเภทรายงาน</b>

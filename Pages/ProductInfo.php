@@ -53,7 +53,7 @@ $readonly = "readonly";
               <input type="hidden" id="chk3" name="chk3" value="0">
               <input type="hidden" id="chk4" name="chk4" value="0">
               <input type="hidden" id="chk5" name="chk5" value="0">
-<?php echo $s_locationtype2 ?>
+<!-- <?php echo $s_locationtype2 ?> -->
               <div class="body">
                 <div class="row clearfix">
                   <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
@@ -281,7 +281,7 @@ $readonly = "readonly";
                                   <div class="form-line">
                                     <input type="text" class="form-control" name="txtvalue[]" id="txtvalue_<?php echo $i;?>" value="<?php echo $rec_attr['value'];?>" >
                                   </div>
-                                  <label id="txtvalue_<?php echo $i;?>-error" class="error" for="txtvalue_<?php echo $i;?>">กรุณาเลือก</label>
+                                  <label id="txtvalue_<?php echo $i;?>-error" class="error" for="txtvalue_<?php echo $i;?>">กรุณาระบุ รายละเอียด</label>
                                 </div> 
                               </td>
                              <!--    <td style="text-align: center;">

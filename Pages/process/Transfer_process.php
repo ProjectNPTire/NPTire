@@ -43,7 +43,6 @@ switch($proc){
 				$fields = array(
 					"billID"=>$billID,
 					"productID"=>$value,
-					"locationTypeID"=>$locationTypeID[$key],
 					"locationID"=>$locationID[$key],
 					"billDescUnit"=>str_replace(',','',$billDescUnit[$key]),
 

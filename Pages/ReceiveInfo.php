@@ -25,6 +25,7 @@ $page_key ='5_1';
 								<input type="hidden" id="proc" name="proc" value="<?php echo $proc; ?>">
 								<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page; ?>">
 								<input type="hidden" id="chk3" name="chk3" value="0">
+								<input type="hidden" id="chk5" name="chk5" value="0">
 								<!-- <input type="hidden" id="poID" name="poID" value="<?php echo $poID; ?>"> -->
 
 								<div class="row table-responsive">
@@ -50,7 +51,7 @@ $page_key ='5_1';
 								</div>
 
 								<div id="receive-load"></div>
-
+								<input type="hidden" id="rowid" value="">
 								<div id="btn-submit" class="align-center" hidden>
 									<button class="btn btn-success waves-effect" type="button" onclick="confirmSubmit()">บันทึก</button>
 									<button class="btn btn-default waves-effect" type="button" onclick="OnCancel();">ยกเลิก</button>
@@ -221,6 +222,7 @@ $page_key ='5_1';
 							// 	return;
 							//}
 							html += '</tr>';
+							$('#rowid').val(data["po_desc"].length);
 						}
 					} else {
 						html += '<tr>';
@@ -335,6 +337,27 @@ function checkReceiveQTY(obj)
 	    //     return false;
 	    // }
 	    if($('#chk3').val()==1){
+	    	return false;
+	    }
+	    debugger
+	    var obj_id = $("#tb-data tbody tr");
+	    if($('#rowid').val() == 0){
+	    	$('#tb-data-error').show();
+	    	return false;
+	    }else{
+	    	$('#tb-data-error').hide();
+	    	$.each(obj_id, function(){
+	    		if(($(this).find('td:eq(11)').find('input').val()).toString() == ""){
+	    			$(this).find('td:eq(11)').find('.error').show();
+	    			$('#chk5').val(1);
+	    		}else{
+	    			$(this).find('td:eq(11)').find('.error').hide();
+	    			$('#chk5').val(0);
+	    		}
+	    	});
+	    }
+
+	    if($('#chk5').val()==1){
 	    	return false;
 	    }
 
