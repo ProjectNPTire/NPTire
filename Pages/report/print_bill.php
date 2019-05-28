@@ -37,30 +37,30 @@ td {
 			/*border:solid 1px #000000;
 			border:solid 1px #000000;*/
 
-global $db;
+			global $db;
 
- $sql_bill = "SELECT A.*,B.* FROM tb_bill A
+			$sql_bill = "SELECT A.*,B.* FROM tb_bill A
 			JOIN tb_user B ON A.create_by = B.userID
-			 WHERE A.billID = '".$billID."' ";
+			WHERE A.billID = '".$billID."' ";
 			
-$query_bill = $db->query($sql_bill);
-$rec_bill = $db->db_fetch_array($query_bill);
+			$query_bill = $db->query($sql_bill);
+			$rec_bill = $db->db_fetch_array($query_bill);
 
-if($rec_bill['billStstus']==1){
-	$billStstus = "ปกติ";
-	$namecan = "-";
-	$datecan = "-";
-}else {
-	$billStstus = "ยกเลิก";
-	
-	if($rec_bill['cancelUserID'] ){
-		$namecan = $rec_bill["firstname"]." ".$rec_bill["lastname"];
-		$datecan = conv_date($rec_bill["cancelDate"]);
-		
-	}
-}
- $sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
-$query_bd = $db->query($sql_bd);
+			if($rec_bill['billStstus']==1){
+				$billStstus = "ปกติ";
+				$namecan = "-";
+				$datecan = "-";
+			}else {
+				$billStstus = "ยกเลิก";
+
+				if($rec_bill['cancelUserID'] ){
+					$namecan = $rec_bill["firstname"]." ".$rec_bill["lastname"];
+					$datecan = conv_date($rec_bill["cancelDate"]);
+
+				}
+			}
+			$sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
+			$query_bd = $db->query($sql_bd);
 
 /* 
 $sql_po = "SELECT * FROM tb_po WHERE poID = '".$rec_receive["poID"]."' ";
@@ -173,8 +173,7 @@ $HTML .= '<th>ยี่ห้อ</th>';
 $HTML .= '<th>คุณลักษณะ</th>';
 $HTML .= '<th>ประเภทตำแหน่งจัดเก็บ</th>';
 $HTML .= '<th>ตำแหน่งจัดเก็บ</th>';
-$HTML .= '<th>จำนวน</th>';
-$HTML .= '<th>หน่วยนับ</th>';
+$HTML .= '<th>จำนวนเบิก</th>';
 // $HTML .= '<th width="10%">รุ่น</th>';
 // $HTML .= '<th width="5%">ราคา/ชิ้น</th>';
 // $HTML .= '<th width="10%">รวม</th>';
@@ -185,14 +184,16 @@ $HTML .= '<tbody>';
 
 $i = 0;
 $qty1 = 0;
-while($rec_bd = $db->db_fetch_array($query_bd))
+while($rec_pd = $db->db_fetch_array($query_bd))
 {
 
-	 $sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName 
-	FROM tb_product 
-	JOIN tb_locationtype ON tb_product.locationType = tb_locationtype.locationTypeID
-	 JOIN tb_location ON tb_location.locationID = tb_location.locationID 
-WHERE productID = '".$rec_bd["productID"]."' ";
+	$sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
+	,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
+	FROM  tb_productstore 
+	JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
+	JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
+	JOIN tb_product ON tb_productstore.productID = tb_product.productID
+	WHERE tb_productstore.productID = '".$rec_pd["productID"]."' ";
 	$query_product = $db->query($sql_product);
 	$rec_product = $db->db_fetch_array($query_product);
 
@@ -202,11 +203,12 @@ WHERE productID = '".$rec_bd["productID"]."' ";
 	
 
 	$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-	FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
-	JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-	WHERE tb_productattr.productID = '".$rec_bd["productID"]."'";
+	FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+	WHERE productID = '".$rec_pd["productID"]."'";
 	$query_attr = $db->query($sql_attr);
 	$nums_attr = $db->db_num_rows($query_attr);
+
+	$attr = '';
 
 	if($nums_attr > 0){
 		while($rec_attr = $db->db_fetch_array($query_attr))
@@ -226,7 +228,7 @@ WHERE productID = '".$rec_bd["productID"]."' ";
 	// $productSize = $rec_product['productSize'];
 	// $location = get_location_name($rec_locat['locationID']);
 
-	$qty = $rec_bd['billDescUnit'];
+	$qty = $rec_pd['billDescUnit'];
 	$unitType= $arr_unitType[$rec_product['unitType']];;
 	//$receive_qty = $rec_receive_desc['qty'];
 	$qty1 += $qty;
@@ -242,7 +244,6 @@ WHERE productID = '".$rec_bd["productID"]."' ";
 	$HTML .= '<td>'.$rec_product['locationTypeName'].'</td>';
 	$HTML .= '<td>'.$rec_product['locationName'].'</td>';
 	$HTML .= '<td align="right">'.number_format($qty).'</td>';
-	$HTML .= '<td align="center">'.$unitType.'</td>';
 	// $HTML .= '<td>'.$productSize.'</td>';
 	// $HTML .= '<td align="right">'.number_format($price).'</td>';
 	// $HTML .= '<td align="right">'.number_format($amount).'</td>';

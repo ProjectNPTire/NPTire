@@ -408,7 +408,7 @@ chk_role($page_key,'isAdd',1);
 		html += '<td>'+productTypeName+'</td>';
 		html += '<td>'+brandName+'</td>';
 		html += '<td>'+attr+'</td>';;
-		html += '<td><div class="form-line"><input type="text" value="1" name="price['+productID+']" class="form-control text-right numb" onblur="NumberFormat(this);calUnitPrice(this);" required></div></td>';
+		html += '<td><div class="form-line"><input type="text" value="1" name="price['+productID+']" class="form-control text-right numb" onblur="calUnitPrice(this);" required></div></td>';
 		html += '<td><div class="form-line"><input type="text" value="1" id="qty['+productID+']" name="qty['+productID+']" class="form-control text-right numb" onblur="NumberFormat(this);calUnitPrice(this);get_nozero(this);" required></div></td>';
 		// html += '<td><div class="form-line"><input type="text" value="1.00" name="amount['+productID+']" class="form-control text-right" readonly></div></td>';
 		html += '<td align="right">1.00</td>';
