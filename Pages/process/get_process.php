@@ -694,10 +694,11 @@ switch($PROC){
 	from tb_bill_desc a
 	join tb_product b on a.productID = b.productID
 	join tb_location c on a.locationID = c.locationID
-	join tb_locationtype d on a.locationTypeID = d.locationTypeID
-	where billID ='".$id."'";
+	join tb_locationtype d on c.locationTypeID = d.locationTypeID
+	where a.billID ='".$id."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
+	$i=1;
 	while($rec = $db->db_fetch_array($query)){
 
 		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
@@ -708,6 +709,7 @@ switch($PROC){
 		$nums_attr = $db->db_num_rows($query_attr);
 
 		if($nums_attr > 0){
+		
 			while($rec_attr = $db->db_fetch_array($query_attr))
 			{
 				$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
@@ -716,6 +718,7 @@ switch($PROC){
 			$attr = '-';
 		}
 
+		
 		$row['productCode']  = $rec['productCode'];
 		$row['productName']  = $rec['productName'];
 		$row['productTypeName']  = get_productType_name($rec['productTypeID']);
