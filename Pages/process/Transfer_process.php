@@ -39,15 +39,20 @@ switch($proc){
 
 		if(sizeof($productID)>0){
 			foreach ($productID as $key => $value) {
+			
 				unset($fields);
 				$fields = array(
 					"billID"=>$billID,
 					"productID"=>$value,
-					"locationTypeID"=>$locationTypeID[$key],
+					/* "locationTypeID"=>$locationTypeID[$key], */
 					"locationID"=>$locationID[$key],
 					"billDescUnit"=>str_replace(',','',$billDescUnit[$key]),
 
 				);
+				/* echo "<pre>";
+				print_r($fields);
+				echo "</pre>";
+				exit; */
 								//print_pre($fields);
 				$db->db_insert($tb2,$fields);
 				$sql_head    = " SELECT * FROM tb_product  where  productID = '".$value."' ";

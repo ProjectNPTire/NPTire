@@ -59,7 +59,7 @@ if($rec_bill['billStstus']==1){
 		
 	}
 }
-echo $sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
+ $sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
 $query_bd = $db->query($sql_bd);
 
 /* 
@@ -188,10 +188,11 @@ $qty1 = 0;
 while($rec_bd = $db->db_fetch_array($query_bd))
 {
 
-	$sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName FROM tb_product INNER JOIN
-	tb_locationtype ON tb_product.locationTypeID = tb_locationtype.locationTypeID INNER JOIN
-	tb_location ON tb_product.locationID = tb_location.locationID
-	WHERE productID = '".$rec_bd["productID"]."' ";
+	 $sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName 
+	FROM tb_product 
+	JOIN tb_locationtype ON tb_product.locationType = tb_locationtype.locationTypeID
+	 JOIN tb_location ON tb_location.locationID = tb_location.locationID 
+WHERE productID = '".$rec_bd["productID"]."' ";
 	$query_product = $db->query($sql_product);
 	$rec_product = $db->db_fetch_array($query_product);
 
@@ -241,7 +242,7 @@ while($rec_bd = $db->db_fetch_array($query_bd))
 	$HTML .= '<td>'.$rec_product['locationTypeName'].'</td>';
 	$HTML .= '<td>'.$rec_product['locationName'].'</td>';
 	$HTML .= '<td align="right">'.number_format($qty).'</td>';
-	$HTML .= '<td>'.$unitType.'</td>';
+	$HTML .= '<td align="center">'.$unitType.'</td>';
 	// $HTML .= '<td>'.$productSize.'</td>';
 	// $HTML .= '<td align="right">'.number_format($price).'</td>';
 	// $HTML .= '<td align="right">'.number_format($amount).'</td>';
