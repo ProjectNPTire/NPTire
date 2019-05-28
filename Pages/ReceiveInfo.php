@@ -170,7 +170,7 @@ $page_key ='5_1';
 							// for (var j = 0; j < data["location"].length; j++) {
 							// 	html += '<option value="'+data["location"][j].locationID+'">'+data["location"][j].locationName+'</option>';
 							// }
-							html += '</select><label id="locationID'+data["po_desc"][i].productID+'-error" class="error" for="locationID_'+data["po_desc"][i].productID+'">ตำแหน่งนี้ถูกใช้แล้ว</label><label id="locationID_'+data["po_desc"][i].productID+'-error2" class="error" for="locationTypeID_'+data["po_desc"][i].productID+'">กรุณาเลือก ตำแหน่งเก็บ</label>';
+							html += '</select><label id="locationID'+(i+1)+'-error" class="error" for="locationID_'+data["po_desc"][i].productID+'">ตำแหน่งนี้ถูกใช้แล้ว</label><label id="locationID'+data["po_desc"][i].productID+'-error2" class="error" for="locationTypeID_'+data["po_desc"][i].productID+'">กรุณาเลือก ตำแหน่งเก็บ</label>';
 							html += '</td>';
 							html += '<td>';
 							html += '<input type="hidden" value="'+data["po_desc"][i].productTypeID+'" name="type['+data["po_desc"][i].productID+']" class="form-control">';
@@ -290,6 +290,7 @@ function checkReceiveQTY(obj)
 		},'json');
 	}
 	function  chk_location(id){
+		debugger
 		var arr = $('[id^=locationID_]');
 		var total = 0;
 		for (var i = 0; i < arr.length; i++) {
@@ -299,11 +300,11 @@ function checkReceiveQTY(obj)
 				var x = i + 1;
 				if(num == $(arr[a]).val().trim())
 				{
-					$('#locationID'+id+'-error').show();
+					$('#locationID'+[x]+'-error').show();
 					$('#chk3').val(1);
 					return false;    
 				}else{
-					$('#locationID'+id+'-error').hide();
+					$('#locationID'+[x]+'-error').hide();
 					$('#chk3').val(0);
 				}
 			}
