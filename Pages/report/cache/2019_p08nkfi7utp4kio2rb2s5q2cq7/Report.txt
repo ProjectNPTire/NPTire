@@ -1,0 +1,53 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+  <thead>
+  <tr><th width="5%">ลำดับ</th>
+    <th width="10%">วันที่เบิก</th>
+    <th width="10%">เลขที่เบิก</th>
+    <th width="10%">จำนวนเบิก</th>
+    <th width="20%">ผู้เบิก</th>
+	 <th width="20%">ตำแหน่งเก็บ</th></tr>
+  </thead>
+  <tbody><tr>
+        <td align="center" >1</td>
+        <td align="center" >2019-02-05</td>
+        <td align="center" >BO-201903004</td>
+        <td align="center">36</td>
+        <td align="center" >ปัทมาภรณ์ เลิศบันลือศักดิ์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr>
+        <td align="center" >2</td>
+        <td align="center" >2019-02-07</td>
+        <td align="center" >BO-201903005</td>
+        <td align="center">54</td>
+        <td align="center" >ปัทมาภรณ์ เลิศบันลือศักดิ์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr>
+        <td align="center" >3</td>
+        <td align="center" >2019-02-15</td>
+        <td align="center" >BO-201903006</td>
+        <td align="center">60</td>
+        <td align="center" >ปัทมาภรณ์ เลิศบันลือศักดิ์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr>
+        <td align="center" >4</td>
+        <td align="center" >2019-02-23</td>
+        <td align="center" >BO-201903007</td>
+        <td align="center">30</td>
+        <td align="center" >ปัทมาภรณ์ เลิศบันลือศักดิ์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr>
+        <td align="center" >5</td>
+        <td align="center" >2019-03-05</td>
+        <td align="center" >BO-201903008</td>
+        <td align="center">30</td>
+        <td align="center" >กิตติพงศ์ เปรมสุกาญจน์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr>
+        <td align="center" >6</td>
+        <td align="center" >2019-03-13</td>
+        <td align="center" >BO-201903009</td>
+        <td align="center">30</td>
+        <td align="center" >ดิชพล คงสวัสดิ์</td>
+		<td align="center" >ชั้นเก็บยางToyo</td>
+        </tr><tr><td colspan="5" align="center" >รวม 6 รายการ จำนวน 240 ชิ้น</td></tr>    </tbody>
+  </table>

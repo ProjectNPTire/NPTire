@@ -1,25 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script language="javascript">
-		function checkID(id)
-		{
-			if(id.length != 13) return false;
-			for(i=0, sum=0; i < 12; i++)
-				sum += parseFloat(id.charAt(i))*(13-i); if((11-sum%11)%10!=parseFloat(id.charAt(12)))
-			return false; return true;}
-
-			function checkForm()
-			{ debugger
-				if(!checkID(document.form1.txtID.value))
-				alert('รหัสประชาชนไม่ถูกต้อง');
-				else alert('รหัสประชาชนถูกต้อง เชิญผ่านได้');}
-			</script>
+	<title>Page Title</title>
+	<style>
+		table, th, td {
+			border: 1px solid black;
+			border-collapse: collapse;
+		}
+		th, td {
+			padding: 5px;
+		}
+	</style>
 </head>
 <body>
-	<form name="form1" onsubmit="checkForm(); return false;">
-		รหัสประจำตัวประชาชน : <input type="text" name="txtID" />
-		<input type="submit" value="ตรวจสอบ" />
-	</form>
+
+	<table width="100%" border="1">
+		<tr>
+			<th>วันที่</td>
+			<th >รหัส</th>
+			<th>ชื่อ</th>		
+		</tr>
+		<tr>
+			<td width="15%" rowspan="4">15/05/2019</td>
+			<td  rowspan="2">001</td>
+			<td>นาย ก</td>		
+		</tr>
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td rowspan="2">002</td>
+			<td>นาย ก</td>
+		</tr>
+
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td width="15%" rowspan="4">17/05/2019</td>
+			<td rowspan="2">001</td>
+			<td>นาย ก</td>		
+		</tr>
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+		<tr>
+			<td  rowspan="2">002</td>
+			<td>นาย ก</td>
+		</tr>
+
+		<tr>
+			<td>นาย ข</td>
+		</tr>
+	</table>
+
+
 </body>
 </html>

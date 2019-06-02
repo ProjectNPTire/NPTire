@@ -32,6 +32,7 @@ $readonly = "readonly";
 							<input type="hidden" id="attrID" name="attrID" value="<?php echo $attrID;?>">
 							<input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
 							<input type="hidden" id="chk" name="chk" value="0">
+							<input type="hidden" id="chk1" name="chk1" value="0">
 							<div class="body">
 								<div class="row clearfix">
 									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b></div>
@@ -51,24 +52,24 @@ $readonly = "readonly";
 										<b>การใช้งานข้อมูล</b>
 										<div class="form-group form-float">
 											<select name="status" id="status" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="delData('status',this.value,'hdfstatus');">
-											<?php asort($arr_active);
-											foreach ($arr_active as $key => $value) {?>
-												<option value="<?php echo $key;?>"  
-													<?php 
-													if(($rec['isEnabled']  != "")){
-														echo ($rec['isEnabled']==$key)?"selected":"";
-													}
-													?>><?php echo $value;?></option>
-												<?php }  ?>
-											</select>
-											<input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
+												<?php asort($arr_active);
+												foreach ($arr_active as $key => $value) {?>
+													<option value="<?php echo $key;?>"  
+														<?php 
+														if(($rec['isEnabled']  != "")){
+															echo ($rec['isEnabled']==$key)?"selected":"";
+														}
+														?>><?php echo $value;?></option>
+													<?php }  ?>
+												</select>
+												<input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
+											</div>
 										</div>
 									</div>
-								</div>
-								<div class="align-center">
-									<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
-									<button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
-								</div>
+									<div class="align-center">
+										<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
+										<button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
+									</div>
 								</div>
 							</form>
 						</div>
@@ -90,6 +91,24 @@ $readonly = "readonly";
 
 		function chkinput(){
 
+			if($('#proc').val()=='edit'){
+				var attrID= $('#attrID').val();
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'chk_editattr',attrID:attrID},function(data){
+					if(data > 0){
+						alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากคุณลักษณะนี้มีการใช้ข้อมูลนี้อยู่');
+						$('#chk1').val(1);
+						return false;
+					}else{
+						$('#chk1').val(0);
+					}
+				},'json');		
+			}
+
+			if($('#chk1').val()==1){
+				return false;
+			}
+
 			if($('#attrName').val()==''){
 				$('#attrName-error').show();
 				$('#attrName').focus();
@@ -102,7 +121,7 @@ $readonly = "readonly";
 				return false;
 			}
 
-			if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
+			if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){				
 				$("#frm-input").submit();
 			}
 		}

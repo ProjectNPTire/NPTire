@@ -263,7 +263,7 @@ chk_role($page_key,'isSearch',1);
   }
 
   function cancelPO(id){
-    debugger
+    
     if(confirm("ต้องการยกเลิกเอกสารใช่หรือไม่ ?")){
       $("#proc").val("cancel");
       $("#poID").val(id);
@@ -273,7 +273,7 @@ chk_role($page_key,'isSearch',1);
   }
 
   function infoPO(id,type){
-    debugger
+    
     $.post( "process/ajax_response.php", { func: "getPOInfo", id: id  }, function( data ) {
       console.log(data);
       var html = "";

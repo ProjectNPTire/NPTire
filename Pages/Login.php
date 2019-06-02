@@ -36,19 +36,13 @@ if($username != "" & $password != ""){
 			$_SESSION['sys_name'] = $rec["firstname"].' '.$rec["lastname"];
 
 			echo "<script>self.location.href='main.php';</script>";
-		}elseif ($rec["userStatus"] == 1 && $rec["activeStatus"] == 0) {
+		}else if ($rec["userStatus"] == 1 && $rec["activeStatus"] == 0) {
 			session_destroy();
 			echo "<script>
 			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานถูกปิดการใช้งาน\");
 			self.location.href='index.php';
 			</script>";
-		}elseif ($rec["userStatus"] == 2 && $rec["activeStatus"] == 0) {
-			session_destroy();
-			echo "<script>
-			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานถูกระงับการใช้งาน\");
-			self.location.href='index.php';
-			</script>";
-		}elseif ($rec["userStatus"] == 3 && $rec["activeStatus"] == 0) {
+		}else if ($rec["userStatus"] == 2 && $rec["activeStatus"] == 0) {
 			session_destroy();
 			echo "<script>
 			alert(\"ไม่สามารถเข้าระบบได้เนื่องจากพนักงานลาออก\");

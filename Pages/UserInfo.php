@@ -4,7 +4,7 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='1_1';
+$page_key ='2_1';
 $form_page = $form_page;
 
 $sql     = " SELECT *
@@ -43,6 +43,7 @@ $readonly = "readonly";
               <input type="hidden" id="userType" name="userType" value="<?php echo $userType;?>">
               <input type="hidden" id="chkidcard" name="chkidcard" value="0">
               <input type="hidden" id="chkformat" name="chkformat" value="0">
+              <input type="hidden" id="chkdob" name="chkdob" value="0">
 
               <div class="body">
                 <div class="row clearfix">
@@ -64,7 +65,7 @@ $readonly = "readonly";
                         <b>ชื่อ</b>
                         <div class="form-group">
                           <div class="form-line">
-                            <input type="text" oninput="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                            <input type="text" onchange="this.value=this.value.replace(/[^\u0E00-\u0E7Fa-zA-Z']/g,'');" name="firstname" id="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $rec['firstname'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
                           </div>
                           <label id="firstname-error" class="error" for="firstname">กรุณาระบุ ชื่อพนักงาน</label>
                         </div>
@@ -88,6 +89,7 @@ $readonly = "readonly";
                           </div>
                           <input type="hidden" class="form-control" name="hdfBirthday" id="hdfBirthday" value="<?php echo conv_date($rec['birthday']); ?>">
                           <label id="birthday-error" class="error" for="birthday">กรุณาระบุ วัน/เดือน/ปีเกิด</label>
+                          <label id="birthday-error2" class="error" for="birthday">อายุพนักงานห้ามต่ำกว่า 18 ปี</label>
                         </div>
                       </div>
                     </div>
@@ -139,139 +141,130 @@ $readonly = "readonly";
                 </div>
                 <h2 class="card-inside-title">ที่อยู่ตามบัตรประชาชน</h2><hr />
                 <div class="row clearfix">
-              <!-- <div class="col-md-4">
-                <b>อีเมล</b>
-                <div class="input-group">
-                  <div class="form-line">
-                    <input type="text" onchange="checkEmail(this);return false;" class="form-control email" placeholder="Ex: example@example.com" name="email" id="email"  value="<?php echo $rec['email'];?>">
+                  <div class="col-md-4">
+                   <b>ที่อยู่</b>
+                   <div class="form-group">
+                     <div class="form-line">
+                      <input type="text" class="form-control " placeholder="กรอก/ บ้านเลขที่ ซอย ถนน"  name="address" id="address"  value="<?php echo $rec['address'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                    </div>
+                    <label id="address-error" class="error" for="address">กรุณาระบุ ที่อยู่ตามบัตรประชาชน</label>
                   </div>
-                  <label id="email-error2" class="error" for="mobile">รูปแบบอีเมลไม่ถูกต้อง</label>
                 </div>
-              </div> -->
-              <div class="col-md-4">
-               <b>ที่อยู่</b>
-               <div class="form-group">
-                 <div class="form-line">
-                  <input type="text" class="form-control " placeholder="กรอก/ บ้านเลขที่ ซอย ถนน"  name="address" id="address"  value="<?php echo $rec['address'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                <div class="col-sm-4">
+                  <b>จังหวัด</b>
+                  <div class="form-group form-float">
+                    <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+                      <option value="">เลือก</option>
+                      <?php
+                      $s_p=" SELECT * from setup_prov order by province_name_th asc";
+                      $q_p = $db->query($s_p);
+                      $n_p = $db->db_num_rows($q_p);
+                      while($r_p = $db->db_fetch_array($q_p)){?>
+                        <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceID']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
+                      <?php }  ?>
+                    </select>
+                    <input type="hidden" name="hdfProvinceID" id="hdfProvinceID" value="<?php echo $rec['provinceID'] ?>">
+                    <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก จังหวัดตามบัตรประชาชน</label>
+                  </div>
                 </div>
-                <label id="address-error" class="error" for="address">กรุณาระบุ ที่อยู่ตามบัตรประชาชน</label>
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <b>จังหวัด</b>
-              <div class="form-group form-float">
-                <select name="provinceID" id="provinceID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'districtID','hdfProvinceID',1);" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-                  <option value="">เลือก</option>
-                  <?php
-                  $s_p=" SELECT * from setup_prov order by province_name_th asc";
-                  $q_p = $db->query($s_p);
-                  $n_p = $db->db_num_rows($q_p);
-                  while($r_p = $db->db_fetch_array($q_p)){?>
-                    <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceID']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
+                <div class="col-sm-4">
+                 <b>อำเภอ/เขต</b>
+                 <div class="form-group form-float">
+                  <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+                   <option value="">เลือก</option>
+                   <?php
+                   $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
+                   $q_d = $db->query($s_d);
+                   $n_d = $db->db_num_rows($q_d);
+                   while($r_d = $db->db_fetch_array($q_d)){?>
+                    <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtID']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
                   <?php }  ?>
                 </select>
-                <input type="hidden" name="hdfProvinceID" id="hdfProvinceID" value="<?php echo $rec['provinceID'] ?>">
-                <label id="provinceID-error" class="error" for="provinceID">กรุณาเลือก จังหวัดตามบัตรประชาชน</label>
+                <input type="hidden" name="hdfDistrictID" id="hdfDistrictID" value="<?php echo $rec['districtID'] ?>">
+                <label id="districtID-error" class="error" for="districtID">กรุณาเลือก อำเภอ/เขตตามบัตรประชาชน</label>
               </div>
             </div>
+          </div>
+          <div class="row clearfix">
             <div class="col-sm-4">
-             <b>อำเภอ/เขต</b>
+             <b>ตำบล/แขวง</b>
              <div class="form-group form-float">
-              <select name="districtID" id="districtID" class="form-control show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictID','hdfDistrictID',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+              <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
                <option value="">เลือก</option>
                <?php
-               $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceID']."' order by district_name_th asc";
-               $q_d = $db->query($s_d);
-               $n_d = $db->db_num_rows($q_d);
-               while($r_d = $db->db_fetch_array($q_d)){?>
-                <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtID']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
+               $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
+               $q_s = $db->query($s_s);
+               $n_s = $db->db_num_rows($q_s);
+               while($r_s = $db->db_fetch_array($q_s)){?>
+                <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
               <?php }  ?>
             </select>
-            <input type="hidden" name="hdfDistrictID" id="hdfDistrictID" value="<?php echo $rec['districtID'] ?>">
-            <label id="districtID-error" class="error" for="districtID">กรุณาเลือก อำเภอ/เขตตามบัตรประชาชน</label>
+            <input type="hidden" name="hdfSubDistrictID" id="hdfSubDistrictID" value="<?php echo $rec['subDistrictID'] ?>">
+            <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก ตำบล/แขวงตามบัตรประชาชน</label>
           </div>
         </div>
+        <div class="col-md-4">
+         <b>รหัสไปรษณีย์</b>
+         <div class="form-group">
+          <div class="form-line">
+            <input type="text" maxlength="5" class="form-control numb" placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>"<?php echo $readonly; ?> >
+          </div>
+        </div>
+        <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์ามบัตรประชาชน</label>
       </div>
-      <div class="row clearfix">
-        <div class="col-sm-4">
-         <b>ตำบล/แขวง</b>
-         <div class="form-group form-float">
-          <select name="subDistrictID" id="subDistrictID" class="form-control show-tick" data-live-search="true" onchange="get_zipcode(this.value,'zipcode','hdfSubDistrictID');"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-           <option value="">เลือก</option>
-           <?php
-           $s_s=" SELECT * from setup_subDistrict where districtID ='".$rec['districtID']."' order by subDistrict_name_th asc";
-           $q_s = $db->query($s_s);
-           $n_s = $db->db_num_rows($q_s);
-           while($r_s = $db->db_fetch_array($q_s)){?>
-            <option value="<?php echo $r_s['subDistrictID'];?>"  <?php echo ($rec['subDistrictID']==$r_s['subDistrictID'])?"selected":"";?> ><?php echo $r_s['subDistrict_name_th'];?></option>
+    </div>
+    <h2 class="card-inside-title">ที่อยู่ปัจจุบัน</h2><hr />
+    <div class="row clearfix">
+     <div class="col-md-4">
+       <div class="form-group">
+         <input type="checkbox" id="adsIDCard" class="filled-in" onclick="get_address();" />
+         <label for="adsIDCard"><b>ที่อยู่ปัจจุบันตามบัตรประชาชน </b></label>
+       </div>
+     </div>
+     <div class="col-md-4">
+       <b>ที่อยู่ปัจจุบัน</b>
+       <div class="form-group">
+         <div class="form-line">
+          <input type="text" class="form-control " placeholder="กรอก/ บ้านเลขที่ ซอย ถนน"  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+        </div>
+        <label id="addressIDCard-error" class="error" for="addressIDCard">กรุณาระบุ ที่อยู่ปัจจุบัน</label>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <b>จังหวัด</b>
+      <div class="form-group form-float">
+        <select name="provinceIDCard" id="provinceIDCard" class="form-control selectPcard" data-live-search="true"  onchange="get_area(this.value,'districtIDCard','hdfProvinceIDCard',1);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+          <option value="">เลือก</option>
+          <?php
+          $s_p=" SELECT * from setup_prov order by province_name_th asc";
+          $q_p = $db->query($s_p);
+          $n_p = $db->db_num_rows($q_p);
+          while($r_p = $db->db_fetch_array($q_p)){?>
+            <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceIDCard']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
           <?php }  ?>
         </select>
-        <input type="hidden" name="hdfSubDistrictID" id="hdfSubDistrictID" value="<?php echo $rec['subDistrictID'] ?>">
-        <label id="subDistrictID-error" class="error" for="subDistrictID">กรุณาเลือก ตำบล/แขวงตามบัตรประชาชน</label>
+        <input type="hidden" name="hdfProvinceIDCard" id="hdfProvinceIDCard" value="<?php echo $rec['provinceIDCard'] ?>">
+        <label id="provinceIDCard-error" class="error" for="provinceIDCard">กรุณาเลือก จังหวัดตามที่อยู่ปัจจุบัน</label>
       </div>
     </div>
-    <div class="col-md-4">
-     <b>รหัสไปรษณีย์</b>
-     <div class="form-group">
-      <div class="form-line">
-        <input type="text" class="form-control " placeholder=""  name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-      </div>
-    </div>
-    <label id="zipcode-error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์ามบัตรประชาชน</label>
   </div>
-</div>
-<h2 class="card-inside-title">ที่อยู่ปัจจุบัน</h2><hr />
-<div class="row clearfix">
- <div class="col-md-4">
-   <div class="form-group">
-     <input type="checkbox" id="adsIDCard" class="filled-in" onclick="get_address();" />
-     <label for="adsIDCard"><b>ที่อยู่ปัจจุบันตามบัตรประชาชน </b></label>
-   </div>
- </div>
- <div class="col-md-4">
-   <b>ที่อยู่ปัจจุบัน</b>
-   <div class="form-group">
-     <div class="form-line">
-      <input type="text" class="form-control " placeholder="กรอก/ บ้านเลขที่ ซอย ถนน"  name="addressIDCard" id="addressIDCard"  value="<?php echo $rec['addressIDCard'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-    </div>
-    <label id="addressIDCard-error" class="error" for="addressIDCard">กรุณาระบุ ที่อยู่ปัจจุบัน</label>
-  </div>
-</div>
-<div class="col-sm-4">
-  <b>จังหวัด</b>
-  <div class="form-group form-float">
-    <select name="provinceIDCard" id="provinceIDCard" class="form-control selectPcard" data-live-search="true"  onchange="get_area(this.value,'districtIDCard','hdfProvinceIDCard',1);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-      <option value="">เลือก</option>
-      <?php
-      $s_p=" SELECT * from setup_prov order by province_name_th asc";
-      $q_p = $db->query($s_p);
-      $n_p = $db->db_num_rows($q_p);
-      while($r_p = $db->db_fetch_array($q_p)){?>
-        <option value="<?php echo $r_p['provinceID'];?>"  <?php echo ($rec['provinceIDCard']==$r_p['provinceID'])?"selected":"";?>> <?php echo $r_p['province_name_th'];?></option>
+  <div class="row clearfix">
+   <div class="col-sm-4">
+     <b>อำเภอ/เขต</b>
+     <div class="form-group form-float">
+      <select name="districtIDCard" id="districtIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictIDCard','hdfDistrictIDCard',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
+       <option value="">เลือก</option>
+       <?php
+       $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceIDCard']."' order by district_name_th asc";
+       $q_d = $db->query($s_d);
+       $n_d = $db->db_num_rows($q_d);
+       while($r_d = $db->db_fetch_array($q_d)){?>
+        <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtIDCard']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
       <?php }  ?>
     </select>
-    <input type="hidden" name="hdfProvinceIDCard" id="hdfProvinceIDCard" value="<?php echo $rec['provinceIDCard'] ?>">
-    <label id="provinceIDCard-error" class="error" for="provinceIDCard">กรุณาเลือก จังหวัดตามที่อยู่ปัจจุบัน</label>
+    <input type="hidden" name="hdfDistrictIDCard" id="hdfDistrictIDCard" value="<?php echo $rec['districtIDCard'] ?>">
+    <label id="districtIDCard-error" class="error" for="districtIDCard">กรุณาเลือก อำเภอ/เขตตามที่อยู่ปัจจุบัน</label>
   </div>
-</div>
-</div>
-<div class="row clearfix">
- <div class="col-sm-4">
-   <b>อำเภอ/เขต</b>
-   <div class="form-group form-float">
-    <select name="districtIDCard" id="districtIDCard" class="form-control selectPcard show-tick" data-live-search="true" onchange="get_area(this.value,'subDistrictIDCard','hdfDistrictIDCard',2);"<?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-     <option value="">เลือก</option>
-     <?php
-     $s_d=" SELECT * from setup_district where provinceID ='".$rec['provinceIDCard']."' order by district_name_th asc";
-     $q_d = $db->query($s_d);
-     $n_d = $db->db_num_rows($q_d);
-     while($r_d = $db->db_fetch_array($q_d)){?>
-      <option value="<?php echo $r_d['districtID'];?>" <?php echo ($rec['districtIDCard']==$r_d['districtID'])?"selected":"";?>><?php echo $r_d['district_name_th'];?></option>
-    <?php }  ?>
-  </select>
-  <input type="hidden" name="hdfDistrictIDCard" id="hdfDistrictIDCard" value="<?php echo $rec['districtIDCard'] ?>">
-  <label id="districtIDCard-error" class="error" for="districtIDCard">กรุณาเลือก อำเภอ/เขตตามที่อยู่ปัจจุบัน</label>
-</div>
 </div>
 <div class="col-sm-4">
  <b>ตำบล/แขวง</b>
@@ -294,7 +287,7 @@ $readonly = "readonly";
  <b>รหัสไปรษณีย์</b>
  <div class="form-group">
   <div class="form-line">
-    <input type="text" class="form-control "  name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+    <input type="text" class="form-control numb" maxlength="5" name="zipcodeIDCard" id="zipcodeIDCard"  value="<?php echo $rec['zipcodeIDCard'];?>"<?php echo $readonly; ?> >
   </div>
   <label id="zipcodeIDCard-error" class="error" for="zipcodeIDCard">กรุณาระบุ รหัสไปรษณีย์ตามที่อยู่ปัจจุบัน</label>
 </div>
@@ -341,9 +334,7 @@ $readonly = "readonly";
       <input type="radio" value="1" name="userStatus" id="userStatus1" class="with-gap" <?php echo ($rec['userStatus']==1)?"checked":"";?>>
       <label for="userStatus1">ปกติ</label>
       <input type="radio" value="2" name="userStatus" id="userStatus2" class="with-gap" <?php echo ($rec['userStatus']==2)?"checked":"";?>>
-      <label for="userStatus2" class="m-l-20">ระงับการใช้งาน</label>
-      <input type="radio" value="3" name="userStatus" id="userStatus3" class="with-gap" <?php echo ($rec['userStatus']==3)?"checked":"";?>>
-      <label for="userStatus3" class="m-l-20">ลาออก</label>
+      <label for="userStatus2" class="m-l-20">ลาออก</label>
     </div>
   </div>
   <div class="col-sm-4" style="display: <?php echo ($_SESSION['userType'] == 1 ? 'block' : 'none');?>">
@@ -403,285 +394,277 @@ $readonly = "readonly";
 </div>
 </div>
 
-                               <!-- <div class="row clearfix">
-                                   <div class="col-sm-6">
-                                      <b>สถานะการใช้งาน</b>
-                                   <div class="form-group">
-                                        <input type="radio" value="1" name="activeStatus" id="activeStatus1" class="with-gap" <?php echo ($rec['activeStatus']==1)?"checked":"";?>>
-                                        <label for="activeStatus1">ใช้งาน</label>
-                                        <input type="radio" value="0" name="activeStatus" id="activeStatus0" class="with-gap"  <?php echo ($rec['activeStatus']==0)?"checked":"";?>>
-                                        <label for="activeStatus0" class="m-l-20">ไม่ใช้งาน</label>
-                                    </div>
 
-                                    </div>
-                                  
-                                  </div> -->
+<div class="align-center">
+  <button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
+  <button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<!-- #END# Advanced Form Example With Validation -->
+</div>
+</section>
+<?php include 'js.php';?>
+</body>
 
-                                  <div class="align-center">
-                                    <button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
-                                    <button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
-                                  </div>
-                                </div>
-                              </form>
-                            </div>
-                          </div>
-                        </div>
-                        <!-- #END# Advanced Form Example With Validation -->
-                      </div>
-                    </section>
-                    <?php include 'js.php';?>
-                  </body>
+</html>
+<script>
+  function OnCancel()
+  {
 
-                  </html>
-                  <script>
-                    function OnCancel()
-                    {
+    $(location).attr('href',"<?php echo  $form_page?>");
+  }
 
-                      $(location).attr('href',"<?php echo  $form_page?>");
-                    }
+  function chkinput(){
 
-                    function chkinput(){
+    if($('#firstname').val()==''){
+      $('#firstname-error').show();
+      $('#firstname').focus();
+      return false;
+    }else{
+      $('#firstname-error').hide();
+    }
 
-                      if($('#firstname').val()==''){
-                        $('#firstname-error').show();
-                        $('#firstname').focus();
-                        return false;
-                      }else{
-                        $('#firstname-error').hide();
-                      }
+    if($('#lastname').val()==''){
+      $('#lastname-error').show();
+      $('#lastname').focus();
+      return false;
+    }else{
+      $('#lastname-error').hide();
+    }
 
-                      if($('#lastname').val()==''){
-                        $('#lastname-error').show();
-                        $('#lastname').focus();
-                        return false;
-                      }else{
-                        $('#lastname-error').hide();
-                      }
+    if($('#birthday').val()==''){
+      $('#birthday-error').show();
+      $('#birthday').focus();
+      return false;
+    }else{
+      $('#birthday-error').hide();
+    }
 
-                      if($('#birthday').val()==''){
-                        $('#birthday-error').show();
-                        $('#birthday').focus();
-                        return false;
-                      }else{
-                        $('#birthday-error').hide();
-                      }
+    if($('#chkdob').val()==1){
+      $('#birthday-error2').show();
+      return false;
+    }else{
+      $('#birthday-error2').hide();
+    }
 
-                      if($('#idcard').val()==''){
-                        $('#idcard-error').show();
-                        $('#idcard').focus();
-                        return false;
-                      }else{
-                        $('#idcard-error').hide();
-                      }
+    if($('#idcard').val()==''){
+      $('#idcard-error').show();
+      $('#idcard').focus();
+      return false;
+    }else{
+      $('#idcard-error').hide();
+    }
 
-                      if($('#chkformat').val()==1){
-                        $('#idcard-error2').show();
-                        $('#idcard').focus();
-                        return false;
-                      }else{
-                        $('#idcard-error2').hide();
-                      }
+    if($('#chkformat').val()==1){
+      $('#idcard-error2').show();
+      $('#idcard').focus();
+      return false;
+    }else{
+      $('#idcard-error2').hide();
+    }
 
-                      if($('#chkidcard').val()==1){
-                        $('#idcard-error3').show();
-                        $('#idcard').focus();
-                        return false;
-                      }else{
-                        $('#idcard-error3').hide();
-                      }
+    if($('#chkidcard').val()==1){
+      $('#idcard-error3').show();
+      $('#idcard').focus();
+      return false;
+    }else{
+      $('#idcard-error3').hide();
+    }
 
-                      if($('#mobile').val()==''){
-                        $('#mobile-error').show();
-                        $('#mobile').focus();
-                        return false;
-                      }else{
-                        $('#mobile-error').hide();
-                      }
+    if($('#mobile').val()==''){
+      $('#mobile-error').show();
+      $('#mobile').focus();
+      return false;
+    }else{
+      $('#mobile-error').hide();
+    }
 
-                      if($('#address').val()==''){
-                        $('#address-error').show();
-                        $('#address').focus();
-                        return false;
-                      }else{
-                        $('#address-error').hide();
-                      }
+    if($('#address').val()==''){
+      $('#address-error').show();
+      $('#address').focus();
+      return false;
+    }else{
+      $('#address-error').hide();
+    }
 
-                      if($('#provinceID').val()==0){
-                        $('#provinceID-error').show();
-                        $('#provinceID').focus();
-                        return false;
-                      }else{
-                        $('#provinceID-error').hide();
-                      }
+    if($('#provinceID').val()==0){
+      $('#provinceID-error').show();
+      $('#provinceID').focus();
+      return false;
+    }else{
+      $('#provinceID-error').hide();
+    }
 
-                      if($('#districtID').val()==0){
-                        $('#districtID-error').show();
-                        $('#districtID').focus();
-                        return false;
-                      }else{
-                        $('#districtID-error').hide();
-                      }
+    if($('#districtID').val()==0){
+      $('#districtID-error').show();
+      $('#districtID').focus();
+      return false;
+    }else{
+      $('#districtID-error').hide();
+    }
 
-                      if($('#subDistrictID').val()==0){
-                        $('#subDistrictID-error').show();
-                        $('#subDistrictID').focus();
-                        return false;
-                      }else{
-                        $('#subDistrictID-error').hide();
-                      }
+    if($('#subDistrictID').val()==0){
+      $('#subDistrictID-error').show();
+      $('#subDistrictID').focus();
+      return false;
+    }else{
+      $('#subDistrictID-error').hide();
+    }
 
-                      if($('#zipcode').val()==''){
-                        $('#zipcode-error').show();
-                        $('#zipcode').focus();
-                        return false;
-                      }else{
-                        $('#zipcode-error').hide();
-                      }
+    if($('#zipcode').val()==''){
+      $('#zipcode-error').show();
+      $('#zipcode').focus();
+      return false;
+    }else{
+      $('#zipcode-error').hide();
+    }
 
-                      if($('#addressIDCard').val()==''){
-                        $('#addressIDCard-error').show();
-                        $('#addressIDCard').focus();
-                        return false;
-                      }else{
-                        $('#addressIDCard-error').hide();
-                      }
+    if($('#addressIDCard').val()==''){
+      $('#addressIDCard-error').show();
+      $('#addressIDCard').focus();
+      return false;
+    }else{
+      $('#addressIDCard-error').hide();
+    }
 
-                      if($('#provinceIDCard').val()==0){
-                        $('#provinceIDCard-error').show();
-                        $('#provinceIDCard').focus();
-                        return false;
-                      }else{
-                        $('#provinceIDCard-error').hide();
-                      }
+    if($('#provinceIDCard').val()==0){
+      $('#provinceIDCard-error').show();
+      $('#provinceIDCard').focus();
+      return false;
+    }else{
+      $('#provinceIDCard-error').hide();
+    }
 
-                      if($('#districtIDCard').val()==0){
-                        $('#districtIDCard-error').show();
-                        $('#districtIDCard').focus();
-                        return false;
-                      }else{
-                        $('#districtIDCard-error').hide();
-                      }
+    if($('#districtIDCard').val()==0){
+      $('#districtIDCard-error').show();
+      $('#districtIDCard').focus();
+      return false;
+    }else{
+      $('#districtIDCard-error').hide();
+    }
 
-                      if($('#subDistrictIDCard').val()==0){
-                        $('#subDistrictIDCard-error').show();
-                        $('#subDistrictIDCard').focus();
-                        return false;
-                      }else{
-                        $('#subDistrictIDCard-error').hide();
-                      }
+    if($('#subDistrictIDCard').val()==0){
+      $('#subDistrictIDCard-error').show();
+      $('#subDistrictIDCard').focus();
+      return false;
+    }else{
+      $('#subDistrictIDCard-error').hide();
+    }
 
-                      if($('#zipcodeIDCard').val()==''){
-                        $('#zipcodeIDCard-error').show();
-                        $('#zipcodeIDCard').focus();
-                        return false;
-                      }else{
-                        $('#zipcodeIDCard-error').hide();
-                      }
+    if($('#zipcodeIDCard').val()==''){
+      $('#zipcodeIDCard-error').show();
+      $('#zipcodeIDCard').focus();
+      return false;
+    }else{
+      $('#zipcodeIDCard-error').hide();
+    }
 
-                      if($('#firstnameref').val()==''){
-                        $('#firstnameref-error').show();
-                        $('#firstnameref').focus();
-                        return false;
-                      }else{
-                        $('#firstnameref-error').hide();
-                      }
+    if($('#firstnameref').val()==''){
+      $('#firstnameref-error').show();
+      $('#firstnameref').focus();
+      return false;
+    }else{
+      $('#firstnameref-error').hide();
+    }
 
-                      if($('#lastnameref ').val()==''){
-                        $('#lastnameref-error').show();
-                        $('#lastnameref').focus();
-                        return false;
-                      }else{
-                        $('#lastnameref-error').hide();
-                      }
+    if($('#lastnameref ').val()==''){
+      $('#lastnameref-error').show();
+      $('#lastnameref').focus();
+      return false;
+    }else{
+      $('#lastnameref-error').hide();
+    }
 
-                      if($('#mobileref').val()==''){
-                        $('#mobileref-error').show();
-                        $('#mobileref').focus();
-                        return false;
-                      }else{
-                        $('#mobileref-error').hide();
-                      }
+    if($('#mobileref').val()==''){
+      $('#mobileref-error').show();
+      $('#mobileref').focus();
+      return false;
+    }else{
+      $('#mobileref-error').hide();
+    }
 
-                      if($('#proc').val()=='add'){
-                        if($('#img').val()==''){
-                          $('#img-error').show();
-                          $('#img').focus();
-                          return false;
-                        }else{
-                          $('#img-error').hide();
-                        }
-                      }
+    if($('#proc').val()=='add'){
+      if($('#img').val()==''){
+        $('#img-error').show();
+        $('#img').focus();
+        return false;
+      }else{
+        $('#img-error').hide();
+      }
+    }
 
-                      if($('#Username').val()==''){
-                        $('#Username-error').show();
-                        return false;
-                      }else{
-                        $('#Username-error').hide();
-                      }
+    if($('#Username').val()==''){
+      $('#Username-error').show();
+      return false;
+    }else{
+      $('#Username-error').hide();
+    }
 
-                      if($('#chkuser').val()==1){
-                        $('#username2-error').show();
-                        return false;
-                      }else{
-                        $('#username2-error').hide();
-                      }
+    if($('#chkuser').val()==1){
+      $('#username2-error').show();
+      return false;
+    }else{
+      $('#username2-error').hide();
+    }
 
-                      if($('#divpass2').is(':visible')){
-                        if($('#password1').val() != $('#password2').val()){
+    if($('#divpass2').is(':visible')){
+      if($('#password1').val() != $('#password2').val()){
 
-                          $('#password1-error').show();
-                          $('#password2-error').show();
-                          return false;
-                        }else{
-                          $('#password1-error').hide();
-                          $('#password2-error').hide();
-                        }
-                      }
+        $('#password1-error').show();
+        $('#password2-error').show();
+        return false;
+      }else{
+        $('#password1-error').hide();
+        $('#password2-error').hide();
+      }
+    }
 
-                      if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
-                        $("#frm-input").submit();
-                      }
-                    }
+    if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
+      $("#frm-input").submit();
+    }
+  }
 
-                    $(document).ready(function() {
-                      $('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
-                      $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
-                      $('.form-line').removeClass('focused');
-        //$('.focused').removeClass('focused');
-        $('.error').hide();
-        $(".numb").inputFilter(function(value) {
-          return /^\d*$/.test(value);
-        });
-        // $('#activeStatus0').prop("checked", false);
+  $(document).ready(function() {
+    $('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
+    $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
+    $('.form-line').removeClass('focused');
+    $('.error').hide();
+    $(".numb").inputFilter(function(value) {
+      return /^\d*$/.test(value);
+    });
 
-        if($('#proc').val()=='add'){
-          $('#activeStatus1').prop("checked", true);
-          $('#userStatus1').prop("checked", true);
-          $('#password1').val('123456');
-          $('#password1').attr('readonly',true);
-          var userName ='';
-          $.ajaxSetup({async: false});
-          $.post('process/get_process.php',{proc:'get_username'},function(data){
-           userName =  data['name'];
-         },'json');
-          $('#username').val(userName);
-          $('#userCode').val(userName);
-        }
-        if($("input[name*='userStatus']:checked").val() != 1){
-          $('#activeStatus0').prop("checked", true);
-          $('#activeStatus1').attr("disabled", true);
-          $('#userPass').hide();
-        }else{
-          $('#activeStatus1').prop("checked", true);
-          $('#activeStatus1').removeAttr("disabled");
-          $('#userPass').show();
-        }
+    if($('#proc').val()=='add'){
+      $('#activeStatus1').prop("checked", true);
+      $('#userStatus1').prop("checked", true);
+      $('#password1').val('123456');
+      $('#password1').attr('readonly',true);
+      var userName ='';
+      $.ajaxSetup({async: false});
+      $.post('process/get_process.php',{proc:'get_username'},function(data){
+       userName =  data['name'];
+     },'json');
+      $('#username').val(userName);
+      $('#userCode').val(userName);
+    }
+    if($("input[name*='userStatus']:checked").val() != 1){
+      $('#activeStatus0').prop("checked", true);
+      $('#activeStatus1').attr("disabled", true);
+      $('#userPass').hide();
+    }else{
+      $('#activeStatus1').prop("checked", true);
+      $('#activeStatus1').removeAttr("disabled");
+      $('#userPass').show();
+    }
         // $('.datepickers').bootstrapMaterialDatePicker();
       });
-                    function get_address(){
+  function get_address(){
   // console.log('getaddress');
   if($('#adsIDCard').is(':checked')) {
-    debugger
+
     let province_id = $('#hdfProvinceID').val();
     let district_id = $('#hdfDistrictID').val();
     let subdistrict_id = $('#hdfSubDistrictID').val();
@@ -727,7 +710,7 @@ function get_area(parent_id,id,hdf_id,type){
   },'json');
 }
 function get_zipcode(parent_id,id,hdf_id){
-  debugger
+
   // console.log(parent_id,hdf_id);
   var html  = '';
   $.ajaxSetup({async: false});
@@ -744,7 +727,16 @@ function get_zipcode(parent_id,id,hdf_id){
 }
 
 function get_birthday(parent_id,hdf_id){
-  $('#'+hdf_id).val(parent_id);
+  var arr = parent_id.split('/');
+  if (new Date().getFullYear() - parseInt(arr[2]) < 18) {
+    $('#birthday-error2').show();
+    $('#birthday').focus();
+    $('#chkdob').val(1);
+  }else{
+   $('#birthday-error2').hide();
+   $('#chkdob').val(0);
+   $('#'+hdf_id).val(parent_id);
+ }
 }
 
 function chk_user(){
@@ -888,7 +880,7 @@ function ValidateSingleInput(oInput) {
         }
       }
       function chk_idcard(){
-        debugger
+
         var idcard = $('#idcard').val();
         var userID = $('#userID').val();
         $.ajaxSetup({async: false});

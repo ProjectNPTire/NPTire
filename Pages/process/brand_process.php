@@ -17,9 +17,10 @@ switch($proc){
 
 		unset($fields);
 		$fields = array(
-			"brandCode"=>strtoupper($brandCode),
-			"brandName"=>$brandName,
+			"brandCode"=>$brandCode,
+			"brandName"=>strtoupper($brandName),
 			"name_nospace"=>str_replace(" ","",$brandName),
+			"brandNameShort"=>strtoupper($brandNameShort),
 			"isEnabled"=>$hdfstatus,
 
 		);
@@ -39,9 +40,10 @@ switch($proc){
 
 		unset($fields);
 		$fields = array(
-			"brandCode"=>strtoupper($brandCode),
-			"brandName"=>$brandName,
+			"brandCode"=>$brandCode,
+			"brandName"=>strtoupper($brandName),
 			"name_nospace"=>str_replace(" ","",$brandName),
+			"brandNameShort"=>strtoupper($brandNameShort),
 			"isEnabled"=>$hdfstatus,
 		);
 

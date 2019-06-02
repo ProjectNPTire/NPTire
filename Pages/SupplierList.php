@@ -5,45 +5,20 @@
 $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='2_1';
-/*$sql     = " SELECT *
-FROM tb_supplier";*/
+$page_key ='2_2';
 
-/*$query = $db->query($sql);
-$nums = $db->db_num_rows($query);*/
-
-$filter = '';
-if($ddl_search == 1){
-  $filter .= " and sup_name like '%".$s_sup_name."%'";
-} if($ddl_search == 2){
-  $filter .= " and namesale like '%".$s_name_sale."%' or lastnamesale  like '%".$s_name_sale."%'";
-} if($ddl_search == 3){
-  $filter .= " and isEnabled like '%".$status."%'";
-}
-/* if($s_sup_name){
- $filter .= " and sup_name like '%".$s_sup_name."%'";
-}
-if($s_sup_email){
- $filter .= " and sup_email like '%".$s_sup_email."%'";
-}
-if($s_sup_tel){
- $filter .= " and sup_tel like '%".$s_sup_tel."%'";
-}
-if($s_sup_mobile){
- $filter .= " and sup_mobile like '%".$s_sup_mobile."%'";
-} */
 
 $field = "* ";
 $table = "tb_supplier";
 $pk_id = "supID";
-$wh = "1=1  {$filter}";
+//$wh = "1=1  {$filter}";
 $orderby = "order by supID DESC";
-$limit =" LIMIT ".$goto ." , ".$page_size ;
-$sql = "select ".$field." from ".$table." where ".$wh ." ".$orderby .$limit;
+//$limit =" LIMIT ".$goto ." , ".$page_size ;
+$sql = "select ".$field." from ".$table." ".$orderby;
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
-$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
+//$total_record = $db->db_num_rows($db->query("select ".$field." from ".$table." where ".$wh));
 chk_role($page_key,'isSearch',1);
 ?>
 
@@ -57,7 +32,7 @@ chk_role($page_key,'isSearch',1);
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
           <div class="card">
             <div class="header">
-              <h2>รายการคู่ค้า</h2>
+              <h2>รายการบริษัทคู่ค้า</h2>
 
             </div>
             <div class="body">
@@ -67,233 +42,134 @@ chk_role($page_key,'isSearch',1);
                 <input type="hidden" id="supID" name="supID" value="">
                 <input type="hidden" id="page_size" name="page_size" value="<?php echo $page_size;?>">
                 <input type="hidden" id="page" name="page" value="<?php echo $page;?>">
-
-                                <!-- <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                          <b>ชื่อคู่ค้า/บริษัท </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_sup_name" id="s_sup_name" class="form-control" placeholder="ชื่อคู่ค้า/บริษัท" value="<?php echo $s_sup_name;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                         <div class="form-group">
-                                          <b>E-mail </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_sup_email" id="s_sup_email" class="form-control" placeholder="E-mail" value="<?php echo $s_sup_email;?>">
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                          <b>เบอร์โทรศัพท์ </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_sup_tel" id="s_sup_tel" class="form-control" placeholder="เบอร์โทรศัพท์" value="<?php echo $s_sup_tel;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                         <div class="form-group">
-                                          <b>เบอร์มือถือ </b>
-                                            <div class="form-line">
-                                                <input type="text " name="s_sup_mobile" id="s_sup_mobile" class="form-control" placeholder="เบอร์มือถือ" value="<?php echo $s_sup_mobile;?>">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                 <div class="icon-and-text-button-demo align-center">
-                                    <button type="button" class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                  </div> -->
-                                  <div class="row clearfix">
-                                    <div class="col-sm-5">
-                                      <div class="form-group">
-                                        <div class="form-group form-float">
-                                          <select name="ddl_search" id="ddl_search" class="form-control show-tick" data-live-search="true"  >
-                                            <option value=""<?php echo ($ddl_search=="")?"selected":"";?>>แสดงข้อมูลทั้งหมด</option>
-                                            <option value="1"<?php echo ($ddl_search==1)?"selected":"";?>>ชื่อบริษัทคู่ค้า</option>
-                                            <option value="2"<?php echo ($ddl_search==2)?"selected":"";?>>ชื่อ-สกุล พนักงานที่ติดต่อ</option>
-                                            <option value="3"<?php echo ($ddl_search==3)?"selected":"";?>>สถานะ</option>
-
-                                          </select>
-                                        </div>
-                                      </div>                     
-                                    </div>
-
-
-                                    <div class="col-sm-5" id="sup" style="display: none;">
-                                      <div class="form-group">
-                                        <div class="form-line">
-                                          <input type="text " name="s_sup_name" id="s_sup_name" class="form-control" placeholder="ชื่อ" value="<?php echo $s_sup_name;?>">
-
-                                        </div>
-                                      </div>                     
-                                    </div>
-
-                                    <div class="col-sm-5" id="user" style="display: none;">
-                                      <div class="form-group">
-                                        <div class="form-line">
-                                         <input type="text " name="s_name_sale" id="s_name_sale" class="form-control" placeholder="ชื่อ" value="<?php echo $s_name_sale;?>">
-                                       </div>
-                                     </div>                     
-                                   </div> 
-                                   <div class="col-md-5" id="date" style="display: none;">
-                                    <div class="form-group">
-                                      <div class="form-line">
-                                        <input type="text" class="form-control datepicker" placeholder="DD/MM/YYYY  " name="date" id="date" value="<?php echo $date;?>">
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-5" id="status" style="display: none;">
-                                    <div class="form-group">
-                                      <div class="form-group form-float">
-                                        <select name="status" id="status" class="form-control show-tick" data-live-search="true"  >
-                                          <option value="">เลือก</option>
-                                          <?php  ;
-                                          foreach ($arr_active as $key => $value) { ?>
-                                            <option value="<?php echo $key ?>"<?php echo ($status==$key)?"selected":"";?>><?php echo $value ?></option>
-                                          <?php } ?>
-                                        </select>
-                                      </div>
-                                    </div>                     
-                                  </div>
-                                  <div class="col-sm-2">
-                                    <div class="icon-and-text-button-demo align-center">
-                                      <button  class="btn btn-success waves-effect" onClick="searchData();"><span>ค้นหา</span><?php echo $img_view;?></button>
-                                    </div>
-                                  </div> 
-                                </div>
-
-                                <div class="icon-and-text-button-demo align-right">
-                                  <button type="button" class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
-                                </div>
-                                <div>
-                                  <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
-                                    <thead>
-                                      <tr>
-                                        <th width="5%">ลำดับ</th>
-                                        <th width="10%" style="text-align:center;">รหัสคู่ค้า</th>
-                                        <th width="20%" style="text-align:center;">ชื่อบริษัทคู่ค้า</th>
-                                        <!--      <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th> -->
-                                        <th width="10%" style="text-align:center;">เบอร์โทรศัพท์</th> 
-                                        <th width="15%" style="text-align:center;">ชื่อ-สกุล พนักงานที่ติดต่อ</th> 
-                                        <th width="10%" style="text-align:center;">เบอร์โทรศัพท์พนักงาน</th>
-                                        <th width="10%" style="text-align:center;">สถานะ</th>
-                                        <th width="10%"></th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <?php
-                                      if($nums>0){
-                                        $i=0;
-                                        while ($rec = $db->db_fetch_array($query)) {
-                                          $i++;
+                <div class="icon-and-text-button-demo align-right">
+                  <button type="button" class="btn btn-primary waves-effect" style="<?php echo chk_role($page_key,'isadd');?>" onClick="addData();"><span>เพิ่มข้อมูล</span><?php echo $img_add;?></button>
+                </div>
+                <div>
+                  <table id="table1" class="table table-bordered table-striped table-hover dataTable"> <!--js-basic-example-->
+                    <thead>
+                      <tr>
+                        <th width="5%">ลำดับ</th>
+                        <th>รหัสคู่ค้า</th>
+                        <th width="25%">ชื่อบริษัทคู่ค้า</th>
+                        <!--      <th><div style="text-align:left">ที่อยู่/การติดต่อ</div></th> -->
+                        <th>เบอร์โทรศัพท์</th> 
+                        <th width="15%">ชื่อ-สกุล<br>พนักงานที่ติดต่อ</th> 
+                        <th width="15%">เบอร์โทรศัพท์พนักงาน</th>
+                        <th>สถานะ</th>
+                        <th width="10%"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      if($nums>0){
+                        $i=0;
+                        while ($rec = $db->db_fetch_array($query)) {
+                          $i++;
                                             // $del = ' <a style="'.chk_role($page_key,'isDel').'" class="btn bg-red btn-xs waves-effect" onClick="delData('.$rec['supID'].');">'.$img_del.'</a>';
-                                          $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['supID'].');">'.$img_edit.'</a>';
-                                          $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['supID'].');">'.$img_info.'</a>';
-                                          ?>
-                                          <tr>
-                                            <td align="center"><?php echo $i;?></td>
-                                            <td><?php echo $rec['supCode'];?></td>
-                                            <td><?php echo $rec['sup_name'];?></td>
-                                            <!--          <td><?php echo $rec['sup_address'];?></td> -->
-                                            <td><?php echo $rec['sup_tel'];?></td>
-                                            <td><?php echo $rec['namesale']." ".$rec['lastnamesale'];?></td>
-                                            <td><?php echo $rec['mobilesale'];?></td>
-                                            <td><?php echo $arr_active[$rec['isEnabled']];?></td>
-                                            <!--<td><?php echo $rec['sup_email'];?></td> -->
+                          $edit = ' <a style="'.chk_role($page_key,'isEdit').'" class="btn bg-orange btn-xs waves-effect" onClick="editData('.$rec['supID'].');">'.$img_edit.'</a>';
+                          $info = ' <a style="'.chk_role($page_key,'isSearch').'" class="btn btn-info btn-xs waves-effect" onClick="infoData('.$rec['supID'].');">'.$img_info.'</a>';
+                          ?>
+                          <tr>
+                            <td><?php echo $i;?></td>
+                            <td style="text-align: left;"><?php echo $rec['supCode'];?></td>
+                            <td style="text-align: left;"><?php echo $rec['sup_name'];?></td>
+                            <!--          <td><?php echo $rec['sup_address'];?></td> -->
+                            <td style="text-align: left;"><?php echo $rec['sup_tel'];?></td>
+                            <td style="text-align: left;"><?php echo $rec['namesale']." ".$rec['lastnamesale'];?></td>
+                            <td style="text-align: left;"><?php echo $rec['mobilesale'];?></td>
+                            <td><?php 
+                            if ($rec['isEnabled'] == 1) { ?>
+                              <i class="material-icons" style="color: green">check_circle</i>
+                            <?php } else{ ?>                                 
+                              <i class="material-icons" style="color: red">remove_circle</i>
+                            <?php } ?>
+                          </td>
 
-                                            <td style="text-align: center;"><?php echo  $info.$edit.$del;?>
-                                            <input type="hidden" id="show_sup_name_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_name'];?>" >
-                                            <input type="hidden" id="show_sup_tel_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_tel'];?>" >
-                                            <input type="hidden" id="show_sup_address_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_address'].' '.' ตำบล/แขวง '.get_subDistrictID_name($rec['subDistrictID']).' อำเภอ/เขต '.get_district_name($rec['districtID']).' จังหวัด '.get_prov_name($rec['provinceID']).' '.$rec['zipcode'];?>" >
-                                            <input type="hidden" id="show_namesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['namesale']." ".$rec['lastnamesale'];?>" >
-                                            <input type="hidden" id="show_mobilesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['mobilesale'];?>" >
-                                            <input type="hidden" id="show_idline_<?php echo $rec['supID'];?>" value="<?php echo $rec['idline'];?>" >
-                                            <input type="hidden" id="show_note_<?php echo $rec['supID'];?>" value="<?php echo $rec['note'];?>" >
+                          <td><?php echo  $info.$edit.$del;?>
+                          <input type="hidden" id="show_sup_name_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_name'];?>" >
+                          <input type="hidden" id="show_sup_tel_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_tel'];?>" >
+                          <input type="hidden" id="show_sup_address_<?php echo $rec['supID'];?>" value="<?php echo $rec['sup_address'].' '.' ตำบล/แขวง '.get_subDistrictID_name($rec['subDistrictID']).' อำเภอ/เขต '.get_district_name($rec['districtID']).' จังหวัด '.get_prov_name($rec['provinceID']).' '.$rec['zipcode'];?>" >
+                          <input type="hidden" id="show_namesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['namesale']." ".$rec['lastnamesale'];?>" >
+                          <input type="hidden" id="show_mobilesale_<?php echo $rec['supID'];?>" value="<?php echo $rec['mobilesale'];?>" >
+                          <input type="hidden" id="show_idline_<?php echo $rec['supID'];?>" value="<?php echo $rec['idline'];?>" >
+                          <input type="hidden" id="show_note_<?php echo $rec['supID'];?>" value="<?php echo $rec['note'];?>" >
 
-                                          </td>
-                                        </tr>
-                                      <?php }
-                                    }else{
-                                      echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
-                                    }
-                                    ?>
-                                  </tbody>
-                                </table>
-                                <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- #END# Basic Examples -->
-                  </div>
-                </section>
+                        </td>
+                      </tr>
+                    <?php }
+                  } ?>
+                </tbody>
+              </table>
+              <!-- <?php echo ($nums > 0) ? endPaging("frm-search", $total_record) : ""; ?> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- #END# Basic Examples -->
+</div>
+</section>
 
-                <?php include 'js.php';?>
-              </body>
+<?php include 'js.php';?>
+</body>
 
-              </html>
+</html>
 
-              <!-- Large Size -->
-              <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title" id="largeModalLabel">ข้อมูลคู่ค้า</h4>
-                    </div>
-                    <div class="modal-body">
+<!-- Large Size -->
+<div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="largeModalLabel">ข้อมูลคู่ค้า</h4>
+      </div>
+      <div class="modal-body">
 
-                      <div class="row clearfix">
-                        <div class="col-sm-12"  style="float:left">
-                          <b>ชื่อบริษัท </b>
-                          <span class="form-group" id="txt_subname"></span>
-                        </div>
-                      </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-12">
-                          <b>เบอร์โทรศัพท์บริษัท</b>
-                          <span class="form-group" id="txt_suptel"></span>
-                        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12"  style="float:left">
+            <b>ชื่อบริษัท </b>
+            <span class="form-group" id="txt_subname"></span>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12">
+            <b>เบอร์โทรศัพท์บริษัท</b>
+            <span class="form-group" id="txt_suptel"></span>
+          </div>
 
-                      </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-12">
-                          <b>ที่อยู่</b>
-                          <span class="form-group" id="txt_supaddress"></span>
-                        </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12">
+            <b>ที่อยู่</b>
+            <span class="form-group" id="txt_supaddress"></span>
+          </div>
 
-                      </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-12">
-                          <b>ชื่อ-สกุลพนักงานขาย  </b>
-                          <span class="form-group" id="txt_namesale"></span>
-                        </div>
-                      </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-12">
-                          <b>เบอร์โทรศัพท์มือถือ  </b>
-                          <span class="form-group" id="txt_mobilesale"></span>
-                        </div>
-                      </div>
-                      <div class="row clearfix">
-                        <div class="col-sm-12">
-                          <b>IDLine  </b>
-                          <span class="form-group" id="txt_idline"></span>
-                        </div>
-                      </div>
-                      <div class="row clearfix">
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12">
+            <b>ชื่อ-สกุลพนักงานขาย  </b>
+            <span class="form-group" id="txt_namesale"></span>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12">
+            <b>เบอร์โทรศัพท์มือถือ  </b>
+            <span class="form-group" id="txt_mobilesale"></span>
+          </div>
+        </div>
+        <div class="row clearfix">
+          <div class="col-sm-12">
+            <b>IDLine  </b>
+            <span class="form-group" id="txt_idline"></span>
+          </div>
+        </div>
+                      <!--<div class="row clearfix">
                         <div class="col-sm-12">
                           <b>หมายเหตุ  </b>
                           <span class="form-group" id="txt_note"></span>
                         </div>
-                      </div>
+                      </div> -->
 
                     </div>
                     <div class="modal-footer">

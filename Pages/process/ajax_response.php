@@ -45,7 +45,7 @@ function getProduct($code, $name, $supID){
 
     $sql = "SELECT tb_product.* FROM tb_productsupplier
     join tb_product on tb_productsupplier.productID = tb_product.productID
-    WHERE isDeleted = 0 and tb_product.isEnabled = 1
+    WHERE tb_product.isEnabled = 1
     and tb_productsupplier.supID = '".$supID."' ".$filter;
 
     
@@ -210,45 +210,70 @@ function getPOInfo($id){
             "qty"=>$rec_pd['qty'],
             "amount"=>$rec_pd['amount'],
             "received_qty"=>$rec_cnt_received['received_qty'] != '' ? $rec_cnt_received['received_qty'] : '0',
-            "locationTypeName" => get_locationType_name($rec_product['locationTypeID']),
             "attr" => $attr,
             "unitType"=>$arr_unitType[$rec_product['unitType']],
             "tempID" => $i,
         );
-        $locationTypeID = $rec_product["locationTypeID"];
-        $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID IN ('".$rec_pd["productID"]."',0)";     
-        $query_location = $db->query($sql_location);
-        $nums_location = $db->db_num_rows($query_location);
-        if ($nums_location > 0) {
-            while($rec_location = $db->db_fetch_array($query_location)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
-                );
-            }
-        }else{
-            $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID = 0";
-            $query_location = $db->query($sql_location);
-            while($rec_location = $db->db_fetch_array($query_location)){
-                $arr_location[] = array(
-                    "locationID"=>$rec_location['locationID'],
-                    "locationName"=>$rec_location['locationName'],
-                    "locationTypeID"=>$rec_location['locationTypeID'],
-                    "tempID" => $i,
-                );
-            }
-        }
-        $i++;
+        // $locationTypeID = $rec_product["locationTypeID"];
+        // $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID IN ('".$rec_pd["productID"]."',0)";     
+        // $query_location = $db->query($sql_location);
+        // $nums_location = $db->db_num_rows($query_location);
+        // if ($nums_location > 0) {
+        //     while($rec_location = $db->db_fetch_array($query_location)){
+        //         $arr_location[] = array(
+        //             "locationID"=>$rec_location['locationID'],
+        //             "locationName"=>$rec_location['locationName'],
+        //             "locationTypeID"=>$rec_location['locationTypeID'],
+        //             "tempID" => $i,
+        //         );
+        //     }
+        // }else{
+        //     $sql_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' AND productID = 0";
+        //     $query_location = $db->query($sql_location);
+        //     while($rec_location = $db->db_fetch_array($query_location)){
+        //         $arr_location[] = array(
+        //             "locationID"=>$rec_location['locationID'],
+        //             "locationName"=>$rec_location['locationName'],
+        //             "locationTypeID"=>$rec_location['locationTypeID'],
+        //             "tempID" => $i,
+        //         );
+        //     }
+        // }
+        // $i++;
     }
 
-    
+    $sql_loctype = "SELECT locationTypeID,locationTypeName FROM tb_locationType
+    WHERE locationType = '".$rec_product["locationType"]."'";     
+    $query_loctype = $db->query($sql_loctype);
+    $nums_loctype = $db->db_num_rows($query_loctype);
+    if ($nums_loctype > 0) {
+        while($rec_loctype = $db->db_fetch_array($query_loctype)){
+            $arr_locationType[] = array(
+                "locationTypeID"=>$rec_loctype['locationTypeID'],
+                "locationTypeName"=>$rec_loctype['locationTypeName'],
+            );
+        }
+    }
+
+    $sql_loc = "SELECT * FROM tb_location 
+    join tb_locationType on tb_location.locationTypeID = tb_locationType.locationTypeID
+    where locationType = '".$rec_product["locationType"]."'";     
+    $query_loc = $db->query($sql_loc);
+    $nums_loc = $db->db_num_rows($query_loc);
+    if ($nums_loc > 0) {
+        while($rec_loc = $db->db_fetch_array($query_loc)){
+            $arr_location[] = array(
+                "locationID"=>$rec_loc['locationID'],
+                "locationName"=>$rec_loc['locationName'],
+            );
+        }
+    }
 
     $arr = array(
         "po_head" => $arr_head,
         "po_desc" => $arr_desc,
         "location" => $arr_location,
+        "locationType" => $arr_locationType,
     );
 
     echo json_encode($arr);
@@ -293,10 +318,13 @@ function getReceiveInfo($id){
     $query_pd = $db->query($sql_pd);
     while($rec_pd = $db->db_fetch_array($query_pd))
     {
-        $sql_product = "SELECT tb_product.*,tb_locationtype.locationTypeName,tb_location.locationName FROM  tb_product JOIN
-        tb_locationtype ON tb_product.locationTypeID = tb_locationtype.locationTypeID JOIN
-        tb_location ON tb_product.locationID = tb_location.locationID
-        WHERE productID = '".$rec_pd["productID"]."' ";
+    $sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
+	,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
+	FROM  tb_productstore 
+	JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
+	JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
+	JOIN tb_product ON tb_productstore.productID = tb_product.productID
+        WHERE tb_productstore.productID = '".$rec_pd["productID"]."' ";
         $query_product = $db->query($sql_product);
         $rec_product = $db->db_fetch_array($query_product);
 
@@ -304,7 +332,7 @@ function getReceiveInfo($id){
         $query_receive_desc = $db->query($sql_receive_desc);
         $rec_receive_desc = $db->db_fetch_array($query_receive_desc);
 
-        $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
+       $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
         FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
         JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
         WHERE tb_productattr.productID = '".$rec_pd["productID"]."'";
@@ -336,6 +364,9 @@ function getReceiveInfo($id){
             "locationName" => $rec_product['locationName'],
             "attr" => $attr,
         );
+		/* echo "<pre>";
+		print_r($arr_desc);
+		echo "</pre>"; */
     }
 
     $arr = array(

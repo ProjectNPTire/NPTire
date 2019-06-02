@@ -38,6 +38,7 @@ table {
 	border-collapse:collapse;
 	margin-left: auto;
 	margin-right: auto;
+	width: 100%;
 }
 th {
 	padding-left:3px;
@@ -86,7 +87,7 @@ $FILE_NAME = $_POST['FILE_NAME'];
 $HTML =  file_get_contents($path_cache.$FILE_NAME.".txt",'r');
 if($HEADER != ''){
 	$HEAD = "
-	<table class='test' width='90%' border='0'>
+	<table class='test' border='0'>
 	<tbody>
 	<tr>
 	<td width='10%'><img src='".$img_logo."'></td>
@@ -100,18 +101,19 @@ if($HEADER != ''){
 	</table>
 	<div style='text-align:center;'><strong>".$HEADER."</strong></div><br>
 	<div style='text-align:center;'>".$H_REPORT_2."</div><br>
-";
+	";
   //$HEAD += "<div style='text-align:center;' ><strong>test</strong></div><br>";
 }
 
 $PAGE = "{PAGENO}/{nbpg}";
 $pdf->SetHTMLFooter('
-<table width="100%">
-    <tr>
-        <td></td>
-        <td align="right">'.$PAGE.'</td>
-    </tr>
-</table>');
+	<br>
+	<table width="100%">
+	<tr>
+	<td></td>
+	<td align="right">'.$PAGE.'</td>
+	</tr>
+	</table>');
 // <div class='row clearfix'>
 // 	<div class='col-sm-4' style='text-align:left;'>
 // 	<img src='".$img_logo."'></div>

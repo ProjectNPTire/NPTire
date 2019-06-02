@@ -377,6 +377,7 @@ chk_role($page_key,'isSearch',1) ;
     $.post('process/get_process.php',{proc:'get_product_bill',id:id},function(data){
 
       $.each(data,function(index,value){
+	
         html += '<tr>';
         html += '<td align="center">'+(index+1)+'</td>';
         html += '<td>'+value['productCode']+'</td>';
@@ -390,9 +391,10 @@ chk_role($page_key,'isSearch',1) ;
         html += '<td>'+value['unitType']+'</td>';
 
         html += '</tr>';
+	  
       });
     },'json');
-    debugger
+    
     if (type == 'info') {
       $('#print').show();
       $('#print').attr('onclick', "printbill('"+id+"');");
@@ -430,7 +432,7 @@ chk_role($page_key,'isSearch',1) ;
 
       $.each(data,function(index,value){
         html += '<tr>';
-        html += '<td align="center">'+(index+1)+'</td>';
+        html += '<td align="center">'+(id+1)+'</td>';	
         html += '<td>'+value['productCode']+'</td>';
         html += '<td>'+value['productName']+'</td>';
         html += '<td>'+value['brand']+'</td>';
@@ -463,7 +465,7 @@ chk_role($page_key,'isSearch',1) ;
   }
 
   function printbill(id){
-    debugger
+    
     $('#billID').val(id);
     $('#frm-search').attr('action','report/print_bill.php');
     $('#frm-search').attr('target','_blank');

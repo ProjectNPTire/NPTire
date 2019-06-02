@@ -41,6 +41,7 @@ if($proc=='edit'){
 								<input type="hidden" id="locationID" name="locationID" value="<?php echo $locationID; ?>">
 								<input type="hidden" id="chk2" name="chk2" value="0">
 								<input type="hidden" id="chk3" name="chk3" value="0">
+                                <input type="hidden" id="chk1" name="chk1" value="0">
 								<div class="row clearfix">
 									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
 									</div>
@@ -149,6 +150,24 @@ if($proc=='edit'){
 		}
 
 		function chkinput(){
+
+			if($('#proc').val()=='edit'){
+				var locationID= $('#locationID').val();
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'chk_editlocation',locationID:locationID},function(data){
+					if(data > 0){
+						alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากตำแหน่งเก็บนี้มีการใช้ข้อมูลนี้อยู่');
+						$('#chk1').val(1);
+						return false;
+					}else{
+						$('#chk1').val(0);
+					}
+				},'json');		
+			}
+
+			if($('#chk1').val()==1){
+				return false;
+			}
 
 			if($('#chk3').val()==1){
 				$('#locationCode-error').show();

@@ -41,6 +41,7 @@ if($proc=='edit'){
 								<input type="hidden" id="locationTypeID" name="locationTypeID" value="<?php echo $locationTypeID; ?>">
 								<input type="hidden" id="chk2" name="chk2" value="0">
 								<input type="hidden" id="chk3" name="chk3" value="0">
+                                <input type="hidden" id="chk1" name="chk1" value="0">
 								<div class="row clearfix">
 									<div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
 									</div>
@@ -57,7 +58,7 @@ if($proc=='edit'){
 										<b>รหัสประเภทตำแหน่งจัดเก็บ</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" readonly oninput="this.value=this.value.replace(/\s/g, '');" onkeyup="chkCode();" name="locationTypeCode" id="locationTypeCode" class="form-control" placeholder="รหัสประเภทตำแหน่งจัดเก็บ" value="<?php echo $rec['locationTypeCode'];?>" <?php echo $readonly;?>>
+												<input type="text" readonly oninput="this.value=this.value.replace(/\s/g, '');" onchange="chkCode();" name="locationTypeCode" id="locationTypeCode" class="form-control" placeholder="รหัสประเภทตำแหน่งจัดเก็บ" value="<?php echo $rec['locationTypeCode'];?>" <?php echo $readonly;?>>
 											</div>
 											<div class="help-info">กรอกอัตโนมัติ</div>
 											<label id="locationTypeCode-error" class="error" for="locationTypeCode">รหัสประเภทตำแหน่งจัดเก็บ</label>
@@ -67,16 +68,25 @@ if($proc=='edit'){
 										<b>ชื่อประเภทตำแหน่งจัดเก็บสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" onkeyup="chkName();" id="locationTypeName" name="locationTypeName" class="form-control" placeholder="ชื่อประเภทตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationTypeName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" onchange="chkName();" id="locationTypeName" name="locationTypeName" class="form-control" placeholder="ชื่อประเภทตำแหน่งจัดเก็บสินค้า" value="<?php echo $rec["locationTypeName"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
 											</div>
 											<label id="locationTypeName-error" class="error" for="locationTypeName">กรุณาระบุ ชื่อประเภทตำแหน่งจัดเก็บสินค้า</label>
 											<label id="locationTypeName-error2" class="error" for="locationTypeName">ชื่อประเภทตำแหน่งจัดเก็บสินค้า</label>
 										</div>
-									</div> 			
+									</div>	
 								</div>
-								<div class="row clearfix">
+								<div class="row clearfix"><!-- 
+									<div class="col-sm-4">
+										<b>จำนวนพื้นที่/ยูนิต</b>
+										<div class="form-group">
+											<div class="form-line">
+												<input type="text" id="area" name="area" class="form-control numb" placeholder="จำนวนพื้นที่/ยูนิต" value="<?php echo $rec["area"]; ?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+											</div>
+											<label id="area-error" class="error" for="area">กรุณาระบุ จำนวนพื้นที่</label>
+										</div>
+									</div> -->	
 									<div class="col-sm-6">
-										<b>ขนาดประเภทตำแหน่งจัดเก็บ</b>
+										<b>ประเภทตำแหน่งจัดเก็บ</b>
 										<div class="form-group form-float">
 											<select name="locationType" id="locationType" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="gen_code(this.value,'hdflocationType');">                   
 												<option value="">เลือก</option>
@@ -87,7 +97,7 @@ if($proc=='edit'){
 											<input type="hidden" name="hdflocationType" id="hdflocationType" value="<?php echo $rec['locationType'] ?>">
 											<label id="locationType-error" class="error" for="locationType">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
 										</div>
-									</div>		
+									</div>	
 									<div class="col-sm-6">
 										<b>การใช้งานข้อมูล</b>
 										<div class="form-group form-float">
@@ -136,6 +146,24 @@ if($proc=='edit'){
 		}
 
 		function chkinput(){
+
+			if($('#proc').val()=='edit'){
+				var locationTypeID= $('#locationTypeID').val();
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'chk_editloctype',locationTypeID:locationTypeID},function(data){
+					if(data > 0){
+						alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากประเภทตำแหน่งเก็บนี้มีการใช้ข้อมูลนี้อยู่');
+						$('#chk1').val(1);
+						return false;
+					}else{
+						$('#chk1').val(0);
+					}
+				},'json');		
+			}
+
+			if($('#chk1').val()==1){
+				return false;
+			}
 
 			if($('#chk3').val()==1){
 				$('#locationTypeCode-error').show();
@@ -230,7 +258,7 @@ if($proc=='edit'){
 			var newcode ='';
 			if (locationType != "") {
 				$('#'+hdf_id).val(locationType);
-				debugger
+				
 				$.ajaxSetup({async: false});
 				$.post('process/get_process.php',{proc:'get_locationTypeCode',locationType:locationType},function(data){
 					newcode =  data['name'];

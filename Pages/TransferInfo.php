@@ -238,7 +238,7 @@ $s_location = "SELECT * from tb_location order by locationName ";
 
 
   function onsubmitModal(){
-    debugger
+    
     var html = '';
     if ($('#rowid').val() == 0) {
       $("#tb_data tbody").html("");

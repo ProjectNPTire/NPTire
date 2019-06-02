@@ -13,6 +13,7 @@ $tb4 = 'tb_product';
 $tb5 = 'tb_po';
 $tb6 = 'tb_po_desc';
 $tb7 = 'tb_location';
+$tb7 = 'tb_week';
 
 switch($proc){
 	case "add" :
@@ -57,7 +58,7 @@ switch($proc){
         //exit;
         $db->db_insert($tb2,$fields);
 
-        $sql_inv = "SELECT * FROM tb_productstore WHERE productID = '".$key."' AND locationID = '".$_POST['locationID'][$key]."' ";
+        $sql_inv = "SELECT * FROM tb_productstore WHERE productID = '".$key."' AND locationID = '".$_POST['locationID'][$key]." AND locationTypeID = '".$_POST['locationTypeID'][$key]."' ";
         $query_inv = $db->query($sql_inv);
         $nums = $db->db_num_rows($query_inv);
         $rec_inv = $db->db_fetch_array($query_inv);
@@ -72,16 +73,38 @@ switch($proc){
             $db->db_update($tb3,$fields, " productID = '".$key."' AND locationID = '".$_POST['locationID'][$key]."' ");
         }
         else{
+
+            $sql_a = "SELECT * FROM tb_productstore WHERE locationID = '".$_POST['locationID'][$key]." 'AND locationTypeID = '".$_POST['locationTypeID'][$key]."' AND ps_unit = 0 ";
+        $query_a = $db->query($sql_a);
+        $nums_a = $db->db_num_rows($query_a);
+        $rec_a = $db->db_fetch_array($query_a);
+
+     if($nums_a > 0){
+        unset($fields);
+            $fields = array(
+                "productID"=>$key,
+                "ps_unit"=>$_POST['qty'][$key],
+            );
+
+            $db->db_update($tb3,$fields, " locationID = '".$_POST['locationID'][$key]."' AND locationTypeID = '".$_POST['locationTypeID'][$key]."' ");
+     }else{
+
                     // insert
             unset($fields);
             $fields = array(
                 "productID"=>$key,
+                "locationTypeID"=>$_POST['locationTypeID'][$key],
                 "locationID"=>$_POST['locationID'][$key],
                 "ps_unit"=>$_POST['qty'][$key],
             );
+        // echo  "<pre>";
+        // print_r($fields);
+        // echo "</pre>";
+        // exit;
             if($_POST['qty'][$key] > 0){
                 $db->db_insert($tb3,$fields);
             }
+        }
 
             unset($fields);
             $fields = array(
@@ -91,6 +114,41 @@ switch($proc){
                 $db->db_update($tb7,$fields,"locationID = '".$_POST['locationID'][$key]."' ");
             }
         }
+
+
+
+        $sql_week = "SELECT * FROM tb_week WHERE productID = '".$key."' AND week = '".$_POST['week'][$key]."' ";
+        $query_week = $db->query($sql_week);
+        $nums_week = $db->db_num_rows($query_week);
+        $rec_week = $db->db_fetch_array($query_week);
+
+        if($nums_week > 0){
+                    // update
+            unset($fields);
+            $fields = array(
+                "unit"=>($rec_week['unit'] + $_POST['qty'][$key]),
+            );
+
+            $db->db_update($tb7,$fields, " productID = '".$key."' AND week = '".$_POST['week'][$key]."' ");
+        }
+        else{
+            unset($fields);
+            $fields = array(
+                //"docID"=>0,
+                "productID"=>$key,
+                "week"=>$_POST['week'][$key],
+                "unit"=>$_POST['qty'][$key],
+            );
+
+        // echo  "<pre>";
+        // print_r($fields);
+        // echo "</pre>";
+        // exit;
+            if($_POST['week'][$key] > 0){
+                $db->db_insert($tb7,$fields);
+            }
+        }   
+
 
         $sql_check_received = "SELECT SUM(qty) AS sum_received FROM tb_receive_desc WHERE productID = '".$key."' AND pOID = '".$_POST["poID"]."' AND cancelFlag = '0' ";
         $query_check_received = $db->query($sql_check_received);
@@ -142,38 +200,38 @@ switch($proc){
 
     $text=$save_proc;
 }catch(Exception $e){
-   $text=$e->getMessage();
+ $text=$e->getMessage();
 }
 break;
 
 case "cancel":
 try{
 
-   $sql_receive = "SELECT * FROM tb_receive WHERE receiveID = '".$_POST["receiveID"]."' ";
-   $query_receive = $db->query($sql_receive);
-   $rec_receive = $db->db_fetch_array($query_receive);
+ $sql_receive = "SELECT * FROM tb_receive WHERE receiveID = '".$_POST["receiveID"]."' ";
+ $query_receive = $db->query($sql_receive);
+ $rec_receive = $db->db_fetch_array($query_receive);
 
-   unset($fields);
-   $fields = array(
+ unset($fields);
+ $fields = array(
     "receiveStatus"=>99
 );
 
-   $db->db_update($tb1,$fields, " receiveID = '".$_POST['receiveID']."'");
+ $db->db_update($tb1,$fields, " receiveID = '".$_POST['receiveID']."'");
 
 
 
-   $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$_POST["receiveID"]."' ";
-   $query_receive_desc = $db->query($sql_receive_desc);
+ $sql_receive_desc = "SELECT * FROM tb_receive_desc WHERE receiveID = '".$_POST["receiveID"]."' ";
+ $query_receive_desc = $db->query($sql_receive_desc);
 
-   $arr_product_remain = array();
-   unset($arr_product_remain);
+ $arr_product_remain = array();
+ unset($arr_product_remain);
 
-   while($rec_receive_desc = $db->db_fetch_array($query_receive_desc)){
+ while($rec_receive_desc = $db->db_fetch_array($query_receive_desc)){
 
     unset($fields);
     $fields = array(
-     "cancelFlag"=>1,
- );
+       "cancelFlag"=>1,
+   );
 
     $db->db_update($tb2,$fields, " productID = '".$rec_receive_desc["productID"]."' AND receiveID = '".$rec_receive_desc["receiveID"]."' ");
 
@@ -195,8 +253,8 @@ try{
 
     unset($fields);
     $fields = array(
-     "productUnit"=>$rec_cnt_product['sum_ps_unit'],
- );
+       "productUnit"=>$rec_cnt_product['sum_ps_unit'],
+   );
 
     $db->db_update($tb4,$fields, " productID = '".$rec_receive_desc["productID"]."'");
 
@@ -234,7 +292,7 @@ save_log($detail);
 
 $text=$save_proc;
 }catch(Exception $e){
-   $text=$e->getMessage();
+ $text=$e->getMessage();
 }
 break;
 }

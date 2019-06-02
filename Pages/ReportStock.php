@@ -16,10 +16,13 @@ $FILE_NAME = pathinfo(__FILE__, PATHINFO_FILENAME);
 
 
 if($S_REPORT_TYPE!=''){
-  $filter ="where locationID = '".$S_REPORT_TYPE."'";
+  $filter ="where tb_locationtype.locationTypeID = '".$S_REPORT_TYPE."'";
 }
 
-$sql =" select * from tb_location 
+$sql =" SELECT * FROM tb_locationtype
+JOIN tb_location ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
+LEFT JOIN tb_product ON tb_productstore.productID = tb_product.productID
 {$filter}";
 
 
@@ -34,8 +37,11 @@ $nums = $db->db_num_rows($query);
 $html = '<table class="table table-bordered table-striped table-hover dataTable" border="1">
 <thead>
 <tr>
+<th>ประเภทตำแหน่งจัดเก็บ</th>
 <th>ตำแหน่งจัดเก็บ</th>
-<th>สินค้าในตำแหน่งจัดเก็บ</th>
+<th>รหัสสินค้า</th>
+<th>ชื่อสินค้า</th>
+<th>จำนวน</th>
 </tr>
 </thead>
 <tbody>';
@@ -43,48 +49,51 @@ if($nums>0){
   $i=0;
   while ($rec = $db->db_fetch_array($query)) {
     $i++;
-    $sql1 ="select SUM(ps_unit) as total from tb_location left join tb_productstore on tb_location.locationID = tb_productstore.locationID where tb_location.locationID = '".$rec['locationID']."' group by tb_location.locationID";
-    $query1 = $db->query($sql1);
-    $rec1 = $db->db_fetch_array($query1);
+    // $sql1 ="select SUM(ps_unit) as total from tb_location left join tb_productstore on tb_location.locationID = tb_productstore.locationID where tb_location.locationID = '".$rec['locationID']."' group by tb_location.locationID";
+    // $query1 = $db->query($sql1);
+    // $rec1 = $db->db_fetch_array($query1);
 
     $html .=  '<tr>
-    <td align="left">'.$rec['locationName'].'</td>
-    <td align="center">';
-    $sqlproduct =" select  *
-    from tb_product a
-    left join tb_productstore b on a.productID = b.productID
-    where b.locationID = '".$rec['locationID']."' ";
+    <td>'.$rec['locationTypeName'].'</td>
+    <td>'.$rec['locationName'].'</td>
+    <td>'.$rec['productCode'].'</td>
+    <td>'.$rec['productName'].'</td>
+    <td>'.$rec['ps_unit'].'</td>
+    ';
+    // $sqlproduct =" select  *
+    // from tb_product a
+    // left join tb_productstore b on a.productID = b.productID
+    // where b.locationID = '".$rec['locationID']."' ";
 
-    $queryproduct = $db->query($sqlproduct);
-    $numsproduct = $db->db_num_rows($queryproduct);
-    if($numsproduct>0){
-      $html .= '<table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
-      <tr>
-      <td align="center" width="20%">รหัสสินค้า</td>
-      <td align="center" width="20%">ชื่อสินค้า</td>
-      <td align="center" width="10%">ยี่ห้อ</td>
-      <td align="center" width="10%">รุ่น</td>
-      <td align="center" width="10%">ขนาด</td>
-      <td align="center" width="5%">จำนวน</td>
-      <td align="center" width="5%">หน่วย</td>
-      </tr>';
-      while ($recproduct = $db->db_fetch_array($queryproduct)) {        
-        $html .= '<tr>
-        <td>'.$recproduct['productCode'].'</td>
-        <td>'.$recproduct['productName'].'</td>
-        <td>'.get_brand_name($recproduct['brandID']).'</td>
-        <td>'.$recproduct["modelName"].'</td>
-        <td>'.$recproduct["productSize"].'</td>
-        <td align="right">'.$recproduct["ps_unit"].'</td>
-        <td>'.$arr_unitType[$recproduct['unitType']].'</td>
-        </tr>';
-      }
-      $html .= '</table>';
-    }else{
-      $html .= 'ไม่มีสินค้าในตำแหน่งจัดเก็บนี้';
-    }
-    $html .=  '</td>
-    </tr>';             
+    // $queryproduct = $db->query($sqlproduct);
+    // $numsproduct = $db->db_num_rows($queryproduct);
+    // if($numsproduct>0){
+    //   $html .= '<table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+    //   <tr>
+    //   <td align="center" width="20%">รหัสสินค้า</td>
+    //   <td align="center" width="20%">ชื่อสินค้า</td>
+    //   <td align="center" width="10%">ยี่ห้อ</td>
+    //   <td align="center" width="10%">รุ่น</td>
+    //   <td align="center" width="10%">ขนาด</td>
+    //   <td align="center" width="5%">จำนวน</td>
+    //   <td align="center" width="5%">หน่วย</td>
+    //   </tr>';
+    //   while ($recproduct = $db->db_fetch_array($queryproduct)) {        
+    //     $html .= '<tr>
+    //     <td>'.$recproduct['productCode'].'</td>
+    //     <td>'.$recproduct['productName'].'</td>
+    //     <td>'.get_brand_name($recproduct['brandID']).'</td>
+    //     <td>'.$recproduct["modelName"].'</td>
+    //     <td>'.$recproduct["productSize"].'</td>
+    //     <td align="right">'.$recproduct["ps_unit"].'</td>
+    //     <td>'.$arr_unitType[$recproduct['unitType']].'</td>
+    //     </tr>';
+    //   }
+    //   $html .= '</table>';
+    // }else{
+    //   $html .= 'ไม่มีสินค้าในตำแหน่งจัดเก็บนี้';
+    // }
+    $html .=  '</tr>';             
   }
 }else{
   $html .='<tr><td align="center" colspan="8">ไม่พบข้อมูล</td></tr>';
@@ -123,13 +132,13 @@ $html .= '</tbody>
                       <select class="form-control show-tick" data-live-search="true" id="S_REPORT_TYPE" name="S_REPORT_TYPE">
                         <option value="">ทั้งหมด</option>
                         <?php
-                        $s_location=" SELECT * from tb_location order by locationID asc";
+                        $s_location=" SELECT * from tb_locationtype order by locationTypeName";
                         $q_location = $db->query($s_location);
                         $n_location = $db->db_num_rows($q_location);
                         while($r_location = $db->db_fetch_array($q_location)){
 
                           ?>
-                          <option value="<?php echo $r_location['locationID'];?>" <?php echo ($S_REPORT_TYPE==$r_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                          <option value="<?php echo $r_location['locationTypeID'];?>" <?php echo ($S_REPORT_TYPE==$r_location['locationTypeID'])?"selected":"";?>><?php echo $r_location['locationTypeName'];?></option>
 
                         <?php }  ?>
                       </select>  

@@ -55,14 +55,14 @@ if ($chk != 0) {
               <div class="body">
                 <input type="hidden" id="chk" name="chk" value="0">
                 <!-- <?php echo isset($btn_search); ?> -->
-                <div class="row clearfix">                
-                  <div class="col-lg-2 form-control-label">
+                <div class="row clearfix">               
+                  <div class="col-lg-1 form-control-label">
                     <label for="email_address_2">ประเภท</label>
                   </div>                 
                   <div class="col-lg-4" id="type">
                     <div class="form-group">
                       <div class="form-group form-float">
-                        <select name="typeID" id="typeID" class="form-control show-tick" data-live-search="true"  >
+                        <select name="typeID" id="typeID" class="form-control show-tick" data-live-search="true" onchange="get_attr(this.value,'attrID')" >
                           <option value="">เลือก</option>
                           <?php
                           $s_p=" SELECT * from tb_producttype where isEnabled = 1";
@@ -76,7 +76,7 @@ if ($chk != 0) {
                       </div>
                     </div>                     
                   </div>
-                  <div class="col-lg-1 form-control-label">
+                  <div class="col-lg-2 form-control-label">
                     <label for="email_address_2">ยี่ห้อ</label>
                   </div>
                   <div class="col-lg-4" id="brand">
@@ -98,7 +98,7 @@ if ($chk != 0) {
                   </div> 
                 </div>
                 <div class="row clearfix">
-                  <div class="col-lg-2 form-control-label">
+                  <div class="col-lg-1 form-control-label">
                     <label for="email_address_2">คุณลักษณะ</label>
                   </div>
                   <div class="col-lg-4" id="brand">
@@ -106,7 +106,7 @@ if ($chk != 0) {
                       <div class="form-group form-float">
                         <select name="attrID" id="attrID" onchange="get_value(this.value,'txt_value',);" class="form-control show-tick" data-live-search="true"  >
                           <option value="">เลือก</option>
-                          <?php
+                          <!-- <?php
                           $s_p=" SELECT * from tb_attribute
                           join tb_productattr on tb_attribute.attrID = tb_productattr.attrID
                           where isEnabled = 1";
@@ -115,13 +115,13 @@ if ($chk != 0) {
                           while($r_p = $db->db_fetch_array($q_p)){?>
                             <option value="<?php echo $r_p['attrID'];?>"<?php echo ($attrID==$r_p['attrID'])?"selected":"";?>> <?php echo $r_p['attrName'];?></option>
 
-                          <?php }  ?>
+                          <?php }  ?> -->
                         </select>
                       </div>
                     </div>                     
                   </div>
-                  <div class="col-lg-1 form-control-label">
-                    <label for="email_address_2"></label>
+                  <div class="col-lg-2 form-control-label">
+                    <label for="email_address_2">รายละเอียด</label>
                   </div>
                   <div class="col-lg-4" id="brand">
                     <div class="form-group">
@@ -209,7 +209,7 @@ if ($chk != 0) {
     //$('#tb_data').hide();
   });
   function searchData(){
-    debugger
+    
     if ($('#attrID').val() != "") {
       if ($('#txt_value').val() == "") {
         $('#value-error').show();
@@ -222,7 +222,7 @@ if ($chk != 0) {
   }
 
   function get_value(parent_id,id){
-    debugger
+    
     var html  = '<option value="">เลือก</option>';
     $.ajaxSetup({async: false});  
     $.post('process/get_process.php',{proc:'get_value',parent_id:parent_id},function(data){
@@ -235,4 +235,17 @@ if ($chk != 0) {
 
     },'json');
   }
+  function get_attr(parent_id,id){
+  var html  = '<option value="">เลือก</option>';
+  $.ajaxSetup({async: false});  
+  $.post('process/get_process.php',{proc:'get_attr',parent_id:parent_id},function(data){
+
+    $.each(data,function(index,value){
+      html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+    });
+    $('#'+id).html(html);
+    $('#'+id).selectpicker('refresh');
+
+  },'json');
+}
 </script>
