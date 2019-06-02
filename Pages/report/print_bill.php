@@ -187,19 +187,18 @@ $qty1 = 0;
 while($rec_pd = $db->db_fetch_array($query_bd))
 {
 
-	$sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
-	,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
-	FROM  tb_productstore 
-	JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
-	JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
-	JOIN tb_product ON tb_productstore.productID = tb_product.productID
-	WHERE tb_productstore.productID = '".$rec_pd["productID"]."' ";
+	$sql_product = "SELECT productCode,productName,productTypeID,brandID,billDescUnit,locationTypeName,locationName
+	FROM tb_product
+	JOIN tb_bill_desc ON tb_product.productID = tb_bill_desc.productID
+	JOIN tb_location ON tb_location.locationID = tb_bill_desc.locationID
+	JOIN tb_locationtype ON tb_locationtype.locationTypeID = tb_location.locationTypeID
+	WHERE billID = '".$billID."' and tb_product.productID = '".$rec_pd["productID"]."' ";
 	$query_product = $db->query($sql_product);
 	$rec_product = $db->db_fetch_array($query_product);
 
-	$sql_bill_desc = "SELECT * FROM tb_bill_desc WHERE billID = '".$billID."' ";
-	$query_bill_desc = $db->query($sql_bill_desc);
-	$rec_bill_desc = $db->db_fetch_array($query_bill_desc);
+	// $sql_bill_desc = "SELECT * FROM tb_bill_desc WHERE billID = '".$billID."' ";
+	// $query_bill_desc = $db->query($sql_bill_desc);
+	// $rec_bill_desc = $db->db_fetch_array($query_bill_desc);
 	
 
 	$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
