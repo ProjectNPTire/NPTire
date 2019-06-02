@@ -15,7 +15,7 @@
   $proc = ($proc=='')?"add":$proc;
   $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
   $readonly = "readonly";
-  T
+  
 
   ?>
 
@@ -198,7 +198,7 @@ $(document).ready(function() {
   $('#brandCode').val(brandCode);
 }
 
-  		});
+});
 
 function chkName(){
  var brandName= $('#brandName').val();

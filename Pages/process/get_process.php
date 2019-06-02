@@ -736,8 +736,7 @@ switch($PROC){
             }
         }else{
             $attr = '-';
-        }
-		
+        }		
 
 		$row['productID']  = $rec['productID'];
 		$row['productCode']  = $rec['productCode'];
@@ -818,11 +817,12 @@ switch($PROC){
 	while($rec = $db->db_fetch_array($query)){
 
 		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-		FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
-		JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-		WHERE tb_productattr.productID = '".$rec["productID"]."'";
+		FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+		WHERE productID = '".$rec["productID"]."'";
 		$query_attr = $db->query($sql_attr);
 		$nums_attr = $db->db_num_rows($query_attr);
+
+		$attr = '';
 
 		if($nums_attr > 0){
 			while($rec_attr = $db->db_fetch_array($query_attr))

@@ -154,6 +154,7 @@ chk_role($page_key,'isAdd',1);
                                 <b>รหัสไปรษณีย์</b>
                                 <div class="form-line">
                                    <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $readonly;?>>
+
                                </div>
                                <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
                            </div>

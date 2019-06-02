@@ -290,7 +290,6 @@ function checkReceiveQTY(obj)
 		},'json');
 	}
 	function  chk_location(id){
-		
 		var arr = $('[id^=locationID_]');
 		var total = 0;
 		for (var i = 0; i < arr.length; i++) {
@@ -340,7 +339,7 @@ function checkReceiveQTY(obj)
 	    // }
 
 	    var obj_id = $("#tb-data tbody tr");
-	    
+
 	    if($('#rowid').val() == 0){
 	    	$('#tb-data-error').show();
 	    	return false;

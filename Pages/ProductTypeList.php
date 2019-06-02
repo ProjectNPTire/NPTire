@@ -102,9 +102,6 @@ chk_role($page_key,'isSearch',1) ;
 
 </html>
 
-
-
-
 <script>
   $(document).ready(function() {
    $("#table1").DataTable({

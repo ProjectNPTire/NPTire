@@ -664,7 +664,6 @@ $readonly = "readonly";
   function get_address(){
   // console.log('getaddress');
   if($('#adsIDCard').is(':checked')) {
-
     let province_id = $('#hdfProvinceID').val();
     let district_id = $('#hdfDistrictID').val();
     let subdistrict_id = $('#hdfSubDistrictID').val();
@@ -710,7 +709,6 @@ function get_area(parent_id,id,hdf_id,type){
   },'json');
 }
 function get_zipcode(parent_id,id,hdf_id){
-
   // console.log(parent_id,hdf_id);
   var html  = '';
   $.ajaxSetup({async: false});
@@ -880,7 +878,6 @@ function ValidateSingleInput(oInput) {
         }
       }
       function chk_idcard(){
-
         var idcard = $('#idcard').val();
         var userID = $('#userID').val();
         $.ajaxSetup({async: false});

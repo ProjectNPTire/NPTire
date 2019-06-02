@@ -123,9 +123,6 @@ chk_role($page_key,'isSearch',1) ;
         </body>
 
         </html>
-
-
-
         <!-- Large Size -->
         <div class="modal fade" id="ModalDetail" tabindex="-1" role="dialog">
           <div class="modal-dialog modal-lg" role="document">
@@ -186,7 +183,6 @@ chk_role($page_key,'isSearch',1) ;
                   <b>เบอร์โทรศัพท์</b>
                   <span class="form-group" id="txt_mobileref"></span>
                 </div>
-
               </div>
             </div>
             <div class="modal-footer">

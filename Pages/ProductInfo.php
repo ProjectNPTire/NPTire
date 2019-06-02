@@ -1082,7 +1082,6 @@ function addRow(){
 
  function  chk_location(){
   var arr = $('[id^=locationID_]');
-  
   var total = 0;
   for (var i = 0; i < arr.length; i++) {
     var num = $(arr[i]).val().trim();
@@ -1179,7 +1178,6 @@ function ValidateSingleInput(oInput) {
       }
 
       function get_location(parent_id,id,productID){
-        
         var locationTypeID = parent_id;
         var productID = productID;
         var html  = '<option value="">เลือก</option>';

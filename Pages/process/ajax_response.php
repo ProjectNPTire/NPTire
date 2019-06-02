@@ -339,6 +339,8 @@ function getReceiveInfo($id){
         $query_attr = $db->query($sql_attr);
         $nums_attr = $db->db_num_rows($query_attr);
 
+        $attr = '';
+
         if($nums_attr > 0){
             while($rec_attr = $db->db_fetch_array($query_attr))
             {
