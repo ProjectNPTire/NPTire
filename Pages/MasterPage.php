@@ -27,21 +27,34 @@ $arrMenu = array(
   'desc' => array(
     '0' => 'หน้าหลัก',
     '1' => 'ค้นหาสินค้า',
-    '1_1' => 'ข้อมูลพนักงาน',
-    '2_1' => 'ข้อมูลคู่ค้า',
+    // '1_1' => 'ข้อมูลพนักงาน',
+    // '2_1' => 'ข้อมูลคู่ค้า',
+    '2' => array(
+      '0' => 'จัดการข้อมูลบุคคล',
+      '2_1' => 'ข้อมูลพนักงาน',
+      '2_2' => 'ข้อมูลบริษัทคู่ค้า',
+    ),
 
     '3' => array(
-      '0' => 'สินค้า',
-      '3_1' => 'คุณลักษณะสินค้า',
-      '3_2' => 'ประเภทสินค้า',
-      '3_3' => 'ยี่ห้อสินค้า',
-      '3_4' => 'ประเภทตำแหน่งจัดเก็บสินค้า',
-      '3_5' => 'ตำแหน่งจัดเก็บสินค้า',
-      '3_6' => 'ข้อมูลสินค้า',
+      '0' => 'ตั้งค่า',
+      '3_1' => 'ข้อมูลประเภทสินค้า',
+      '3_2' => 'ข้อมูลยี่ห้อสินค้า',
+      '3_3' => 'ข้อมูลหน่วยนับ',
+      '3_4' => 'ข้อมูลตำแหน่งจัดเก็บสินค้า',
     ),
-    '4_1' => 'สั่งซื้อสินค้า',
-    '5_1' => 'รับเข้าสินค้า',
-    '6_1' => 'เบิกสินค้า',
+
+    '4' => array(
+      '0' => 'จัดการข้อมูลสินค้า',
+      '4_1' => 'ข้อมูลยางรถยนต์',
+      '4_2' => 'ข้อมูลสินค้าอื่น',
+    ),
+
+    '5' => array(
+      '0' => 'การเคลื่อนไหวสินค้า',
+      '5_1' => 'สั่งซื้อสินค้า',
+      '5_2' => 'รับเข้าสินค้า',
+      '5_3' => 'เบิกสินค้า',
+    ),
   ),
 
 
@@ -49,36 +62,63 @@ $arrMenu = array(
   'url'=> array(
     '0' => 'main.php',
     '1' => 'SearchProduct.php',
-    '1_1' => 'UserList.php',
-    '2_1' => 'SupplierList.php',
-    '3' => array(
-      '0' => '#',
-      '3_1' => 'AttributeList.php',
-      '3_2' => 'ProductTypeList.php',
-      '3_3' => 'BrandList.php',
-      '3_4' => 'LocationTypeList.php',
-      '3_5' => 'LocationList.php',
-      '3_6' => 'ProductList.php',
+    // '1_1' => 'UserList.php',
+    // '2_1' => 'SupplierList.php',
+    '2' => array(
+      '0' => 'จัดการข้อมูลบุคคล',
+      '2_1' => 'UserList.php',
+      '2_2' => 'SupplierList.php',
     ),
-    '4_1' => 'OrderList.php',
-    '5_1' => 'ReceiveList.php',
-    '6_1' => 'TransferList.php',
+
+    '3' => array(
+      '0' => 'ตั้งค่า',
+      '3_1' => 'ProductTypeList.php',
+      '3_2' => 'BrandList.php',
+      '3_3' => 'UnitList.php',
+      '3_4' => 'LocationList.php',
+    ),
+
+    '4' => array(
+      '0' => 'จัดการข้อมูลสินค้า',
+      '4_1' => 'ProductMainList.php',
+      '4_2' => 'ProductList.php',
+    ),
+
+    '5' => array(
+      '0' => 'การเคลื่อนไหวสินค้า',
+      '5_1' => 'OrderList.php',
+      '5_2' => 'ReceiveList.php',
+      '5_3' => 'TransferList.php',
+    ),
+
+    // '3' => array(
+    //   '0' => '#',
+    //   '3_1' => 'AttributeList.php',
+    //   '3_2' => 'ProductTypeList.php',
+    //   '3_3' => 'BrandList.php',
+    //   '3_4' => 'LocationTypeList.php',
+    //   '3_5' => 'LocationList.php',
+    //   '3_6' => 'ProductList.php',
+    // ),
+    // '4_1' => 'OrderList.php',
+    // '5_1' => 'ReceiveList.php',
+    // '6_1' => 'TransferList.php',
   ),
   'icon'=> array(
     '0' => '<i class="material-icons">home</i>',
     '1' => '<i class="material-icons">search</i>',
-    '1_1' => '<i class="material-icons">group</i>',
-    '2_1' => '<i class="material-icons">group</i>',
-    '3' => '<i class="material-icons">apps</i>',
-    '4_1' => '<i class="material-icons">shopping_basket</i>',
-    '5_1' => '<i class="material-icons">file_download</i>',
-    '6_1' => '<i class="material-icons">file_upload</i>',
-      // '3' => '<i class="icon-cut "></i>',
-      // '4' => '<i class="icon-cog"></i>',
-      // '5' => '<i class=" icon-shopping-cart"></i>',
-      // '6' => '<i class="icon-calendar"></i>',
-      // '7' => '<i class="icon-undo"></i>',
-      // '8' => '<i class="icon-magic "></i>',
+    '2' => '<i class="material-icons">group</i>',
+    '3' => '<i class="material-icons">settings</i>',
+    '4' => '<i class="material-icons">apps</i>',
+    '5' => '<i class="material-icons">local_shipping</i>',
+    // '0' => '<i class="material-icons">home</i>',
+    // '1' => '<i class="material-icons">search</i>',
+    // '1_1' => '<i class="material-icons">group</i>',
+    // '2_1' => '<i class="material-icons">group</i>',
+    // '3' => '<i class="material-icons">apps</i>',
+    // '4_1' => '<i class="material-icons">shopping_basket</i>',
+    // '5_1' => '<i class="material-icons">file_download</i>',
+    // '6_1' => '<i class="material-icons">file_upload</i>',
   )
 ); 
 
@@ -154,33 +194,9 @@ $arrMenu = array(
     <div class="menu">
       <ul class="list">
         <li class="header">เมนูหลัก</li>
-                    <?php //print_pre($arrMenu['desc']);
+                   <?php //print_pre($arrMenu);
                     foreach ($arrMenu['desc'] as $key => $value) {
-                      if($arrMenu['desc'][$key] == 'หน้าหลัก'){
-                          //print_r($page_key);
-                        $active = '';
-                        if($key==$page_key){
-                          $active = 'class="active"';
-                        }
-                        ?>
-                        <li <?php echo $active;?>>
-                          <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
-                        </li>
-                      <?php } 
-
-                      else if($arrMenu['desc'][$key] == 'ค้นหาสินค้า'){
-                        $active = '';
-                        if($key==$page_key){
-                          $active = 'class="active"';
-                        }
-                        ?>
-                        <li <?php echo $active;?>>
-                          <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
-                        </li>
-                      <?php } ?>
-
-
-                      <?php if(count($arrMenu['desc'][$key]) > 1){
+                      if(count($arrMenu['desc'][$key]) > 1){
                         $active = '';
                         if($key==$page_key){
                           $active = 'class="active"';
@@ -245,23 +261,13 @@ $arrMenu = array(
 
 
                       <?php }else{
-                       //print_r($key);
                        $active = '';
                        if($key==$page_key){
-                       // print_r($page_key);
-                       // print_r($key);
                         $active = 'class="active"';
                       }
                       ?>
                       <li <?php echo $active;?>>
-                        <?php //print_r($arr_key[$key]);echo $_SESSION["userType"]; print_r($arr_key[$key]['isSearch']
-                     // ); 
-                        if($arr_key[$key] != null){
-                          if($_SESSION["userType"] == 1 || ($_SESSION["userType"] == 2 && $arr_key[$key]['isSearch'] == 1)){
-                            ?>
-                            <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
-                          <?php }
-                        } ?>
+                        <a href="<?php echo $arrMenu['url'][$key]; ?>">  <?php echo $arrMenu['icon'][$key].'  <span>'.$arrMenu['desc'][$key].'</span>'; ?></a>
                       </li>
 
                     <?php }

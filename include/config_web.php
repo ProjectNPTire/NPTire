@@ -89,6 +89,7 @@ $arr_po_status = array ("3"=>"<span>รับสินค้าครบแล�
 $arr_userType = array ("1"=>"<span style='color:green'>Admin</span>","2"=>"<span style='color:red'>พนักงาน</span>");
 $arr_unitType = array ("1"=>"เส้น","2"=>"วง","3"=>"คู่","4"=>"กล่อง","5"=>"หน่วย","6"=>"ขวด","7"=>"ลิตร");
 $arr_locationType = array ("1"=>"Large","2"=>"Small","3"=>"กอง");
+$arr_userStatus = array ("1"=>"<span>ปกติ</span>","2"=>"<span>ลาออก</span>");
 $DEF_ROWS_PER_PAGE = 20;
 $DEF_POPUP_ROWS_PER_PAGE = 10;
 $DEF_POPUP_PAGE_SET = 20;

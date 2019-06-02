@@ -117,47 +117,59 @@ switch($PROC){
 
 	case "get_username" :
 
-	$sql = "SELECT MAX(userID) AS userID FROM tb_user";
+	$sql = "SELECT COUNT(userID) -1 AS userID FROM tb_user";
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	$run = sprintf("%03d", ($rec['userID']+1));
 
-	$newUserID['name'] = "emp".$run;
+	$newUserID['name'] = "EMP".$run;
 	echo json_encode($newUserID);
 	exit();
 	break;
 
 	case "get_supCode" :
-	$sql = "SELECT MAX(supID) AS supID FROM tb_supplier";
+	$sql = "SELECT COUNT(supID) AS supID FROM tb_supplier";
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	$run = sprintf("%03d", ($rec['supID']+1));
 
-	$newUserID['name'] = "sup".$run;
+	$newUserID['name'] = "SUP".$run;
 	echo json_encode($newUserID);
 	exit();
 	break;
 
 	case "get_productTypeCode" :
 
-	$sql = "SELECT MAX(productTypeID) AS productTypeID FROM tb_producttype";
+	$sql = "SELECT COUNT(productTypeID) AS productTypeID FROM tb_producttype";
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	$run = sprintf("%03d", ($rec['productTypeID']+1));
 
-	$newUserID['name'] = "pdt".$run;
+	$newUserID['name'] = "PDT".$run;
 	echo json_encode($newUserID);
 	exit();
 	break;
 
 	case "get_brandCode" :
 
-	$sql = "SELECT MAX(brandID) AS brandID FROM tb_brand";
+	$sql = "SELECT COUNT(brandID) AS brandID FROM tb_brand";
 	$query = $db->query($sql);
 	$rec = $db->db_fetch_array($query);
 	$run = sprintf("%03d", ($rec['brandID']+1));
 
-	$newUserID['name'] = "bnd".$run;
+	$newUserID['name'] = "PDB".$run;
+	echo json_encode($newUserID);
+	exit();
+	break;
+
+	case "get_unitCode" :
+
+	$sql = "SELECT COUNT(unitID) AS unitID FROM tb_unit";
+	$query = $db->query($sql);
+	$rec = $db->db_fetch_array($query);
+	$run = sprintf("%03d", ($rec['unitID']+1));
+
+	$newUserID['name'] = "PDU".$run;
 	echo json_encode($newUserID);
 	exit();
 	break;
@@ -239,6 +251,33 @@ switch($PROC){
 	$sql=" SELECT productTypeName from tb_producttype where name_nospace ='".$name_nospace."'  and productTypeID !='".$productTypeID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_unitName" :
+	$unitName = $_POST['unitName'];
+	$unitID = $_POST['unitID'];
+	$name_nospace = str_replace(" ","",$unitName);
+
+
+	$sql=" SELECT unitName from tb_unit where name_nospace ='".$name_nospace."'  and unitID !='".$productTypeID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_unitCode" :
+	$unitCode = $_POST['unitCode'];
+	$unitID = $_POST['unitID'];
+
+	$sql=" SELECT unitCode from tb_unit where unitCode ='".$unitCode."'  and unitID !='".$unitID."'";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
 	$OBJ=$nums;
 	echo json_encode($OBJ);
 	exit();
@@ -327,11 +366,11 @@ switch($PROC){
 	exit();
 	break;
 
-	case "chk_brandCode" :
-	$brandCode = $_POST['brandCode'];
+	case "chk_brandNameShort" :
+	$brandNameShort = $_POST['brandNameShort'];
 	$brandID = $_POST['brandID'];
 
-	$sql=" SELECT brandCode from tb_brand where brandCode ='".$brandCode."'  and brandID !='".$brandID."'";
+	$sql=" SELECT brandNameShort from tb_brand where brandNameShort ='".$brandNameShort."'  and brandID !='".$brandID."'";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -376,6 +415,17 @@ switch($PROC){
 	case "chk_editpdtype" :
 	$productTypeID = $_POST['productTypeID'];
 	$sql=" SELECT * from tb_producttype join tb_product on tb_producttype.productTypeID = tb_product.productTypeID WHERE tb_product.productTypeID = '".$productTypeID."' ";
+	$query=$db->query($sql);
+	$nums = $db->db_num_rows($query);
+
+	$OBJ=$nums;
+	echo json_encode($OBJ);
+	exit();
+	break;
+
+	case "chk_editunit" :
+	$unitID = $_POST['unitID'];
+	$sql=" SELECT * from tb_unit join tb_product on tb_unit.unitID = tb_product.unitID WHERE tb_product.unitID = '".$unitID."' ";
 	$query=$db->query($sql);
 	$nums = $db->db_num_rows($query);
 
@@ -672,22 +722,21 @@ switch($PROC){
 	while($rec = $db->db_fetch_array($query)){
 		
 		$sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-		FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-		WHERE productID = '".$rec["productID"]."'";
-		$query_attr = $db->query($sql_attr);
-		$nums_attr = $db->db_num_rows($query_attr);
+        FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+        WHERE productID = '".$rec["productID"]."'";
+        $query_attr = $db->query($sql_attr);
+        $nums_attr = $db->db_num_rows($query_attr);
 
-		$attr = '';
+        $attr = '';
 
-		if($nums_attr > 0){
-			while($rec_attr = $db->db_fetch_array($query_attr))
-			{
-				$attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
-			}
-		}else{
-			$attr = '-';
-		}
-		
+        if($nums_attr > 0){
+            while($rec_attr = $db->db_fetch_array($query_attr))
+            {
+                $attr .= $rec_attr['attrName'].": ".$rec_attr['value']."<br>";
+            }
+        }else{
+            $attr = '-';
+        }		
 
 		$row['productID']  = $rec['productID'];
 		$row['productCode']  = $rec['productCode'];

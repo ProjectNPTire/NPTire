@@ -4,7 +4,7 @@
 <?php $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
-$page_key ='3_2';
+$page_key ='3_1';
 $sql     = " SELECT *
 FROM tb_producttype
 where productTypeID ='".$productTypeID."' ";
@@ -47,11 +47,8 @@ $readonly = "readonly";
 										<b>รหัสประเภทสินค้า</b>
 										<div class="form-group">
 											<div class="form-line">
-												<input type="text" oninput="this.value=this.value.replace(/\s/g, '');" maxlength="2" onkeyup="chkCode();" name="productTypeCode" id="productTypeCode" class="form-control" placeholder="รหัสประเภทสินค้า" value="<?php echo $rec['productTypeCode'];?>"<?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+												<input type="text" name="productTypeCode" id="productTypeCode" class="form-control" placeholder="รหัสประเภทสินค้า" value="<?php echo $rec['productTypeCode'];?>"<?php echo $readonly;?>>
 											</div>
-											<div class="help-info">กรอกได้ไม่เกิน2ตัวอักษร</div>
-											<label id="productTypeCode-error" class="error" for="productTypeCode">กรุณาระบุ รหัสประเภทสินค้า</label>
-											<label id="productTypeCode2-error" class="error" for="productTypeCode">มีรหัสประเภทสินค้านี้แล้ว</label>
 										</div>
 									</div>
 									<div class="col-sm-4">
@@ -82,7 +79,7 @@ $readonly = "readonly";
 											</div>
 										</div>
 									</div>
-									<div class="row clearfix">
+								<!-- 	<div class="row clearfix">
 										<div class="col-sm-12 icon-and-text-button-demo align-right">
 											<a class="btn btn-primary waves-effect" onClick="popup();"><span>เลือกคุณลักษณะ</span><i class="material-icons">add_box</i></a>
 										</div>
@@ -136,7 +133,7 @@ $readonly = "readonly";
 											</div>
 										</div>
 										<input type="hidden" id="rowid" value="<?php echo $i;?>">
-									</div>								
+									</div>	 -->							
 									<div class="align-center">
 										<button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
 										<button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
@@ -153,7 +150,7 @@ $readonly = "readonly";
 
 	</html>
 
-	<div class="modal fade" id="ModalAttribute" tabindex="-1" role="dialog">
+	<!-- <div class="modal fade" id="ModalAttribute" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -181,7 +178,7 @@ $readonly = "readonly";
 					</form>
 				</div>
 				<div class="modal-body">
-					<table class="table table-bordered table-striped table-hover  dataTable "> <!--js-basic-example-->
+					<table class="table table-bordered table-striped table-hover  dataTable "> 
 						<thead>
 							<tr>
 								<th align="center" width="10%">ลำดับ</th>
@@ -199,7 +196,7 @@ $readonly = "readonly";
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 
 	<script>
@@ -288,14 +285,14 @@ $readonly = "readonly";
 				return /^\d*$/.test(value);
 			});
 
-			// if($('#proc').val()=='add'){
-			// 	var productTypeCode ='';
-			// 	$.ajaxSetup({async: false});
-			// 	$.post('process/get_process.php',{proc:'get_productTypeCode'},function(data){
-			// 		productTypeCode =  data['name'];
-			// 	},'json');
-			// 	$('#productTypeCode').val(productTypeCode);
-			// }
+			if($('#proc').val()=='add'){
+				var productTypeCode ='';
+				$.ajaxSetup({async: false});
+				$.post('process/get_process.php',{proc:'get_productTypeCode'},function(data){
+					productTypeCode =  data['name'];
+				},'json');
+				$('#productTypeCode').val(productTypeCode);
+			}
 
 		});
 
@@ -452,19 +449,21 @@ function chkCode(){
 	},'json');
 }
 function delData(id,hdf_id){
-	var productTypeID = $('#productTypeID').val();
-	$.ajaxSetup({async: false});
-	$.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
-		if(data > 0){
-			alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากประเภทสินค้านี้มีการใช้ข้อมูลนี้อยู่');
-			$('#status').val(1);
-			$('#chk3').val(1);
-			return false;
-		}else{
-			$('#'+hdf_id).val(id);
-			$('#chk3').val(0);
-		}
-	},'json');
+	// var productTypeID = $('#productTypeID').val();
+	// $.ajaxSetup({async: false});
+	// $.post('process/get_process.php',{proc:'chkDelData_ProductType',productTypeID:productTypeID},function(data){
+	// 	if(data > 0){
+	// 		alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากประเภทสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+	// 		$('#status').val(1);
+	// 		$('#chk3').val(1);
+	// 		return false;
+	// 	}else{
+	// 		$('#'+hdf_id).val(id);
+	// 		$('#chk3').val(0);
+	// 	}
+	// },'json');
+	
+	$('#'+hdf_id).val(id);
 
 }
 //username2

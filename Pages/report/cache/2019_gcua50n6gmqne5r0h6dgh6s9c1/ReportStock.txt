@@ -1,0 +1,149 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>สินค้าในตำแหน่งจัดเก็บ</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td align="left">ตำแหน่งเก็บ1</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>DT18514R101</td>
+        <td>Deestone KACHA – R101</td>
+        <td>Bridgestone</td>
+        <td></td>
+        <td></td>
+        <td align="right">4</td>
+        <td>เส้น</td>
+        </tr><tr>
+        <td>TM-001</td>
+        <td>ยาง Prillry</td>
+        <td>Dunlop</td>
+        <td></td>
+        <td></td>
+        <td align="right">5</td>
+        <td>เส้น</td>
+        </tr><tr>
+        <td>TY2156516H20</td>
+        <td>ยาง TOYO H20 215/65R16</td>
+        <td>Toyo</td>
+        <td></td>
+        <td></td>
+        <td align="right">1</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr><tr>
+    <td align="left">ตำแหน่งเก็บ2</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>TY2156516H20</td>
+        <td>ยาง TOYO H20 215/65R16</td>
+        <td>Toyo</td>
+        <td></td>
+        <td></td>
+        <td align="right">8</td>
+        <td>เส้น</td>
+        </tr><tr>
+        <td>TM-001</td>
+        <td>ยาง Prillry</td>
+        <td>Dunlop</td>
+        <td></td>
+        <td></td>
+        <td align="right">5</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr><tr>
+    <td align="left">ตำแหน่งเก็บ3</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>KH17548H2D</td>
+        <td>ยาง Prillry</td>
+        <td>Kumho</td>
+        <td></td>
+        <td></td>
+        <td align="right">0</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr><tr>
+    <td align="left">ตำแหน่งเก็บ4</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>TY2156516H20</td>
+        <td>ยาง TOYO H20 215/65R16</td>
+        <td>Toyo</td>
+        <td></td>
+        <td></td>
+        <td align="right">6</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr><tr>
+    <td align="left">ตำแหน่งเก็บ5</td>
+    <td align="center"><table class="table table-bordered table-striped table-hover dataTable" border="1" width="100%">
+      <tr>
+      <td align="center" width="20%">รหัสสินค้า</td>
+      <td align="center" width="20%">ชื่อสินค้า</td>
+      <td align="center" width="10%">ยี่ห้อ</td>
+      <td align="center" width="10%">รุ่น</td>
+      <td align="center" width="10%">ขนาด</td>
+      <td align="center" width="5%">จำนวน</td>
+      <td align="center" width="5%">หน่วย</td>
+      </tr><tr>
+        <td>on1856015P1</td>
+        <td>ยาง cinturato P1</td>
+        <td>Otani</td>
+        <td></td>
+        <td></td>
+        <td align="right">0</td>
+        <td>เส้น</td>
+        </tr><tr>
+        <td>YK1955515AE50</td>
+        <td>ยาง YOKOHAMA AE50 195/55R15</td>
+        <td>Yokohama</td>
+        <td></td>
+        <td></td>
+        <td align="right">6</td>
+        <td>เส้น</td>
+        </tr><tr>
+        <td>CN1955016MC588V</td>
+        <td>Continental MC5</td>
+        <td>Yokohama</td>
+        <td></td>
+        <td></td>
+        <td align="right">4</td>
+        <td>เส้น</td>
+        </tr></table></td>
+    </tr></tbody>
+</table>

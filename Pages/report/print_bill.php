@@ -43,24 +43,24 @@ td {
 			JOIN tb_user B ON A.create_by = B.userID
 			WHERE A.billID = '".$billID."' ";
 			
-			$query_bill = $db->query($sql_bill);
-			$rec_bill = $db->db_fetch_array($query_bill);
+$query_bill = $db->query($sql_bill);
+$rec_bill = $db->db_fetch_array($query_bill);
 
-			if($rec_bill['billStstus']==1){
-				$billStstus = "ปกติ";
-				$namecan = "-";
-				$datecan = "-";
-			}else {
-				$billStstus = "ยกเลิก";
-
-				if($rec_bill['cancelUserID'] ){
-					$namecan = $rec_bill["firstname"]." ".$rec_bill["lastname"];
-					$datecan = conv_date($rec_bill["cancelDate"]);
-
-				}
-			}
-			$sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
-			$query_bd = $db->query($sql_bd);
+if($rec_bill['billStstus']==1){
+	$billStstus = "ปกติ";
+	$namecan = "-";
+	$datecan = "-";
+}else {
+	$billStstus = "ยกเลิก";
+	
+	if($rec_bill['cancelUserID'] ){
+		$namecan = $rec_bill["firstname"]." ".$rec_bill["lastname"];
+		$datecan = conv_date($rec_bill["cancelDate"]);
+		
+	}
+}
+ $sql_bd = "SELECT * FROM tb_bill_desc WHERE billID = '".$rec_bill["billID"]."' ";
+$query_bd = $db->query($sql_bd);
 
 /* 
 $sql_po = "SELECT * FROM tb_po WHERE poID = '".$rec_receive["poID"]."' ";
@@ -243,6 +243,7 @@ while($rec_pd = $db->db_fetch_array($query_bd))
 	$HTML .= '<td>'.$rec_product['locationTypeName'].'</td>';
 	$HTML .= '<td>'.$rec_product['locationName'].'</td>';
 	$HTML .= '<td align="right">'.number_format($qty).'</td>';
+	$HTML .= '<td align="center">'.$unitType.'</td>';
 	// $HTML .= '<td>'.$productSize.'</td>';
 	// $HTML .= '<td align="right">'.number_format($price).'</td>';
 	// $HTML .= '<td align="right">'.number_format($amount).'</td>';

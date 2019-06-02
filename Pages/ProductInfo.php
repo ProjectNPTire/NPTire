@@ -916,7 +916,7 @@ function addRow(){
     return false;
   }else{
     $('#locationID'+$('#rowid').val()+'-error2').hide();
-    debugger
+    
     html += '<tr>';
     html += '<td>';
     html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
@@ -1082,7 +1082,6 @@ function addRow(){
 
  function  chk_location(){
   var arr = $('[id^=locationID_]');
-  debugger
   var total = 0;
   for (var i = 0; i < arr.length; i++) {
     var num = $(arr[i]).val().trim();
@@ -1179,7 +1178,6 @@ function ValidateSingleInput(oInput) {
       }
 
       function get_location(parent_id,id,productID){
-        debugger
         var locationTypeID = parent_id;
         var productID = productID;
         var html  = '<option value="">เลือก</option>';

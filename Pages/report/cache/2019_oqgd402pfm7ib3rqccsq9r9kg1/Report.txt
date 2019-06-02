@@ -1,0 +1,78 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+  <thead>
+  <tr>
+   <th>วันที่สั่งซื้อ</th>
+   <th>เลขที่ใบสั่งซื้อ</th>
+   <th>บริษัทคู่ค้า</th>
+   <th>รหัสสินค้า</th>
+   <th>ชื่อสินค้า</th>
+   <th>จำนวนสั่งซื้อ</th>
+   <th>จำนวนเงิน</th></tr>
+</thead>
+<tbody><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905001</td>
+  <td align="center" >บริษัท คอนติเนนทอล ไทร์ส (ประเทศไทย) จำกัด</td>
+  <td align="center" >CN2054017CSC5</td>
+  <td align="center" >ContiSportContact™ 5</td>
+  <td align="center">1</td>
+  <td align="center" >1</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905002</td>
+  <td align="center" >บริษัท คอสมิค (ประเทศไทย) จำกัด</td>
+  <td align="center" >WL-003</td>
+  <td align="center" >COSMIS-SC22</td>
+  <td align="center">4</td>
+  <td align="center" >20</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905002</td>
+  <td align="center" >บริษัท คอสมิค (ประเทศไทย) จำกัด</td>
+  <td align="center" >WL-001</td>
+  <td align="center" >COSMIS-XT-005R ECO</td>
+  <td align="center">4</td>
+  <td align="center" >20</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905003</td>
+  <td align="center" >บริษัท บีพี - คาสตรอล (ประเทศไทย) จำกัด</td>
+  <td align="center" >WG-001</td>
+  <td align="center" >CASTROL  EDGE PICK UP 5W30 (6L)</td>
+  <td align="center">5</td>
+  <td align="center" >2,000</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905005</td>
+  <td align="center" >บริษัท คอสมิค (ประเทศไทย) จำกัด</td>
+  <td align="center" >WL-003</td>
+  <td align="center" >COSMIS-SC22</td>
+  <td align="center">4</td>
+  <td align="center" >20</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905006</td>
+  <td align="center" >บริษัท นายา จำกัด (มหาชน)</td>
+  <td align="center" >WL-002</td>
+  <td align="center" >Valenza mura</td>
+  <td align="center">4</td>
+  <td align="center" >20</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905007</td>
+  <td align="center" >บริษัท คอนติเนนทอล ไทร์ส (ประเทศไทย) จำกัด</td>
+  <td align="center" >CN2054017CSC5</td>
+  <td align="center" >ContiSportContact™ 5</td>
+  <td align="center">2</td>
+  <td align="center" >10</td>
+  </tr><tr>
+  <td align="center"  >2019-05-28</td>
+  <td align="center" >PO-1905008</td>
+  <td align="center" >บริษัท คอนติเนนทอล ไทร์ส (ประเทศไทย) จำกัด</td>
+  <td align="center" >CN2054017CSC5</td>
+  <td align="center" >ContiSportContact™ 5</td>
+  <td align="center">2</td>
+  <td align="center" >10,000</td>
+  </tr><tr><td colspan="3" align="center" >รวม 8 รายการ จำนวน 26 ชิ้น</td>
+  <td colspan="4" align="center" >รวมสุทธิ 12,091 บาท</td></tr>    </tbody>
+  </table>

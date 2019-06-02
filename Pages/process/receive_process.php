@@ -97,6 +97,7 @@ switch($proc){
         // print_r($fields);
         // echo "</pre>";
         // exit;
+
         if($_POST['qty'][$key] > 0){
             $db->db_insert($tb3,$fields);
         }

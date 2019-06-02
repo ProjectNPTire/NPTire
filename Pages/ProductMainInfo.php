@@ -3,313 +3,625 @@
 <?php
 $path = "../";
 include($path."include/config_header_top.php");
- include 'css.php';
- $page_key ='2_3_1';
- $form_page = $form_page;
+include 'css.php';
+$page_key ='4_1';
+$form_page = $form_page;
 
- $sql     = " SELECT *
-            FROM tb_product
-            where productID ='".$productID."' ";
+$path_image = $path."file_productImg/";
+
+$sql     = " SELECT *
+FROM tb_product
+where productID ='".$productID."' ";
 
 $query = $db->query($sql);
 $nums = $db->db_num_rows($query);
 $rec = $db->db_fetch_array($query);
 $proc = ($proc=='')?"add":$proc;
 $txt =  ($proc=='add')?"เพิ่ม":"แก้ไข";
-$s_location = "SELECT * from tb_location order by locationName ";
+//$s_store = "SELECT * from tb_productstore where productID ='".$productID."' ";
+
+
+$s_locationtype2 = "SELECT locationTypeID,locationTypeName FROM tb_locationType
+WHERE locationType = '".$rec['locationType']."'";
+// $locationTypeID =  $rec['locationTypeID'];
+
+// if ($locationTypeID == 1) {
+//   $s_location = "SELECT * from tb_location where locationTypeID = '".$locationTypeID."' and brandID = '".$rec["brandID"]."' ";
+// }else if ($locationTypeID == 2) {
+//   $s_location = "SELECT * FROM tb_location WHERE locationTypeID = '".$locationTypeID."' and productTypeID = '".$rec["productTypeID"]."' ";
+// }
 $readonly = "readonly";
- ?>
+?>
 
 <body class="theme-red">
-    <?php include 'MasterPage.php';?>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row clearfix">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="card">
-                        <div class="header">
-                            <h2><?php echo $txt;?>ข้อมูลยางและแม็กซ์</h2>
-                        </div>
-                         <form id="frm-input" method="post" enctype="multipart/form-data" action="process/ProductMain_process.php" >
-                                <input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>">
-                                <input type="hidden" id="productID" name="productID" value="<?php echo $productID;?>">
-                                <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
-                                <input type="hidden" id="chk" name="chk" value="0">
-                                <input type="hidden" id="chk1" name="chk1" value="0">
-                            <div class="body">
-                              <div class="row clearfix">
-                                <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
-                                </div>
-                              </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-4">
-                                          <b>รหัสสินค้า</b>
-                                         <div class="input-group">
-                                            <div class="form-line">
-                                                <input type="text "maxlength="20" readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
-                                            </div>
-                                            <label id="productCode-error" class="error" for="productCode">มีรหัสสินค้านี้แล้ว</label>
-                                        </div>
-									                  </div>
-                                    <div class="col-sm-8">
-                                         <b>ชื่อสินค้า</b>
-                                        <div class="input-group">
-                                            <div class="form-line">
-                                                <input type="text" onkeyup="chkName();" class="form-control" placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>">
-                                            </div>
-                                            <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
-                                            <label id="productName2-error" class="error" for="productName">มีชื่อสินค้านี้แล้ว</label>
-                                        </div>
-                                    </div>
-                                </div>
-								               <div class="row clearfix">
-                                    <div class="col-sm-4">
-                                        <b>ยี่ห้อสินค้า</b>
-
-                                        <div class="form-group form-float">
-                                            <select name="brandID" id="brandID" class="form-control show-tick" data-live-search="true"  onchange="get_code();" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
-                                                <option value="">เลือก</option>
-                                            <?php
-                                                $s_brand=" SELECT * from tb_brand order by brandName asc";
-                                                $q_brand = $db->query($s_brand);
-                                                $n_brand = $db->db_num_rows($q_brand);
-                                               while($r_brand = $db->db_fetch_array($q_brand)){
-                                            ?>
-                                                <option value="<?php echo $r_brand['brandID'];?>"  <?php echo ($rec['brandID']==$r_brand['brandID'])?"selected":"";?>> <?php echo $r_brand['brandName'];?></option>
-
-                                            <?php }  ?>
-                                            </select>
-                                            <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
-                                          <label id="brandID-error" class="error" for="brandID">กรุณาเลือก ยี่ห้อสินค้า</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-4">
-                                         <b>ขนาดสินค้า</b>
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <input type="text" maxlength="12" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                                            </div>
-                                            <div class="help-info">กรอกได้ไม่เกิน12ตัวอักษร</div>
-                                            <label id="productSize-error" class="error" for="productSize">กรุณาระบุ ขนาดสินค้า</label>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-sm-4">
-                                         <b>รุ่นสินค้า</b>
-                                        <div class="form-group">
-                                            <div class="form-line">
-                                                <input type="text" maxlength="6" class="form-control " placeholder="รุ่น"  name="modelName" id="modelName" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['modelName'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
-                                            </div>
-                                            <div class="help-info">กรอกได้ไม่เกิน6ตัวอักษร</div>
-                                            <label id="modelName-error" class="error" for="modelName">กรุณาระบุ รุ่นสินค้า</label>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-sm-4">
-                                        <b>ประเภทสินค้า</b>
-
-                                        <div class="form-group">
-                                            <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"? 'disabled' : '';?>>
-                                                <option value="">เลือก</option>
-                                            <?php
-                                                $s_pdtype=" SELECT * from tb_producttype where productTypeID in (1,2) order by productTypeName asc";
-                                                $q_pdtype = $db->query($s_pdtype);
-                                                $n_pdtype = $db->db_num_rows($q_pdtype);
-                                               while($r_pdtype = $db->db_fetch_array($q_pdtype)){
-
-                                            ?>
-                                                <option value="<?php echo $r_pdtype['productTypeID'];?>"  <?php echo ($rec['productTypeID']==$r_pdtype['productTypeID'])?"selected":"";?>> <?php echo $r_pdtype['productTypeName'];?></option>
-
-                                            <?php }  ?>
-                                            </select>
-                                            <input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
-                                          <label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
-                                        </div>
-										</div> 
-                                    <div class="col-sm-4">
-                                        <b>หน่วยนับ</b>
-
-                                        <div class="form-group form-float">
-                                            <select name="unitType" id="unitType" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"? 'disabled' : '';?>>
-                                                <option value="">เลือก</option>
-                                            <?php   foreach ($arr_unitType2 as $key => $value) {?>
-                                                <option value="<?php echo $key;?>"  <?php echo ($rec['unitType']==$key)?"selected":"";?>> <?php echo $value;?></option>
-
-                                            <?php }  ?>
-                                            </select>
-                                            <input type="hidden" name="hdfunitType" id="hdfunitType" value="<?php echo $rec['unitType'] ?>">
-                                          <label id="unitType-error" class="error" for="unitType">กรุณาระบุ หน่วยนับ</label>
-                                        </div>
-                                    </div>
-                                     <!-- <div class="col-md-4">
-                                         <b>รูปภาพ</b>
-                                       <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="file" class="form-control " placeholder=""  name="productImg" id="productImg"  value="<?php //echo $rec['img'];?>">
-                                            <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
-                                        </div>
-                                        </div>
-                                    </div> -->
-                                    <div class="col-md-4">
-                                     <b>รูปภาพ</b>
-                                     <div class="form-group">
-                                      <div class="form-line">
-                                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
-                                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
-                                      </div>
-                                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
-                                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
-                                    </div>
-                                  </div>
-                                 </div>
-
-
-                               <!--   <div class="row clearfix">
-             												<div class="col-sm-12">
-             															<b>รายละเอียด </b>
-             														 <div class="form-group">
-             																<div class="form-line">
-             																	<textarea  class="form-control" placeholder="รายละเอียด" id="productDetail" name="productDetail"> <?php echo $rec['productDetail'];?> </textarea>
-             																</div>
-             															</div>
-             													</div>
-             											</div> -->
-
-
-                               <div class="row clearfix">
-                                    <div class="col-sm-4">
-                                      <b>จำนวนสินค้า </b>
-                                     <div class="form-group">
-                                        <div class="form-line">
-                                            <input type="text " readonly name="productUnit" id="productUnit" class="form-control " placeholder="จำนวนสินค้า" value="<?php echo number_format($rec['productUnit']);?>">
-                                        </div>
-                                    </div>
-                                   </div>
-
-                                <div class="row clearfix">
-                                    <div class="col-sm-4">
-                                        <b>บริษัทคู่ค้า<span style="color:red"> *</span></b>
-
-                                        <div class="form-group form-float">
-                                            <select name="supID" id="supID" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2" ? 'disabled' : '';?>>
-                                                <option value="">เลือก</option>
-                                            <?php
-                                                $s_sup=" SELECT * from tb_supplier order by sup_name asc";
-                                                $q_sup = $db->query($s_sup);
-                                                $n_sup = $db->db_num_rows($q_sup);
-                                               while($r_sup = $db->db_fetch_array($q_sup)){
-                                            ?>
-                                                <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
-
-                                            <?php }  ?>
-                                            </select>
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                            <input type="hidden" name="hdfsupID" id="hdfsupID" value="<?php echo $rec['supID'] ?>">
-                                          <label id="supID-error" class="error" for="supID">กรุณาเลือก บริษัทคู่ค้า</label>
-                                        </div>
-                                    </div>
-                                   <!--
-                                   <div class="col-sm-4">
-                                      <b>สถานะการใช้งาน</b>
-                                       <div class="form-group">
-                                            <input type="radio" value="1" name="activeStatus" id="activeStatus1" class="with-gap" <?php echo ($rec['activeStatus']==1)?"checked":"";?>>
-                                            <label for="activeStatus1">ใช้งาน</label>
-                                            <input type="radio" value="0" name="activeStatus" id="activeStatus0" class="with-gap"  <?php echo ($rec['activeStatus']==0)?"checked":"";?>>
-                                            <label for="activeStatus0" class="m-l-20">ไม่ใช้งาน</label>
-                                        </div>
-
-                                    </div>-->
-                                </div>
-                               <!--  <div class="icon-and-text-button-demo align-right">
-                                    <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
-                                </div> -->
-                                <div class="input-group">
-                                <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data"> <!--js-basic-example-->
-                                    <thead>
-                                        <tr>
-
-                                            <th width="70%">สถานที่จัดเก็บสินค้า</th>
-                                            <th width="20%">จำนวน</th>
-                                          <!--   <th width="10%">จัดการ</th> -->
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    <?php $i=0; $total=0;
-                                        $sql_sub  = " SELECT * FROM tb_productstore    where productID ='".$productID."' ";
-
-                                       $query_sub = $db->query($sql_sub);
-                                       $nums_sub = $db->db_num_rows($query_sub);
-                                      if($nums_sub>0){
-                                         while ($rec_sub = $db->db_fetch_array($query_sub)) {
-                                            $i++;
-                                    ?>
-                                    <tr>
-                                        <td>
-                                          <select name="locationID[]" id="locationID_<?php echo $i;?>" class="form-control show-tick" data-live-search="true" >
-                                            <option value="">เลือก</option>
-                                              <?php
-                                              $q_location = $db->query($s_location);
-                                              while ($r_location = $db->db_fetch_array($q_location)) {?>
-                                            <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_sub['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
-                                              <?php } ?>
-                                          </select>
-                                       </td>
-                                        <td>
-                                            <div class="form-line">
-                                              <input type="text"  style="text-align: right;" class="form-control numb" name="ps_unit[]" id="ps_unit_<?php echo $i;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_sub['ps_unit'];?>" >
-                                            </div>
-                                          </td>
-                                          <!-- <td style="text-align: center;">
-                                            <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delData(this);"><?php echo $img_del;?></a>
-                                          </td> -->
-                                        </tr>
-                                      <?php   }
-                                    }else{
-                                      echo '<tr><td align="center" colspan="7">ไม่พบข้อมูล</td></tr>';
-                                    }
-                                    ?>
-
-
-
-                                    </tbody>
-                              </table>
-                                <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
-                              </div>
-                              <input type="hidden" id="total_unit" value="<?php echo $total;?>">
-                              <input type="hidden" id="rowid" value="<?php echo $i;?>">
-
-
-
-
-                               <div class="align-center">
-                                    <button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
-                                    <button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
-                                </div>
-                            </div>
-                    </div>
-                </div>
+  <?php include 'MasterPage.php';?>
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row clearfix">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="card">
+            <div class="header">
+              <h2><?php echo $txt;?>ข้อมูลยางรถยนต์</h2>
             </div>
-            <!-- #END# Advanced Form Example With Validation -->
+            <form id="frm-input" method="post" enctype="multipart/form-data" action="process/Product_process.php" >
+              <input type="hidden" id="proc" name="proc" value="<?php echo $proc;?>">
+              <input type="hidden" id="productID" name="productID" value="<?php echo $productID;?>">
+              <input type="hidden" id="form_page" name="form_page" value="<?php echo  $form_page?>">
+              <input type="hidden" id="chk" name="chk" value="0">
+              <input type="hidden" id="chk1" name="chk1" value="0">
+              <input type="hidden" id="chk2" name="chk2" value="0">
+              <input type="hidden" id="chk3" name="chk3" value="0">
+              <input type="hidden" id="chk4" name="chk4" value="0">
+              <input type="hidden" id="chk5" name="chk5" value="0">
+              <input type="hidden" id="chk6" name="chk6" value="0">
+              <!-- <?php echo $s_locationtype2 ?> -->
+              <div class="body">
+                <div class="row clearfix">
+                  <div class="col-sm-12 align-right"><b><span style="color:red">* กรอกข้อมูลให้ครบทุกช่อง</span></b>
+                  </div>
+                </div>
+                <div class="row clearfix">
+                  <div class="col-sm-8">
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <b>รหัสสินค้า</b>
+                        <div class="form-group">
+                          <div class="form-line">
+                            <input type="text" readonly name="productCode" id="productCode" class="form-control" placeholder="รหัสสินค้า" value="<?php echo $rec['productCode'];?>">
+                          </div>
+                          <div class="help-info">กรอกอัติโนมัติ</div>
+                          <label id="productCode-error" class="error" for="productName">มีรหัสสินค้านี้แล้ว</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <b>ชื่อสินค้า</b>
+                        <div class="form-group">
+                          <div class="form-line">
+                            <input type="text" onkeyup="chkName();" class="form-control " placeholder="ชื่อสินค้า"  name="productName" id="productName"  value="<?php echo $rec['productName'];?>"<?php echo $_SESSION["userType"] == "2" ?"readonly":""?>>
+                          </div>
+                          <label id="productName-error" class="error" for="productName">กรุณาระบุ ชื่อสินค้า</label>
+                          <label id="productName-error2" class="error" for="productName">มีชื่อสินค้านี้แล้ว</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <b>ประเภทสินค้า</b>
+                        <div class="form-group form-float">
+                          <select name="productTypeID" id="productTypeID" class="form-control show-tick" data-live-search="true" onchange="get_code();" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+                            <option value="">เลือก</option>
+                            <?php
+                            $s_pdtype=" SELECT * from tb_producttype where productTypeID = 1";
+                            $q_pdtype = $db->query($s_pdtype);
+                            $n_pdtype = $db->db_num_rows($q_pdtype);
+                            while($r_pdtype = $db->db_fetch_array($q_pdtype)){
+                              ?>
+                              <option value="<?php echo $r_pdtype['productTypeID'];?>" <?php echo ($rec['productTypeID']==$r_pdtype['productTypeID'])?"selected":"";?>> <?php echo $r_pdtype['productTypeName'];?></option>
+
+                            <?php }  ?>
+                          </select>
+                          <input type="hidden" name="hdfproductTypeID" id="hdfproductTypeID" value="<?php echo $rec['productTypeID'] ?>">
+                          <label id="productTypeID-error" class="error" for="productTypeID">กรุณาเลือก ประเภทสินค้า</label>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <b>ยี่ห้อสินค้า</b>
+                        <div class="form-group form-float">
+                          <select name="brandID" id="brandID" onchange="get_hdfbrand(this.value,'hdfbrandID');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+                            <option value="">เลือก</option>
+                            <?php
+                            $s_brand=" SELECT * from tb_brand order by brandName asc";
+                            $q_brand = $db->query($s_brand);
+                            $n_brand = $db->db_num_rows($q_brand);
+                            while($r_brand = $db->db_fetch_array($q_brand)){
+                              ?>
+                              <option value="<?php echo $r_brand['brandID'];?>"  <?php echo ($rec['brandID']==$r_brand['brandID'])?"selected":"";?>> <?php echo $r_brand['brandName'];?></option>
+                            <?php }  ?>
+                          </select>
+                          <input type="hidden" name="hdfbrandID" id="hdfbrandID" value="<?php echo $rec['brandID'] ?>">
+                          <label id="brandID-error" class="error" for="brandID">กรุณาเลือก ยี่ห้อสินค้า</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4"> 
+                    <div class="col-sm-12" style="text-align: center;">
+                      <img id="blah" src="<?php echo $proc == "add" ? '' : $path_image."/".$rec['productImg'];?>" height="183.8" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row clearfix">
+           <!--        <div class="col-sm-4">
+                    <b>ประเภทตำแหน่งจัดเก็บ</b>
+                    <div class="form-group form-float">
+                      <select name="locationType" id="locationType" onchange="get_hdflocationType(this.value,'hdflocationType');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>                 
+                        <option value="0">ทั้งหมด</option>
+                        <?php   foreach ($arr_locationType as $key => $value) {?>
+                          <option value="<?php echo $key;?>"  <?php echo ($rec['locationType']==$key)?"selected":"";?>> <?php echo $value;?></option>
+                        <?php }  ?>
+                      </select>
+                      <input type="hidden" name="hdflocationType" id="hdflocationType" value="<?php echo $rec['locationType'] ?>">
+                      <label id="locationType-error" class="error" for="locationType">กรุณาเลือก ประเภทตำแหน่งจัดเก็บ</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <b>หน่วยนับ</b>
+                    <div class="form-group form-float">
+                      <select name="unitType" id="unitType" onchange="getunit(this.value,'hdfunitType');" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?>>
+                        <option value="">เลือก</option>
+                        <?php
+                        $s_pdtype=" SELECT * from tb_unit where unitID = 1";
+                        $q_pdtype = $db->query($s_pdtype);
+                        $n_pdtype = $db->db_num_rows($q_pdtype);
+                        while($r_pdtype = $db->db_fetch_array($q_pdtype)){
+                          ?>
+                          <option value="<?php echo $r_pdtype['unitID'];?>" <?php echo ($rec['unitID']==$r_pdtype['unitID'])?"selected":"";?>> <?php echo $r_pdtype['unitName'];?></option>
+
+                        <?php }  ?>
+                      </select>
+                      <input type="hidden" name="hdfunitType" id="hdfunitType" value="<?php echo $rec['unitType'] ?>">
+                      <label id="unitType-error" class="error" for="unitType">กรุณาเลือก หน่วยนับ</label>
+                    </div>
+                  </div> -->
+                  <div class="col-sm-4">
+                    <b>ขนาด</b>
+                    <div class="input-group">
+                      <div class="form-line">
+                        <input type="text" class="form-control " placeholder="ขนาด"  name="productSize" id="productSize"  onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['productSize'];?>">
+                      </div>
+                      <label id="productSize-error" class="error" for="productSize">กรุณาระบุ</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <b>รุ่น</b>
+                    <div class="input-group">
+                      <div class="form-line">
+                        <input type="text" class="form-control " placeholder="รุ่น"  name="model" id="model" onkeyup="get_code();"  onblur="get_code();"  value="<?php echo $rec['model'];?>">
+                      </div>
+                      <label id="model-error" class="error" for="model">กรุณาระบุ</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <b>รูปภาพ</b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="file" class="form-control " name="productImg" id="productImg" accept="image/x-png, image/gif, image/jpeg" value="<?php echo $rec['productImg'];?>" onchange="ValidateSingleInput(this);" >
+                        <input type="hidden" name="old_file" id="old_file" value="<?php echo $rec['productImg'];?>" >
+                      </div>
+                      <div class="help-info">อัพโหลดได้เฉพาะไฟล์JPEG,RAW,PSD,GIF,PNG,TIFF</div>
+                      <label id="productImg-error" class="error" for="productImg">กรุณาเลือกรูปภาพ</label>
+                    </div>
+                  </div>       
+                </div>
+                <div class="row clearfix">
+                  <div class="col-sm-4">
+                    <b>จุดสั่งซื้อ </b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text " name="orderPoint" maxlength="2" id="orderPoint" class="form-control numb" value="<?php echo number_format($rec['orderPoint']);?>">
+                      </div>
+                      <div class="help-info">กรอกได้เฉพาะตัวเลขไม่เกิน2ตัวอักษร</div>
+                      <label id="orderPoint_error" class="error" for="orderPoint">กรุณาระบุ จุดสั่งซื้อ</label>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <b>จำนวนสินค้า </b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <input type="text " readonly name="productUnit" id="productUnit" class="form-control " placeholder="จำนวนสินค้า" value="<?php echo number_format($rec['productUnit']);?>">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <b>การใช้งานข้อมูล</b>
+                    <div class="form-group form-float">
+                      <select name="status" id="status" class="form-control show-tick" data-live-search="true" <?php echo $_SESSION["userType"] == "2"  ? 'disabled' : '';?> onchange="delData('status',this.value,'hdfstatus');">
+                        <?php asort($arr_active);
+                        foreach ($arr_active as $key => $value) {?>
+                          <option value="<?php echo $key;?>"
+                            <?php 
+                            if(($rec['isEnabled']  != "")){
+                              echo ($rec['isEnabled']==$key)?"selected":"";
+                            } ?>><?php echo $value;?>
+                          </option>
+                        <?php }  ?>
+                      </select>
+                      <input type="hidden" name="hdfstatus" id="hdfstatus" value="<?php echo $proc == "edit"  ? $rec['isEnabled'] : '1';?>">
+                    </div>
+                  </div>
+                </div>
+                <div class="row clearfix">
+                  <div class="col-sm-12">
+                    <b>รายละเอียด </b>
+                    <div class="form-group">
+                      <div class="form-line">
+                        <textarea  class="form-control" id="productDetail" name="productDetail"><?php echo $rec['productDetail'];?></textarea>
+                      </div>
+                      <label id="productDetail_error" class="error" for="productDetail">กรุณาระบุ ราบละเอียด</label>
+                    </div>
+                  </div>
+                </div>
+
+                <ul class="nav nav-tabs tab-nav-right" role="tablist">
+                  <li role="presentation" class="active"><a href="#home" data-toggle="tab">สัปดาห์ยาง</a></li>
+                  <li role="presentation"><a href="#messages" data-toggle="tab">คู่ค้า</a></li>
+                  <li role="presentation"><a href="#profile" data-toggle="tab">ตำแหน่งจัดเก็บ</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane fade in active" id="home">
+                    <div class="icon-and-text-button-demo align-right">
+                      <?php
+                      $i=0;
+                      $sql_attr  = " SELECT tb_productattr.*,tb_attribute.attrName FROM tb_productattr join tb_attribute
+                      on tb_productattr.attrID = tb_attribute.attrID
+                      where productID ='".$productID."'";
+
+                      $query_attr = $db->query($sql_attr);
+                      $nums_attr = $db->db_num_rows($query_attr);             
+                      ?>
+                    </div>
+                    <div class="form-group">
+                      <table id="table1" class="table table-bordered table-striped table-hover  dataTable " id="tb_data_attr" >
+                        <thead>
+                          <tr>
+                            <th width="10%">LOT#</th>
+                            <th width="10%">จำนวน</th>
+                            <th width="10%">LOT#</th>
+                            <th width="10%">จำนวน</th> 
+                            <th width="10%">LOT#</th>
+                            <th width="10%">จำนวน</th>  
+                            <th width="10%">LOT#</th>
+                            <th width="10%">จำนวน</th>  
+                            <th width="10%">LOT#</th>
+                            <th width="10%">จำนวน</th>     
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          if($nums_attr>0){
+                            ?>
+                            <?php while ($rec_attr = $db->db_fetch_array($query_attr)) {
+                              $i++;
+                              $del = '<a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTB(this,'.$rec_attr['attrID'].');">'.$img_del.'</a>';
+                              ?>
+                              <tr>
+                                <td align="center"><?php echo $i; ?>
+                              </tr>
+
+                            <?php }
+                          } ?>
+                        </tbody>
+                      </table>
+                      <label id="tb_data_attr-error" class="error" for="tb_data_attr">กรุณาเพิ่มคุณลักษณะ</label>
+                    </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="messages">
+                    <?php
+                    $total=0; $a=1;
+                    $sql_sub  = " SELECT * FROM tb_productsupplier  where productID ='".$productID."'";
+
+                    $query_sub = $db->query($sql_sub);
+                    $nums_sub = $db->db_num_rows($query_sub);             
+                    ?>
+                    <div class="icon-and-text-button-demo align-right">
+                      <a  class="btn btn-primary waves-effect" onClick="addRowsup();"><span>เพิ่มบริษัทคู่ค้า</span><?php echo $img_add;?></a>
+                    </div>
+                    <div class="form-group">
+                      <table class="table table-bordered table-striped table-hover  dataTable " id="tb_datasup" >
+                        <thead>
+                          <tr>
+                            <th width="90%">บริษัทคู่ค้า</th>
+                            <th width="10%">จัดการ</th>   
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          if($nums_sub>0){
+                            while ($rec_sub = $db->db_fetch_array($query_sub)) {
+                              $a++;
+                              $del = ' <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTBsup(this,'.$rec_sub['supID'].','.$rec_sub['runID'].','.$a.');">'.$img_del.'</a>';
+                              ?>
+                              <tr>
+                                <td>
+                                  <input type="hidden" name="runID[]" id="runID<?php echo $a;?>" value="<?php echo $rec_sub['runID'];?>">
+                                  <select name="supID[]" id="supID_<?php echo $a;?>" class="form-control show-tick" data-live-search="true" onchange="chk_sup(this,<?php echo $rec_sub['supID'];?>);">
+                                    <option value="">เลือก</option>
+                                    <?php
+                                    $s_sup =" SELECT * from tb_supplier";
+                                    $q_sup = $db->query($s_sup);
+                                    $n_sup = $db->db_num_rows($q_sup);
+                                    while($r_sup = $db->db_fetch_array($q_sup)){ ?>
+                                      <option value="<?php echo $r_sup['supID'];?>"  <?php echo ($rec_sub['supID']==$r_sup['supID'])?"selected":"";?>> <?php echo $r_sup['sup_name'];?></option>
+                                    <?php } ?>
+                                  </select>
+                                  <label id="supID<?php echo $a;?>-error" class="error" for="supID_<?php echo $a;?>">บริษัทคู่ค้านี้ถูกใช้แล้ว</label>
+                                  <label id="supID<?php echo $a;?>-error2" class="error" for="supID_<?php echo $a;?>">กรุณาเลือกบริษัทคู่ค้า</label>
+                                </td>
+                                <td style="text-align: center;"><?php echo $del;?></td>
+                              </tr>
+                            <?php   }
+                          }else{ ?>
+                            <tr id="nodatasup">
+                              <td>
+                                <select name="supID[]" id="supID_1" class="form-control show-tick" data-live-search="true" onchange="chk_sup(this,0);">
+                                  <option value="">เลือก</option>
+                                  <?php
+                                  $s_sup =" SELECT * from tb_supplier";
+                                  $q_sup = $db->query($s_sup);
+                                  $n_sup = $db->db_num_rows($q_sup);
+                                  while($r_sup = $db->db_fetch_array($q_sup)){ ?>
+                                    <option value="<?php echo $r_sup['supID'];?>"> <?php echo $r_sup['sup_name'];?></option>
+                                  <?php } ?>
+                                </select>
+                                <label id="supID1-error" class="error" for="supID_1">บริษัทคู่ค้านี้ถูกใช้แล้ว</label>
+                                <label id="supID1-error2" class="error" for="supID_1">กรุณาเลือกบริษัทคู่ค้า</label>
+                              </td>
+                              <td style="text-align: center;">
+                                <a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTBsup(this,0,0,0);"><?php echo $img_del;?> </a>
+                              </td>
+                            </tr>
+                          <?php } ?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                  <div role="tabpanel" class="tab-pane fade" id="profile">
+                    <?php
+                    $x=0; $total=0;
+                    $sql_location  = " SELECT * FROM tb_productstore where productID ='".$productID."'";
+
+                    $query_location = $db->query($sql_location);
+                    $nums_location = $db->db_num_rows($query_location);
+                    if($nums_location>0){
+                      ?>
+                      <div class="icon-and-text-button-demo align-right">
+                        <a  class="btn btn-primary waves-effect" onClick="addRow();"><span>เพิ่มสถานที่จัดเก็บ</span><?php echo $img_add;?></a>
+                      </div>
+                    <?php } ?>
+                    <div class="form-group">
+                      <table class="table table-bordered table-striped table-hover  dataTable " id="tb_data" >
+                        <thead>
+                          <tr>
+                            <th width="35%">ประเภทตำแหน่งจัดเก็บสิน้คา</th>
+                            <th width="35%">ตำแหน่งจัดเก็บสิน้คา</th>
+                            <th width="20%">จำนวน</th>
+                            <th width="10%">จัดการ</th>   
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php 
+                          if($nums_location>0){
+                           while ($rec_location = $db->db_fetch_array($query_location)) {
+                            $x++;
+                            $del = '<a class="btn bg-red btn-xs waves-effect"  href="javascript:void(0);" onClick="delDataTB(this,'.$rec_location['locationID'].','.$x.');">'.$img_del.'</a>';
+                            ?>
+                            <tr>
+                              <td>
+                                <select name="locationTypeID[]" id="locationTypeID_<?php echo $x;?>" class="form-control show-tick" data-live-search="true">
+                                  <option value="">เลือก</option>
+                                  <?php
+                                  $s_locationtype = "SELECT locationTypeID,locationTypeName FROM tb_locationType
+                                  WHERE locationType = '".$rec["locationType"]."'";
+                                  $q_locationtpye = $db->query($s_locationtype);
+                                  while ($r_locationtype = $db->db_fetch_array($q_locationtpye)) {?>
+                                    <option value="<?php echo $r_locationtype['locationTypeID'];?>" <?php echo ($r_locationtype['locationTypeID']==$rec_location['locationTypeID'])?"selected":"";?>><?php echo $r_locationtype['locationTypeName'];?></option>
+                                  <?php } ?>
+                                </select></td>
+                                <td>
+                                  <input type="hidden" name="ps_id[]" id="ps_id<?php echo $x;?>" value="<?php echo $rec_location['ps_id'];?>">
+                                  <select name="locationID[]" id="locationID_<?php echo $x;?>" class="form-control show-tick" data-live-search="true" onchange="chk_location(this.value);">
+                                    <option value="">เลือก</option>
+                                    <?php
+
+                                    $s_location = "SELECT *
+                                    FROM tb_location
+                                    LEFT JOIN tb_productstore ON tb_location.locationID = tb_productstore.locationID
+                                    WHERE tb_location.locationTypeID = '".$rec_location['locationTypeID']."' AND (ps_id IS null or ps_unit = 0) OR(productID = '".$rec_location['productID']."' and ps_unit > 0) ";
+                                    $q_location = $db->query($s_location);
+                                    while ($r_location = $db->db_fetch_array($q_location)) {?>
+                                      <option value="<?php echo $r_location['locationID'];?>" <?php echo ($r_location['locationID']==$rec_location['locationID'])?"selected":"";?>><?php echo $r_location['locationName'];?></option>
+                                    <?php } ?>
+                                  </select>
+                                  <label id="locationID<?php echo $x;?>-error" class="error" for="locationID_<?php echo $x;?>">ตำแหน่งนี้ถูกใช้แล้ว</label>
+                                </td>
+                                <td>
+                                  <div class="form-line">
+                                    <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_<?php echo $x;?>" onBlur="NumberFormat(this); get_total();" value="<?php echo $rec_location['ps_unit'];?>" >
+                                  </div>
+                                </td>
+                                <td style="text-align: center;">
+                                  <?php echo $del;?>
+                                </td>
+                              </tr>
+                            <?php   }
+                          } ?>
+                        </tbody>
+                      </table>
+                      <label id="tb_data-error" class="error" for="tb_data">จำนวนสินค้าในตำแหน่งจัดเก็บไม่เท่ากับจำนวนสินค้าทั้งหมด</label>
+                      <label id="tb_data-error2" class="error" for="tb_data">กรุณาเลือกตำแหน่งจัดเก็บ</label>
+                    </div>
+                  </div>
+                </div>
+                <input type="hidden" id="total_unit" value="<?php echo $total;?>">
+                <input type="hidden" id="rowid" value="<?php echo $i;?>">
+                <input type="hidden" id="rowid2" value="<?php echo $a;?>">
+                <input type="hidden" id="rowid3" value="<?php echo $x;?>">
+                <div class="align-center">
+                  <button type="button" class="btn btn-success waves-effect" onclick="chkinput();">บันทึก</button>
+                  <button type="button" class="btn btn-warning waves-effect" onclick="OnCancel();">ยกเลิก</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-    </section>
-    <?php include 'js.php';?>
+      </div>
+
+    </div>
+  </section>
+  <?php include 'js.php';?>
 </body>
 
 </html>
+
+<!-- <div class="modal fade" id="ModalAttribute" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h4 class="modal-title" id="largeModalLabel">คุณลักษณะ</h4>
+        <form>
+          <br><br><br>
+          <div class="row">
+            <div class="col-sm-9 col-sm-offset-1">
+              <div class="form-group">
+                <div class="input-group">
+                 <div class="form-line">
+                   <input type="text " name="s_attrName" id="s_attrName" class="form-control" placeholder="ชื่อคุณลักษณะ" value="<?php echo $s_attrName;?>">
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="col-sm-2">
+            <div class="form-group">
+              <div class="text-center">
+                <a  class="btn btn-success waves-effect"onclick="get_search();" ><span>ค้นหา</span><?php echo $img_view;?></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-body">
+     <table class="table table-bordered table-striped table-hover  dataTable "> 
+       <thead>
+         <tr>
+           <th align="center" width="10%">ลำดับ</th>
+           <th width="45%">ชื่อคุณลักษณะ</th>
+           <th width="35%"></th>
+           <th width="10%"></th>
+         </tr>
+       </thead>
+       <tbody  id="ModalDATA">
+       </tbody>
+     </table>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-success waves-effect" onclick="onsubmitModal();">เลือก</button>
+    <button type="button" class="btn btn-link waves-effect" data-dismiss="modal">ปิด</button>
+  </div>
+</div>
+</div>
+</div> -->
+
 <script>
-function OnCancel()
- {
-
+  function OnCancel()
+  {
     $(location).attr('href',"<?php echo  $form_page?>");
- }
+  }
 
-function chkinput(){
+  function chkinput(){
 
+    if($('#proc').val()=='edit'){
+      var productID= $('#productID').val();
+      $.ajaxSetup({async: false});
+      $.post('process/get_process.php',{proc:'chk_editproduct',productID:productID},function(data){
+        if(data > 0){
+          alert('ไม่สามารถแก้ไขข้อมูลได้ เนื่องจากสินค้านี้มีการใช้ข้อมูลนี้อยู่');
+          $('#chk6').val(1);
+          return false;
+        }else{
+          $('#chk6').val(0);
+        }
+      },'json');    
+    }
 
-  if($('#chk').val()==1){
+    if($('#chk6').val()==1){
+      return false;
+    }
+
+    if($('#chk2').val()==1){
+      $('#productName-error2').show();
+      $('#productName').focus();
+      return false;
+    }else{
+      $('#productName2-error').hide();
+    }
+
+    if($('#productName').val()==''){
+      $('#productName-error').show();
+      $('#productName').focus();
+      return false;
+    }else{
+      $('#productName-error').hide();
+    }
+
+    if($('#productTypeID').val()==''){
+      $('#productTypeID-error').show();
+      $('#productTypeID').focus();
+      return false;
+    }else{
+      $('#productTypeID-error').hide();
+    }
+
+    if($('#brandID').val()==''){
+      $('#brandID-error').show();
+      $('#brandID').focus();
+      return false;
+    }else{
+      $('#brandID-error').hide();
+    }
+
+    if($('#locationTypeID').val()==''){
+      $('#locationTypeID-error').show();
+      $('#locationTypeID').focus();
+      return false;
+    }else{
+      $('#locationTypeID-error').hide();
+    }
+
+    if($('#proc').val()=='add'){
+      if($('#productImg').val()==''){
+        $('#productImg-error').show();
+        $('#productImg').focus();
+        return false;
+      }else{
+        $('#productImg-error').hide();
+      }
+    }
+
+    if($('#unitType').val()==''){
+      $('#unitType-error').show();
+      $('#unitType').focus();
+      return false;
+    }else{
+      $('#unitType-error').hide();
+    }
+    
+
+    if($('#orderPoint').val()==''){
+      $('#orderPoint_error').show();
+      $('#orderPoint').focus();
+      return false;
+    }else{
+      $('#orderPoint_error').hide();
+    }
+
+    if($('#productDetail').val()==''){
+      $('#productDetail_error').show();
+      $('#productDetail').focus();
+      return false;
+    }else{
+      $('#productDetail_error').hide();
+    }
+
+    if($('#rowid3').val() !='0'){
+      if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
+        $('#tb_data-error').show();
+        return false;
+      }
+    }
+    if($('#chk').val()==1){
       $('#productCode-error').show();
       $('#productCode').focus();
       return false;
@@ -317,235 +629,608 @@ function chkinput(){
       $('#productCode-error').hide();
     }
 
-  if($('#chk1').val()==1){
-    $('#productName2-error').show();
-    $('#productName').focus();
-    return false;
-  }else{
-    $('#productName2-error').hide();
-  }
-
-    if($('#productName').val()==''){
-        $('#productName-error').show();
-		$('#productName').focus();
-        return false;
-    }else{
-		$('#productName-error').hide();
-	}
-    if($('#brandID').val()==0){
-        $('#brandID-error').show();
-		$('#brandID').focus();
-        return false;
-    }else{
-		$('#brandID-error').hide();
-	}
-    if($('#productSize').val()==''){
-        $('#productSize-error').show();
-		$('#productSize').focus();
-        return false;
-    }else{
-		$('#productSize-error').hide();
-	}
-    if($('#modelName').val()==''){
-        $('#modelName-error').show();
-		$('#modelName').focus();
-        return false;
-    }else{
-		$('#modelName-error').hide();
-		}
-    if($('#productTypeID').val()==0){
-        $('#productTypeID-error').show();
-		$('#productTypeID').focus();
-        return false;
-    }else{
-		$('#productTypeID-error').hide();
-	}
-    if($('#unitType').val()==0){
-        $('#unitType-error').show();
-		$('#unitType').focus();
-        return false;
-    }else{
-		$('#unitType-error').hide();
-	}
-  if($('#proc').val()=='add'){
-    if($('#productImg').val()==''){
-      $('#productImg-error').show();
-      $('#productImg').focus();
+    if($('#chk4').val()==1){
       return false;
-    }else{
-      $('#productImg-error').hide();
     }
-     if($('#supID').val()==''){
-        $('#supID-error').show();
-      $('#supID').focus();
-        return false;
-    }else{
-    $('#supID-error').hide();
-  }
-  }
-    if(parseInt($('#total_unit').val())!=parseInt($('#productUnit').val().trim().replace(/,/g,''))){
-      $('#tb_data-error').show();
+    if($('#chk3').val()==1){
       return false;
     }
 
-    // if($('#chk').val()==1){
-    //     return false;
-    // }
+    var obj_id = $("#tb_data_attr tbody tr");
+    if($('#rowid').val() == 0){
+      $('#tb_data_attr-error').show();
+      return false;
+    }else{
+      $('#tb_data_attr-error').hide();
+      $.each(obj_id, function(){
+        if(($(this).find('td:eq(2)').find('input').val()).toString() == ""){
+          $(this).find('td:eq(2)').find('.error').show();
+          $('#chk5').val(1);
+        }else{
+          $(this).find('td:eq(2)').find('.error').hide();
+          $('#chk5').val(0);
+        }
+      });
+    }
 
+    if($('#chk5').val()==1){
+      return false;
+    }
+
+    if($('#supID_'+$('#rowid2').val()).val() == ""){
+      $('#supID'+$('#rowid2').val()+'-error2').show();
+      $('.nav-tabs > .active').next('li').find('a').trigger('click');
+      $('#supID_'+$('#rowid2').val()).focus();
+      return false;
+    }else{
+      $('#supID'+$('#rowid2').val()+'-error2').hide();
+    }
 
     if(confirm("กรุณายืนยันการบันทึกอีกครั้ง ?")){
       $("#frm-input").submit();
     }
+  }
+
+  $(document).ready(function() {
+    $('.form-line').removeClass('focused');
+    $('.error').hide();
+
+    $(".numb").inputFilter(function(value) {
+      return /^\d*$/.test(value); });
+    get_total();
+    $(".table").DataTable({
+     "ordering": false,
+     "searching": false,
+     "bLengthChange": false, 
+     "bInfo": false,
+     "bPaginate": false,
+   })
+  });
+
+  // function popup(){
+  //   $('#ModalAttribute').modal('show');
+  //   get_search();
+  // }
+
+  // function get_search() {
+  //   $('#ModalDATA').html('');
+  //   var name  =  $('#s_attrName').val();
+  //   var html ='';
+  //   $.ajaxSetup({async: false});
+  //   $.post('process/get_process.php',{proc:'get_attribute',name:name},function(data){
+  //     if(data != ''){
+  //       $.each(data,function(index,value){
+  //        html += '<tr>';
+  //        html += '<td align="center">'+value['order']+'</td>';
+  //        html += '<td>'+value['attrName']+'</td>';
+  //        html += '<td><div class="form-group"><div class="form-line"><input type="text" class="form-control" id="F_valuetxt_'+index+'" ></div></div></td>';
+  //        html += '<td align="center">';
+  //        html += '<input type="checkbox" id="F_attrID_'+index+'"  value="'+value['attrID']+'"  class="filled-in" >';
+  //        html += '<label for="F_attrID_'+index+'"></label>';
+  //        html += '<input type="hidden" id="F_attrName_'+index+'" value="'+value['attrName']+'">';
+  //        html += '</td>';
+  //        html += '</tr>';
+  //      });
+  //     }else{
+  //       html += '<tr>';
+  //       html += '<td colspan="3" align="center">ไม่พบข้อมูล</td>';
+  //       html += '</tr>';
+  //     }
+  //   },'json');
+  //   $('#ModalDATA').html(html);
+  // }
+
+//   function onsubmitModal(){
+//     var html = '';
+//     var rowid = parseInt($('#rowid').val());
+
+//     if (rowid == 0) {
+//       $("#tb_data_attr tbody").html("");
+//     }
+
+//     var arr_attr_id = $('input[id^=F_attrID_]');
+//     var arr_attr_name = $('input[id^=F_attrName_]');
+//     var arr_attr_vaue = $('input[id^=F_valuetxt_]');
+//     if(arr_attr_id.length>0){
+//       for (var i = 0; i < arr_attr_id.length; i++) {
+
+//        if (arr_attr_id[i].checked){
+//         rowid = rowid+1;
+//         html += '<tr>';
+//         html += '<td style="text-align:center">'+rowid+'<input type="hidden" name="attrID[]" id="attrID_'+rowid+'" value="'+arr_attr_id[i].value+'"></td>';
+//         html += '<td>'+arr_attr_name[i].value+'</td>';
+//         html += '<td>';
+//         html += '<div class="form-line">';
+//         html += '   <input type="text" class="form-control" name="valuetxt[]" id="valuetxt_'+rowid+'" value="'+arr_attr_vaue[i].value+'" >';
+//         html += '</div>';
+//         html += '</td>';
+//         html += '<td style="text-align: center;">';
+//         html += '<a class=\"btn bg-red btn-xs waves-effect\"  href=\"javascript:void(0);\" onClick=\"delDataTB(this,0,0);\"><?php echo $img_del;?> </a>';
+//         html += '</td>';
+//         html += '</tr>';
+//       }
+//     }
+//   }
+
+//   var obj_id = $("#tb_data_attr tbody tr");
+//   $.each(obj_id, function(){
+//     if(($(this).find('td:eq(1)').text()).toString() == (arr_attr_name[arr_attr_name.length-1].value).toString()){
+//       html = "";
+//       alert("มีคุณลักษณะนี้แล้ว");
+//       return false;
+//     }
+//   });
+
+//   if(html != ""){
+//     $('#ModalAttribute').modal('hide');
+//     $('#tb_data_attr tbody').append(html);
+//     $('#rowid').val(rowid);
+//   }
+
+// }
+
+function get_hdfbrand(id,hdf_id){
+  $('#'+hdf_id).val(id);
+  var productTypeID = $('#productTypeID').val();
+  if (productTypeID == 1) {
+    var brandID = $('#brandID').val();
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'get_productcode',brandID:brandID},function(data){
+     short =  data['name'];
+   },'json');
+    var old = $('#productCode').val().substring(0, 2);
+    var txt = $('#productCode').val().substring(2);
+    var newcode = short+txt;
+    $('#productCode').val(newcode);
+    chk();
+  }
 }
+function get_hdflocationType(parent_id,hdf_id){
+  //var locationTypeID = parent_id;
+  //var html  = '<option value="">เลือก</option>';
+  // $.ajaxSetup({async: false});  
+  // $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID},function(data){
 
-$(document).ready(function() {
-     //   $('.idcard').inputmask('9-9999-99999-99-9', { placeholder: '_-____-_____-__-_' });
-     //   $('.mobile').inputmask('999-999-9999', { placeholder: '___-___-____' });
-        //$('.focused').removeClass('focused');
-        $('.form-line').removeClass('focused');
-      $('.error').hide();
+  //   $.each(data,function(index,value){
+  //     html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+  //   });
 
-        // $('.datepickers').bootstrapMaterialDatePicker();
-     //  $(".numb").keyup(function() {//Can Be {0-9,.}
-    	// 		chkFormatNam($(this).val(), $(this).attr('id'));
-    	// });
-      $(".numb").inputFilter(function(value) {
-        return /^\d*$/.test(value); });
-      get_total();
-});
+  $('#'+hdf_id).val(parent_id);
+    // $('#'+id).html(html);
+    // $('#'+id).selectpicker('refresh');
+
+  // },'json');
+}
 
 function get_code(){
-
+  var productTypeID = $('#productTypeID').val();
   if($('#proc').val()=='add'){
-        var brand = $('#brandID').val();
-        var str_size = $('#productSize').val();
-        var re_size =str_size.replace(/\D+/g, '');
-        var modelName = $('#modelName').val().replace(/ /g,'');
-        var short='';
+    if (productTypeID != 1) {
+      var newcode ='';
+      $.ajaxSetup({async: false});
+      $.post('process/get_process.php',{proc:'get_productcoder_other',productTypeID:productTypeID},function(data){
+       newcode =  data['name'];
+       $('#productCode').val(newcode);
+     },'json');
+    }else{
+      $('#productCode').val('');
+    }
+    $('#hdfproductTypeID').val(productTypeID);
+    chk();
+  }
+
+  $('#ModalDATA').html('');
+  var html ='';
+  var i = 1;
+  $.ajaxSetup({async: false});
+  $.post('process/get_process.php',{proc:'get_typeattr',productTypeID:productTypeID},function(data){
+    //console.log(data);
+    if(data != ''){
+      $.each(data,function(index,value){
+        html += '<tr>';
+        html += '<td align="center">'+i+'</td>';
+        html += '<td>'+value['attrName'];
+        html += '<input type="hidden" name="attrID[]" id="F_attrID_'+index+'" value="'+value['attrID']+'">';
+        html += '</td>';
+        html += '<td>';
+        html += '<div class="form-group"><div class="form-line"><input type="text" onkeyup="get_code2();"  onblur="get_code2();" class="form-control" name="txtvalue[]" id="F_txtvalue_'+index+'" value="" ></div><label id="txtvalue_'+index+'-error" class="error" for="F_txtvalue_'+index+'">กรุณาระบุ รายละเอียด</label></div>';
+        html += '</td>';
+        html += '</tr>';
+        i++;
+      });
+    }else{
+      html += '<tr>';
+      html += '<td colspan="3" align="center">ไม่พบข้อมูล</td>';
+      html += '</tr>';
+    }
+  },'json');
+  $('#ModalDATA').html(html);
+
+  $('#tb_data_attr-error').hide();
+
+  $('#rowid').val(i-1);
+
+  var obj_id = $("#tb_data_attr tbody tr");
+  $.each(obj_id, function(){
+    $(this).find('td:eq(2)').find('.error').hide();
+  });
+}
+
+function get_code2(){
+  if($('#proc').val()=='add'){
+    var productTypeID = $('#productTypeID').val();
+    if (productTypeID == 1) {    
+      var brandID = $('#brandID').val();
+      if(brandID != ""){
+        $('#brandID-error').hide();
         var newcode ='';
+        var short='';
+        var txtvalue='';
         $.ajaxSetup({async: false});
-        $.post('process/get_process.php',{proc:'get_productcode',brand:brand},function(data){
-             short =  data['name'];
-        },'json');
-        newcode = short+re_size+modelName;
+        $.post('process/get_process.php',{proc:'get_productcode',brandID:brandID},function(data){
+         short =  data['name'];
+       },'json');
+
+        var obj_id = $("#tb_data_attr tbody tr");
+        $.each(obj_id, function(){
+          if(($(this).find('td:eq(1)').text()).toString() == "หน้ากว้าง" || ($(this).find('td:eq(1)').text()).toString() == "ซีรี่ย์" || ($(this).find('td:eq(1)').text()).toString() == "รุ่น" || ($(this).find('td:eq(1)').text()).toString() == "ขอบล้อ"){
+            txtvalue += $(this).find('td:eq(2)').find('input').val().toString();
+          }
+        });
+
+
+        newcode = short+txtvalue.toUpperCase();
         $('#productCode').val(newcode);
         chk();
-  //
-  }
-    // var html  = '';
-    //  $.post('process/get_process.php',{proc:'get_zipcode',parent_id:parent_id},function(data){
-    //
-    //           $.each(data,function(index,value){
-    //               html += value['zipcode'];
-    //           });
-    //
-    //     $('#zipcode').val(html);
-    //
-    // },'json');
-}
-function chk(){
-      var productCode = $('#productCode').val();
-      $.ajaxSetup({async: false});
-       $.post('process/get_process.php',{proc:'chk_productCode',productCode:productCode},function(data){
-         if(data==1){
-                $('#productCode-error').show();
-                 $('#chk').val(1);
-          }else{
-                 $('#productCode-error').hide();
-                  $('#chk').val(0);
-          }
-      },'json');
-}
-
-function chkName(){
-    var productName= $('#productName').val();
-    var productID= $('#productID').val();
-    $.ajaxSetup({async: false});
-    $.post('process/get_process.php',{proc:'chk_productName',productName:productName,productID:productID},function(data){
-      if(data==1){
-        $('#productName2-error').show();
-        $('#chk1').val(1);
       }else{
-        $('#productName2-error').hide();
-        $('#chk1').val(0);
-
+        $('#brandID-error').show();
+        $('#brandID').focus();
+        var obj_id = $("#tb_data_attr tbody tr");
+        $.each(obj_id, function(){ 
+         $(this).find('td:eq(2)').find('input').val('');
+       });
+        return false;
       }
-
-    },'json');
+    }
   }
+}
 
+function chk(){
+  var productCode = $('#productCode').val();
+  $.ajaxSetup({async: false});
+  $.post('process/get_process.php',{proc:'chk_productCode',productCode:productCode},function(data){
+    if(data>0){
+      $('#productCode-error').show();
+      $('#chk').val(1);
+    }else{
+     $('#productCode-error').hide();
+     $('#chk').val(0);
+   }
+ },'json');
+}
 function addRow(){
-    var html = '';
-    var rowid = parseInt($('#rowid').val())+1;
+  $('#nodata').hide();
+  var html = '';
+  var rowid = parseInt($('#rowid3').val())+1;
+
+  if($('#locationID'+$('#rowid').val()).val() == ""){
+    $('#locationID'+$('#rowid').val()+'-error2').show();
+    return false;
+  }else{
+    $('#locationID'+$('#rowid').val()+'-error2').hide();
+    
     html += '<tr>';
-      html += '<td>';
-      html += '<select name="locationID[]" id="locationID_'+rowid+'" class="form-control show-tick" data-live-search="true" >';
-      html += '<option value="">เลือก</option>';
-      <?php
-      $q_location = $db->query($s_location);
-      while ($r_location = $db->db_fetch_array($q_location)) {?>
-          html +='<option value="<?php echo $r_location['locationID'];?>"><?php echo $r_location['locationName'];?></option>';
-      <?php } ?>
-      html +='</select>';
-      html +='</td>';
-      html += '<td>';
-      html += '    <div class="form-line">';
-      html += '       <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_'+rowid+'" onBlur="NumberFormat(this); get_total();" value="0" >';
-      html += '    </div>';
-      html += '</td>';
-      html += '<td style="text-align: center;">';
-      html += '<a class=\"btn bg-red btn-xs waves-effect\"  href=\"javascript:void(0);\" onClick=\"delData(this);\"><?php echo $img_del;?> </a>';
-      html += '</td>';
+    html += '<td>';
+    html += '<select name="locationTypeID[]" id="locationTypeID_'+rowid+'" class="form-control show-tick" data-live-search="true" onchange="get_location(this.value,\'locationID_'+rowid+'\','+$('#productID').val() +');" >';
+    html += '<option value="">เลือก</option>';
+    <?php
+    $q_locationtype2 = $db->query($s_locationtype2);
+    while ($r_locationtype2 = $db->db_fetch_array($q_locationtype2)) {?>
+      html +='<option value="<?php echo $r_locationtype2['locationTypeID'];?>"><?php echo $r_locationtype2['locationTypeName'];?></option>';
+    <?php } ?>
+    html +='</select>';
+    html +='</td>';
+    html += '<td>';
+    html += '<select name="locationID[]" id="locationID_'+rowid+'" onchange="chk_location(this.value);" class="form-control show-tick" data-live-search="true" >';
+    html += '<option value="">เลือก</option>';
+    // <?php
+    // $q_location = $db->query($s_location);
+    // while ($r_location = $db->db_fetch_array($q_location)) {?>
+    //   html +='<option value="<?php echo $r_location['locationID'];?>"><?php echo $r_location['locationName'];?></option>';
+    html +='</select>';
+    html +='<label id="locationID'+rowid+'-error" class="error" for="locationID_'+rowid+'">ตำแหน่งนี้ถูกใช้แล้ว</label>';
+    html +='<label id="locationID'+rowid+'-error2" class="error" for="locationID_'+rowid+'">กรุณาเลือกตำแหน่งจัดเก็บ</label>'; 
+    html +='</td>';
+    html += '<td>';
+    html += '    <div class="form-line">';
+    html += '       <input type="text"  style="text-align: right;" class="form-control numb"   name="ps_unit[]" id="ps_unit_'+rowid+'" onBlur="NumberFormat(this); get_total();" value="0" >';
+    html += '    </div>';
+    html += '</td>';
+    html += '<td style="text-align: center;">';
+    html += '<a class=\"btn bg-red btn-xs waves-effect\"  href=\"javascript:void(0);\" onClick=\"delDataTB(this,0);\"><?php echo $img_del;?> </a>';
+    html += '</td>';
     html += '</tr>';
     $('#tb_data tbody').append(html);
-    $('#rowid').val(rowid);
+    $('#rowid3').val(rowid);
+    $('#locationTypeID_'+rowid).selectpicker('refresh');
     $('#locationID_'+rowid).selectpicker('refresh');
     $(".numb").inputFilter(function(value) {
-        return /^\d*$/.test(value); });
-   //  $(".numb").keyup(function() {//Can Be {0-9,.}
-  	// 		chkFormatNam($(this).val(), $(this).attr('id'));
-  	// });
-}
-function delData(obj){
-    if(confirm("ยืนยันการลบข้อมูล ?")){
-     $(obj).parent().parent().remove();
-     get_total();
-    }
- }
- function  get_total(){
-   var arr = $('input[id^=ps_unit_]');
-   var total = 0;
-   for (var i = 0; i < arr.length; i++) {
-       var num = parseInt($(arr[i]).val().trim().replace(/,/g,''));
+      return /^\d*$/.test(value); });
 
-       total = total+num;
-   }
-   $('#total_unit').val(total);
+    $('#locationID'+rowid+'-error').hide();
+    $('#locationID'+rowid+'-error2').hide();
+  }
+   //  $(".numb").keyup(function() {//Can Be {0-9,.}
+    //    chkFormatNam($(this).val(), $(this).attr('id'));
+    // });
+  }
+
+  function addRowsup(){
+    //$('#nodatasup').hide();
+    var html = '';
+    var rowid = parseInt($('#rowid2').val())+1;
+
+    if($('#supID_'+$('#rowid2').val()).val() == ""){
+      $('#supID'+$('#rowid2').val()+'-error2').show();
+      return false;
+    }else{
+      $('#supID'+$('#rowid2').val()+'-error2').hide();
+      html += '<tr>';
+      html += '<td>';
+      html += '<select name="supID[]" id="supID_'+rowid+'" onchange="chk_sup(this,0);" class="form-control show-tick" data-live-search="true" >';
+      html += '<option value="">เลือก</option>';
+      <?php
+      $s_sup =" SELECT * from tb_supplier";
+      $q_sup = $db->query($s_sup);
+      $n_sup = $db->db_num_rows($q_sup);
+      while($r_sup = $db->db_fetch_array($q_sup)){
+        ?>
+        html +='<option value="<?php echo $r_sup['supID'];?>"><?php echo $r_sup['sup_name'];?></option>';
+      <?php } ?>
+      html +='</select>';
+      html +='<label id="supID'+rowid+'-error" class="error" for="supID_'+rowid+'">บริษัทคู่ค้านี้ถูกใช้แล้ว</label>';
+      html +='<label id="supID'+rowid+'-error2" class="error" for="supID_'+rowid+'">กรุณาเลือกบริษัทคู่ค้า</label>';             
+      html +='</td>';
+      html += '<td style="text-align: center;">';
+      html += '<a class=\"btn bg-red btn-xs waves-effect\"  href=\"javascript:void(0);\" onClick=\"delDataTBsup(this,0,0,0);\"><?php echo $img_del;?> </a>';
+      html += '</td>';
+      html += '</tr>';
+      $('#tb_datasup tbody').append(html);
+      $('#rowid2').val(rowid);
+      $('#supID_'+rowid).selectpicker('refresh');
+
+      $('#supID'+rowid+'-error').hide();
+      $('#supID'+rowid+'-error2').hide();
+    }
+
+   //  $(".numb").keyup(function() {//Can Be {0-9,.}
+    //    chkFormatNam($(this).val(), $(this).attr('id'));
+    // });
+  }
+
+  function delDataTB(obj,id){
+    var attrID = id;
+    if(confirm("ยืนยันการลบตำแหน่งจัดเก็บ ?")){
+      if (attrID != 0) {
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chkDelData_locStrock',locationID:locationID},function(data){        
+          if(data > 0){
+            alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีสินค้านี้อยู่ในคลัง');
+            return false;
+          }else{
+            //$('#isDeleted1'+index).val(1);
+            var row = parseInt($('#tb_data_attr tbody tr').length);     
+            if (row != 1) {
+              $(obj).parent().parent().hide();
+              get_total();
+            }else{
+              alert('ไม่สามารถลบข้อมูลได้ เนื่องจากต้องมีคุณลักษณะอย่างน้อย1รายการ');
+            }
+          }
+        },'json');
+      }else{
+        var row = parseInt($('#tb_data_attr tbody tr').length);
+        if (row != 1) {
+          //$('#nodata').show();
+          $(obj).parent().parent().remove();
+          get_total();
+        }
+      }
+    }
+  }
+
+  function delDataTBsup(obj,id,id2,index){
+
+    var supID = id;
+    if(confirm("ยืนยันการลบบริษัทคู่ค้า ?")){
+      if (supID != 0) {
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chkDelData_supPO',supID:supID},function(data){        
+          if(data > 0){
+            alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีการสั่งซื้อสินค้าจากบริษัทคู่ค้านี้อยู่');
+            return false;
+          }else{
+            var row = parseInt($('#tb_datasup tbody tr').length);     
+            if (row != 1) {
+              //$('#nodatasup').show();
+              $(obj).parent().parent().hide();
+            }else{
+              alert('ไม่สามารถลบข้อมูลได้ เนื่องจากต้องมีบริษัทคู่ค้าอย่างน้อย1รายการ');
+            }
+          }
+        },'json');
+      }else{
+        var row = parseInt($('#tb_datasup tbody tr').length);     
+        if (row != 1) {
+          //$('#nodatasup').show();
+          $(obj).parent().parent().remove();
+        }else{
+          alert('ไม่สามารถลบข้อมูลได้ เนื่องจากต้องมีบริษัทคู่ค้าอย่างน้อย1รายการ');
+        }
+      }
+    }
+  }
+
+  function  get_total(){
+    var arr = $('input[id^=ps_unit_]');
+    var total = 0;
+    for (var i = 0; i < arr.length; i++) {
+      var num = parseInt($(arr[i]).val().trim().replace(/,/g,''));
+      total = total+num;
+    }
+    $('#total_unit').val(total);
    //var arr = parseInt($('#rowid').val()replace(/,/g,''));
  }
- var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
+
+ function  chk_location(){
+  var arr = $('[id^=locationID_]');
+  
+  var total = 0;
+  for (var i = 0; i < arr.length; i++) {
+    var num = $(arr[i]).val().trim();
+    if (i != 0) {
+      var a = i-1;
+      var x = i + 1;
+      if(num == $(arr[a]).val().trim())
+      {
+        $('#locationID'+[x]+'-error').show();
+        $('#chk3').val(1);
+        return false;    
+      }else{
+        $('#locationID'+[x]+'-error').hide();
+        $('#chk3').val(0);
+      }
+    }
+  }
+}
+
+function  chk_sup(obj,id){
+  var supID = id;
+  if (supID != 0) {
+    $.ajaxSetup({async: false});
+    $.post('process/get_process.php',{proc:'chkDelData_supPO',supID:supID},function(data){        
+      if(data > 0){
+        alert('ไม่สามารถเปลี่ยนบริษัทคู่ค้าได้ เนื่องจากมีการสั่งซื้อสินค้าจากบริษัทคู่ค้านี้อยู่');   
+        $('#'+obj.id).val(supID);
+        return false;
+      }else{
+        var arr = $('[id^=supID_]');
+        var total = 0;
+        for (var i = 0; i < arr.length; i++) {
+          var num = $(arr[i]).val().trim();
+          if (i != 0) {
+            var a = i-1;
+            var x = i + 1;
+            if(num == $(arr[a]).val().trim())
+            {
+              $('#supID'+[x]+'-error').show();
+              $('#chk4').val(1);
+              return false;    
+            }else{
+             $('#supID'+[x]+'-error').hide();
+             $('#chk4').val(0);
+           }
+         }
+       }
+     }
+   },'json');
+  }
+}
+
+var _validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];    
 function ValidateSingleInput(oInput) {
-    if (oInput.type == "file") {
-        var sFileName = oInput.value;
-         if (sFileName.length > 0) {
-            var blnValid = false;
-            for (var j = 0; j < _validFileExtensions.length; j++) {
-                var sCurExtension = _validFileExtensions[j];
-                if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
-                    blnValid = true;
-                    break;
-                }
-            }
-             
-            if (!blnValid) {
+  if (oInput.type == "file") {
+    var sFileName = oInput.value;
+    if (sFileName.length > 0) {
+      var blnValid = false;
+      for (var j = 0; j < _validFileExtensions.length; j++) {
+        var sCurExtension = _validFileExtensions[j];
+        if (sFileName.substr(sFileName.length - sCurExtension.length, sCurExtension.length).toLowerCase() == sCurExtension.toLowerCase()) {
+          blnValid = true;
+          break;
+        }
+      }
+
+      if (!blnValid) {
               // alert("Sorry, " + sFileName + " is invalid, allowed extensions are: " + _validFileExtensions.join(", "));
               alert("กรุณาตรวจสอบไฟล์อัพโหลด");
               //$('#img-error').show();
               oInput.value = "";
               return false;
             }
+          }
         }
-    }
-    return true;
-}
-</script>
+        return true;
+      }
+
+      function chkName(){
+        var productName= $('#productName').val();
+        var productID= $('#productID').val();
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chk_productName',productName:productName,productID:productID},function(data){
+          if(data>0){
+            $('#productName-error2').show();
+            $('#chk1').val(1);
+          }else{
+            $('#productName-error2').hide();
+            $('#chk1').val(0);
+
+          }
+
+        },'json');
+      }
+
+      function get_location(parent_id,id,productID){
+
+        var locationTypeID = parent_id;
+        var productID = productID;
+        var html  = '<option value="">เลือก</option>';
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'get_location',locationTypeID:locationTypeID,productID:productID},function(data){
+          console.log(data);
+          $.each(data,function(index,value){
+            html += "<option value='"+value['DATA_VALUE']+"'>"+value['DATA_NAME']+"</option>";
+          });
+          $('#'+id).html(html);
+          $('#'+id).selectpicker('refresh');
+
+        },'json');
+      }
+
+      function delData(parent_id,id,hdf_id){
+        var productID = $('#productID').val();
+        $.ajaxSetup({async: false});
+        $.post('process/get_process.php',{proc:'chkDelData_Product',productID:productID},function(data){
+          if(data > 0){
+            alert('ไม่สามารถยกเลิกข้อมูลได้ เนื่องจากมีสินค้านี้อยู่ในคลัง');
+            $('#'+parent_id).val(1);
+            return false;
+          }else{
+            $('#'+hdf_id).val(id);
+          }
+        },'json');
+
+      }
+
+      function getunit(id,hdf_id){
+        var unitID = $('#unitID').val();
+        $('#'+hdf_id).val(id);
+      }
+
+      function readURL(input) {
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function(e) {
+            $('#blah').attr('src', e.target.result);
+          }
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $("#productImg").change(function() {
+        readURL(this);
+      });
+    </script>

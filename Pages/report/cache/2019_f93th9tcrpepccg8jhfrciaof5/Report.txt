@@ -1,0 +1,13 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+  <thead>
+  <tr>
+    <th width="10%">วันที่สั่งซื้อ</th>
+    <th width="10%">เลขที่ใบสั่งซื้อ</th>
+    <th width="10%">บริษัทคู่ค้า</th>
+    <th width="10%">รหัสสินค้า</th>
+    <th width="10%">ชื่อสินค้า</th>
+    <th width="10%">จำนวนสั่งซื้อ</th>
+    <th width="10%">จำนวนเงิน</th></tr>
+  </thead>
+  <tbody>    </tbody>
+  </table>

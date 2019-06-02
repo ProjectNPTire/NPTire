@@ -6,7 +6,7 @@ $path = "../";
 include($path."include/config_header_top.php");
 include 'css.php';
 
-$page_key = "2_1";
+$page_key = "2_2";
 
 $form_page = $form_page;
 
@@ -32,7 +32,7 @@ chk_role($page_key,'isAdd',1);
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2><?php echo $txt;?>ข้อมูลคู่ค้า</h2>
+                            <h2><?php echo $txt;?>ข้อมูลบริษัทคู่ค้า</h2>
                         </div>
                         <div class="body">
                             <form id="frm-input" action="process/sup_process.php" method="POST">
@@ -50,7 +50,7 @@ chk_role($page_key,'isAdd',1);
                                       <b>รหัสบริษัทคู่ค้า</b>
                                       <div class="form-group">
                                         <div class="form-line">
-                                            <input type="text " name="supCode" id="supCode" class="form-control" value="<?php echo $rec['supCode'];?>" readOnly>
+                                            <input type="text " name="supCode" id="supCode" class="form-control" value="<?php echo $rec['supCode'];?>"<?php echo $readonly;?>>
                                         </div>
                                     </div>
                                 </div>
@@ -153,7 +153,8 @@ chk_role($page_key,'isAdd',1);
                             <div class="form-group">
                                 <b>รหัสไปรษณีย์</b>
                                 <div class="form-line">
-                                   <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $_SESSION["userType"] == "2" ? $readonly : '';?>>
+                                   <input type="text" maxlength="5" class="form-control numb" name="zipcode" id="zipcode"  value="<?php echo $rec['zipcode'];?>" <?php echo $readonly;?>>
+
                                </div>
                                <label id="zipcode_error" class="error" for="zipcode">กรุณาระบุ รหัสไปรษณีย์</label>
                            </div>

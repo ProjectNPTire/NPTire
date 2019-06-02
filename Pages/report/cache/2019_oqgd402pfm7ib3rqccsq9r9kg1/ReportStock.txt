@@ -1,0 +1,48 @@
+<table class="table table-bordered table-striped table-hover dataTable" border="1">
+<thead>
+<tr>
+<th>ประเภทตำแหน่งจัดเก็บ</th>
+<th>ตำแหน่งจัดเก็บ</th>
+<th>รหัสสินค้า</th>
+<th>ชื่อสินค้า</th>
+<th>จำนวน</th>
+</tr>
+</thead>
+<tbody><tr>
+    <td>กองสินค้า</td>
+    <td>ตำแหน่งกองสินค้า</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr><tr>
+    <td>Large1</td>
+    <td>A1</td>
+    <td>WL-001</td>
+    <td>COSMIS-XT-005R ECO</td>
+    <td>4</td>
+    </tr><tr>
+    <td>Large1</td>
+    <td>A2</td>
+    <td>CN2054017CSC5</td>
+    <td>ContiSportContact™ 5</td>
+    <td>0</td>
+    </tr><tr>
+    <td>Large2</td>
+    <td>B1</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr><tr>
+    <td>Large2</td>
+    <td>B2</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr><tr>
+    <td>Small1</td>
+    <td>สินค้าอื่นๆ</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    </tr></tbody>
+</table>

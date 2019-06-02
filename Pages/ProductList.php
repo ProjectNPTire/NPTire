@@ -172,15 +172,13 @@ chk_role($page_key,'isSearch',1) ;
                     <thead>
                       <tr>
                         <th width="5%">ลำดับ</th>
-                        <th width="5%" style="text-align: center;">รหัสสินค้า</th>
-                        <th width="20%" style="text-align:center;">ชื่อสินค้า</th>
-                        <th width="10%" style="text-align:center;">ประเภทสินค้า</th>
-                        <th width="5%" style="text-align:center;">ยี่ห้อ</th>
-                        <th width="5%" style="text-align:center;">คุณลักษณะ</th>
-                        <th width="5%" style="text-align:center;">จำนวน</th>
-                        <th width="5%" style="text-align:center;">หน่วย</th>
-                        <th width="10%" style="text-align:center;">สถานะ</th>
-                        <th width="15%" style="text-align:center;"></th>
+                        <th>รหัสสินค้า</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>ยี่ห้อ</th>
+                        <th>จำนวน</th>
+                        <th>หน่วย</th>
+                        <th>สถานะ</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>

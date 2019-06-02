@@ -318,12 +318,12 @@ function getReceiveInfo($id){
     $query_pd = $db->query($sql_pd);
     while($rec_pd = $db->db_fetch_array($query_pd))
     {
-        $sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
-        ,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
-        FROM  tb_productstore 
-        JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
-        JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
-        JOIN tb_product ON tb_productstore.productID = tb_product.productID
+    $sql_product = "SELECT tb_productstore.*,tb_locationtype.locationTypeName,tb_location.locationName
+	,tb_product.productName,tb_product.productCode,tb_product.productTypeID,tb_product.brandID
+	FROM  tb_productstore 
+	JOIN tb_locationtype ON tb_productstore.locationTypeID = tb_locationtype.locationTypeID 
+	JOIN tb_location ON tb_productstore.locationID = tb_location.locationID
+	JOIN tb_product ON tb_productstore.productID = tb_product.productID
         WHERE tb_productstore.productID = '".$rec_pd["productID"]."' ";
         $query_product = $db->query($sql_product);
         $rec_product = $db->db_fetch_array($query_product);
@@ -332,9 +332,10 @@ function getReceiveInfo($id){
         $query_receive_desc = $db->query($sql_receive_desc);
         $rec_receive_desc = $db->db_fetch_array($query_receive_desc);
 
-        $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
-        FROM tb_productattr JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
-        WHERE productID = '".$rec_pd["productID"]."'";
+       $sql_attr = "SELECT tb_attribute.attrName, tb_productattr.value
+        FROM tb_productattr JOIN tb_product ON tb_productattr.productID = tb_product.productID
+        JOIN tb_attribute ON tb_productattr.attrID = tb_attribute.attrID
+        WHERE tb_productattr.productID = '".$rec_pd["productID"]."'";
         $query_attr = $db->query($sql_attr);
         $nums_attr = $db->db_num_rows($query_attr);
 
